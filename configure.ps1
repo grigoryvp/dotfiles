@@ -1,6 +1,8 @@
 iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
 scoop install git
 scoop update
+cd $env:USERPROFILE
+& ssh-keygen -N "" -f .ssh/id_rsa
 $url = 'https://autohotkey.com/download/ahk-install.exe'
 $file = "$env:temp\ahk-install.exe"
 $client = (new-object net.webclient)

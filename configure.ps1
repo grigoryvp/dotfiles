@@ -9,6 +9,8 @@ $file = ".\ahk-install.exe"
 echo "Downloading AutoHotkey"
 curl -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
 & $file /S
+echo "Waiting for installation to complete"
+Start-Sleep 10
 rm $file
 
 # Modify keyboard

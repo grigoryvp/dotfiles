@@ -294,6 +294,12 @@ $p::
   }
   return
 
+;;  Some keyboards emulate "edge swipes" by sending these key combonations
+$#a::
+  return
+$#down::
+  return
+
 ;; ===========================================================================
 ;; Left and right mouse buttons
 ;; ===========================================================================

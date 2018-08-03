@@ -2,7 +2,7 @@ iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
 scoop install git
 scoop update
 cd $env:USERPROFILE
-& ssh-keygen -N "" -f .ssh\id_rsa
+& ssh-keygen -N '""' -f .ssh/id_rsa
 
 # Install AutoHotkey
 $file = .\ahk-install.exe

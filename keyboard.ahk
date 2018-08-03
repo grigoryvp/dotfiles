@@ -299,6 +299,8 @@ $#a::
   return
 $#down::
   return
+$#tab::
+  return
 
 ;; ===========================================================================
 ;; Left and right mouse buttons

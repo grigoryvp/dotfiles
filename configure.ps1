@@ -3,10 +3,13 @@ scoop install git
 scoop update
 cd $env:USERPROFILE
 & ssh-keygen -N "" -f .ssh/id_rsa
-$url = 'https://autohotkey.com/download/ahk-install.exe'
-$file = "$env:temp\ahk-install.exe"
-$client = (new-object net.webclient)
-$client.headers.add('User-Agent', 'curl/7.55.1')
-$client.downloadfile($url, $file)
+
+# Install AutoHotkey
+$file = .\ahk-install.exe
+curl -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
 & $file /S
-start keyboard.ahk
+rm $file
+
+# Modify keyboard
+curl -OutFile keyboard.ahk -Uri https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk
+start .\keyboard.ahk

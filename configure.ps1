@@ -7,6 +7,9 @@ if (!(get-command scoop -errorAction SilentlyContinue)) {
 }
 
 if (!(test-path .ssh\id_rsa)) {
+  if (!(test-path .ssh)) {
+    mkdir .ssh
+  }
   & ssh-keygen -N '""' -f .ssh/id_rsa
 }
 
@@ -16,7 +19,7 @@ echo "Downloading AutoHotkey"
 curl -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
 & $file /S
 echo "Waiting for installation to complete"
-Start-Sleep 10
+Start-Sleep 60
 rm $file
 
 # Modify keyboard

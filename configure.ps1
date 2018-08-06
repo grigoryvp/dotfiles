@@ -10,19 +10,17 @@ if (!(test-path .ssh\id_rsa)) {
   if (!(test-path .ssh)) {
     mkdir .ssh
   }
-  & ssh-keygen -N '""' -f .ssh/id_rsa
+  & ssh-keygen -N '""' -f .ssh/id_rsa | out-null
 }
 
 # Install AutoHotkey
 $file = ".\ahk-install.exe"
 echo "Downloading AutoHotkey"
-curl -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
-& $file /S
-echo "Waiting for installation to complete"
-Start-Sleep 60
+Invoke-WebRequest -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
+& $file /S | out-null
 rm $file
 
 # Modify keyboard
 echo "Downloading keyboard script"
-curl -OutFile keyboard.ahk -Uri https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk
-start .\keyboard.ahk
+Invoke-WebRequest -OutFile keyboard.ahk -Uri https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk
+Start-Process .\keyboard.ahk

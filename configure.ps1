@@ -17,7 +17,7 @@ if (!(test-path .ssh\id_rsa)) {
 $file = ".\ahk-install.exe"
 echo "Downloading AutoHotkey"
 Invoke-WebRequest -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
-start-process $file -argumentList '/S' -wait
+start-process $file -argumentList '/S' -verb RunAs -wait
 rm $file
 
 # Modify keyboard

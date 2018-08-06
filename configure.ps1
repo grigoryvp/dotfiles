@@ -10,14 +10,14 @@ if (!(test-path .ssh\id_rsa)) {
   if (!(test-path .ssh)) {
     mkdir .ssh
   }
-  & ssh-keygen -N '""' -f .ssh/id_rsa | out-null
+  start-process ssh-keygen -argumentList '-N "" -f .ssh/id_rsa' -wait
 }
 
 # Install AutoHotkey
 $file = ".\ahk-install.exe"
 echo "Downloading AutoHotkey"
 Invoke-WebRequest -OutFile $file -Uri https://autohotkey.com/download/ahk-install.exe
-& $file /S | out-null
+start-process $file -argumentList '/S' -wait
 rm $file
 
 # Modify keyboard

@@ -24,4 +24,5 @@ Invoke-WebRequest -OutFile keyboard.ahk -Uri $uri
 
 Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
 [System.Console]::ReadKey()
+Write-Host ""
 Start-Process autohotkey.exe -ArgumentList '.\keyboard.ahk' -Verb RunAs -WindowStyle Hidden

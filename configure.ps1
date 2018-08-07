@@ -2,12 +2,12 @@ cd $env:USERPROFILE
 
 if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
   Invoke-Expression (New-Object Net.WebClient).DownloadString('https://get.scoop.sh')
-  # Required for buckets
-  scoop install git
-  # Required to install autohotkey
-  scoop bucket add extras
 }
 
+# Required for buckets
+scoop install git
+# Required to install autohotkey
+scoop bucket add extras
 scoop install autohotkey
 
 if (!(Test-Path .ssh\id_rsa)) {

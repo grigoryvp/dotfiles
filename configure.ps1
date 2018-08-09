@@ -14,11 +14,16 @@ if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
   Invoke-Expression (New-Object Net.WebClient).DownloadString('https://get.scoop.sh')
 }
 
-# Required for buckets
-scoop install git
-# Required to install autohotkey
-scoop bucket add extras
-scoop install autohotkey
+if (!(Get-Command git -ErrorAction SilentlyContinue)) {
+  # Required for buckets
+  scoop install git
+}
+
+if (!(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
+  # Required to install autohotkey
+  scoop bucket add extras
+  scoop install autohotkey
+}
 
 if (!(Test-Path .ssh\id_rsa)) {
   if (!(Test-Path .ssh)) {
@@ -28,11 +33,15 @@ if (!(Test-Path .ssh\id_rsa)) {
 }
 
 # Modify keyboard
-Write-Output "Downloading keyboard script"
-$uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk'
-Invoke-WebRequest -OutFile keyboard.ahk -Uri $uri
+if (!(Test-Path keyboard.ahk)) {
+  Write-Output "Downloading keyboard script"
+  $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk'
+  Invoke-WebRequest -OutFile keyboard.ahk -Uri $uri
+}
 
-Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
-[System.Console]::ReadKey()
-Write-Host ""
-Start-Process autohotkey.exe -ArgumentList '.\keyboard.ahk' -Verb RunAs -WindowStyle Hidden
+if (!(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {
+  Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
+  [System.Console]::ReadKey()
+  Write-Host ""
+  Start-Process autohotkey.exe -ArgumentList '.\keyboard.ahk' -Verb RunAs -WindowStyle Hidden
+}

@@ -25,6 +25,11 @@ if (!(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
   scoop install autohotkey
 }
 
+if (!(Get-Command sudo -ErrorAction SilentlyContinue)) {
+  # Required for auto-start elevated autohotkey installed via scoop
+  scoop install sudo
+}
+
 if (!(Test-Path .ssh\id_rsa)) {
   if (!(Test-Path .ssh)) {
     New-Item -Path .ssh -ItemType Directory
@@ -41,7 +46,13 @@ if (!(Test-Path keyboard.ahk)) {
 
 if (!(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {
   Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
-  [System.Console]::ReadKey()
+  [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
   Write-Host ""
-  Start-Process autohotkey.exe -ArgumentList '.\keyboard.ahk' -Verb RunAs -WindowStyle Hidden
+  sudo autohotkey "%USERPROFILE%\keyboard.ahk"
+}
+
+$startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+if (!(Test-Path "$startDir\startup.bat")) {
+  $content = 'sudo autohotkey "%USERPROFILE%\keyboard.ahk"'
+  New-Item -path $startDir -Name "startup.bat" -Value "$content" -ItemType File
 }

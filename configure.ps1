@@ -48,7 +48,7 @@ if (!(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {
   Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
   [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
   Write-Host ""
-  sudo autohotkey "%USERPROFILE%\keyboard.ahk"
+  sudo autohotkey keyboard.ahk
 }
 
 $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"

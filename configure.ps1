@@ -12,28 +12,35 @@ powercfg -change -hibernate-timeout-dc 0
 
 if (!(Get-Command scoop -ErrorAction SilentlyContinue)) {
   Invoke-Expression (New-Object Net.WebClient).DownloadString('https://get.scoop.sh')
+  if (!$?) { throw "Failed" }
 }
 
 if (!(Get-Command git -ErrorAction SilentlyContinue)) {
   # Required for buckets
   scoop install git
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 
 if (!(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
   # Required to install autohotkey
   scoop bucket add extras
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
   scoop install autohotkey
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 
 if (!(Get-Command keepass -ErrorAction SilentlyContinue)) {
   # Required to install kpscript
   scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
   scoop install keepass kpscript
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 
 if (!(Get-Command sudo -ErrorAction SilentlyContinue)) {
   # Required for auto-start elevated autohotkey installed via scoop
   scoop install sudo
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 
 if (!(Test-Path .ssh\id_rsa)) {
@@ -48,6 +55,7 @@ if (!(Test-Path keyboard.ahk)) {
   Write-Output "Downloading keyboard script"
   $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk'
   Invoke-WebRequest -OutFile keyboard.ahk -Uri $uri
+  if (!$?) { throw "Failed" }
 }
 
 if (!(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {

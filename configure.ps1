@@ -25,6 +25,12 @@ if (!(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
   scoop install autohotkey
 }
 
+if (!(Get-Command keepass -ErrorAction SilentlyContinue)) {
+  # Required to install kpscript
+  scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
+  scoop install keepass kpscript
+}
+
 if (!(Get-Command sudo -ErrorAction SilentlyContinue)) {
   # Required for auto-start elevated autohotkey installed via scoop
   scoop install sudo

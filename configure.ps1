@@ -1,3 +1,9 @@
+$app = @{
+  pass = $null;
+};
+
+$app.pass = Read-Host -Prompt "Enter password"
+
 cd $env:USERPROFILE
 
 Write-Host "Configuring power options..."

@@ -14,7 +14,6 @@
 
 codepage = 65001 ; utf-8
 appLastLangHotkey := ""
-appCounter := 0
 ;;  "Leader key", only works in combinations, doesn't work on it's own
 SetCapsLockState, alwaysoff
 
@@ -175,7 +174,7 @@ $9::
 
 $0::
   if (GetKeyState("capslock", "P")) {
-    WinActivate, ahk_exe telegram.exe
+    WinActivate, ahk_exe doublecmd.exe
   }
   else {
     send 0
@@ -184,7 +183,7 @@ $0::
 
 $-::
   if (GetKeyState("capslock", "P")) {
-    WinActivate, ahk_exe thebat64.exe
+    WinActivate, ahk_exe telegram.exe
   }
   else {
     send -

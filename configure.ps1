@@ -82,3 +82,6 @@ if (!(Test-Path "$startDir\startup.bat")) {
   $content = 'sudo autohotkey "%USERPROFILE%\keyboard.ahk"'
   New-Item -path $startDir -Name "startup.bat" -Value "$content" -ItemType File
 }
+
+# Todo: Read GitHub username and password
+# Todo: Upload SSH key to github, curl -u "username:password" --data '{"title":"test-key","key":"ssh-rsa AAA..."}' https://api.github.com/user/keys

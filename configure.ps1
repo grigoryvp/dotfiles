@@ -55,6 +55,12 @@ if (!(Get-Command sudo -ErrorAction SilentlyContinue)) {
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 
+if (!(Get-Command doublecmd -ErrorAction SilentlyContinue)) {
+  scoop uninstall doublecmd
+  scoop install doublecmd
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
+}
+
 if (!(Test-Path .ssh\id_rsa)) {
   if (!(Test-Path .ssh)) {
     New-Item -Path .ssh -ItemType Directory

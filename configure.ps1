@@ -68,6 +68,13 @@ if (!(Test-Path .ssh\id_rsa)) {
   Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait
 }
 
+if (!(Test-Path passwords.kdbx)) {
+  Write-Output "Downloading passwords storage"
+  $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/passwords.kdbx'
+  Invoke-WebRequest -OutFile passwords.kdbx -Uri $uri
+  if (!$?) { throw "Failed" }
+}
+
 # Modify keyboard
 if (!(Test-Path keyboard.ahk)) {
   Write-Output "Downloading keyboard script"

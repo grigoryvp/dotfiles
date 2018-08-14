@@ -6,7 +6,7 @@ $app = @{
   };
 };
 
-$app.pass = Read-Host -Prompt "Enter password"
+$app.pass = Read-Host -AsSecureString -Prompt "Enter password"
 
 cd $env:USERPROFILE
 

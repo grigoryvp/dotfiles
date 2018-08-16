@@ -1,10 +1,11 @@
 $app = @{
   isTest = ($args.Contains("--test"));
   pass = $null;
-  gihub = @{
-    user = $null;
-    pass = $null;
-  };
+};
+
+$app.github = {
+  user = "foo";
+  pass = "bar";
 };
 
 cd $env:USERPROFILE

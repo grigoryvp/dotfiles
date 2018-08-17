@@ -77,7 +77,7 @@ if (!$app.isTest -and !(Test-Path .ssh\id_rsa)) {
 if (!$app.isTest -and !(Test-Path passwords.kdbx)) {
   Write-Output "Downloading passwords storage"
   $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/passwords.kdbx'
-  Invoke-WebRequest -OutFile passwords.kdbx -Uri $uri
+  Invoke-WebRequest -OutFile passwords.kdbx $uri
   if (!$?) { throw "Failed" }
 }
 
@@ -93,7 +93,7 @@ if (!$app.isTest) {
 if (!$app.isTest -and !(Test-Path keyboard.ahk)) {
   Write-Output "Downloading keyboard script"
   $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk'
-  Invoke-WebRequest -OutFile keyboard.ahk -Uri $uri
+  Invoke-WebRequest -OutFile keyboard.ahk $uri
   if (!$?) { throw "Failed" }
 }
 

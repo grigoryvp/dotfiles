@@ -87,7 +87,19 @@ if (!$app.isTest) {
   $app.github.pass = kpscript -c:GetEntryString passwords.kdbx -pw:$app.pass -Field:Password
 }
 
-# Todo: Upload SSH key to github, curl -u "username:password" --data '{"title":"test-key","key":"ssh-rsa AAA..."}' https://api.github.com/user/keys
+function uploadSshKey() {
+  $pair = "$($app.github.user):$($app.github.pass)";
+  $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
+  $creds = [System.Convert]::ToBase64String($bytes)
+  $headers = @{Authorization = "Basic $creds";}
+  $body = ConvertTo-Json @{
+    title = "box key $(Get-Date)";
+    key = Get-Content ".ssh/id_rsa.pub";
+  }
+  $url = "https://api.github.com/user/keys"
+  Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+}
+uploadSshKey;
 
 # Modify keyboard
 if (!$app.isTest -and !(Test-Path keyboard.ahk)) {

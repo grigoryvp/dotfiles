@@ -88,6 +88,7 @@ if (!$app.isTest) {
 }
 
 function uploadSshKey() {
+  if ($app.isTest) { return; }
   $pair = "$($app.github.user):$($app.github.pass)";
   $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
   $creds = [System.Convert]::ToBase64String($bytes)

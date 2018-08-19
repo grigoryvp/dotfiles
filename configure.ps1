@@ -3,7 +3,7 @@ $app = @{
   pass = $null;
 };
 
-$app.github = {
+$app.github = @{
   user = "foo";
   pass = "bar";
 };
@@ -86,19 +86,25 @@ if (!$app.isTest) {
   $app.github.user = kpscript -c:GetEntryString passwords.kdbx -pw:$app.pass -Field:UserName
   $app.github.pass = kpscript -c:GetEntryString passwords.kdbx -pw:$app.pass -Field:Password
 }
+else {
+  $app.pass = "keypass";
+  $app.github.user = "ghuser";
+  $app.github.pass = "ghpass";
+}
 
 function uploadSshKey() {
-  if ($app.isTest) { return; }
   $pair = "$($app.github.user):$($app.github.pass)";
   $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
   $creds = [System.Convert]::ToBase64String($bytes)
   $headers = @{Authorization = "Basic $creds";}
   $body = ConvertTo-Json @{
     title = "box key $(Get-Date)";
-    key = Get-Content ".ssh/id_rsa.pub";
+    key = (Get-Content ".ssh/id_rsa.pub" | Out-String);
   }
   $url = "https://api.github.com/user/keys"
-  Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+  if (!$app.isTest) {
+    Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+  }
 }
 uploadSshKey;
 

@@ -32,6 +32,9 @@ if (!$app.isTest -and !(Get-Command git -ErrorAction SilentlyContinue)) {
   scoop uninstall git
   scoop install git
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  & git config --global core.autocrlf input
+  & git config --global user.name "Girogry Petrov"
+  & git config --global user.email "grigory.v.p@gmail.com"
 }
 
 if (!$app.isTest -and !(Get-Command autohotkey -ErrorAction SilentlyContinue)) {

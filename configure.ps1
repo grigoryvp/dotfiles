@@ -57,13 +57,6 @@ if (!$app.isTest -and !(Get-Command keepass -ErrorAction SilentlyContinue)) {
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 
-if (!$app.isTest -and !(Get-Command sudo -ErrorAction SilentlyContinue)) {
-  # Required for auto-start elevated autohotkey installed via scoop
-  scoop uninstall sudo
-  scoop install sudo
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-}
-
 if (!$app.isTest -and !(Get-Command doublecmd -ErrorAction SilentlyContinue)) {
   scoop uninstall doublecmd
   scoop install doublecmd
@@ -144,12 +137,12 @@ if (!$app.isTest -and !(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue))
   Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
   [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
   Write-Host ""
-  sudo autohotkey keyboard.ahk
+  Start-Process autohotkey -ArgumentList 'keyboard.ahk' -Verb RunAs
 }
 
 $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
 if (!$app.isTest -and !(Test-Path "$startDir\startup.bat")) {
-  $content = 'sudo autohotkey "%USERPROFILE%\keyboard.ahk"'
+  $content = 'pwsh -Command Start-Process autohotkey -ArgumentList "%USERPROFILE%\keyboard.ahk" -Verb RunAs'
   New-Item -path $startDir -Name "startup.bat" -Value "$content" -ItemType File
 }
 

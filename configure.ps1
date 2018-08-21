@@ -137,12 +137,12 @@ if (!$app.isTest -and !(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue))
   Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
   [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
   Write-Host ""
-  Start-Process autohotkey.exe -ArgumentList 'keyboard.ahk' -Verb RunAs
+  Start-Process autohotkey.exe -ArgumentList 'keyboard.ahk' -WindowStyle Hidden -Verb RunAs
 }
 
 $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
 if (!$app.isTest -and !(Test-Path "$startDir\startup.bat")) {
-  $content = 'pwsh -Command Start-Process autohotkey.exe -ArgumentList "%USERPROFILE%\keyboard.ahk" -Verb RunAs'
+  $content = 'pwsh -Command Start-Process autohotkey.exe -ArgumentList "%USERPROFILE%\keyboard.ahk" -WindowStyle Hidden -Verb RunAs'
   New-Item -path $startDir -Name "startup.bat" -Value "$content" -ItemType File
 }
 

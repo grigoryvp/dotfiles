@@ -85,9 +85,21 @@ if (!$app.isTest -and !(Test-Path passwords.kdbx)) {
 }
 
 if (!$app.isTest) {
-  $app.pass = Read-Host -AsSecureString -Prompt "Enter password"
-  $app.github.user = kpscript -c:GetEntryString passwords.kdbx -pw:$app.pass -Field:UserName
-  $app.github.pass = kpscript -c:GetEntryString passwords.kdbx -pw:$app.pass -Field:Password
+  $pass = Read-Host -AsSecureString -Prompt "Enter password"
+
+  $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass);
+  $str = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+  $app.pass = $str;
+
+  $db = "passwords.kdbx";
+  $verb = "GetEntryString";
+  $cmd = "kpscript $db -c:$verb -pw:$($app.pass) -ref-Title:github";
+  $ret = cmd /c "$cmd -Field:UserName";
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  $app.github.user = $ret[2];
+  $ret = cmd /c "$cmd -Field:Password";
+  if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  $app.github.pass = $ret[2];
 }
 else {
   $app.pass = "keypass";
@@ -106,12 +118,21 @@ function uploadSshKey() {
   }
   $url = "https://api.github.com/user/keys"
   if (!$app.isTest) {
-    Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+    try {
+      Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+    }
+    catch {
+      if ($_.Exception.Response.StatusCode -eq 422) {
+        Write-Host "SSH key already added to GitHub";
+      }
+      else {
+        throw "Failed";
+      }
+    }
   }
 }
 uploadSshKey;
 
-# Modify keyboard
 if (!$app.isTest -and !(Test-Path keyboard.ahk)) {
   Write-Output "Downloading keyboard script"
   $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk'

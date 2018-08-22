@@ -30,6 +30,8 @@ if (!$app.isTest -and !(Get-Command scoop -ErrorAction SilentlyContinue)) {
 if (!$app.isTest -and !(Get-Command git -ErrorAction SilentlyContinue)) {
   # Required for buckets
   scoop uninstall git
+  # Auto-installed with git
+  scoop uninstall 7zip
   scoop install git
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
   & git config --global core.autocrlf input

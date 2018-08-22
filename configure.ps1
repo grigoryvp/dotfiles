@@ -77,6 +77,9 @@ if (!$app.isTest -and !(Test-Path passwords.kdbx)) {
   if (!$?) { throw "Failed" }
 }
 
+# Required by Posh-Git, sudo etc
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
+
 if (!$app.isTest) {
   $pass = Read-Host -AsSecureString -Prompt "Enter password"
 

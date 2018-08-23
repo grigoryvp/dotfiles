@@ -8,6 +8,8 @@ $app.github = @{
   pass = "bar";
 };
 
+# Required by Posh-Git, sudo etc
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
 cd $env:USERPROFILE
 
 if (!$app.isTest) {
@@ -79,8 +81,13 @@ if (!$app.isTest -and !(Test-Path passwords.kdbx)) {
   if (!$?) { throw "Failed" }
 }
 
-# Required by Posh-Git, sudo etc
-Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
+if (!$app.isTest) {
+  PowerShellGet\Install-Module `
+    posh-git `
+    -Scope CurrentUser `
+    -AllowPrerelease -Force
+  if (!$?) { throw "Failed" }
+}
 
 if (!$app.isTest) {
   $pass = Read-Host -AsSecureString -Prompt "Enter password"

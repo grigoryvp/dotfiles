@@ -10,7 +10,7 @@ $app.github = @{
 
 # Required by Posh-Git, sudo etc
 Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
-cd $env:USERPROFILE
+Set-Location $env:USERPROFILE
 
 if (!$app.isTest) {
   Write-Host "Configuring power options..."

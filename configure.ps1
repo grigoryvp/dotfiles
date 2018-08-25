@@ -10,26 +10,34 @@ class App {
   App($argList) {
     $this._isTest = ($argList.Contains("--test"));
   }
+
+
+  configure() {
+    Push-Location;
+
+    # Required by Posh-Git, sudo etc
+    Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
+    Set-Location $env:USERPROFILE
+  }
+
+
+  _setPowerOptions() {
+    if ($this._isTest) { return; }
+    Write-Host "Configuring power options..."
+    powercfg -change -monitor-timeout-ac 120
+    powercfg -change -monitor-timeout-dc 120
+    powercfg -change -disk-timeout-ac 0
+    powercfg -change -disk-timeout-dc 0
+    powercfg -change -standby-timeout-ac 0
+    powercfg -change -standby-timeout-dc 0
+    powercfg -change -hibernate-timeout-ac 0
+    powercfg -change -hibernate-timeout-dc 0
+  }
 }
 
 $app = [App]::new($args);
-Push-Location;
+$app.configure();
 
-# Required by Posh-Git, sudo etc
-Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
-Set-Location $env:USERPROFILE
-
-if (!$app._isTest) {
-  Write-Host "Configuring power options..."
-  powercfg -change -monitor-timeout-ac 120
-  powercfg -change -monitor-timeout-dc 120
-  powercfg -change -disk-timeout-ac 0
-  powercfg -change -disk-timeout-dc 0
-  powercfg -change -standby-timeout-ac 0
-  powercfg -change -standby-timeout-dc 0
-  powercfg -change -hibernate-timeout-ac 0
-  powercfg -change -hibernate-timeout-dc 0
-}
 
 if (!$app._isTest -and !(Get-Command scoop -ErrorAction SilentlyContinue)) {
   Invoke-Expression (New-Object Net.WebClient).DownloadString('https://get.scoop.sh')

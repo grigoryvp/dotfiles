@@ -18,6 +18,15 @@ class App {
     # Required by Posh-Git, sudo etc
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
     Set-Location $env:USERPROFILE
+
+    $this._setPowerOptions();
+    $this._installScoop();
+  }
+
+
+  [Boolean] _hasCli($name) {
+    Get-Command $name -ErrorAction SilentlyContinue;
+    return $?;
   }
 
 
@@ -33,35 +42,39 @@ class App {
     powercfg -change -hibernate-timeout-ac 0
     powercfg -change -hibernate-timeout-dc 0
   }
+
+
+  _installScoop() {
+    if ($this._isTest) { return; }
+    if ($this._hasCli("scoop")) { return; }
+    $web = New-Object Net.WebClient;
+    Invoke-Expression $web.DownloadString('https://get.scoop.sh');
+    if (!$?) { throw "Failed"; }
+  }
 }
 
 $app = [App]::new($args);
 $app.configure();
 
 
-if (!$app._isTest -and !(Get-Command scoop -ErrorAction SilentlyContinue)) {
-  Invoke-Expression (New-Object Net.WebClient).DownloadString('https://get.scoop.sh')
-  if (!$?) { throw "Failed" }
-}
-
 if (!$app._isTest -and !(Get-Command git -ErrorAction SilentlyContinue)) {
   # Required for buckets
-  scoop uninstall git
+  scoop uninstall git;
   # Auto-installed with git
-  scoop uninstall 7zip
-  scoop install git
+  scoop uninstall 7zip;
+  scoop install git;
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  & git config --global core.autocrlf input
-  & git config --global user.name "Girogry Petrov"
-  & git config --global user.email "grigory.v.p@gmail.com"
+  & git config --global core.autocrlf input;
+  & git config --global user.name "Girogry Petrov";
+  & git config --global user.email "grigory.v.p@gmail.com";
 }
 
 if (!$app._isTest -and !(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
   # Required to install autohotkey
-  scoop bucket add extras
+  scoop bucket add extras;
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  scoop uninstall autohotkey
-  scoop install autohotkey
+  scoop uninstall autohotkey;
+  scoop install autohotkey;
   if ($LASTEXITCODE -ne 0) { throw "Failed" }
 }
 

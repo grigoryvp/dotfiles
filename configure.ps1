@@ -19,6 +19,7 @@ class App {
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
     Set-Location $env:USERPROFILE
 
+    $this._generateSshKey();
     $this._setPowerOptions();
     $this._installScoop();
     $this._installGit();
@@ -33,6 +34,16 @@ class App {
   [Boolean] _hasCli($name) {
     Get-Command $name -ErrorAction SilentlyContinue;
     return $?;
+  }
+
+
+  _generateSshKey() {
+    if ($this._isTest) { return; }
+    if (Test-Path .ssh\id_rsa) { return; }
+    if (!(Test-Path .ssh)) {
+      New-Item -Path .ssh -ItemType Directory;
+    }
+    Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
 
 
@@ -97,13 +108,6 @@ class App {
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest -and !(Test-Path .ssh\id_rsa)) {
-  if (!(Test-Path .ssh)) {
-    New-Item -Path .ssh -ItemType Directory
-  }
-  Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait
-}
 
 if (!$app._isTest -and !(Test-Path passwords.kdbx)) {
   Write-Output "Downloading passwords storage"

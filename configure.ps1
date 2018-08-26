@@ -26,6 +26,7 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
+    $this._installApp("doublecmd");
   }
 
 
@@ -96,12 +97,6 @@ class App {
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest -and !(Get-Command doublecmd -ErrorAction SilentlyContinue)) {
-  scoop uninstall doublecmd
-  scoop install doublecmd
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-}
 
 if (!$app._isTest -and !(Test-Path .ssh\id_rsa)) {
   if (!(Test-Path .ssh)) {

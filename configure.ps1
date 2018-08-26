@@ -22,6 +22,8 @@ class App {
     $this._setPowerOptions();
     $this._installScoop();
     $this._installGit();
+    $this._addScoopBuckets();
+    $this._installApp("autohotkey");
   }
 
 
@@ -67,25 +69,33 @@ class App {
     & git config --global user.name "Girogry Petrov";
     & git config --global user.email "grigory.v.p@gmail.com";
   }
+
+
+  _addScoopBuckets() {
+    if ($this._isTest) { return; }
+    # Required to install autohotkey
+    scoop bucket add extras;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    # Required to install kpscript
+    scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  }
+
+
+  _installApp($app) {
+    if ($this._isTest) { return; }
+    if ($this._hasCli($app)) { return; }
+    scoop uninstall $app;
+    scoop install $app;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  }
 }
 
 $app = [App]::new($args);
 $app.configure();
 
 
-if (!$app._isTest -and !(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
-  # Required to install autohotkey
-  scoop bucket add extras;
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  scoop uninstall autohotkey;
-  scoop install autohotkey;
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-}
-
 if (!$app._isTest -and !(Get-Command keepass -ErrorAction SilentlyContinue)) {
-  # Required to install kpscript
-  scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
   scoop uninstall keepass
   scoop install keepass
   scoop uninstall kpscript

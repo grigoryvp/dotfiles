@@ -15,15 +15,22 @@ class App {
   configure() {
     Push-Location;
 
-    # Required by Posh-Git, sudo etc
+    # Required by Posh-Git, sudo etc.
     Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
     Set-Location $env:USERPROFILE
+
+    # Version-controlled dir with scripts, powershell config, passwords etc.
+    $configDir = "$($env:USERPROFILE)\Documents";
+    if (!(Test-Path $configDir)) {
+      New-Item -Path $configDir -ItemType Directory;
+    }
 
     $this._generateSshKey();
     $this._setPowerOptions();
     $this._installScoop();
     $this._installGit();
     $this._addScoopBuckets();
+    $this._getFilesNoClone($configDir);
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
@@ -44,6 +51,37 @@ class App {
       New-Item -Path .ssh -ItemType Directory;
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
+  }
+
+
+  _installApp($app) {
+    if ($this._isTest) { return; }
+    if ($this._hasCli($app)) { return; }
+    scoop uninstall $app;
+    scoop install $app;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  }
+
+
+  # Get minimum amount of files from repo without cloning it (GitHub do not
+  # have SSH keys from this box yet for a proper clone).
+  _getFilesNoClone($configDir) {
+    if ($this._isTest) { return; }
+    $repo = "https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg";
+
+    if (!(Test-Path "$($configDir)\passwords.kdbx")) {
+      Write-Output "Downloading passwords storage"
+      $uri = "$($repo)/master/passwords.kdbx"
+      Invoke-WebRequest -OutFile "$($configDir)\passwords.kdbx" $uri
+      if (!$?) { throw "Failed" }
+    }
+
+    if (!(Test-Path "$($configDir)\keyboard.ahk")) {
+      Write-Output "Downloading keyboard script"
+      $uri = "$($repo)/master/keyboard.ahk"
+      Invoke-WebRequest -OutFile "$($configDir)\keyboard.ahk" $uri
+      if (!$?) { throw "Failed" }
+    }
   }
 
 
@@ -94,27 +132,11 @@ class App {
     scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
-
-
-  _installApp($app) {
-    if ($this._isTest) { return; }
-    if ($this._hasCli($app)) { return; }
-    scoop uninstall $app;
-    scoop install $app;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  }
 }
 
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest -and !(Test-Path passwords.kdbx)) {
-  Write-Output "Downloading passwords storage"
-  $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/passwords.kdbx'
-  Invoke-WebRequest -OutFile passwords.kdbx $uri
-  if (!$?) { throw "Failed" }
-}
 
 if (!$app._isTest) {
   PowerShellGet\Install-Module `
@@ -172,13 +194,6 @@ function uploadSshKey() {
   }
 }
 uploadSshKey;
-
-if (!$app._isTest -and !(Test-Path keyboard.ahk)) {
-  Write-Output "Downloading keyboard script"
-  $uri = 'https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/keyboard.ahk'
-  Invoke-WebRequest -OutFile keyboard.ahk $uri
-  if (!$?) { throw "Failed" }
-}
 
 if (!$app._isTest -and !(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {
   Write-Host -NoNewLine "Press any key to elevate the keyboard script..."

@@ -21,6 +21,7 @@ class App {
 
     $this._setPowerOptions();
     $this._installScoop();
+    $this._installGit();
   }
 
 
@@ -51,23 +52,26 @@ class App {
     Invoke-Expression $web.DownloadString('https://get.scoop.sh');
     if (!$?) { throw "Failed"; }
   }
+
+
+  _installGit() {
+    if ($this._isTest) { return; }
+    if ($this._hasCli("git")) { return; }
+    # Required for buckets
+    scoop uninstall git;
+    # Auto-installed with git
+    scoop uninstall 7zip;
+    scoop install git;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    & git config --global core.autocrlf input;
+    & git config --global user.name "Girogry Petrov";
+    & git config --global user.email "grigory.v.p@gmail.com";
+  }
 }
 
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest -and !(Get-Command git -ErrorAction SilentlyContinue)) {
-  # Required for buckets
-  scoop uninstall git;
-  # Auto-installed with git
-  scoop uninstall 7zip;
-  scoop install git;
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  & git config --global core.autocrlf input;
-  & git config --global user.name "Girogry Petrov";
-  & git config --global user.email "grigory.v.p@gmail.com";
-}
 
 if (!$app._isTest -and !(Get-Command autohotkey -ErrorAction SilentlyContinue)) {
   # Required to install autohotkey

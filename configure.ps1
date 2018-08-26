@@ -36,6 +36,9 @@ class App {
     $this._installApp("keepass");
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
+
+    # Interactive.
+    $this._askForGithubCredentials();
   }
 
 
@@ -110,7 +113,7 @@ class App {
   }
 
 
-  _readGithubCredentials() {
+  _askForGithubCredentials() {
     if ($this._isTest) { return; }
     $pass = Read-Host -AsSecureString -Prompt "Enter password"
 

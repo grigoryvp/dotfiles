@@ -36,11 +36,19 @@ class App {
     $this._installApp("keepass");
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
+    $this._registerAutohotkeyStartup();
 
     # Interactive.
     $this._askForGithubCredentials();
+    # Interactive.
+    $this._startAutohotkey();
 
     $this._uploadSshKey();
+
+    Pop-Location;
+    if ($this._isTest) {
+      Write-Host "Test complete";
+    }
   }
 
 
@@ -195,27 +203,36 @@ class App {
       }
     }
   }
+
+  
+  _startAutohotkey() {
+    if ($this._isTest) { return; }
+    if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
+    Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
+    [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
+    Write-Host ""
+    Start-Process `
+      autohotkey.exe `
+      -ArgumentList 'keyboard.ahk' `
+      -WindowStyle Hidden `
+      -Verb RunAs;
+  }
+
+
+  _registerAutohotkeyStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path "$startDir\startup.bat") { return; }
+    $content = 'pwsh -Command Start-Process autohotkey.exe';
+    $content += ' -ArgumentList "%USERPROFILE%\keyboard.ahk"';
+    $content += ' -WindowStyle Hidden -Verb RunAs';
+    New-Item `
+      -path $startDir `
+      -Name "startup.bat" `
+      -Value "$content" `
+      -ItemType File;
+  }
 }
 
 $app = [App]::new($args);
 $app.configure();
-
-
-if (!$app._isTest -and !(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {
-  Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
-  [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
-  Write-Host ""
-  Start-Process autohotkey.exe -ArgumentList 'keyboard.ahk' -WindowStyle Hidden -Verb RunAs
-}
-
-$startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-if (!$app._isTest -and !(Test-Path "$startDir\startup.bat")) {
-  $content = 'pwsh -Command Start-Process autohotkey.exe -ArgumentList "%USERPROFILE%\keyboard.ahk" -WindowStyle Hidden -Verb RunAs'
-  New-Item -path $startDir -Name "startup.bat" -Value "$content" -ItemType File
-}
-
-if ($app._isTest) {
-  Write-Host "Test complete";
-}
-
-Pop-Location;

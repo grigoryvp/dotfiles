@@ -39,6 +39,8 @@ class App {
 
     # Interactive.
     $this._askForGithubCredentials();
+
+    $this._uploadSshKey();
   }
 
 
@@ -166,37 +168,38 @@ class App {
     scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
+
+
+  _uploadSshKey() {
+    if ($this._isTest) { return; }
+    $pair = "$($this._github.user):$($this._github.pass)";
+    $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
+    $creds = [System.Convert]::ToBase64String($bytes)
+    $headers = @{Authorization = "Basic $creds";}
+    $body = ConvertTo-Json @{
+      title = "box key $(Get-Date)";
+      key = (Get-Content ".ssh/id_rsa.pub" | Out-String);
+    }
+    $url = "https://api.github.com/user/keys"
+    if (!$this._isTest) {
+      try {
+        Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+      }
+      catch {
+        if ($_.Exception.Response.StatusCode -eq 422) {
+          Write-Host "SSH key already added to GitHub";
+        }
+        else {
+          throw "Failed";
+        }
+      }
+    }
+  }
 }
 
 $app = [App]::new($args);
 $app.configure();
 
-
-function uploadSshKey() {
-  $pair = "$($app._github.user):$($app._github.pass)";
-  $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
-  $creds = [System.Convert]::ToBase64String($bytes)
-  $headers = @{Authorization = "Basic $creds";}
-  $body = ConvertTo-Json @{
-    title = "box key $(Get-Date)";
-    key = (Get-Content ".ssh/id_rsa.pub" | Out-String);
-  }
-  $url = "https://api.github.com/user/keys"
-  if (!$app._isTest) {
-    try {
-      Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
-    }
-    catch {
-      if ($_.Exception.Response.StatusCode -eq 422) {
-        Write-Host "SSH key already added to GitHub";
-      }
-      else {
-        throw "Failed";
-      }
-    }
-  }
-}
-uploadSshKey;
 
 if (!$app._isTest -and !(Get-Process "AutoHotkey" -ErrorAction SilentlyContinue)) {
   Write-Host -NoNewLine "Press any key to elevate the keyboard script..."

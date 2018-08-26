@@ -25,6 +25,7 @@ class App {
       New-Item -Path $configDir -ItemType Directory;
     }
 
+    $this._installPowershellModule("posh-git");
     $this._generateSshKey();
     $this._setPowerOptions();
     $this._installScoop();
@@ -54,12 +55,22 @@ class App {
   }
 
 
-  _installApp($app) {
+  _installApp($name) {
     if ($this._isTest) { return; }
-    if ($this._hasCli($app)) { return; }
-    scoop uninstall $app;
-    scoop install $app;
+    if ($this._hasCli($name)) { return; }
+    scoop uninstall $name;
+    scoop install $name;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  }
+
+
+  _installPowershellModule($name) {
+    if ($this._isTest) { return; }
+      PowerShellGet\Install-Module `
+      $name `
+      -Scope CurrentUser `
+      -AllowPrerelease -Force;
+    if (!$?) { throw "Failed" }
   }
 
 
@@ -137,14 +148,6 @@ class App {
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest) {
-  PowerShellGet\Install-Module `
-    posh-git `
-    -Scope CurrentUser `
-    -AllowPrerelease -Force
-  if (!$?) { throw "Failed" }
-}
 
 if (!$app._isTest) {
   $pass = Read-Host -AsSecureString -Prompt "Enter password"

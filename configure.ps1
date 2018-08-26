@@ -110,6 +110,26 @@ class App {
   }
 
 
+  _readGithubCredentials() {
+    if ($this._isTest) { return; }
+    $pass = Read-Host -AsSecureString -Prompt "Enter password"
+
+    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass);
+    $str = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+    $this._pass = $str;
+
+    $db = "passwords.kdbx";
+    $verb = "GetEntryString";
+    $cmd = "kpscript $db -c:$verb -pw:$($this._pass) -ref-Title:github";
+    $ret = cmd /c "$cmd -Field:UserName";
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    $this._github.user = $ret[2];
+    $ret = cmd /c "$cmd -Field:Password";
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    $this._github.pass = $ret[2];
+  }
+
+
   _installScoop() {
     if ($this._isTest) { return; }
     if ($this._hasCli("scoop")) { return; }
@@ -148,29 +168,6 @@ class App {
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest) {
-  $pass = Read-Host -AsSecureString -Prompt "Enter password"
-
-  $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass);
-  $str = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
-  $app._pass = $str;
-
-  $db = "passwords.kdbx";
-  $verb = "GetEntryString";
-  $cmd = "kpscript $db -c:$verb -pw:$($app._pass) -ref-Title:github";
-  $ret = cmd /c "$cmd -Field:UserName";
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  $app._github.user = $ret[2];
-  $ret = cmd /c "$cmd -Field:Password";
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-  $app._github.pass = $ret[2];
-}
-else {
-  $app._pass = "keypass";
-  $app._github.user = "ghuser";
-  $app._github.pass = "ghpass";
-}
 
 function uploadSshKey() {
   $pair = "$($app._github.user):$($app._github.pass)";

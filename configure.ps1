@@ -24,6 +24,8 @@ class App {
     $this._installGit();
     $this._addScoopBuckets();
     $this._installApp("autohotkey");
+    $this._installApp("keepass");
+    $this._installApp("kpscript");
   }
 
 
@@ -94,14 +96,6 @@ class App {
 $app = [App]::new($args);
 $app.configure();
 
-
-if (!$app._isTest -and !(Get-Command keepass -ErrorAction SilentlyContinue)) {
-  scoop uninstall keepass
-  scoop install keepass
-  scoop uninstall kpscript
-  scoop install kpscript
-  if ($LASTEXITCODE -ne 0) { throw "Failed" }
-}
 
 if (!$app._isTest -and !(Get-Command doublecmd -ErrorAction SilentlyContinue)) {
   scoop uninstall doublecmd

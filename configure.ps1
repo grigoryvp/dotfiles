@@ -42,7 +42,9 @@ class App {
     $this._registerAutohotkeyStartup();
 
     # Interactive.
-    $this._askForGithubCredentials();
+    if (!(Test-Path .ssh\.uploaded_to_github)) {
+      $this._askForGithubCredentials();
+    }
     # Interactive.
     $this._startAutohotkey();
 
@@ -72,7 +74,8 @@ class App {
 
   _installPowershellModule($name) {
     if ($this._isTest) { return; }
-      PowerShellGet\Install-Module `
+    if (Get-InstalledModule | ? Name -eq $name) { return; }
+    PowerShellGet\Install-Module `
       $name `
       -Scope CurrentUser `
       -AllowPrerelease -Force;
@@ -173,16 +176,24 @@ class App {
   _addScoopBuckets() {
     if ($this._isTest) { return; }
     # Required to install autohotkey
-    scoop bucket add extras;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    if (!(scoop bucket list).Contains("extras")) {
+      scoop bucket add extras;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
     # Required to install kpscript
-    scoop bucket add kpscript https://github.com/grigoryvp/scoop-kpscript.git
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    if (!(scoop bucket list).Contains("kpscript")) {
+      $uri = "https://github.com/grigoryvp/scoop-kpscript.git";
+      scoop bucket add kpscript $uri;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
   }
 
 
   _uploadSshKey() {
     if ($this._isTest) { return; }
+    $marker = ".uploaded_to_github";
+    if (Test-Path .ssh\$marker) { return; }
+
     $pair = "$($this._github.user):$($this._github.pass)";
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
     $creds = [System.Convert]::ToBase64String($bytes)
@@ -195,10 +206,12 @@ class App {
     if (!$this._isTest) {
       try {
         Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
+        New-Item -path .ssh -Name $marker -ItemType File;
       }
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
           Write-Host "SSH key already added to GitHub";
+          New-Item -path .ssh -Name $marker -ItemType File;
         }
         else {
           throw "Failed";

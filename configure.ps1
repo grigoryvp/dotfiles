@@ -54,6 +54,9 @@ class App {
     if ($this._isTest) {
       Write-Host "Test complete";
     }
+    else {
+      Write-Host "Config complete";
+    }
   }
 
 
@@ -117,7 +120,6 @@ class App {
 
   _setPowerOptions() {
     if ($this._isTest) { return; }
-    Write-Host "Configuring power options..."
     powercfg -change -monitor-timeout-ac 120
     powercfg -change -monitor-timeout-dc 120
     powercfg -change -disk-timeout-ac 0

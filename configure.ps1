@@ -58,16 +58,6 @@ class App {
   }
 
 
-  _generateSshKey() {
-    if ($this._isTest) { return; }
-    if (Test-Path .ssh\id_rsa) { return; }
-    if (!(Test-Path .ssh)) {
-      New-Item -Path .ssh -ItemType Directory;
-    }
-    Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
-  }
-
-
   _installApp($name) {
     if ($this._isTest) { return; }
     if ($this._hasCli($name)) { return; }
@@ -106,6 +96,16 @@ class App {
       Invoke-WebRequest -OutFile "$($configDir)\keyboard.ahk" $uri
       if (!$?) { throw "Failed" }
     }
+  }
+
+
+  _generateSshKey() {
+    if ($this._isTest) { return; }
+    if (Test-Path .ssh\id_rsa) { return; }
+    if (!(Test-Path .ssh)) {
+      New-Item -Path .ssh -ItemType Directory;
+    }
+    Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
 
 

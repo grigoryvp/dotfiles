@@ -1,6 +1,7 @@
 class App {
   $_isTest = $false;
   $_pass = $null;
+  $_cfgDir = $null;
   $_github = @{
     user = "foo";
     pass = "bar";
@@ -16,13 +17,15 @@ class App {
     Push-Location;
 
     # Required by Posh-Git, sudo etc.
-    Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
+    if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
+      Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
+    }
     Set-Location $env:USERPROFILE
 
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $configDir = "$($env:USERPROFILE)\Documents";
-    if (!(Test-Path $configDir)) {
-      New-Item -Path $configDir -ItemType Directory;
+    $this._cfgDir = "$($env:USERPROFILE)\Documents";
+    if (!(Test-Path $this._cfgDir)) {
+      New-Item -Path $this._cfgDir -ItemType Directory;
     }
 
     $this._installPowershellModule("posh-git");
@@ -31,7 +34,7 @@ class App {
     $this._installScoop();
     $this._installGit();
     $this._addScoopBuckets();
-    $this._getFilesNoClone($configDir);
+    $this._getFilesNoClone();
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
@@ -79,21 +82,21 @@ class App {
 
   # Get minimum amount of files from repo without cloning it (GitHub do not
   # have SSH keys from this box yet for a proper clone).
-  _getFilesNoClone($configDir) {
+  _getFilesNoClone() {
     if ($this._isTest) { return; }
     $repo = "https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg";
 
-    if (!(Test-Path "$($configDir)\passwords.kdbx")) {
+    if (!(Test-Path "$($this._cfgDir)\passwords.kdbx")) {
       Write-Output "Downloading passwords storage"
       $uri = "$($repo)/master/passwords.kdbx"
-      Invoke-WebRequest -OutFile "$($configDir)\passwords.kdbx" $uri
+      Invoke-WebRequest -OutFile "$($this._cfgDir)\passwords.kdbx" $uri
       if (!$?) { throw "Failed" }
     }
 
-    if (!(Test-Path "$($configDir)\keyboard.ahk")) {
+    if (!(Test-Path "$($this._cfgDir)\keyboard.ahk")) {
       Write-Output "Downloading keyboard script"
       $uri = "$($repo)/master/keyboard.ahk"
-      Invoke-WebRequest -OutFile "$($configDir)\keyboard.ahk" $uri
+      Invoke-WebRequest -OutFile "$($this._cfgDir)\keyboard.ahk" $uri
       if (!$?) { throw "Failed" }
     }
   }
@@ -213,7 +216,7 @@ class App {
     Write-Host ""
     Start-Process `
       autohotkey.exe `
-      -ArgumentList 'keyboard.ahk' `
+      -ArgumentList "$($this._cfgDir)\keyboard.ahk" `
       -WindowStyle Hidden `
       -Verb RunAs;
   }
@@ -224,7 +227,7 @@ class App {
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path "$startDir\startup.bat") { return; }
     $content = 'pwsh -Command Start-Process autohotkey.exe';
-    $content += ' -ArgumentList "%USERPROFILE%\keyboard.ahk"';
+    $content += ' -ArgumentList "' + $this._cfgDir + '\keyboard.ahk"';
     $content += ' -WindowStyle Hidden -Verb RunAs';
     New-Item `
       -path $startDir `

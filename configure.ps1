@@ -23,7 +23,7 @@ class App {
     Set-Location $env:USERPROFILE
 
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = "$($env:USERPROFILE)\Documents";
+    $this._cfgDir = "$($env:USERPROFILE)\Documents\PowerShell";
     if (!(Test-Path $this._cfgDir)) {
       New-Item -Path $this._cfgDir -ItemType Directory;
     }

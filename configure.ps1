@@ -37,9 +37,11 @@ class App {
     $this._getFilesNoClone();
     $this._installApp("autohotkey");
     $this._installApp("keepass");
+    # Todo: copy KeePass.config.xml
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
+    # Todo: register KeePass startup
 
     # Interactive.
     if (!(Test-Path .ssh\.uploaded_to_github)) {

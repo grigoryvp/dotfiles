@@ -41,7 +41,7 @@ class App {
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
-    # Todo: register KeePass startup
+    $this._registerKeepassStartup();
 
     # Interactive.
     if (!(Test-Path .ssh\.uploaded_to_github)) {
@@ -49,6 +49,7 @@ class App {
     }
     # Interactive.
     $this._startAutohotkey();
+    $this._startKeepass();
 
     $this._uploadSshKey();
 
@@ -246,16 +247,37 @@ class App {
   }
 
 
+  _startKeepass() {
+    if ($this._isTest) { return; }
+    if (Get-Process "KeePass" -ErrorAction SilentlyContinue) { return; }
+    Start-Process  keepass.exe  -WindowStyle Hidden;
+  }
+
+
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path "$startDir\startup.bat") { return; }
+    if (Test-Path "$startDir\autohotkey.bat") { return; }
     $content = 'pwsh -Command Start-Process autohotkey.exe';
     $content += ' -ArgumentList "' + $this._cfgDir + '\keyboard.ahk"';
     $content += ' -WindowStyle Hidden -Verb RunAs';
     New-Item `
       -path $startDir `
-      -Name "startup.bat" `
+      -Name "autohotkey.bat" `
+      -Value "$content" `
+      -ItemType File;
+  }
+
+
+  _registerKeepassStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path "$startDir\keepass.bat") { return; }
+    $content = 'pwsh -Command Start-Process keepass.exe';
+    $content += ' -WindowStyle Hidden -Verb RunAs';
+    New-Item `
+      -path $startDir `
+      -Name "keepass.bat" `
       -Value "$content" `
       -ItemType File;
   }

@@ -7,33 +7,10 @@
 	<Application>
 		<LastUpdateCheck>2017-06-15T04:15:35Z</LastUpdateCheck>
 		<LastUsedFile>
-			<Path>..\..\Users\user\Google Drive\.passwords.kdbx</Path>
+			<Path>..\..\..\..\Documents\PowerShell\passwords.kdbx</Path>
 			<CredProtMode>Obf</CredProtMode>
 			<CredSaveMode>NoSave</CredSaveMode>
 		</LastUsedFile>
-		<MostRecentlyUsed>
-			<MaxItemCount>12</MaxItemCount>
-			<Items>
-				<ConnectionInfo>
-					<Path>..\..\Users\user\Google Drive\.passwords.kdbx</Path>
-					<CredProtMode>Obf</CredProtMode>
-					<CredSaveMode>NoSave</CredSaveMode>
-				</ConnectionInfo>
-				<ConnectionInfo>
-					<Path>..\..\Users\user\AppData\Local\lxss\root\.passwords.kdbx</Path>
-					<CredProtMode>Obf</CredProtMode>
-					<CredSaveMode>NoSave</CredSaveMode>
-				</ConnectionInfo>
-				<ConnectionInfo>
-					<Path>..\..\Users\user\Downloads\.passwords.kdbx</Path>
-					<CredProtMode>Obf</CredProtMode>
-					<CredSaveMode>NoSave</CredSaveMode>
-				</ConnectionInfo>
-			</Items>
-		</MostRecentlyUsed>
-		<WorkingDirectories>
-			<Item>Database@..\..\Users\user\Google Drive</Item>
-		</WorkingDirectories>
 		<Start>
 			<CheckForUpdate>true</CheckForUpdate>
 			<CheckForUpdateConfigured>true</CheckForUpdateConfigured>
@@ -162,15 +139,7 @@
 		</SearchParameters>
 		<KeySources>
 			<Association>
-				<DatabasePath>..\..\Users\user\AppData\Local\lxss\root\.passwords.kdbx</DatabasePath>
-				<Password>true</Password>
-			</Association>
-			<Association>
-				<DatabasePath>..\..\Users\user\Downloads\.passwords.kdbx</DatabasePath>
-				<Password>true</Password>
-			</Association>
-			<Association>
-				<DatabasePath>..\..\Users\user\Google Drive\.passwords.kdbx</DatabasePath>
+				<DatabasePath>..\..\..\..\Documents\PowerShell\passwords.kdbx</DatabasePath>
 				<Password>true</Password>
 			</Association>
 		</KeySources>

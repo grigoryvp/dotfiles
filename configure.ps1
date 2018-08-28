@@ -180,12 +180,12 @@ class App {
   _addScoopBuckets() {
     if ($this._isTest) { return; }
     # Required to install autohotkey
-    if (!(scoop bucket list).Contains("extras")) {
+    if (!@(scoop bucket list).Contains("extras")) {
       scoop bucket add extras;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     # Required to install kpscript
-    if (!(scoop bucket list).Contains("kpscript")) {
+    if (!@(scoop bucket list).Contains("kpscript")) {
       $uri = "https://github.com/grigoryvp/scoop-kpscript.git";
       scoop bucket add kpscript $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }

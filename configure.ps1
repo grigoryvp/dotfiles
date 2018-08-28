@@ -40,6 +40,8 @@ class App {
     $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
+    # 'procexp' etc
+    $this._installApp("sysinternals", "procexp");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
 
@@ -70,8 +72,13 @@ class App {
 
 
   _installApp($name) {
+    $this._installApp($name, $name);
+  }
+
+
+  _installApp($name, $testCmd) {
     if ($this._isTest) { return; }
-    if ($this._hasCli($name)) { return; }
+    if ($this._hasCli($testCmd)) { return; }
     scoop uninstall $name;
     scoop install $name;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }

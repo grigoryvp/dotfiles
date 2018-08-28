@@ -37,7 +37,7 @@ class App {
     $this._getFilesNoClone();
     $this._installApp("autohotkey");
     $this._installApp("keepass");
-    # Todo: copy KeePass.config.xml
+    $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
@@ -85,6 +85,13 @@ class App {
       -Scope CurrentUser `
       -AllowPrerelease -Force;
     if (!$?) { throw "Failed" }
+  }
+
+
+  _copyToAppDir($fileName, $appName) {
+    $srcPath = "$($this._cfgDir)\$fileName";
+    $dstPath = "$($env:USERPROFILE)\scoop\apps\$appName\current\";
+    Copy-Item $srcPath -Destination $dstPath -Force;
   }
 
 

@@ -141,7 +141,7 @@ class App {
     $str = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
     $this._pass = $str;
 
-    $db = "passwords.kdbx";
+    $db = "$($this._cfgDir)\passwords.kdbx";
     $verb = "GetEntryString";
     $cmd = "kpscript $db -c:$verb -pw:$($this._pass) -ref-Title:github";
     $ret = cmd /c "$cmd -Field:UserName";

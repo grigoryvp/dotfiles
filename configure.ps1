@@ -10,6 +10,7 @@ class App {
 
   App($argList) {
     $this._isTest = ($argList.Contains("--test"));
+    $this._isFull = ($argList.Contains("--full"));
   }
 
 
@@ -40,8 +41,6 @@ class App {
     $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._installApp("kpscript");
     $this._installApp("doublecmd");
-    # 'procexp' etc
-    $this._installApp("sysinternals", "procexp");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
 
@@ -54,6 +53,15 @@ class App {
     $this._startKeepass();
 
     $this._uploadSshKey();
+
+    # Optional installs
+    if ($this._isFull) {
+      # 'procexp' etc
+      $this._installApp("sysinternals", "procexp");
+      $this._installApp("foxit-reader");
+      $this._installApp("obs-studio");
+      $this._installApp("openvpn");
+    }
 
     Pop-Location;
     if ($this._isTest) {

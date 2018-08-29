@@ -289,7 +289,7 @@ class App {
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path "$startDir\keepass.bat") { return; }
     $content = 'pwsh -Command Start-Process keepass.exe';
-    $content += ' -WindowStyle Hidden -Verb RunAs';
+    $content += ' -WindowStyle Hidden';
     New-Item `
       -path $startDir `
       -Name "keepass.bat" `

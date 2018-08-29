@@ -57,6 +57,7 @@ class App {
 
     # Put ~/Documents/PowerShell under git after keys are uploaded
     $this._connectCfgDirToGit();
+    $this._getXi();
 
     # Optional installs
     if ($this._isFull) {
@@ -308,6 +309,11 @@ class App {
       -Name "keepass.bat" `
       -Value "$content" `
       -ItemType File;
+  }
+
+
+  _getXi() {
+    # TODO
   }
 }
 

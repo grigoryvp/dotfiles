@@ -1,5 +1,6 @@
 class App {
   $_isTest = $false;
+  $_isFull = $false;
   $_pass = $null;
   $_cfgDir = $null;
   $_github = @{

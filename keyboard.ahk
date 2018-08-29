@@ -174,7 +174,8 @@ $9::
 
 $0::
   if (GetKeyState("capslock", "P")) {
-    WinActivate, ahk_exe doublecmd.exe
+    ; WinActivate, ahk_exe doublecmd.exe
+    WinActivate, ahk_exe MailClient.exe
   }
   else {
     send 0
@@ -209,7 +210,7 @@ $-::
 $backspace::
   if (GetKeyState("capslock", "P")) {
     wingetactivetitle, title
-    if (instr(title, "The Bat!")) {
+    if (instr(title, "KeePass")) {
       winminimize A
     }
     else {

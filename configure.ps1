@@ -55,6 +55,9 @@ class App {
 
     $this._uploadSshKey();
 
+    # Put ~/Documents/PowerShell under git after keys are uploaded
+    $this._connectCfgDirToGit();
+
     # Optional installs
     if ($this._isFull) {
       # 'procexp' etc
@@ -131,6 +134,15 @@ class App {
       Invoke-WebRequest -OutFile "$($this._cfgDir)\keyboard.ahk" $uri
       if (!$?) { throw "Failed" }
     }
+  }
+
+
+  _connectCfgDirToGit() {
+    if (Test-Path "$($this._cfgDir)\.git") { return; }
+    $uri = "git@github.com:grigoryvp/my-win-box-cfg.git";
+    & git clone $uri "$($this._cfgDir).tmp";
+    Move-Item -Force "$($this._cfgDir).tmp\*" "$($this._cfgDir)";
+    Remove-Item "$($this._cfgDir).tmp";
   }
 
 

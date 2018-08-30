@@ -107,8 +107,9 @@ class App {
 
 
   [Boolean] _hasApp($appName) {
-    & scoop info $appName;
-    return ($LASTEXITCODE -eq 0);
+    $res = & scoop info $appName;
+    if ($LASTEXITCODE -ne 0) { return $false; }
+    return !($res | Out-String).Contains("Installed: No");
   }
 
 

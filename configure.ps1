@@ -74,6 +74,7 @@ class App {
     # Optional installs
     if ($this._isFull) {
       $this._installApp("nodejs");
+      $this._installApp("chromium");
       # 'procexp' etc
       $this._installApp("sysinternals");
       $this._installApp("foxit-reader");

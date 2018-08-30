@@ -18,6 +18,13 @@ class App {
   configure() {
     Push-Location;
 
+    # Required by Posh-Git, sudo etc.
+    if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
+      & powershell.exe `
+        -Command Set-ExecutionPolicy Unrestricted `
+        -Scope CurrentUser;
+    }
+
     Set-Location $env:USERPROFILE
 
     # Version-controlled dir with scripts, powershell config, passwords etc.

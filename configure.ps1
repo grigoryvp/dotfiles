@@ -66,6 +66,7 @@ class App {
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("openvpn");
+      $this._installApp("rufus");
     }
 
     Pop-Location;

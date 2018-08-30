@@ -20,7 +20,12 @@ class App {
 
     # Required by Posh-Git, sudo etc.
     if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
-      Set-ExecutionPolicy Unrestricted -Scope CurrentUser;
+      # scoop shims like sudo are executed via powershell.exe and it seems
+      # that pwsh.exe and powershell.exe have separated execution policy
+      # config
+      powershell.exe `
+        -Command Set-ExecutionPolicy Unrestricted `
+        -Scope CurrentUser;
     }
 
     Set-Location $env:USERPROFILE
@@ -344,7 +349,10 @@ class App {
 
   _installFonts() {
     if (Test-Path "$env:windir\Fonts\DejaVuSansMono.ttf") { return; }
-    & sudo scoop install DejaVuSansMono-NF;
+    Start-Process scoop.cmd `
+      -Wait `
+      -Verb RunAs `
+      -ArgumentList "install DejaVuSansMono-NF";
   }
 
 

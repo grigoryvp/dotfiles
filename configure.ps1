@@ -76,7 +76,7 @@ class App {
       $this._installApp("nodejs", "node");
       # 'procexp' etc
       $this._installApp("sysinternals", "procexp");
-      $this._installApp("foxit-reader");
+      $this._installApp("foxit-reader", "FoxitReader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
       if (!$this._hasCli("g")) {

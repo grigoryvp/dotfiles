@@ -37,10 +37,12 @@ class App {
     $this._installGit();
     $this._addScoopBuckets();
     $this._getFilesNoClone();
+    $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._installApp("kpscript");
+    $this._installApp("vscode");
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
@@ -51,8 +53,10 @@ class App {
     }
     # Interactive.
     $this._startAutohotkey();
-    $this._startKeepass();
+    # Interactive.
+    $this._installFonts();
 
+    $this._startKeepass();
     $this._uploadSshKey();
 
     # Put ~/Documents/PowerShell under git after keys are uploaded
@@ -222,6 +226,11 @@ class App {
       scoop bucket add extras;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
+    # Required to install DejaVu Sans Mono
+    if (!@(scoop bucket list).Contains("nerd-fonts")) {
+      scoop bucket add nerd-fonts;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
     # Required to install kpscript
     if (!@(scoop bucket list).Contains("kpscript")) {
       $uri = "https://github.com/grigoryvp/scoop-kpscript.git";
@@ -313,8 +322,18 @@ class App {
   }
 
 
+  _installFonts() {
+    if (Test-Path "$env:windir\Fonts\DejaVuSansMono.ttf") { return; }
+    sudo scoop install DejaVuSansMono-NF
+  }
+
+
   _getXi() {
-    # TODO
+    $dstDir = "$($this._cfgDir)\xi";
+    if (Test-Path $dstDir) { return; }
+    $uri = "git@github.com:grigoryvp/xi.git";
+    & git clone $uri $dstDir;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
 }
 

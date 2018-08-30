@@ -73,7 +73,7 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
-      $this._installApp("nodejs", "node");
+      $this._installApp("nodejs", "node.exe");
       # 'procexp' etc
       $this._installApp("sysinternals", "procexp");
       $this._installApp("foxit-reader", "FoxitReader");

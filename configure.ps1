@@ -44,7 +44,8 @@ class App {
     $this._patchScoopBucket();
     $this._installGit();
     $this._addScoopBuckets();
-    $this._getFilesNoClone();
+    # Clone without keys via HTTPS
+    $this._getFilesFromGit();
     $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepass");
@@ -65,8 +66,8 @@ class App {
 
     $this._uploadSshKey();
 
-    # Put ~/Documents/PowerShell under git after keys are uploaded
-    $this._connectCfgDirToGit();
+    # Re-clone with SSH keys
+    $this._getFilesFromGit();
     $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._getXi();
     $this._startKeepass();
@@ -140,32 +141,27 @@ class App {
   }
 
 
-  # Get minimum amount of files from repo without cloning it (GitHub do not
-  # have SSH keys from this box yet for a proper clone).
-  _getFilesNoClone() {
-    if ($this._isTest) { return; }
-    $repo = "https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg";
-
-    if (!(Test-Path "$($this._cfgDir)\passwords.kdbx")) {
-      Write-Output "Downloading passwords storage"
-      $uri = "$($repo)/master/passwords.kdbx"
-      Invoke-WebRequest -OutFile "$($this._cfgDir)\passwords.kdbx" $uri
-      if (!$?) { throw "Failed" }
+  _getFilesFromGit() {
+    $gitCfgFile = "$($this._cfgDir)\.git\config";
+    if (Test-Path $gitCfgFile) {
+      $gitCfg = Get-Content $gitCfgFile | Out-String;
+      # Already cloned with SSH?
+      if ($gitCfg.Contains("git@github.com")) { return; }
     }
 
-    if (!(Test-Path "$($this._cfgDir)\keyboard.ahk")) {
-      Write-Output "Downloading keyboard script"
-      $uri = "$($repo)/master/keyboard.ahk"
-      Invoke-WebRequest -OutFile "$($this._cfgDir)\keyboard.ahk" $uri
-      if (!$?) { throw "Failed" }
+    # Have keys to clone with SSH?
+    if (Test-Path .ssh\.uploaded_to_github) {
+      $uri = "git@github.com:grigoryvp/my-win-box-cfg.git";
     }
-  }
+    else {
+      # Clone with HTTPS
+      $uri = "https://github.com/grigoryvp/my-win-box-cfg.git";
+    }
 
-
-  _connectCfgDirToGit() {
-    if (Test-Path "$($this._cfgDir)\.git") { return; }
-    $uri = "git@github.com:grigoryvp/my-win-box-cfg.git";
     & git clone $uri "$($this._cfgDir).tmp";
+    # Replace HTTP git config with SSH one, if any.
+    $gitDir = "$($this._cfgDir)\.git";
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue $gitDir;
     Move-Item -Force "$($this._cfgDir).tmp\*" "$($this._cfgDir)";
     Remove-Item "$($this._cfgDir).tmp";
   }

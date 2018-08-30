@@ -73,6 +73,7 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
+      # Need to restart terminal in order to apply env variables.
       $this._installApp("nodejs");
       $this._installApp("chromium");
       # 'procexp' etc

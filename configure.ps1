@@ -49,7 +49,7 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
-    $this._installApp("vscode", "code");
+    $this._installApp("vscode");
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
@@ -73,16 +73,16 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
-      $this._installApp("nodejs", "node.exe");
+      $this._installApp("nodejs");
       # 'procexp' etc
-      $this._installApp("sysinternals", "procexp");
-      $this._installApp("foxit-reader", "FoxitReader");
+      $this._installApp("sysinternals");
+      $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
       if (!$this._hasCli("g")) {
         & npm i -g git-alias;
       }
-      if (!$this._hasCli("openvpn")) {
+      if (!$this._hasApp("openvpn")) {
         $this._prompt("Press any key to elevate OpenVpn install...");
         $this._installApp("openvpn");
       }
@@ -104,14 +104,15 @@ class App {
   }
 
 
-  _installApp($name) {
-    $this._installApp($name, $name);
+  [Boolean] _hasApp($appName) {
+    & scoop info $appName;
+    return ($LASTEXITCODE -eq 0);
   }
 
 
-  _installApp($name, $testCmd) {
+  _installApp($name) {
     if ($this._isTest) { return; }
-    if ($this._hasCli($testCmd)) { return; }
+    if ($this._hasApp($name)) { return; }
     scoop uninstall $name;
     scoop install $name;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }

@@ -1,0 +1,19 @@
+{
+"folders": [
+  {
+    "path": "."
+  },
+  {
+    "path": "xi"
+  },
+  {
+    "path": "..\\"
+  }
+],
+	"settings": {
+    "files.exclude": {
+      "desktop.ini": true,
+      "PowerShell": true
+    }
+  }
+}

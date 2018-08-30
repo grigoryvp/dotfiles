@@ -74,11 +74,15 @@ class App {
     # Optional installs
     if ($this._isFull) {
       # 'procexp' etc
+      $this._installApp("nodejs", "node");
       $this._installApp("sysinternals", "procexp");
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("openvpn");
       $this._installApp("rufus");
+      if (!$this._hasCli("g")) {
+        & npm i -g git-alias;
+      }
     }
 
     Pop-Location;

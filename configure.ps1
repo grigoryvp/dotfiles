@@ -348,7 +348,9 @@ class App {
 
 
   _installFonts() {
-    if (Test-Path "$env:windir\Fonts\DejaVuSansMono.ttf") { return; }
+    $fileName = "DejaVu Sans Mono Nerd Font Complete Windows Compatible.ttf";
+    if (Test-Path "$env:windir\Fonts\$fileName") { return; }
+    & scoop uninstall DejaVuSansMono-NF;
     Start-Process scoop.cmd `
       -Wait `
       -Verb RunAs `

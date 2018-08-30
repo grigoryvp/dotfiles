@@ -13,19 +13,20 @@ function gst() {
     $CLEAN_MARKER = "nothing to commit, working tree clean";
     $msg = "";
     if ($ret[1].Contains($UP_MARKER)) {
-      $msg += "up to date; ";
+      Write-Host "up to date; " -NoNewline;
     }
     else {
-      $msg += "out of sync; ";
+      Write-Host "out of sync" -NoNewline -ForegroundColor Green;
+      Write-Host "; " -NoNewline;
     }
     if ($ret[3].Contains($CLEAN_MARKER) -or $ret[4].Contains($CLEAN_MARKER)) {
-      $msg += "clean; ";
+      Write-Host "clean; " -NoNewline;
     }
     else {
-      $msg += "changes; ";
+      Write-Host "out of sync" -NoNewline -ForegroundColor Red;
+      Write-Host "; " -NoNewline;
     }
-    $msg += $dirName;
-    Write-Host $msg;
+    Write-Host $dirName;
     Set-Location ..;
   }
 }

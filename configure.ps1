@@ -73,15 +73,18 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
-      # 'procexp' etc
       $this._installApp("nodejs", "node");
+      # 'procexp' etc
       $this._installApp("sysinternals", "procexp");
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
-      $this._installApp("openvpn");
       $this._installApp("rufus");
       if (!$this._hasCli("g")) {
         & npm i -g git-alias;
+      }
+      if (!$this._hasCli("openvpn")) {
+        $this._prompt("Press any key to elevate OpenVpn install...");
+        $this._installApp("openvpn");
       }
     }
 
@@ -300,13 +303,18 @@ class App {
     }
   }
 
+
+  _prompt($msg) {
+    Write-Host -NoNewLine $msg;
+    [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null;
+    Write-Host "";
+  }
+
   
   _startAutohotkey() {
     if ($this._isTest) { return; }
     if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
-    Write-Host -NoNewLine "Press any key to elevate the keyboard script..."
-    [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null
-    Write-Host ""
+    $this._prompt("Press any key to elevate the keyboard script...");
     Start-Process `
       autohotkey.exe `
       -ArgumentList "$($this._cfgDir)\keyboard.ahk" `

@@ -44,7 +44,7 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
-    $this._installApp("vscode");
+    $this._installApp("vscode", "code");
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();

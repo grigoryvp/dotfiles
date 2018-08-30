@@ -40,7 +40,6 @@ class App {
     $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepass");
-    $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._installApp("kpscript");
     $this._installApp("vscode");
     $this._installApp("doublecmd");
@@ -56,12 +55,13 @@ class App {
     # Interactive.
     $this._installFonts();
 
-    $this._startKeepass();
     $this._uploadSshKey();
 
     # Put ~/Documents/PowerShell under git after keys are uploaded
     $this._connectCfgDirToGit();
+    $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._getXi();
+    $this._startKeepass();
 
     # Optional installs
     if ($this._isFull) {

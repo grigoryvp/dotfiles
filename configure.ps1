@@ -35,6 +35,8 @@ class App {
     $this._generateSshKey();
     $this._setPowerOptions();
     $this._installScoop();
+    # Some URL's in scoop bucket are blocked in some countries.
+    $this._patchScoopBucket();
     $this._installGit();
     $this._addScoopBuckets();
     $this._getFilesNoClone();
@@ -202,6 +204,23 @@ class App {
     $web = New-Object Net.WebClient;
     Invoke-Expression $web.DownloadString('https://get.scoop.sh');
     if (!$?) { throw "Failed"; }
+  }
+
+
+  _patchScoopBucket() {
+    $bucketPath = "$($env:USERPROFILE)\scoop\apps\scoop\current\bucket";
+    $filePath = "$bucketPath\7zip.json";
+    $manifest = Get-Content $filePath | ConvertFrom-Json;
+    $ROOT = "https://datapacket.dl.sourceforge.net/project/sevenzip/7-Zip";
+    $URL32 = "$ROOT/18.05/7z1805.msi";
+    $H32 = "C554238BEE18A03D736525E06D9258C9ECF7F64EAD7C6B0D1EB04DB2C0DE30D0";
+    $manifest.architecture."32bit".url = $URL32;
+    $manifest.architecture."32bit".hash = $H32;
+    $URL64 = "$ROOT/18.05/7z1805-x64.msi";
+    $H64 = "898C1CA0015183FE2BA7D55CACF0A1DEA35E873BF3F8090F362A6288C6EF08D7";
+    $manifest.architecture."64bit".url = $URL64;
+    $manifest.architecture."64bit".hash = $H64;
+    $manifest | ConvertTo-Json > $filePath;
   }
 
 

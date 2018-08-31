@@ -1,6 +1,7 @@
 class App {
   $_isTest = $false;
   $_isFull = $false;
+  $_isPublic = $false;
   $_pass = $null;
   $_cfgDir = $null;
   $_github = @{
@@ -39,6 +40,7 @@ class App {
     }
 
     $this._installPowershellModule("posh-git");
+    $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
     $this._setPowerOptions();
     $this._installScoop();
@@ -139,7 +141,7 @@ class App {
   _installPowershellModule($name) {
     if ($this._isTest) { return; }
     if (Get-InstalledModule | ? Name -eq $name) { return; }
-    PowerShellGet\Install-Module `
+    Install-Module `
       $name `
       -Scope CurrentUser `
       -AllowPrerelease -Force;

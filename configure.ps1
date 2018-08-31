@@ -56,6 +56,7 @@ class App {
     $this._installApp("keepass");
     $this._installApp("kpscript");
     $this._installApp("vscode");
+    $thid._configureVscode();
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
@@ -403,6 +404,11 @@ class App {
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  }
+
+
+  _configureVscode() {
+    # TODO
   }
 }
 

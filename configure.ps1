@@ -12,6 +12,8 @@ class App {
   App($argList) {
     $this._isTest = ($argList.Contains("--test"));
     $this._isFull = ($argList.Contains("--full"));
+    # Do not touch private info like passwords, personal kb etc.
+    $this._isPublic = ($argList.Contains("--public"));
   }
 
 
@@ -57,17 +59,23 @@ class App {
 
     # Interactive.
     if (!(Test-Path .ssh\.uploaded_to_github)) {
-      $this._askForGithubCredentials();
+      if (!$this._isPublic) {
+        $this._askForGithubCredentials();
+      }
     }
     # Interactive.
     $this._startAutohotkey();
     # Interactive.
     $this._installFonts();
 
-    $this._uploadSshKey();
+    if (!$this._isPublic) {
+      $this._uploadSshKey();
+    }
 
-    # Re-clone with SSH keys
-    $this._getFilesFromGit();
+    if (!$this._isPublic) {
+      # Re-clone with SSH keys
+      $this._getFilesFromGit();
+    }
     $this._copyToAppDir("KeePass.config.xml", "keepass");
     $this._getXi();
     $this._startKeepass();

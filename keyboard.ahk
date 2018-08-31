@@ -175,7 +175,8 @@ $9::
 $0::
   if (GetKeyState("capslock", "P")) {
     ; WinActivate, ahk_exe doublecmd.exe
-    WinActivate, ahk_exe MailClient.exe
+    ; WinActivate, ahk_exe MailClient.exe
+    WinActivate, ahk_exe thunderbird.exe
   }
   else {
     send 0

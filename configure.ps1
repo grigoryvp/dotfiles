@@ -43,6 +43,7 @@ class App {
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
     $this._setPowerOptions();
+    $this._setInputMethodOptions();
     $this._installScoop();
     # Some URL's in scoop bucket are blocked in some countries.
     $this._patchScoopBucket();
@@ -202,6 +203,17 @@ class App {
     powercfg -change -standby-timeout-dc 0
     powercfg -change -hibernate-timeout-ac 0
     powercfg -change -hibernate-timeout-dc 0
+  }
+
+
+  _setInputMethodOptions() {
+    $current = & powershell.exe -Command Get-WinUserLanguageList | Out-String;
+    if (!$current.Contains("LanguageTag     : ru")) {
+      # TODO
+    }
+    if (!$current.Contains("LanguageTag     : ja")) {
+      # TODO
+    }
   }
 
 

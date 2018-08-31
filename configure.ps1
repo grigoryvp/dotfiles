@@ -90,12 +90,17 @@ class App {
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
+      $this._installApp("telegram");
       if (!$this._hasCli("g")) {
         & npm i -g git-alias;
       }
       if (!$this._hasApp("openvpn")) {
         $this._prompt("Press any key to elevate OpenVpn install...");
         $this._installApp("openvpn");
+      }
+      if (!$this._hasApp("thunderbird")) {
+        $this._prompt("Press any key to elevate Thunderbird install...");
+        $this._installApp("thunderbird");
       }
     }
 

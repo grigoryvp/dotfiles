@@ -43,6 +43,7 @@ class App {
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
     $this._setPowerOptions();
+    $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installScoop();
     # Some URL's in scoop bucket are blocked in some countries.
@@ -203,14 +204,28 @@ class App {
 
   _setPowerOptions() {
     if ($this._isTest) { return; }
-    powercfg -change -monitor-timeout-ac 120
-    powercfg -change -monitor-timeout-dc 120
-    powercfg -change -disk-timeout-ac 0
-    powercfg -change -disk-timeout-dc 0
-    powercfg -change -standby-timeout-ac 0
-    powercfg -change -standby-timeout-dc 0
-    powercfg -change -hibernate-timeout-ac 0
-    powercfg -change -hibernate-timeout-dc 0
+    powercfg -change -monitor-timeout-ac 120;
+    powercfg -change -monitor-timeout-dc 120;
+    powercfg -change -disk-timeout-ac 0;
+    powercfg -change -disk-timeout-dc 0;
+    powercfg -change -standby-timeout-ac 0;
+    powercfg -change -standby-timeout-dc 0;
+    powercfg -change -hibernate-timeout-ac 0;
+    powercfg -change -hibernate-timeout-dc 0;
+  }
+
+
+  _setTouchpadOptions() {
+    $root = "HKCU:\Software\Microsoft\Windows\CurrentVersion";
+    $uri = "$root\PrecisionTouchPad";
+    $propName = "AAPThreshold";
+    $prop = Get-ItemProperty $uri -Name $propName;
+    if ($prop) {
+      $val = $prop.AAPThreshold;
+      if ($val -eq 0) { return; }
+    }
+    # Requires reboot.
+    Set-ItemProperty $uri -Name $propName -Type Dword -Value 0;
   }
 
 
@@ -423,6 +438,9 @@ class App {
     }
     $dstPath = "$dstDir\settings.json";
     Copy-Item $srcPath -Destination $dstPath -Force;
+
+    # TODO: copy keyboard config
+
     $extList = @(& code --list-extensions);
     if (!$extList.Contains("grigoryvp.language-xi")) {
       & code --install-extension grigoryvp.language-xi;

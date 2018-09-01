@@ -127,6 +127,8 @@ class App {
   [Boolean] _hasApp($appName) {
     $res = & scoop info $appName;
     if ($LASTEXITCODE -ne 0) { return $false; }
+    # TODO: not reliable: if install fails, scoop will treat it as
+    # installed.
     return !($res | Out-String).Contains("Installed: No");
   }
 
@@ -134,6 +136,7 @@ class App {
   _installApp($name) {
     if ($this._isTest) { return; }
     if ($this._hasApp($name)) { return; }
+    # TODO: uninstall only if scoop things it's installed.
     scoop uninstall $name;
     scoop install $name;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -409,7 +412,12 @@ class App {
 
   _configureVscode() {
     $srcPath = "$($this._cfgDir)\vscode_settings.json";
-    $dstPath = "$($env:APPDATA)\Code\User\settings.json";
+    $dstDir = "$($env:APPDATA)\Code\User";
+    if (!(Test-Path $dstDir)) {
+      # Not created during install, only on first UI start.
+      New-Item -Path $dstDir -ItemType Directory;
+    }
+    $dstPath = "$dstDir\settings.json";
     Copy-Item $srcPath -Destination $dstPath -Force;
     $extList = @(& code --list-extensions);
     if (!$extList.Contains("grigoryvp.language-xi")) {

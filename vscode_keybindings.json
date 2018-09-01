@@ -1,0 +1,61 @@
+[{
+  "key": "ctrl+k o",
+  "command": "workbench.action.addRootFolder"
+}, {
+  "key": "ctrl+k f",
+  "command": "workbench.action.toggleSidebarVisibility"
+}, {
+  "key": "ctrl+k e",
+  "command": "workbench.view.explorer"
+}, {
+  "key": "ctrl+k g",
+  "command": "workbench.view.scm"
+}, {
+  "key": "ctrl+k d",
+  "command": "workbench.view.debug"
+}, {
+  "key": "ctrl+w",
+  "command": "workbench.action.closeActiveEditor"
+},
+{
+  "key": "ctrl+k b",
+  "command": "bookmarks.toggle",
+  "when": "editorTextFocus"
+},
+{
+  "key": "ctrl+'",
+  "command": "workbench.action.debug.stepOver",
+  "when": "inDebugMode"
+},
+{
+  "key": "ctrl+;",
+  "command": "workbench.action.debug.stepInto",
+  "when": "inDebugMode"
+},
+{
+  "key": "ctrl+shift+;",
+  "command": "workbench.action.debug.stepOut",
+  "when": "inDebugMode"
+},
+{
+  "key": "ctrl+\\",
+  "command": "workbench.action.debug.continue",
+  "when": "inDebugMode"
+},
+{
+  "key": "ctrl+k s",
+  "command": "workbench.action.findInFiles",
+},
+{
+  "key": "ctrl+]",
+  "command": "editor.action.openLink"
+},
+{
+  "key": "ctrl+[",
+  "command": "extension.xi.goBack"
+},
+{
+  "key": "ctrl+k ctrl+o",
+  "command": "workbench.action.files.openFile"
+},
+]

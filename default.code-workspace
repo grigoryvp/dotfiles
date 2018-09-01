@@ -13,7 +13,14 @@
 	"settings": {
     "files.exclude": {
       "desktop.ini": true,
-      "PowerShell": true
+      "PowerShell": true,
+      "WindowsPowerShell": true,
+      "My Music": true,
+      "My Pictures": true,
+      "My Videos": true,
+      "Мои видеозаписи": true,
+      "мои рисунки": true,
+      "Моя музыка": true
     }
   }
 }

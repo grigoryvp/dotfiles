@@ -126,20 +126,31 @@ class App {
   }
 
 
-  [Boolean] _hasApp($appName) {
+  [Boolean] _isAppStatusInstalled($appName) {
     $res = & scoop info $appName;
     if ($LASTEXITCODE -ne 0) { return $false; }
-    # TODO: not reliable: if install fails, scoop will treat it as
-    # installed.
     return !($res | Out-String).Contains("Installed: No");
+  }
+
+  [Boolean] _hasApp($appName) {
+    if (!$this._isAppStatusInstalled()) { return $false; }
+    $res = @(& scoop info $appName);
+    $installMarkIdx = $res.IndexOf("Installed:");
+    if ($installMarkIdx -eq -1) { return $false; }
+    $installDir = $res[$installMarkIdx + 1];
+    # if install fails, scoop will treat app as installed, but install dir
+    # is not created.
+    return (Test-Path $installDir);
   }
 
 
   _installApp($name) {
     if ($this._isTest) { return; }
     if ($this._hasApp($name)) { return; }
-    # TODO: uninstall only if scoop things it's installed.
-    scoop uninstall $name;
+    if ($this._isAppStatusInstalled($name)) {
+      # if install fails, scoop will treat app as installed.
+      scoop uninstall $name;
+    }
     scoop install $name;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }

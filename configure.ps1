@@ -440,16 +440,19 @@ class App {
 
 
   _configureVscode() {
-    $srcPath = "$($this._cfgDir)\vscode_settings.json";
     $dstDir = "$($env:APPDATA)\Code\User";
     if (!(Test-Path $dstDir)) {
       # Not created during install, only on first UI start.
       New-Item -Path $dstDir -ItemType Directory;
     }
+
+    $srcPath = "$($this._cfgDir)\vscode_settings.json";
     $dstPath = "$dstDir\settings.json";
     Copy-Item $srcPath -Destination $dstPath -Force;
 
-    # TODO: copy keyboard config
+    $srcPath = "$($this._cfgDir)\vscode_keybindings.json";
+    $dstPath = "$dstDir\keybindings.json";
+    Copy-Item $srcPath -Destination $dstPath -Force;
 
     $extList = @(& code --list-extensions);
     if (!$extList.Contains("grigoryvp.language-xi")) {

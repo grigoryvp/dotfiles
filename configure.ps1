@@ -133,34 +133,35 @@ class App {
   }
 
   [Boolean] _hasApp($appName) {
-    if (!$this._isAppStatusInstalled()) { return $false; }
+    if (!$this._isAppStatusInstalled($appName)) { return $false; }
     $res = @(& scoop info $appName);
     $installMarkIdx = $res.IndexOf("Installed:");
     if ($installMarkIdx -eq -1) { return $false; }
     $installDir = $res[$installMarkIdx + 1];
+    if (!$installDir) { return $false; }
     # if install fails, scoop will treat app as installed, but install dir
     # is not created.
-    return (Test-Path $installDir);
+    return (Test-Path $installDir.Trim());
   }
 
 
-  _installApp($name) {
+  _installApp($appName) {
     if ($this._isTest) { return; }
-    if ($this._hasApp($name)) { return; }
-    if ($this._isAppStatusInstalled($name)) {
+    if ($this._hasApp($appName)) { return; }
+    if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.
-      scoop uninstall $name;
+      scoop uninstall $appName;
     }
-    scoop install $name;
+    scoop install $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
 
 
-  _installPowershellModule($name) {
+  _installPowershellModule($moduleName) {
     if ($this._isTest) { return; }
-    if (Get-InstalledModule | ? Name -eq $name) { return; }
+    if (Get-InstalledModule | Where-Object Name -eq $moduleName) { return; }
     Install-Module `
-      $name `
+      $moduleName `
       -Scope CurrentUser `
       -AllowPrerelease -Force;
     if (!$?) { throw "Failed" }

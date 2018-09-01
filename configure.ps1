@@ -411,7 +411,7 @@ class App {
     $srcPath = "$($this._cfgDir)\vscode_settings.json";
     $dstPath = "$($env:APPDATA)\Code\User\settings.json";
     Copy-Item $srcPath -Destination $dstPath -Force;
-    $extList = & code --list-extensions;
+    $extList = @(& code --list-extensions);
     if (!$extList.Contains("grigoryvp.language-xi")) {
       & code --install-extension grigoryvp.language-xi;
     }

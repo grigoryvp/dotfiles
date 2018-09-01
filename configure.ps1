@@ -150,6 +150,7 @@ class App {
     if ($this._hasApp($appName)) { return; }
     if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.
+      $this._prompt("'$appName' corrupted, press any key to reinstall");
       scoop uninstall $appName;
     }
     scoop install $appName;

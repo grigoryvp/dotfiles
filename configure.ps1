@@ -56,7 +56,7 @@ class App {
     $this._installApp("keepass");
     $this._installApp("kpscript");
     $this._installApp("vscode");
-    $thid._configureVscode();
+    $this._configureVscode();
     $this._installApp("doublecmd");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
@@ -408,7 +408,22 @@ class App {
 
 
   _configureVscode() {
-    # TODO
+    $srcPath = "$($this._cfgDir)\vscode_settings.json";
+    $dstPath = "$($env:APPDATA)\Code\User\settings.json";
+    Copy-Item $srcPath -Destination $dstPath -Force;
+    $extList = & code --list-extensions;
+    if (!$extList.Contains("grigoryvp.language-xi")) {
+      & code --install-extension grigoryvp.language-xi;
+    }
+    if (!$extList.Contains("grigoryvp.memory-theme")) {
+      & code --install-extension grigoryvp.memory-theme;
+    }
+    if (!$extList.Contains("vscodevim.vim")) {
+      & code --install-extension vscodevim.vim;
+    }
+    if (!$extList.Contains("EditorConfig.EditorConfig")) {
+      & code --install-extension EditorConfig.EditorConfig;
+    }
   }
 }
 

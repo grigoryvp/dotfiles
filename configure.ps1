@@ -59,7 +59,6 @@ class App {
     $this._installApp("vscode");
     $this._configureVscode();
     $this._installApp("doublecmd");
-    # TODO: install laplock and register for autostart.
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
 

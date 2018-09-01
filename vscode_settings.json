@@ -1,0 +1,122 @@
+{
+  "telemetry.enableTelemetry": false,
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.tips.enabled": false,
+  "workbench.editor.labelFormat": "short",
+  "workbench.activityBar.visible": false,
+  "npm.enableScriptExplorer": true,
+  "breadcrumbs.enabled": true,
+  "editor.wordWrap": "off",
+
+  "html.autoClosingTags": false,
+
+  "[markdown]": {
+    "editor.wordWrap": "off"
+  },
+
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "vue": "html"
+  },
+
+  "vim.leader": "<space>",
+  "vim.ignorecase": true,
+  "vim.insertModeKeyBindings": [{
+    "before": ["<c-v>"],
+    "after": [],
+    "commands": [{
+        "command": "editor.action.clipboardPasteAction",
+        "args": []
+    }]
+  }],
+  "vim.normalModeKeyBindingsNonRecursive": [{
+    "before": ["n"],
+    "after": ["n", "z", "z"]
+  },
+  {
+    "before": ["N"],
+    "after": ["N", "z", "z"]
+  }],
+  "vim.otherModesKeyBindingsNonRecursive": [{
+    "before": ["Z", "Z"],
+    "after": [],
+    "commands": [{
+      "command": "workbench.action.closeActiveEditor",
+      "args": []
+    }]
+  },
+  {
+    "before": ["<c-o>"],
+    "after": [],
+    "commands": [{
+        "command": "workbench.action.files.openFile",
+        "args": []
+    }]
+  },
+  {
+    "before": ["<c-w>"],
+    "after": [],
+    "commands": [{
+        "command": "workbench.action.closeActiveEditor",
+        "args": []
+    }]
+  },
+  {
+    "before": ["<c-]>"],
+    "after": [],
+    "commands": [{
+        "command": "editor.action.openLink",
+        "args": []
+    }]
+  },
+  {
+    "before": ["<c-[>"],
+    "after": [],
+    "commands": [{
+        "command": "workbench.action.navigateBack",
+        "args": []
+    }]
+  },
+  {
+    "before": ["<leader>", "p"],
+    "after": [],
+    "commands": [{
+        "command": "workbench.action.showCommandPalette",
+        "args": []
+    }]
+  }],
+  "editor.lineNumbers": "off",
+  "editor.links": true,
+  "editor.minimap.enabled": false,
+  "editor.autoClosingBrackets": false,
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.renderIndentGuides": false,
+  "editor.renderLineHighlight": "line",
+  "editor.rulers": [78],
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.glyphMargin": true,
+  "window.menuBarVisibility": "toggle",
+  "window.zoomLevel": 0,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.autoReveal": false,
+  "git.confirmSync": false,
+  "java.errors.incompleteClasspath.severity": "ignore",
+  "extensions.ignoreRecommendations": false,
+  "workbench.colorTheme": "grigoryvp memory theme",
+  "sync.gist": "51458ec2f3c3af9a22574bd623487f84",
+  "sync.lastUpload": "2018-08-20T06:09:04.447Z",
+  "sync.autoDownload": false,
+  "sync.autoUpload": false,
+  "sync.lastDownload": "",
+  "sync.forceDownload": false,
+  "sync.anonymousGist": false,
+  "sync.host": "",
+  "sync.pathPrefix": "",
+  "sync.quietSync": false,
+  "sync.askGistName": false,
+  "editor.renderControlCharacters": false,
+  "sync.removeExtensions": true,
+  "sync.syncExtensions": true
+}

@@ -95,7 +95,6 @@ class App {
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
-      $this._installApp("telegram");
       if (!$this._hasCli("g")) {
         & npm i -g git-alias;
       }
@@ -107,6 +106,8 @@ class App {
         $this._prompt("Press any key to elevate Thunderbird install...");
         $this._installApp("thunderbird");
       }
+      # TODO: find link
+      # $this._installApp("telegram");
     }
 
     Pop-Location;

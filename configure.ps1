@@ -414,15 +414,19 @@ class App {
     $extList = @(& code --list-extensions);
     if (!$extList.Contains("grigoryvp.language-xi")) {
       & code --install-extension grigoryvp.language-xi;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (!$extList.Contains("grigoryvp.memory-theme")) {
       & code --install-extension grigoryvp.memory-theme;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (!$extList.Contains("vscodevim.vim")) {
       & code --install-extension vscodevim.vim;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (!$extList.Contains("EditorConfig.EditorConfig")) {
       & code --install-extension EditorConfig.EditorConfig;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
   }
 }

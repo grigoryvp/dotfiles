@@ -58,6 +58,7 @@ class App {
     $this._installApp("vscode");
     $this._configureVscode();
     $this._installApp("doublecmd");
+    # TODO: install laplock and register for autostart.
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
 
@@ -174,6 +175,8 @@ class App {
       $uri = "git@github.com:grigoryvp/my-win-box-cfg.git";
     }
     else {
+      # Already cloned without keys?
+      if (Test-Path $gitCfgFile) { return; }
       # Clone with HTTPS
       $uri = "https://github.com/grigoryvp/my-win-box-cfg.git";
     }

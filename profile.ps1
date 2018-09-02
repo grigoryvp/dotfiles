@@ -8,6 +8,11 @@ function cdx() { Set-Location ~/Documents/PowerShell/xi; }
 function gst() {
   $dirNameList = Get-ChildItem -Name -Directory;
   foreach ($dirName in $dirNameList) {
+    if (!(Test-Path "$dirName\.git")) {
+      Write-Host "not a git repo; " -NoNewline -ForegroundColor DarkCyan;
+      Write-Host $dirName;
+      continue;
+    }
     Set-Location $dirName;
     $ret = & git status;
     $UP_MARKER = "Your branch is up to date with";
@@ -24,7 +29,7 @@ function gst() {
       Write-Host "clean; " -NoNewline;
     }
     else {
-      Write-Host "out of sync" -NoNewline -ForegroundColor Red;
+      Write-Host "working tree changes" -NoNewline -ForegroundColor Red;
       Write-Host "; " -NoNewline;
     }
     Write-Host $dirName;

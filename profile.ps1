@@ -36,3 +36,12 @@ function gst() {
     Set-Location ..;
   }
 }
+
+
+function ahk() {
+  Start-Process `
+    autohotkey.exe `
+    -ArgumentList "$($env:USERPROFILE)\Documents\PowerShell\keyboard.ahk" `
+    -WindowStyle Hidden `
+    -Verb RunAs;
+}

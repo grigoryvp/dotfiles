@@ -246,10 +246,18 @@ class App {
   _setInputMethodOptions() {
     $current = & powershell.exe -Command Get-WinUserLanguageList | Out-String;
     if (!$current.Contains("LanguageTag     : ru")) {
-      # TODO
+      $cmd = '' +
+        '$list = Get-WinUserLanguageList;' +
+        '$list.Add("ru");' +
+        'Set-WinUserLanguageList $list;';
+      & powershell.exe -Command $cmd;
     }
     if (!$current.Contains("LanguageTag     : ja")) {
-      # TODO
+      $cmd = '' +
+        '$list = Get-WinUserLanguageList;' +
+        '$list.Add("ja");' +
+        'Set-WinUserLanguageList $list;';
+      & powershell.exe -Command $cmd;
     }
   }
 

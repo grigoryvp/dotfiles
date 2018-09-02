@@ -11,6 +11,10 @@
 ;;  . 'ctrl-;' is used in Chrome for debugging, so it's not used as
 ;;    ctrl-click shortcut which is rare and 'tab+ctrl' can be holded for it.
 ;;  . leaving backspace "as is" simply don't work: it's too far away.
+;;  . Windows detects physical shift while pressing shift-del, so keeping
+;;    "del" as leader-shift-/ is not viable, it is detected as "skip recycle
+;;    bin". Instead, leader-p is mapped to backspace, leader-shift-p to
+;;    ctrl-backspace (delete word) and leader-p to "delete".
 
 codepage = 65001 ; utf-8
 appLastLangHotkey := ""
@@ -50,10 +54,6 @@ $lctrl up::
 $^rctrl up:: send ^{enter}
 $+rctrl up:: send +{enter}
 $^lctrl up:: send ^{tab}
-;;  Leader-/ for backspace, tab(ctrl)-/ for ctrl-backspace.
-lctrl & /::
-  send ^{backspace}
-  return
 
 ;; ===========================================================================
 ;; Language switch
@@ -110,12 +110,12 @@ $[::
 
 *$/::
   if (GetKeyState("capslock", "P")) {
-      if (GetKeyState("shift", "P")) {
-        send {delete}
-      }
-      else {
-        send {backspace}
-      }
+    if (GetKeyState("shift", "P")) {
+      send +{delete}
+    }
+    else {
+      send {delete}
+    }
   }
   else {
     send {blind}{vkbf}
@@ -285,13 +285,17 @@ $home::
   }
   return
 
-;;  ClipboardFusion
-$p::
+*$p::
   if (GetKeyState("capslock", "P")) {
-    send ^+v
+    if (GetKeyState("shift", "P")) {
+      send ^{backspace}
+    }
+    else {
+      send {backspace}
+    }
   }
   else {
-    send {vk50}
+    send {blind}{vk50}
   }
   return
 

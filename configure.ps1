@@ -95,6 +95,7 @@ class App {
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
+      $this._installApp("smplayer");
       if (!$this._hasCli("g")) {
         & npm i -g git-alias;
       }
@@ -347,8 +348,14 @@ class App {
     }
     # Required to install kpscript
     if (!@(scoop bucket list).Contains("kpscript")) {
-      $uri = "https://github.com/grigoryvp/scoop-kpscript.git";
+      $uri = "https://github.com/grigoryvp/scoop-kpscript";
       scoop bucket add kpscript $uri;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
+    # Required to install smplayer
+    if (!@(scoop bucket list).Contains("jfut")) {
+      $uri = "https://github.com/jfut/scoop-jfut";
+      scoop bucket add jfut $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
   }

@@ -249,14 +249,14 @@ class App {
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
         '$list.Add("ru");' +
-        'Set-WinUserLanguageList $list;';
+        'Set-WinUserLanguageList -Force $list;';
       & powershell.exe -Command $cmd;
     }
     if (!$current.Contains("LanguageTag     : ja")) {
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
         '$list.Add("ja");' +
-        'Set-WinUserLanguageList $list;';
+        'Set-WinUserLanguageList -Force $list;';
       & powershell.exe -Command $cmd;
     }
   }

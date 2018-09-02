@@ -139,9 +139,12 @@ class App {
     if ($installMarkIdx -eq -1) { return $false; }
     $installDir = $res[$installMarkIdx + 1];
     if (!$installDir) { return $false; }
+    $installDir = $installDir.Trim();
     # if install fails, scoop will treat app as installed, but install dir
     # is not created.
-    return (Test-Path $installDir.Trim());
+    if (!(Test-Path $installDir)) { return $false; }
+    $content = Get-ChildItem $installDir;
+    return ($content.Length -gt 0);
   }
 
 

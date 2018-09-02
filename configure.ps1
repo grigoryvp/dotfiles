@@ -106,8 +106,7 @@ class App {
         $this._prompt("Press any key to elevate Thunderbird install...");
         $this._installApp("thunderbird");
       }
-      # TODO: find link
-      # $this._installApp("telegram");
+      $this._installApp("telegram");
     }
 
     Pop-Location;
@@ -297,6 +296,16 @@ class App {
     $H64 = "898C1CA0015183FE2BA7D55CACF0A1DEA35E873BF3F8090F362A6288C6EF08D7";
     $manifest.architecture."64bit".url = $URL64;
     $manifest.architecture."64bit".hash = $H64;
+    $manifest | ConvertTo-Json > $filePath;
+
+    $bucketPath = "$($env:USERPROFILE)\scoop\buckets\extras";
+    $filePath = "$bucketPath\telegram.json";
+    $manifest = Get-Content $filePath | ConvertFrom-Json;
+    $ROOT = "https://github.com/telegramdesktop/tdesktop/releases/download";
+    $URL = "$ROOT/v1.3.14/tportable.1.3.14.zip";
+    $H = "F26FF2ACF8293E6BB47B5BF3201B22E1E4F34C6361AF4BA3F010CB3FDD27FE6E";
+    $manifest.url = $URL;
+    $manifest.hash = $H;
     $manifest | ConvertTo-Json > $filePath;
   }
 

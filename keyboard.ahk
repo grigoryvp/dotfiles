@@ -165,6 +165,7 @@ $7::
 
 $8::
   if (GetKeyState("capslock", "P")) {
+    ; TODO: start
     WinActivate, ahk_exe code.exe
   }
   else {
@@ -174,6 +175,7 @@ $8::
 
 $9::
   if (GetKeyState("capslock", "P")) {
+    ; TODO: start
     WinActivate, ahk_exe chrome.exe
   }
   else {
@@ -183,8 +185,7 @@ $9::
 
 $0::
   if (GetKeyState("capslock", "P")) {
-    ; WinActivate, ahk_exe doublecmd.exe
-    ; WinActivate, ahk_exe MailClient.exe
+    ; TODO: start
     WinActivate, ahk_exe thunderbird.exe
   }
   else {
@@ -194,6 +195,7 @@ $0::
 
 $-::
   if (GetKeyState("capslock", "P")) {
+    ; TODO: start
     WinActivate, ahk_exe telegram.exe
   }
   else {

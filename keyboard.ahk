@@ -148,7 +148,15 @@ $]::
 
 $7::
   if (GetKeyState("capslock", "P")) {
-    WinActivate, ahk_exe cmd.exe
+    if (WinExist("ahk_exe cmd.exe")) {
+      WinActivate, ahk_exe cmd.exe
+    }
+    else {
+      Run cmd.exe
+      WinWait, ahk_exe cmd.exe
+      WinMaximize, ahk_exe cmd.exe
+      Send pwsh{enter}
+    }
   }
   else {
     send 7

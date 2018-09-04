@@ -348,8 +348,8 @@ class App {
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     # Required to install kpscript
-    if (!@(scoop bucket list).Contains("kpscript")) {
-      $uri = "https://github.com/grigoryvp/scoop-kpscript";
+    if (!@(scoop bucket list).Contains("grigoryvp")) {
+      $uri = "https://github.com/grigoryvp/scoop-grigoryvp";
       scoop bucket add kpscript $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }

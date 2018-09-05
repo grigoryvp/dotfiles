@@ -108,7 +108,8 @@ class App {
         $this._installApp("thunderbird");
       }
       $this._installApp("telegram");
-      # TODO: install perfgraph
+      # TODO: unattended install for current user
+      $this._installApp("perfgraph");
     }
 
     Pop-Location;
@@ -116,7 +117,10 @@ class App {
       Write-Host "Test complete";
     }
     else {
-      Write-Host "Config complete";
+      Write-Host "Config complete. Manual things to do:";
+      Write-Host "- Add C-S-4-5-6 as en-ru-js hotkeys and copy settings";
+      Write-Host "- Login Chromium";
+      Write-Host "- Disable autostart in Task Manager";
     }
   }
 

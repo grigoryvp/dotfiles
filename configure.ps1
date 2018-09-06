@@ -1,4 +1,6 @@
 class App {
+
+  #region Instance properties
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -8,6 +10,7 @@ class App {
     user = "foo";
     pass = "bar";
   };
+  #endregion
 
 
   App($argList) {
@@ -38,6 +41,9 @@ class App {
     if (!(Test-Path $this._cfgDir)) {
       New-Item -Path $this._cfgDir -ItemType Directory;
     }
+
+    # TODO: set hidden attributes for ~/PowerShell and # ~/WindowsPowerShell
+    # to exclude them from 'ls' and 'explorer'
 
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");

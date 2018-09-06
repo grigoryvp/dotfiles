@@ -246,7 +246,7 @@ $home::
 *$h::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      send {wheelleft}
+      SendInput {wheelleft}
     }
     else if (GetKeyState("tab", "P")) {
       send {home}
@@ -262,7 +262,7 @@ $home::
 *$j::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      send {wheeldown}
+      SendInput {wheeldown}
     }
     else if (GetKeyState("tab", "P")) {
       send {pgdn}
@@ -278,7 +278,7 @@ $home::
 *$k::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      send {wheelup}
+      SendInput {wheelup}
     }
     else if (GetKeyState("tab", "P")) {
       send {pgup}
@@ -294,7 +294,7 @@ $home::
 *$l::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      send {wheelright}
+      SendInput {wheelright}
     }
     else if (GetKeyState("tab", "P")) {
       send {end}

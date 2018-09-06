@@ -113,6 +113,7 @@ class App {
       $this._installApp("telegram");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
+      # TODO: install procrastitracker
     }
 
     Pop-Location;

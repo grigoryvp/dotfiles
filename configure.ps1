@@ -109,10 +109,7 @@ class App {
         $this._prompt("Press any key to elevate OpenVpn install...");
         $this._installApp("openvpn");
       }
-      if (!$this._hasApp("thunderbird")) {
-        $this._prompt("Press any key to elevate Thunderbird install...");
-        $this._installApp("thunderbird");
-      }
+      $this._installApp("thunderbird");
       $this._installApp("telegram");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
@@ -360,7 +357,7 @@ class App {
     # Required to install kpscript
     if (!@(scoop bucket list).Contains("grigoryvp")) {
       $uri = "https://github.com/grigoryvp/scoop-grigoryvp";
-      scoop bucket add kpscript $uri;
+      scoop bucket add grigoryvp $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     # Required to install smplayer

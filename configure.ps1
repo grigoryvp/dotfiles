@@ -105,10 +105,6 @@ class App {
       if (!$this._hasCli("g")) {
         & npm i -g git-alias;
       }
-      if (!$this._hasApp("openvpn")) {
-        $this._prompt("Press any key to elevate OpenVpn install...");
-        $this._installApp("openvpn");
-      }
       $this._installApp("thunderbird");
       $this._installApp("telegram");
       # TODO: unattended install for current user

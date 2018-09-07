@@ -165,8 +165,14 @@ $7::
 
 $8::
   if (GetKeyState("capslock", "P")) {
-    ; TODO: start
-    WinActivate, ahk_exe code.exe
+    if (WinExist("ahk_exe code.exe")) {
+      WinActivate, ahk_exe code.exe
+    }
+    else {
+      Run "%USERPROFILE%\scoop\apps\vscode\current\Code.exe"
+      WinWait, ahk_exe code.exe
+      WinMaximize, ahk_exe code.exe
+    }
   }
   else {
     send 8

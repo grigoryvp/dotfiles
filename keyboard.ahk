@@ -181,8 +181,14 @@ $8::
 
 $9::
   if (GetKeyState("capslock", "P")) {
-    ; TODO: start
-    WinActivate, ahk_exe chrome.exe
+    if (WinExist("ahk_exe chrome.exe")) {
+      WinActivate, ahk_exe chrome.exe
+    }
+    else {
+      Run "%USERPROFILE%\scoop\apps\chromium\current\chrome.exe"
+      WinWait, ahk_exe chrome.exe
+      WinMaximize, ahk_exe chrome.exe
+    }
   }
   else {
     send 9

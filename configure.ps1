@@ -45,6 +45,10 @@ class App {
     # TODO: set hidden attributes for ~/PowerShell and # ~/WindowsPowerShell
     # to exclude them from 'ls' and 'explorer'
 
+    # TODO: set keyboard debounce to prevent double typing:
+    # Computer\HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response
+    # BounceTime (currently experimenting with 10).
+
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();

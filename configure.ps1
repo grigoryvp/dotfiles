@@ -517,5 +517,7 @@ class App {
   }
 }
 
+# Stop on unhandled exceptions.
+$ErrorActionPreference = Stop;
 $app = [App]::new($args);
 $app.configure();

@@ -38,7 +38,7 @@ class App {
 
     # Version-controlled dir with scripts, powershell config, passwords etc.
     $this._cfgDir = "$($env:USERPROFILE)\Documents\PowerShell";
-    if (!(Test-Path $this._cfgDir)) {
+    if (-not (Test-Path $this._cfgDir)) {
       New-Item -Path $this._cfgDir -ItemType Directory;
     }
 
@@ -73,8 +73,8 @@ class App {
     $this._registerKeepassStartup();
 
     # Interactive.
-    if (!(Test-Path .ssh\.uploaded_to_github)) {
-      if (!$this._isPublic) {
+    if (-not (Test-Path .ssh\.uploaded_to_github)) {
+      if (-not $this._isPublic) {
         $this._askForGithubCredentials();
       }
     }
@@ -83,11 +83,11 @@ class App {
     # Interactive.
     $this._installFonts();
 
-    if (!$this._isPublic) {
+    if (-not $this._isPublic) {
       $this._uploadSshKey();
     }
 
-    if (!$this._isPublic) {
+    if (-not $this._isPublic) {
       # Re-clone with SSH keys
       $this._getFilesFromGit();
     }
@@ -106,7 +106,7 @@ class App {
       $this._installApp("obs-studio");
       $this._installApp("rufus");
       $this._installApp("smplayer");
-      if (!$this._hasCli("g")) {
+      if (-not $this._hasCli("g")) {
         & npm i -g git-alias;
       }
       $this._installApp("thunderbird");
@@ -138,20 +138,20 @@ class App {
   [Boolean] _isAppStatusInstalled($appName) {
     $res = & scoop info $appName;
     if ($LASTEXITCODE -ne 0) { return $false; }
-    return !($res | Out-String).Contains("Installed: No");
+    return (-not ($res | Out-String).Contains("Installed: No"));
   }
 
   [Boolean] _hasApp($appName) {
-    if (!$this._isAppStatusInstalled($appName)) { return $false; }
+    if (-not $this._isAppStatusInstalled($appName)) { return $false; }
     $res = @(& scoop info $appName);
     $installMarkIdx = $res.IndexOf("Installed:");
     if ($installMarkIdx -eq -1) { return $false; }
     $installDir = $res[$installMarkIdx + 1];
-    if (!$installDir) { return $false; }
+    if (-not $installDir) { return $false; }
     $installDir = $installDir.Trim();
     # if install fails, scoop will treat app as installed, but install dir
     # is not created.
-    if (!(Test-Path $installDir)) { return $false; }
+    if (-not (Test-Path $installDir)) { return $false; }
     $content = Get-ChildItem $installDir;
     return ($content.Length -gt 0);
   }
@@ -177,7 +177,7 @@ class App {
       $moduleName `
       -Scope CurrentUser `
       -AllowPrerelease -Force;
-    if (!$?) { throw "Failed" }
+    if (-not $?) { throw "Failed" }
   }
 
 
@@ -219,7 +219,7 @@ class App {
   _generateSshKey() {
     if ($this._isTest) { return; }
     if (Test-Path .ssh\id_rsa) { return; }
-    if (!(Test-Path .ssh)) {
+    if (-not (Test-Path .ssh)) {
       New-Item -Path .ssh -ItemType Directory;
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
@@ -255,14 +255,14 @@ class App {
 
   _setInputMethodOptions() {
     $current = & powershell.exe -Command Get-WinUserLanguageList | Out-String;
-    if (!$current.Contains("LanguageTag     : ru")) {
+    if (-not $current.Contains("LanguageTag     : ru")) {
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
         '$list.Add("ru");' +
         'Set-WinUserLanguageList -Force $list;';
       & powershell.exe -Command $cmd;
     }
-    if (!$current.Contains("LanguageTag     : ja")) {
+    if (-not $current.Contains("LanguageTag     : ja")) {
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
         '$list.Add("ja");' +
@@ -297,7 +297,7 @@ class App {
     if ($this._hasCli("scoop")) { return; }
     $web = New-Object Net.WebClient;
     Invoke-Expression $web.DownloadString('https://get.scoop.sh');
-    if (!$?) { throw "Failed"; }
+    if (-not $?) { throw "Failed"; }
   }
 
 
@@ -346,23 +346,23 @@ class App {
   _addScoopBuckets() {
     if ($this._isTest) { return; }
     # Required to install autohotkey
-    if (!@(scoop bucket list).Contains("extras")) {
+    if (-not @(scoop bucket list).Contains("extras")) {
       scoop bucket add extras;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     # Required to install DejaVu Sans Mono
-    if (!@(scoop bucket list).Contains("nerd-fonts")) {
+    if (-not @(scoop bucket list).Contains("nerd-fonts")) {
       scoop bucket add nerd-fonts;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     # Required to install kpscript
-    if (!@(scoop bucket list).Contains("grigoryvp")) {
+    if (-not @(scoop bucket list).Contains("grigoryvp")) {
       $uri = "https://github.com/grigoryvp/scoop-grigoryvp";
       scoop bucket add grigoryvp $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     # Required to install smplayer
-    if (!@(scoop bucket list).Contains("jfut")) {
+    if (-not @(scoop bucket list).Contains("jfut")) {
       $uri = "https://github.com/jfut/scoop-jfut";
       scoop bucket add jfut $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -384,7 +384,7 @@ class App {
       key = (Get-Content ".ssh/id_rsa.pub" | Out-String);
     }
     $url = "https://api.github.com/user/keys"
-    if (!$this._isTest) {
+    if (-not $this._isTest) {
       try {
         Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
         New-Item -path .ssh -Name $marker -ItemType File;
@@ -483,7 +483,7 @@ class App {
 
   _configureVscode() {
     $dstDir = "$($env:APPDATA)\Code\User";
-    if (!(Test-Path $dstDir)) {
+    if (-not (Test-Path $dstDir)) {
       # Not created during install, only on first UI start.
       New-Item -Path $dstDir -ItemType Directory;
     }
@@ -498,19 +498,19 @@ class App {
 
     $extList = @(& code --list-extensions);
     # TODO: implement deep links [foo#bar].
-    if (!$extList.Contains("grigoryvp.language-xi")) {
+    if (-not $extList.Contains("grigoryvp.language-xi")) {
       & code --install-extension grigoryvp.language-xi;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
-    if (!$extList.Contains("grigoryvp.memory-theme")) {
+    if (-not $extList.Contains("grigoryvp.memory-theme")) {
       & code --install-extension grigoryvp.memory-theme;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
-    if (!$extList.Contains("vscodevim.vim")) {
+    if (-not $extList.Contains("vscodevim.vim")) {
       & code --install-extension vscodevim.vim;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
-    if (!$extList.Contains("EditorConfig.EditorConfig")) {
+    if (-not $extList.Contains("EditorConfig.EditorConfig")) {
       & code --install-extension EditorConfig.EditorConfig;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }

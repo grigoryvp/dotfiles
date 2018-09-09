@@ -197,8 +197,14 @@ $9::
 
 $0::
   if (GetKeyState("capslock", "P")) {
-    ; TODO: start
-    WinActivate, ahk_exe thunderbird.exe
+    if (WinExist("ahk_exe thunderbird.exe")) {
+      WinActivate, ahk_exe thunderbird.exe
+    }
+    else {
+      Run "%USERPROFILE%\scoop\apps\thunderbird\current\thunderbird.exe"
+      WinWait, ahk_exe thunderbird.exe
+      WinMaximize, ahk_exe thunderbird.exe
+    }
   }
   else {
     send 0
@@ -207,8 +213,14 @@ $0::
 
 $-::
   if (GetKeyState("capslock", "P")) {
-    ; TODO: start
-    WinActivate, ahk_exe telegram.exe
+    if (WinExist("ahk_exe telegram.exe")) {
+      WinActivate, ahk_exe telegram.exe
+    }
+    else {
+      Run "%USERPROFILE%\scoop\apps\telegram\current\telegram.exe"
+      WinWait, ahk_exe telegram.exe
+      WinMaximize, ahk_exe telegram.exe
+    }
   }
   else {
     send -

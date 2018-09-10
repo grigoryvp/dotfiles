@@ -1,3 +1,5 @@
+# TODO: named parameters everythere
+
 class App {
 
   #region Instance properties
@@ -29,12 +31,12 @@ class App {
       # scoop shims like sudo are executed via powershell.exe and it seems
       # that pwsh.exe and powershell.exe have separated execution policy
       # config
-      powershell.exe `
+      & powershell.exe `
         -Command Set-ExecutionPolicy Unrestricted `
         -Scope CurrentUser;
     }
 
-    Set-Location $env:USERPROFILE
+    Set-Location -Path $env:USERPROFILE
 
     # Version-controlled dir with scripts, powershell config, passwords etc.
     $this._cfgDir = "$($env:USERPROFILE)\Documents\PowerShell";

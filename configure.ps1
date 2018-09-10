@@ -42,8 +42,16 @@ class App {
       New-Item -Path $this._cfgDir -ItemType Directory;
     }
 
-    # TODO: set hidden attributes for ~/PowerShell and # ~/WindowsPowerShell
-    # to exclude them from 'ls' and 'explorer'
+    # Auto-created by PowerShell 5.x until 6.x+ is a system default.
+    # Create and set hidden attribute to exclude from 'ls'.
+    $oldPsDir = "$($env:USERPROFILE)\Documents\WindowsPowerShell";
+    if (-not (Test-Path $oldPsDir)) {
+      New-Item -Path $oldPsDir -ItemType Directory;
+    }
+
+    # Exclude dirs from 'ls' and 'explorer'
+    $(Get-Item -Force $this._cfgDir).Attributes = 'Hidden';
+    $(Get-Item -Force $oldPsDir).Attributes = 'Hidden';
 
     # TODO: set keyboard debounce to prevent double typing:
     # Computer\HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response

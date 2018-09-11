@@ -1,3 +1,5 @@
+# Todo: https://4sysops.com/archives/building-a-web-server-with-powershell/
+
 Import-Module posh-git;
 
 function cdd() { Set-Location ~/Documents; }
@@ -77,4 +79,5 @@ function Update-VscodeExt() {
   }
 
   Copy-Item *.js $extDir;
+  Copy-Item *.json $extDir;
 }

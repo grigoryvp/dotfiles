@@ -1,18 +1,11 @@
 {
-  "telemetry.enableTelemetry": false,
-  "workbench.startupEditor": "newUntitledFile",
-  "workbench.tips.enabled": false,
-  "workbench.editor.labelFormat": "short",
-  "workbench.activityBar.visible": false,
-  "npm.enableScriptExplorer": true,
-  "breadcrumbs.enabled": true,
-  "editor.wordWrap": "off",
-  "powershell.integratedConsole.showOnStartup": false,
-
-  "html.autoClosingTags": false,
-
   "[markdown]": {
     "editor.wordWrap": "off"
+  },
+
+  "[powershell]": {
+    "#": "Disable 'n references' atop of functions",
+    "editor.codeLens": false
   },
 
   "emmet.includeLanguages": {
@@ -97,6 +90,8 @@
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.glyphMargin": true,
+  "editor.wordWrap": "off",
+  "editor.autoClosingQuotes": false,
   "window.menuBarVisibility": "toggle",
   "window.zoomLevel": 0,
   "explorer.confirmDelete": false,
@@ -119,5 +114,14 @@
   "sync.askGistName": false,
   "editor.renderControlCharacters": false,
   "sync.removeExtensions": true,
-  "sync.syncExtensions": true
+  "sync.syncExtensions": true,
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.tips.enabled": false,
+  "workbench.editor.labelFormat": "short",
+  "workbench.activityBar.visible": false,
+  "npm.enableScriptExplorer": true,
+  "breadcrumbs.enabled": true,
+  "powershell.integratedConsole.showOnStartup": false,
+  "html.autoClosingTags": false,
+  "telemetry.enableTelemetry": false
 }

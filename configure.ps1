@@ -55,14 +55,11 @@ class App {
     $(Get-Item -Force $this._cfgDir).Attributes = 'Hidden';
     $(Get-Item -Force $oldPsDir).Attributes = 'Hidden';
 
-    # TODO: set keyboard debounce to prevent double typing:
-    # Computer\HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response
-    # BounceTime (currently experimenting with 50).
-
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
     $this._setPowerOptions();
+    $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installScoop();
@@ -249,6 +246,49 @@ class App {
   }
 
 
+  _setDebounceOptions() {
+    if ($this._isTest) { return; }
+
+    $args = @{
+      Path = "HKCU:\Control Panel\Accessibility\Keyboard Response"
+      PropertyType = "String"
+      Force = $true
+    }
+
+    # Ms before key is repeated
+    $args.Name = 'AutoRepeatDelay';
+    $args.Value = '600';
+    New-ItemProperty @args;
+
+    # Less is faster
+    $args.Name = 'AutoRepeatRate';
+    $args.Value = '30';
+    New-ItemProperty @args;
+
+    # Milliseconds to supres bounce.
+    $args.Name = 'BounceTime';
+    $args.Value = '30';
+    New-ItemProperty @args;
+
+    # Milliseconds to wait before accepting a keystroke
+    $args.Name = 'DelayBeforeAcceptance';
+    $args.Value = '0';
+    New-ItemProperty @args;
+
+    # Bit Flags:
+    # 00000001 On
+    # 00000010 Available
+    # 00000100 Use shortcut
+    # 00001000 Confirm activation
+    # 00010000 Activation sound
+    # 00100000 Show status
+    # 01000000 Key click
+    $args.Name = 'Flags';
+    $args.Value = '1';
+    New-ItemProperty @args;
+  }
+
+
   _setTouchpadOptions() {
     $root = "HKCU:\Software\Microsoft\Windows\CurrentVersion";
     $uri = "$root\PrecisionTouchPad";
@@ -423,11 +463,13 @@ class App {
     if ($this._isTest) { return; }
     if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
     $this._prompt("Press any key to elevate the keyboard script...");
-    Start-Process `
-      autohotkey.exe `
-      -ArgumentList "$($this._cfgDir)\keyboard.ahk" `
-      -WindowStyle Hidden `
-      -Verb RunAs;
+    $args = @{
+      FilePath = 'autohotkey.exe'
+      ArgumentList = "$($this._cfgDir)\keyboard.ahk"
+      WindowStyle = 'Hidden'
+      Verb = 'RunAs'
+    };
+    Start-Process @args;
   }
 
 

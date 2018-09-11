@@ -57,7 +57,7 @@ class App {
 
     # TODO: set keyboard debounce to prevent double typing:
     # Computer\HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response
-    # BounceTime (currently experimenting with 40).
+    # BounceTime (currently experimenting with 50).
 
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");

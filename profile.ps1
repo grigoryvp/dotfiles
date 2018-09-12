@@ -1,5 +1,3 @@
-# Todo: https://4sysops.com/archives/building-a-web-server-with-powershell/
-
 Import-Module posh-git;
 
 function cdd() { Set-Location ~/Documents; }
@@ -80,4 +78,77 @@ function Update-VscodeExt() {
 
   Copy-Item *.js $extDir;
   Copy-Item *.json $extDir;
+}
+
+function Start-Srv() {
+  $name = "srv";
+  $job = Get-Job -Name $name -ErrorAction SilentlyContinue;
+  if ($job) {
+    Write-Host "Already started";
+    return;
+  }
+  $job = {
+    Set-Location $args[0];
+    $driveName = 'site';
+    $args = @{
+      Name = $driveName
+      PSProvider = 'FileSystem'
+      Root = $PWD.Path
+    };
+    New-PSDrive @args;
+    $listener = New-Object System.Net.HttpListener;
+    $listener.Prefixes.Add("http://localhost:8080/");
+    $listener.Start();
+    while($listener.IsListening) {
+      $context = $listener.GetContext();
+      $url = $Context.Request.Url.LocalPath;
+      if ($url -eq '/favicon.ico') {
+        $Context.Response.Close();
+        continue;
+      }
+      if ($url -eq '/_stop') {
+        $listener.Stop();
+        Remove-PSDrive -Name $driveName;
+        return;
+      }
+      $ext = [System.IO.Path]::GetExtension($url);
+      $context.Response.ContentType = @{
+        '.htm' = 'text/html'
+        '.html' = 'text/html'
+        '.css' = 'text/css'
+        '.svg' = 'image/svg+xml'
+        '.png' = 'image/png'
+        '.jpg' = 'image/jpeg'
+        '.jepg' = 'image/jpeg'
+      }[$ext];
+      try {
+        $data = Get-Content -AsByteStream -Path "$($driveName):$url";
+        $context.Response.OutputStream.Write($data, 0, $data.Length);
+      }
+      catch {
+        $context.Response.StatusCode = 404;
+      }
+      $Context.Response.Close();
+    }
+  };
+  $job = Start-Job -Name $name -ArgumentList $PWD -ScriptBlock $job;
+  Write-Host "Server job started";
+}
+
+function Stop-Srv() {
+  $name = "srv";
+  $job = Get-Job -Name $name -ErrorAction SilentlyContinue;
+  if ($job) {
+    try {
+      Invoke-WebRequest -Uri 'http://localhost:8080/_stop';
+    }
+    catch {
+    }
+    Stop-Job -Name $name;
+    Remove-Job -Name $name;
+    Write-Host "Server job stopped";
+  }
+  else {
+    Write-Host "No server job found";
+  }
 }

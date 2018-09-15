@@ -265,9 +265,9 @@ class App {
     $args.Value = '30';
     New-ItemProperty @args;
 
-    # Milliseconds to supres bounce.
+    # Milliseconds to supres bounce (with 30ms it RARELY bounces).
     $args.Name = 'BounceTime';
-    $args.Value = '30';
+    $args.Value = '35';
     New-ItemProperty @args;
 
     # Milliseconds to wait before accepting a keystroke

@@ -37,6 +37,9 @@ tab::lctrl
 return::rctrl
 #inputlevel 0
 
+$rctrl::
+  return
+
 $rctrl up::
   send {rctrl up}
   if (A_PriorKey = "RControl") {
@@ -376,6 +379,9 @@ $capslock::
     }
     send {rbutton up}
   }
+  return
+
+$capslock up::
   return
 
 ;;  caps + ; is left mouse button

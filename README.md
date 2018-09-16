@@ -5,6 +5,10 @@ Install PowerShell Core from [releases](https://github.com/PowerShell/PowerShell
 ```ps1
 cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/configure.ps1; & .\configure.ps1
 ```
+# Todo
+
+* Try to put middle mouse button on 'Enter' key (with protection against
+  accidental leader release key).
 
 # License
 The following licensing applies to My windows box automatic configuration:

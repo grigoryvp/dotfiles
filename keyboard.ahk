@@ -19,6 +19,11 @@
 
 codepage = 65001 ; utf-8
 appLastLangHotkey := ""
+appLeaderDownTick = 0
+appLeaderUpTick = 0
+appEnterDownTick = 0
+appEnterUpTick = 0
+
 ;;  "Leader key", only works in combinations, doesn't work on it's own
 SetCapsLockState, alwaysoff
 
@@ -34,16 +39,25 @@ if !A_IsAdmin {
 
 #inputlevel 1
 tab::lctrl
-return::rctrl
+enter::rctrl
 #inputlevel 0
 
 $rctrl::
+  ;;  First press since release? (beware repetition)
+  if (appReturnUpTick >= appReturnDownTick) {
+    appReturnDownTick = %A_TickCount%
+  }
   return
 
 $rctrl up::
+  appReturnUpTick = %A_TickCount%
   send {rctrl up}
   if (A_PriorKey = "RControl") {
-    send {enter}
+    ;;  No 'caps lock' was released after return was pressed? (protect
+    ;;  against accidental caps lock release while enter is used with it).
+    if (appLeaderUpTick < appReturnDownTick) {
+      send {enter}
+    }
   }
   return
 
@@ -362,6 +376,10 @@ $#tab::
 ;; ===========================================================================
 
 $capslock::
+  ;;  First press since release? (beware repetition)
+  if (appLeaderUpTick >= appLeaderDownTick) {
+    appLeaderDownTick = %A_TickCount%
+  }
   ;;  For games like WoW right buttons hold are used for movement, so
   ;;  sometimescaps lock is released while holding tick or semicolon.
   ;;  Holding caps lock again should return button hold.
@@ -382,6 +400,7 @@ $capslock::
   return
 
 $capslock up::
+  appLeaderUpTick = %A_TickCount%
   return
 
 ;;  caps + ; is left mouse button

@@ -7,8 +7,6 @@ cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubuserconten
 ```
 # Todo
 
-* Try to put middle mouse button on 'Enter' key (with protection against
-  accidental leader release key).
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 
 # License

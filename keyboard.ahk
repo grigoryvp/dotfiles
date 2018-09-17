@@ -42,10 +42,20 @@ tab::lctrl
 enter::rctrl
 #inputlevel 0
 
+;;  caps + enter is middle mouse button
 $rctrl::
   ;;  First press since release? (beware repetition)
   if (appReturnUpTick >= appReturnDownTick) {
     appReturnDownTick = %A_TickCount%
+  }
+  if (GetKeyState("capslock", "P")) {
+    send {mbutton down}
+    ;;  For games where holding mouse button moves something and caps can
+    ;;  be released and pressed back while still holding key).
+    while (GetKeyState("capslock", "P") && GetKeyState("enter", "P")) {
+      Sleep 10
+    }
+    send {mbutton up}
   }
   return
 
@@ -422,8 +432,8 @@ $capslock up::
       send {lbutton down}
     }
 
-    ;;  like WoW where holding left button moves camera and caps can
-    ;;  be released while still holding semicolon).
+    ;;  For games where holding mouse button moves something and caps can
+    ;;  be released and pressed back while still holding key).
     while (GetKeyState("capslock", "P") && GetKeyState(";", "P")) {
       Sleep 10
     }
@@ -456,9 +466,8 @@ $capslock up::
 *$'::
   if (GetKeyState("capslock", "P")) {
     send {rbutton down}
-    ;;  hold; if 'caps' or 'tick' is up - stop hold (optimized for games
-    ;;  like WoW where holding right button moves camera and caps can
-    ;;  be released while still holding tick).
+    ;;  For games where holding mouse button moves something and caps can
+    ;;  be released and pressed back while still holding key).
     while (GetKeyState("capslock", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }

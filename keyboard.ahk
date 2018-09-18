@@ -222,19 +222,31 @@ $9::
   }
   return
 
-$0::
+*$0::
   if (GetKeyState("capslock", "P")) {
-    if (WinExist("ahk_exe thunderbird.exe")) {
-      WinActivate, ahk_exe thunderbird.exe
+    if (GetKeyState("shift", "P")) {
+      if (WinExist("ahk_exe foxitreader.exe")) {
+        WinActivate, ahk_exe foxitreader.exe
+      }
+      else {
+        Run "%USERPROFILE%\scoop\apps\foxit-reader\current\foxitreader.exe"
+        WinWait, ahk_exe foxitreader.exe
+        WinMaximize, ahk_exe foxitreader.exe
+      }
     }
     else {
-      Run "%USERPROFILE%\scoop\apps\thunderbird\current\thunderbird.exe"
-      WinWait, ahk_exe thunderbird.exe
-      WinMaximize, ahk_exe thunderbird.exe
+      if (WinExist("ahk_exe thunderbird.exe")) {
+        WinActivate, ahk_exe thunderbird.exe
+      }
+      else {
+        Run "%USERPROFILE%\scoop\apps\thunderbird\current\thunderbird.exe"
+        WinWait, ahk_exe thunderbird.exe
+        WinMaximize, ahk_exe thunderbird.exe
+      }
     }
   }
   else {
-    send 0
+    send {blind}{vk30}
   }
   return
 

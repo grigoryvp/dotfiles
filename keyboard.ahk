@@ -87,27 +87,27 @@ $^lctrl up:: send ^{tab}
 ;; Language switch
 ;; ===========================================================================
 
-$4::
+*$vk34::
   if (GetKeyState("capslock", "P")) {
     appLastLangHotkey := "4"
     send ^+4
   }
   else {
-    send 4
+    send {blind}{vk34}
   }
   return
 
-$5::
+*$vk35::
   if (GetKeyState("capslock", "P")) {
     appLastLangHotkey := "5"
     send ^+5
   }
   else {
-    send 5
+    send {blind}{vk35}
   }
   return
 
-$6::
+*$vk36::
   if (GetKeyState("capslock", "P")) {
     if (appLastLangHotkey = "6") {
       ;;  Switch between Hiragana and Latin input for Japanese keyboard
@@ -119,7 +119,7 @@ $6::
     }
   }
   else {
-    send 6
+    send {blind}{vk36}
   }
   return
 

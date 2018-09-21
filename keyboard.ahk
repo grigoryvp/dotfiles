@@ -224,6 +224,22 @@ $9::
 
 *$0::
   if (GetKeyState("capslock", "P")) {
+    if (WinExist("ahk_exe telegram.exe")) {
+      WinActivate, ahk_exe telegram.exe
+    }
+    else {
+      Run "%USERPROFILE%\scoop\apps\telegram\current\telegram.exe"
+      WinWait, ahk_exe telegram.exe
+      WinMaximize, ahk_exe telegram.exe
+    }
+  }
+  else {
+    send {blind}{vk30}
+  }
+  return
+
+$-::
+  if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
       if (WinExist("ahk_exe foxitreader.exe")) {
         WinActivate, ahk_exe foxitreader.exe
@@ -235,22 +251,6 @@ $9::
       }
     }
     else {
-    }
-  }
-  else {
-    send {blind}{vk30}
-  }
-  return
-
-$-::
-  if (GetKeyState("capslock", "P")) {
-    if (WinExist("ahk_exe telegram.exe")) {
-      WinActivate, ahk_exe telegram.exe
-    }
-    else {
-      Run "%USERPROFILE%\scoop\apps\telegram\current\telegram.exe"
-      WinWait, ahk_exe telegram.exe
-      WinMaximize, ahk_exe telegram.exe
     }
   }
   else {

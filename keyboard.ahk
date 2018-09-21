@@ -235,14 +235,6 @@ $9::
       }
     }
     else {
-      if (WinExist("ahk_exe thunderbird.exe")) {
-        WinActivate, ahk_exe thunderbird.exe
-      }
-      else {
-        Run "%USERPROFILE%\scoop\apps\thunderbird\current\thunderbird.exe"
-        WinWait, ahk_exe thunderbird.exe
-        WinMaximize, ahk_exe thunderbird.exe
-      }
     }
   }
   else {

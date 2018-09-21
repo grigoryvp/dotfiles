@@ -76,6 +76,7 @@ class App {
     $this._installApp("vscode");
     $this._configureVscode();
     $this._installApp("doublecmd");
+    $this._installApp("tray-monitor");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassStartup();
 
@@ -132,6 +133,7 @@ class App {
       Write-Host "- Add C-S-4-5-6 as en-ru-js hotkeys and copy settings";
       Write-Host "- Login Chromium";
       Write-Host "- Disable autostart in Task Manager";
+      Write-Host "- Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'";
     }
   }
 

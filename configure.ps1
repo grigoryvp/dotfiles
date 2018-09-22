@@ -63,10 +63,10 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installScoop();
-    # Some URL's in scoop bucket are blocked in some countries.
-    $this._patchScoopBucket();
     $this._installGit();
     $this._addScoopBuckets();
+    # Some URL's in scoop bucket are blocked in some countries.
+    $this._patchScoopBucket();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installApp("sudo");

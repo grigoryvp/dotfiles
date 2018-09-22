@@ -8,7 +8,7 @@ cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubuserconten
 # Todo
 
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
-* Install https://github.com/strayge/tray-monitor
+* Disable animations that slows down 4k laptops.
 
 # License
 The following licensing applies to My windows box automatic configuration:

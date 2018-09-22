@@ -132,7 +132,8 @@ class App {
       Write-Host "- Add C-S-4-5-6 as en-ru-js hotkeys and copy settings";
       Write-Host "- Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'";
       Write-Host "- Disable autostart in Task Manager";
-      Write-Host "- Make full install";
+      Write-Host "- Make --full configuration";
+      Write-Host "- Add perfgraph toolbar";
       Write-Host "- Login Chromium";
     }
   }

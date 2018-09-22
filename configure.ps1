@@ -20,6 +20,16 @@ class App {
     $this._isFull = ($argList.Contains("--full"));
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
+    $this._POST_INSTALL_MSG = @"
+      Config complete. Manual things to do
+      - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
+      - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'
+      - Disable autostart in Task Manager
+      - Make --full configuration
+      - Add perfgraph toolbar
+      - Open %USERPROFILE%\Documents\PowerShell\default.xcode-workspace
+      - Login Chromium
+"@;
   }
 
 
@@ -128,13 +138,7 @@ class App {
       Write-Host "Test complete";
     }
     else {
-      Write-Host "Config complete. Manual things to do:";
-      Write-Host "- Add C-S-4-5-6 as en-ru-js hotkeys and copy settings";
-      Write-Host "- Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'";
-      Write-Host "- Disable autostart in Task Manager";
-      Write-Host "- Make --full configuration";
-      Write-Host "- Add perfgraph toolbar";
-      Write-Host "- Login Chromium";
+      Write-Host $this._POST_INSTALL_MSG;
     }
   }
 

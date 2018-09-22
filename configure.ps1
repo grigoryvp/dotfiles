@@ -131,9 +131,10 @@ class App {
     else {
       Write-Host "Config complete. Manual things to do:";
       Write-Host "- Add C-S-4-5-6 as en-ru-js hotkeys and copy settings";
-      Write-Host "- Login Chromium";
-      Write-Host "- Disable autostart in Task Manager";
       Write-Host "- Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'";
+      Write-Host "- Disable autostart in Task Manager";
+      Write-Host "- Make full install";
+      Write-Host "- Login Chromium";
     }
   }
 

@@ -74,10 +74,12 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installScoop();
+    # Patch blocked 7zip URL.
+    $this._patchScoopBucket();
     $this._installGit();
     $this._addScoopBuckets();
-    # Some URL's in scoop bucket are blocked in some countries.
-    $this._patchScoopBucket();
+    # Patch blocked Telegram URL.
+    $this._patchExtrasBucket();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installApp("sudo");
@@ -373,7 +375,10 @@ class App {
     $manifest.architecture."64bit".url = $URL64;
     $manifest.architecture."64bit".hash = $H64;
     $manifest | ConvertTo-Json > $filePath;
+  }
 
+
+  _patchExtrasBucket() {
     $bucketPath = "$($env:USERPROFILE)\scoop\buckets\extras";
     $filePath = "$bucketPath\telegram.json";
     $manifest = Get-Content $filePath | ConvertFrom-Json;

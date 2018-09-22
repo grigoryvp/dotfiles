@@ -6,6 +6,7 @@ class App {
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
+  $_POST_INSTALL_MSG = "";
   $_pass = $null;
   $_cfgDir = $null;
   $_github = @{

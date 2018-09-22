@@ -556,7 +556,6 @@ class App {
     Copy-Item $srcPath -Destination $dstPath -Force;
 
     $extList = @(& code --list-extensions);
-    # TODO: implement deep links [foo#bar].
     if (-not $extList.Contains("grigoryvp.language-xi")) {
       & code --install-extension grigoryvp.language-xi;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }

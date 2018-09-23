@@ -1,5 +1,8 @@
 Import-Module posh-git;
 
+# For git to correctly show unicode files content
+$env:LANG = "en_US.UTF-8";
+
 function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/Documents/PowerShell; }
 function cdh() { Set-Location ~; }
@@ -152,3 +155,5 @@ function Stop-Srv() {
     Write-Host "No server job found";
   }
 }
+
+Clear-Host;

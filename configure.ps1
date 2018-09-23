@@ -51,14 +51,14 @@ class App {
 
     # Version-controlled dir with scripts, powershell config, passwords etc.
     $this._cfgDir = "$($env:USERPROFILE)\Documents\PowerShell";
-    if (-not (Test-Path $this._cfgDir)) {
+    if (-not (Test-Path -Path $this._cfgDir)) {
       New-Item -Path $this._cfgDir -ItemType Directory;
     }
 
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
     $oldPsDir = "$($env:USERPROFILE)\Documents\WindowsPowerShell";
-    if (-not (Test-Path $oldPsDir)) {
+    if (-not (Test-Path -Path $oldPsDir)) {
       New-Item -Path $oldPsDir -ItemType Directory;
     }
 
@@ -94,7 +94,7 @@ class App {
     $this._registerKeepassStartup();
 
     # Interactive.
-    if (-not (Test-Path .ssh\.uploaded_to_github)) {
+    if (-not (Test-Path -Path .ssh\.uploaded_to_github)) {
       if (-not $this._isPublic) {
         $this._askForGithubCredentials();
       }
@@ -133,7 +133,6 @@ class App {
       $this._installApp("telegram");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
-      # TODO: install procrastitracker
     }
 
     Pop-Location;
@@ -168,7 +167,7 @@ class App {
     $installDir = $installDir.Trim();
     # if install fails, scoop will treat app as installed, but install dir
     # is not created.
-    if (-not (Test-Path $installDir)) { return $false; }
+    if (-not (Test-Path -Path $installDir)) { return $false; }
     $content = Get-ChildItem $installDir;
     return ($content.Length -gt 0);
   }
@@ -207,19 +206,19 @@ class App {
 
   _getFilesFromGit() {
     $gitCfgFile = "$($this._cfgDir)\.git\config";
-    if (Test-Path $gitCfgFile) {
+    if (Test-Path -Path $gitCfgFile) {
       $gitCfg = Get-Content $gitCfgFile | Out-String;
       # Already cloned with SSH?
       if ($gitCfg.Contains("git@github.com")) { return; }
     }
 
     # Have keys to clone with SSH?
-    if (Test-Path .ssh\.uploaded_to_github) {
+    if (Test-Path -Path .ssh\.uploaded_to_github) {
       $uri = "git@github.com:grigoryvp/my-win-box-cfg.git";
     }
     else {
       # Already cloned without keys?
-      if (Test-Path $gitCfgFile) { return; }
+      if (Test-Path -Path $gitCfgFile) { return; }
       # Clone with HTTPS
       $uri = "https://github.com/grigoryvp/my-win-box-cfg.git";
     }
@@ -235,8 +234,8 @@ class App {
 
   _generateSshKey() {
     if ($this._isTest) { return; }
-    if (Test-Path .ssh\id_rsa) { return; }
-    if (-not (Test-Path .ssh)) {
+    if (Test-Path -Path .ssh\id_rsa) { return; }
+    if (-not (Test-Path -Path .ssh)) {
       New-Item -Path .ssh -ItemType Directory;
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
@@ -436,7 +435,7 @@ class App {
   _uploadSshKey() {
     if ($this._isTest) { return; }
     $marker = ".uploaded_to_github";
-    if (Test-Path .ssh\$marker) { return; }
+    if (Test-Path -Path .ssh\$marker) { return; }
 
     $pair = "$($this._github.user):$($this._github.pass)";
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
@@ -496,7 +495,7 @@ class App {
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path "$startDir\autohotkey.bat") { return; }
+    if (Test-Path -Path "$startDir\autohotkey.bat") { return; }
     $content = 'pwsh -Command Start-Process autohotkey.exe';
     $content += ' -ArgumentList "' + $this._cfgDir + '\keyboard.ahk"';
     $content += ' -WindowStyle Hidden -Verb RunAs';
@@ -511,7 +510,7 @@ class App {
   _registerKeepassStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path "$startDir\keepass.bat") { return; }
+    if (Test-Path -Path "$startDir\keepass.bat") { return; }
     $content = 'pwsh -Command Start-Process keepass.exe';
     $content += ' -WindowStyle Hidden';
     New-Item `
@@ -524,7 +523,7 @@ class App {
 
   _installFonts() {
     $fileName = "DejaVu Sans Mono Nerd Font Complete Windows Compatible.ttf";
-    if (Test-Path "$env:windir\Fonts\$fileName") { return; }
+    if (Test-Path -Path "$env:windir\Fonts\$fileName") { return; }
     $appName = "DejaVuSansMono-NF";
     if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.
@@ -539,7 +538,7 @@ class App {
 
   _getXi() {
     $dstDir = "$($this._cfgDir)\xi";
-    if (Test-Path $dstDir) { return; }
+    if (Test-Path -Path $dstDir) { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -548,7 +547,7 @@ class App {
 
   _configureVscode() {
     $dstDir = "$($env:APPDATA)\Code\User";
-    if (-not (Test-Path $dstDir)) {
+    if (-not (Test-Path -Path $dstDir)) {
       # Not created during install, only on first UI start.
       New-Item -Path $dstDir -ItemType Directory;
     }

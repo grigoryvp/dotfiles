@@ -483,11 +483,11 @@ $capslock up::
   return
 
 ::sigen::
-  ClipBoard := "Best regards,`nGrigory Petrov,`nHead of Developer Relations`nVoximplant`n+16504575614`nhttp://facebook.com/grigoryvp"
+  ClipBoard := "Best regards,`nGrigory Petrov,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
   send ^v
   return
 
 ::sigru::
-  ClipBoard := "С уважением,`nГригорий Петров,`nДиректор по Техническому Маркетингу`nVoximplant`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
+  ClipBoard := "С уважением,`nГригорий Петров,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
   send ^v
   return

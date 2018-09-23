@@ -238,7 +238,7 @@ $9::
   }
   return
 
-$-::
+*$-::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
       if (WinExist("ahk_exe foxitreader.exe")) {
@@ -254,7 +254,7 @@ $-::
     }
   }
   else {
-    send -
+    send {blind}{vkbd}
   }
   return
 

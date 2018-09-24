@@ -12,7 +12,7 @@
 			<CredSaveMode>NoSave</CredSaveMode>
 		</LastUsedFile>
 		<Start>
-			<CheckForUpdate>true</CheckForUpdate>
+			<CheckForUpdate>false</CheckForUpdate>
 			<CheckForUpdateConfigured>true</CheckForUpdateConfigured>
 			<MinimizedAndLocked>true</MinimizedAndLocked>
 		</Start>
@@ -103,6 +103,7 @@
 		<UIFlags>0</UIFlags>
 		<KeyCreationFlags>0</KeyCreationFlags>
 		<KeyPromptFlags>0</KeyPromptFlags>
+		<SecureDesktopPlaySound>false</SecureDesktopPlaySound>
 	</UI>
 	<Security>
 		<WorkspaceLocking>

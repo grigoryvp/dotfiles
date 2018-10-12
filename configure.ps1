@@ -52,14 +52,14 @@ class App {
     # Version-controlled dir with scripts, powershell config, passwords etc.
     $this._cfgDir = "$($env:USERPROFILE)\Documents\PowerShell";
     if (-not (Test-Path -Path $this._cfgDir)) {
-      New-Item -Path $this._cfgDir -ItemType Directory;
+      New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
     }
 
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
     $oldPsDir = "$($env:USERPROFILE)\Documents\WindowsPowerShell";
     if (-not (Test-Path -Path $oldPsDir)) {
-      New-Item -Path $oldPsDir -ItemType Directory;
+      New-Item -Path $oldPsDir -ItemType Directory | Out-Null;
     }
 
     # Exclude dirs from 'ls' and 'explorer'
@@ -236,7 +236,7 @@ class App {
     if ($this._isTest) { return; }
     if (Test-Path -Path .ssh\id_rsa) { return; }
     if (-not (Test-Path -Path .ssh)) {
-      New-Item -Path .ssh -ItemType Directory;
+      New-Item -Path .ssh -ItemType Directory | Out-Null;
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
@@ -449,12 +449,12 @@ class App {
     if (-not $this._isTest) {
       try {
         Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
-        New-Item -path .ssh -Name $marker -ItemType File;
+        New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
       }
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
           Write-Host "SSH key already added to GitHub";
-          New-Item -path .ssh -Name $marker -ItemType File;
+          New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
         }
         else {
           throw "Failed";
@@ -503,7 +503,7 @@ class App {
       -path $startDir `
       -Name "autohotkey.bat" `
       -Value "$content" `
-      -ItemType File;
+      -ItemType File | Out-Null;
   }
 
 
@@ -517,7 +517,7 @@ class App {
       -path $startDir `
       -Name "keepass.bat" `
       -Value "$content" `
-      -ItemType File;
+      -ItemType File | Out-Null;
   }
 
 
@@ -549,7 +549,7 @@ class App {
     $dstDir = "$($env:APPDATA)\Code\User";
     if (-not (Test-Path -Path $dstDir)) {
       # Not created during install, only on first UI start.
-      New-Item -Path $dstDir -ItemType Directory;
+      New-Item -Path $dstDir -ItemType Directory | Out-Null;
     }
 
     $srcPath = "$($this._cfgDir)\vscode_settings.json";

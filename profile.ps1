@@ -79,7 +79,11 @@ function Update-VscodeExt() {
     return;
   }
 
+  if (-not (Test-Path -Path $extDir/src)) {
+    New-Item -Path $extDir/src -ItemType Directory | Out-Null;
+  }
   Copy-Item *.js $extDir;
+  Copy-Item src/*.js $extDir/src;
   Copy-Item *.json $extDir;
 }
 

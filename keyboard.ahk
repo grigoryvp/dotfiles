@@ -317,7 +317,7 @@ $home::
 *$j::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      SendInput {wheeldown}
+      Send {wheeldown}
     }
     else if (GetKeyState("tab", "P")) {
       send {pgdn}
@@ -333,7 +333,7 @@ $home::
 *$k::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      SendInput {wheelup}
+      Send {wheelup}
     }
     else if (GetKeyState("tab", "P")) {
       send {pgup}

@@ -179,7 +179,8 @@ $7::
       WinActivate, ahk_exe cmd.exe
     }
     else {
-      Run cmd.exe
+      ;;  Run under non-elevated user
+      send #1
       WinWait, ahk_exe cmd.exe
       WinMaximize, ahk_exe cmd.exe
       Send pwsh{enter}
@@ -196,7 +197,8 @@ $8::
       WinActivate, ahk_exe code.exe
     }
     else {
-      Run "%USERPROFILE%\scoop\apps\vscode\current\Code.exe"
+      ;;  Run under non-elevated user
+      send #2
       WinWait, ahk_exe code.exe
       WinMaximize, ahk_exe code.exe
     }
@@ -212,7 +214,8 @@ $9::
       WinActivate, ahk_exe chrome.exe
     }
     else {
-      Run "%USERPROFILE%\scoop\apps\chromium\current\chrome.exe"
+      ;;  Run under non-elevated user
+      send #3
       WinWait, ahk_exe chrome.exe
       WinMaximize, ahk_exe chrome.exe
     }
@@ -228,7 +231,8 @@ $9::
       WinActivate, ahk_exe telegram.exe
     }
     else {
-      Run "%USERPROFILE%\scoop\apps\telegram\current\telegram.exe"
+      ;;  Run under non-elevated user
+      send #4
       WinWait, ahk_exe telegram.exe
       WinMaximize, ahk_exe telegram.exe
     }
@@ -243,11 +247,6 @@ $9::
     if (GetKeyState("shift", "P")) {
       if (WinExist("ahk_exe foxitreader.exe")) {
         WinActivate, ahk_exe foxitreader.exe
-      }
-      else {
-        Run "%USERPROFILE%\scoop\apps\foxit-reader\current\foxitreader.exe"
-        WinWait, ahk_exe foxitreader.exe
-        WinMaximize, ahk_exe foxitreader.exe
       }
     }
     else {
@@ -264,7 +263,7 @@ $9::
       send #e
     }
     else {
-      ; Restore from tray if "allow only one instance" option is set"
+      ;;  Restore from tray if "allow only one instance" option is set"
       Run KeePass.exe,, hide
       WinActivate, ahk_exe KeePass.exe
     }

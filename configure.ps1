@@ -118,11 +118,11 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
+      # 'psexec' (required to start non-elevated apps), 'procexp' etc
+      $this._installApp("sysinternals");
       # Need to restart terminal in order to apply env variables.
       $this._installApp("nodejs");
       $this._installApp("chromium");
-      # 'procexp' etc
-      $this._installApp("sysinternals");
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");

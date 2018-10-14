@@ -83,8 +83,9 @@ function Update-VscodeExt() {
     New-Item -Path $extDir/src -ItemType Directory | Out-Null;
   }
   Copy-Item *.js $extDir;
-  Copy-Item src/*.js $extDir/src;
   Copy-Item *.json $extDir;
+  Copy-Item src/*.js $extDir/src;
+  Copy-Item src/*.json $extDir/src;
 }
 
 function Start-Srv() {

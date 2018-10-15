@@ -173,69 +173,39 @@ $]::
   }
   return
 
-$7::
+*$7::
   if (GetKeyState("capslock", "P")) {
-    if (WinExist("ahk_exe cmd.exe")) {
-      WinActivate, ahk_exe cmd.exe
-    }
-    else {
-      ;;  Run under non-elevated user
-      send #1
-      WinWait, ahk_exe cmd.exe
-      WinMaximize, ahk_exe cmd.exe
-      Send pwsh{enter}
-    }
+    send #1
   }
   else {
-    send 7
+    send {blind}{vk37}
   }
   return
 
-$8::
+*$8::
   if (GetKeyState("capslock", "P")) {
-    if (WinExist("ahk_exe code.exe")) {
-      WinActivate, ahk_exe code.exe
-    }
-    else {
-      ;;  Run under non-elevated user
-      send #2
-      WinWait, ahk_exe code.exe
-      WinMaximize, ahk_exe code.exe
-    }
+    ;;  Run under non-elevated user
+    send #2
   }
   else {
-    send 8
+    send {blind}{vk38}
   }
   return
 
-$9::
+*$9::
   if (GetKeyState("capslock", "P")) {
-    if (WinExist("ahk_exe chrome.exe")) {
-      WinActivate, ahk_exe chrome.exe
-    }
-    else {
-      ;;  Run under non-elevated user
-      send #3
-      WinWait, ahk_exe chrome.exe
-      WinMaximize, ahk_exe chrome.exe
-    }
+    ;;  Run under non-elevated user
+    send #3
   }
   else {
-    send 9
+    send {blind}{vk39}
   }
   return
 
 *$0::
   if (GetKeyState("capslock", "P")) {
-    if (WinExist("ahk_exe telegram.exe")) {
-      WinActivate, ahk_exe telegram.exe
-    }
-    else {
-      ;;  Run under non-elevated user
-      send #4
-      WinWait, ahk_exe telegram.exe
-      WinMaximize, ahk_exe telegram.exe
-    }
+    ;;  Run under non-elevated user
+    send #4
   }
   else {
     send {blind}{vk30}
@@ -245,11 +215,13 @@ $9::
 *$-::
   if (GetKeyState("capslock", "P")) {
     if (GetKeyState("shift", "P")) {
-      if (WinExist("ahk_exe foxitreader.exe")) {
-        WinActivate, ahk_exe foxitreader.exe
-      }
+      ;;  Restore from tray if "allow only one instance" option is set"
+      Run KeePass.exe,, hide
+      WinActivate, ahk_exe KeePass.exe
     }
     else {
+      ;;  Run under non-elevated user
+      send #5
     }
   }
   else {
@@ -263,9 +235,8 @@ $9::
       send #e
     }
     else {
-      ;;  Restore from tray if "allow only one instance" option is set"
-      Run KeePass.exe,, hide
-      WinActivate, ahk_exe KeePass.exe
+      ;;  Run under non-elevated user
+      send #6
     }
   }
   else {

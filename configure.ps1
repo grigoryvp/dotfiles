@@ -116,6 +116,11 @@ class App {
     $this._getXi();
     $this._startKeepass();
 
+    if (-not (Test-Path -Path ".editorconfig")) {
+        $src = "$($this._cfgDir)/.editorconfig";
+        Copy-Item -Path $src -Destination . -Force | Out-Null;
+    }
+
     # Optional installs
     if ($this._isFull) {
       # 'psexec' (required to start non-elevated apps), 'procexp' etc
@@ -200,7 +205,7 @@ class App {
   _copyToAppDir($fileName, $appName) {
     $srcPath = "$($this._cfgDir)\$fileName";
     $dstPath = "$($env:USERPROFILE)\scoop\apps\$appName\current\";
-    Copy-Item $srcPath -Destination $dstPath -Force;
+    Copy-Item -Path $srcPath -Destination $dstPath -Force;
   }
 
 
@@ -554,11 +559,11 @@ class App {
 
     $srcPath = "$($this._cfgDir)\vscode_settings.json";
     $dstPath = "$dstDir\settings.json";
-    Copy-Item $srcPath -Destination $dstPath -Force;
+    Copy-Item -Path $srcPath -Destination $dstPath -Force;
 
     $srcPath = "$($this._cfgDir)\vscode_keybindings.json";
     $dstPath = "$dstDir\keybindings.json";
-    Copy-Item $srcPath -Destination $dstPath -Force;
+    Copy-Item -Path $srcPath -Destination $dstPath -Force;
 
     $extList = @(& code --list-extensions);
     if (-not $extList.Contains("grigoryvp.language-xi")) {

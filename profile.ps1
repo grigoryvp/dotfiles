@@ -84,8 +84,10 @@ function Update-VscodeExt() {
   }
   Copy-Item *.js $extDir;
   Copy-Item *.json $extDir;
-  Copy-Item src/*.js $extDir/src;
-  Copy-Item src/*.json $extDir/src;
+  if (Test-Path -Path src) {
+    Copy-Item src/*.js $extDir/src;
+    Copy-Item src/*.json $extDir/src;
+  }
 }
 
 function Start-Srv() {

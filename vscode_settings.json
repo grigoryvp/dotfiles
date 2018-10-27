@@ -80,11 +80,12 @@
     }]
   }],
 
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
   "[python]": {
     "editor.tabSize": 4
   },
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
   "editor.lineNumbers": "off",
   "editor.links": true,
   "editor.minimap.enabled": false,
@@ -93,7 +94,6 @@
   "editor.renderIndentGuides": false,
   "editor.renderLineHighlight": "line",
   "editor.rulers": [78],
-  "editor.detectIndentation": false,
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
   "editor.autoClosingQuotes": false,

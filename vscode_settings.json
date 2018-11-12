@@ -102,6 +102,7 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.autoReveal": false,
+  "explorer.openEditors.visible": false,
   "git.confirmSync": false,
   "java.errors.incompleteClasspath.severity": "ignore",
   "extensions.ignoreRecommendations": false,

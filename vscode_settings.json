@@ -101,6 +101,7 @@
   "window.zoomLevel": 0,
   "window.openFilesInNewWindow": "off",
   "window.openFoldersInNewWindow": "on",
+  "window.newWindowDimensions": "maximized",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.autoReveal": false,

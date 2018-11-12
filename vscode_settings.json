@@ -99,6 +99,8 @@
   "editor.autoClosingQuotes": false,
   "window.menuBarVisibility": "toggle",
   "window.zoomLevel": 0,
+  "window.openFilesInNewWindow": "off",
+  "window.openFoldersInNewWindow": "on",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.autoReveal": false,

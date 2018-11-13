@@ -167,9 +167,9 @@ function Stop-Srv() {
   }
 }
 
+# Without this, returns cleared screen after any input.
 Set-PSReadlineKeyHandler -Key Ctrl+l -ScriptBlock {
-  # Built-in version returns cleared screen after any input.
-  Clear-Host;
+  [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen();
 }
 
 Clear-Host;

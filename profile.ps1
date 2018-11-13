@@ -1,4 +1,6 @@
-Import-Module posh-git;
+if (Get-InstalledModule | Where-Object Name -eq "posh-git") {
+  Import-Module posh-git;
+}
 
 # For git to correctly show unicode files content
 $env:LANG = "en_US.UTF-8";
@@ -163,6 +165,11 @@ function Stop-Srv() {
   else {
     Write-Host "No server job found";
   }
+}
+
+Set-PSReadlineKeyHandler -Key Ctrl+l -ScriptBlock {
+  # Built-in version returns cleared screen after any input.
+  Clear-Host;
 }
 
 Clear-Host;

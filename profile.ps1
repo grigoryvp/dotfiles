@@ -1,5 +1,7 @@
-if (Get-InstalledModule | Where-Object Name -eq "posh-git") {
+try {
   Import-Module posh-git;
+}
+catch {
 }
 
 # For git to correctly show unicode files content
@@ -170,6 +172,11 @@ function Stop-Srv() {
 # Without this, returns cleared screen after any input.
 Set-PSReadlineKeyHandler -Key Ctrl+l -ScriptBlock {
   [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen();
+}
+
+# TODO: send running process to background.
+Set-PSReadlineKeyHandler -Key Ctrl+d -ScriptBlock {
+  Write-Host "Ctrl-D";
 }
 
 Clear-Host;

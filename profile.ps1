@@ -169,14 +169,45 @@ function Stop-Srv() {
   }
 }
 
+$promptMsg = $null;
+
+function prompt {
+  # Your non-prompt logic here
+  $prompt = "";
+  $prompt += Write-Prompt "[" -ForegroundColor ([ConsoleColor]::DarkGray);
+  if ($promptMsg) {
+    $color = ([ConsoleColor]::Green);
+    $prompt += Write-Prompt $promptMsg -ForegroundColor $color;
+  }
+  else {
+    $color = ([ConsoleColor]::DarkYellow);
+    $prompt += Write-Prompt "..." -ForegroundColor $color;
+  }
+  $prompt += Write-Prompt "] " -ForegroundColor ([ConsoleColor]::DarkGray);
+  if ($GitPromptScriptBlock) {
+    $prompt += & $GitPromptScriptBlock
+  }
+  return $prompt;
+}
+
+function Add-PromptMsg($msg) {
+  Set-Variable -Name "promptMsg" -Value $msg -Scope Global;
+  [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt();
+  $timer = New-Object System.Timers.Timer
+  $timer.AutoReset = $false
+  $timer.Interval = 1000
+  Register-ObjectEvent -InputObject $timer -EventName Elapsed -Action {
+    Set-Variable -Name "promptMsg" -Value $null -Scope Global;
+    [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt();
+  }
+  $timer.Enabled = $true
+}
+
 # Without this, returns cleared screen after any input.
 Set-PSReadlineKeyHandler -Key Ctrl+l -ScriptBlock {
   [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen();
 }
 
-# TODO: send running process to background.
 Set-PSReadlineKeyHandler -Key Ctrl+d -ScriptBlock {
-  Write-Host "Ctrl-D";
+  Add-PromptMsg "dbg";
 }
-
-Clear-Host;

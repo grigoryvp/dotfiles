@@ -132,6 +132,5 @@
   "breadcrumbs.enabled": true,
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
-  "telemetry.enableTelemetry": false,
-  "xi.lookupPath": "~/xi"
+  "telemetry.enableTelemetry": false
 }

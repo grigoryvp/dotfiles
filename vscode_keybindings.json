@@ -14,6 +14,9 @@
   "key": "ctrl+k d",
   "command": "workbench.view.debug"
 }, {
+  "key": "ctrl+k x",
+  "command": "extension.xi.lookup"
+}, {
   "key": "ctrl+w",
   "command": "workbench.action.closeActiveEditor"
 },

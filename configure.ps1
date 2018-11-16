@@ -28,7 +28,6 @@ class App {
       - Disable autostart in Task Manager
       - Make --full configuration
       - Add perfgraph toolbar
-      - Open %USERPROFILE%\Documents\PowerShell\default.code-workspace
       - Login Chromium
 "@;
   }

@@ -11,7 +11,7 @@ $env:PIPENV_VENV_IN_PROJECT = 1
 
 function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/Documents/PowerShell; }
-function cdx() { Set-Location ~/xi; }
+function cdx() { Set-Location ~/.xi; }
 function cdh() { Set-Location ~; }
 
 function gst() {

@@ -100,7 +100,7 @@
   "window.menuBarVisibility": "toggle",
   "window.zoomLevel": 0,
   "window.openFilesInNewWindow": "off",
-  "window.openFoldersInNewWindow": "on",
+  "window.openFoldersInNewWindow": "off",
   "window.newWindowDimensions": "maximized",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
@@ -124,7 +124,7 @@
   "editor.renderControlCharacters": false,
   "sync.removeExtensions": true,
   "sync.syncExtensions": true,
-  "workbench.startupEditor": "newUntitledFile",
+  "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
   "workbench.editor.labelFormat": "short",
   "workbench.activityBar.visible": false,
@@ -132,5 +132,6 @@
   "breadcrumbs.enabled": true,
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
-  "telemetry.enableTelemetry": false
+  "telemetry.enableTelemetry": false,
+  "xi.lookupPath": "~/Documents/PowerShell/xi"
 }

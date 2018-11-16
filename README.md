@@ -10,6 +10,7 @@ cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubuserconten
 
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
+* Install "7+ Taskbar Tweaker".
 
 ## License
 

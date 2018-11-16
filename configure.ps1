@@ -541,7 +541,7 @@ class App {
 
 
   _getXi() {
-    $dstDir = "$($this._cfgDir)\xi";
+    $dstDir = "$($env:USERPROFILE)\xi";
     if (Test-Path -Path $dstDir) { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;

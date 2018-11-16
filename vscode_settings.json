@@ -133,5 +133,5 @@
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
   "telemetry.enableTelemetry": false,
-  "xi.lookupPath": "~/Documents/PowerShell/xi"
+  "xi.lookupPath": "~/xi"
 }

@@ -16,6 +16,9 @@
 ;;    "del" as leader-shift-/ is not viable, it is detected as "skip recycle
 ;;    bin". Instead, leader-p is mapped to backspace, leader-shift-p to
 ;;    ctrl-backspace (delete word) and leader-p to "delete".
+;;  - DllCall("mouse_event", "UInt", 0x800, "UInt", 0, "UInt", 0, "UInt", 120)
+;;    for mouse wheel will not work, on modern Windows it was replaced with
+;;    SendInput.
 
 codepage = 65001 ; utf-8
 appLastLangHotkey := ""

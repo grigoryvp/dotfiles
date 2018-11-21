@@ -133,5 +133,6 @@
   "breadcrumbs.enabled": true,
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
+  "files.eol": "\n",
   "telemetry.enableTelemetry": false
 }

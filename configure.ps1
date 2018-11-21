@@ -581,6 +581,32 @@ class App {
       & code --install-extension EditorConfig.EditorConfig;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
+
+    $docCfgDir = "$($env:USERPROFILE)\Documents\.vscode";
+    if (-not (Test-Path -Path $docCfgDir)) {
+      New-Item -Path $docCfgDir -ItemType Directory | Out-Null;
+    }
+
+    $content = @'
+      {
+        "files.exclude": {
+          "My Music/": true,
+          "My Pictures": true,
+          "My Videos": true,
+          "PowerShell": true,
+          "WindowsPowerShell": true,
+          "desktop.ini": true,
+          ".vscode/": true
+        }
+      }
+'@;
+
+    New-Item `
+      -path $docCfgDir `
+      -Name "settings.json" `
+      -Value "$content" `
+      -ItemType File `
+      -Force | Out-Null;
   }
 }
 

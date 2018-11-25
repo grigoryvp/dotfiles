@@ -607,6 +607,9 @@ class App {
       -Value "$content" `
       -ItemType File `
       -Force | Out-Null;
+
+    ##  Exclude from 'ls'.
+    $(Get-Item -Force $docCfgDir).Attributes = 'Hidden';
   }
 }
 

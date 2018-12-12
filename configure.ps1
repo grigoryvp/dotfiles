@@ -386,8 +386,8 @@ class App {
     $filePath = "$bucketPath\telegram.json";
     $manifest = Get-Content $filePath | ConvertFrom-Json;
     $ROOT = "https://github.com/telegramdesktop/tdesktop/releases/download";
-    $URL = "$ROOT/v1.3.14/tportable.1.3.14.zip";
-    $H = "F26FF2ACF8293E6BB47B5BF3201B22E1E4F34C6361AF4BA3F010CB3FDD27FE6E";
+    $URL = "$ROOT/v1.5.1/tportable.1.5.1.zip";
+    $H = "81698DEFDA0E90F26608A7EBB128A76C77956556664594C657665F7CA2C33D17";
     $manifest.url = $URL;
     $manifest.hash = $H;
     $manifest | ConvertTo-Json > $filePath;

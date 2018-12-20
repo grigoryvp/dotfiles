@@ -1,5 +1,3 @@
-# TODO: named parameters everythere
-
 class App {
 
   #region Instance properties
@@ -386,8 +384,8 @@ class App {
     $filePath = "$bucketPath\telegram.json";
     $manifest = Get-Content $filePath | ConvertFrom-Json;
     $ROOT = "https://github.com/telegramdesktop/tdesktop/releases/download";
-    $URL = "$ROOT/v1.5.1/tportable.1.5.1.zip";
-    $H = "81698DEFDA0E90F26608A7EBB128A76C77956556664594C657665F7CA2C33D17";
+    $URL = "$ROOT/v1.5.2/tportable.1.5.2.zip";
+    $H = "43E8ACAA88356D6B7B8F5D3551DEBF2B20F55BEACDDE4D5492DA958B2FEF83DE";
     $manifest.url = $URL;
     $manifest.hash = $H;
     $manifest | ConvertTo-Json > $filePath;

@@ -4,10 +4,12 @@ try {
 catch {
 }
 
-# For git to correctly show unicode files content
+# For git to correctly show unicode files content.
 $env:LANG = "en_US.UTF-8";
-# Always install dependencies in .venv for pipenv
+# Always install dependencies in .venv for pipenv.
 $env:PIPENV_VENV_IN_PROJECT = 1
+# Disable lockfile generation for pipenv (much faster install).
+$env:PIPENV_SKIP_LOCK = 1
 
 function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/Documents/PowerShell; }

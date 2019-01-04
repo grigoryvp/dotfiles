@@ -367,12 +367,12 @@ class App {
     $filePath = "$bucketPath\7zip.json";
     $manifest = Get-Content $filePath | ConvertFrom-Json;
     $ROOT = "https://datapacket.dl.sourceforge.net/project/sevenzip/7-Zip";
-    $URL32 = "$ROOT/18.05/7z1805.msi";
-    $H32 = "C554238BEE18A03D736525E06D9258C9ECF7F64EAD7C6B0D1EB04DB2C0DE30D0";
+    $URL32 = "$ROOT/18.06/7z1806.msi";
+    $H32 = "E1E509FB1FC6C7B7C2F55B1831454084541EE0A6C0A3F67730CDC4CA6BDD443B";
     $manifest.architecture."32bit".url = $URL32;
     $manifest.architecture."32bit".hash = $H32;
-    $URL64 = "$ROOT/18.05/7z1805-x64.msi";
-    $H64 = "898C1CA0015183FE2BA7D55CACF0A1DEA35E873BF3F8090F362A6288C6EF08D7";
+    $URL64 = "$ROOT/18.06/7z1806-x64.msi";
+    $H64 = "F00E1588ED54DDF633D8652EB89D0A8F95BD80CCCFC3EED362D81927BEC05AA5";
     $manifest.architecture."64bit".url = $URL64;
     $manifest.architecture."64bit".hash = $H64;
     $manifest | ConvertTo-Json > $filePath;

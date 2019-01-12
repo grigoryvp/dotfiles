@@ -76,7 +76,7 @@ class App {
     $this._installGit();
     $this._addScoopBuckets();
     # Patch blocked Telegram URL.
-    $this._patchExtrasBucket();
+    # $this._patchExtrasBucket();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installApp("sudo");
@@ -125,6 +125,7 @@ class App {
       $this._installApp("sysinternals");
       # Need to restart terminal in order to apply env variables.
       $this._installApp("nodejs");
+      $this._installApp("rambox");
       $this._installApp("chromium");
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
@@ -133,7 +134,7 @@ class App {
       if (-not $this._hasCli("g")) {
         & npm i -g git-alias;
       }
-      $this._installApp("telegram");
+      # $this._installApp("telegram");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }

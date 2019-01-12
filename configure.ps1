@@ -83,6 +83,7 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
+    $this._installApp("hyper");
     $this._installApp("vscode");
     $this._configureVscode();
     $this._installApp("doublecmd");

@@ -97,6 +97,8 @@
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
   "editor.autoClosingQuotes": false,
+  "editor.fontFamily": "DejaVu Sans Code",
+  "editor.fontLigatures": true,
   "window.menuBarVisibility": "toggle",
   "window.zoomLevel": 0,
   "window.openFilesInNewWindow": "off",

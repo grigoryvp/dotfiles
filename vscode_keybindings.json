@@ -44,7 +44,16 @@
 },
 {
   "key": "ctrl+k s",
-  "command": "workbench.action.findInFiles",
+  "command": "workbench.action.findInFiles"
+},
+{
+  "key": "ctrl+k x",
+  "command": "extension.xi.lookup"
+},
+{
+  "key": "cmd-f",
+  "command": "extension.vim_ctrl+f",
+  "when": "editorTextFocus && vim.active"
 },
 {
   "key": "ctrl+]",
@@ -57,5 +66,5 @@
 {
   "key": "ctrl+k ctrl+o",
   "command": "workbench.action.files.openFile"
-},
+}
 ]

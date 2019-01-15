@@ -144,6 +144,18 @@
         },
   
         {
+          "from": {
+            "key_code": "slash",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "key_code": "delete_or_backspace", "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "type": "basic"
+        },
+  
+        {
           "type": "basic",
           "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
           "from": {

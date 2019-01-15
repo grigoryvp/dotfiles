@@ -1,346 +1,406 @@
 {
-"global": {
-  "check_for_updates_on_startup": true,
-  "show_in_menu_bar": true,
-  "show_profile_name_in_menu_bar": false
-},
-"profiles": [{
-  "devices": [{
-    "disable_built_in_keyboard_if_exists": false,
-    "fn_function_keys": [],
-    "identifiers": {
-      "is_keyboard": true,
-      "is_pointing_device": false,
-      "product_id": 636,
-      "vendor_id": 1452
-    },
-    "ignore": false,
-    "manipulate_caps_lock_led": true,
-    "simple_modifications": []
-  }],
-  "fn_function_keys": [],
-  "name": "Default profile",
-  "selected": true,
-  "simple_modifications": [{
-    "from": {"key_code": "tab"},
-    "to": {"key_code": "left_control"}
-  }, {
-    "from": {"key_code": "return_or_enter"},
-    "to": {"key_code": "right_control"}
-  }],
-  "virtual_hid_keyboard": {
-      "country_code": 0
+  "global": {
+    "check_for_updates_on_startup": true,
+    "show_in_menu_bar": true,
+    "show_profile_name_in_menu_bar": false
   },
-  "complex_modifications": {
-    "parameters": {
-      "basic.simultaneous_threshold_milliseconds": 50,
-      "basic.to_delayed_action_delay_milliseconds": 500,
-      "basic.to_if_alone_timeout_milliseconds": 1000,
-      "basic.to_if_held_down_threshold_milliseconds": 500
-    },
-    "rules": [{
-      "description": "general keyboard mods",
-      "manipulators": [
-      
-      {
-        "type": "basic",
-        "from": {"key_code": "caps_lock"},
-        "to": [{
-          "set_variable": {
-            "name": "_meta",
-            "value": 1
-          }
-        }],
-        "to_after_key_up": [{
-          "set_variable": {
-            "name": "_meta",
-            "value": 0
-          }
-        }]
+  "profiles": [{
+    "devices": [{
+      "disable_built_in_keyboard_if_exists": false,
+      "fn_function_keys": [],
+      "identifiers": {
+        "is_keyboard": true,
+        "is_pointing_device": false,
+        "product_id": 636,
+        "vendor_id": 1452
       },
-
-      {
-        "type": "basic",
-        "from": {
-          "key_code": "left_control",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{
-          "key_code": "left_control",
-          "lazy": true
-        }],
-        "to_if_alone": [{
-          "key_code": "tab"
-        }]
-      },
-
-      {
-        "description": "ctrl-enter; before next one",
-        "from": {
-          "key_code": "right_control",
-          "modifiers": {"mandatory": ["left_control"]}
-        },
-        "to": [{
-          "key_code": "return_or_enter",
-          "modifiers": ["left_control"]
-        }],
-        "type": "basic"
-      },
-
-      {
-        "type": "basic",
-        "from": {
-          "key_code": "right_control",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{
-          "key_code": "right_control",
-          "lazy": true
-        }],
-        "to_if_alone": [{
-          "key_code": "return_or_enter"
-        }]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "open_bracket",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "escape"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "close_bracket",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "tab", "modifiers": ["left_command"]}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "delete_or_backspace",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "q", "modifiers": ["left_command"]}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "p",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "delete_or_backspace"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "semicolon",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"pointing_button": "button1"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "quote",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"pointing_button": "button2"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "h",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "left_arrow"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "j",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "down_arrow"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "k",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "up_arrow"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "l",
-          "modifiers": {"optional": ["any"]}
-        },
-        "to": [{"key_code": "right_arrow"}]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "7"
-        },
-        "to": [{
-          "shell_command": "open '/Applications/Utilities/Terminal.app'"
-        }]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "8"
-        },
-        "to": [{
-          "shell_command": "open '/Applications/Visual Studio Code.app'"
-        }]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "9"
-        },
-        "to": [{
-          "shell_command": "open '/Applications/Safari.app'"
-        }]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "0"
-        },
-        "to": [{
-          "shell_command": "open '/Applications/Rambox.app'"
-        }]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "hyphen", "modifiers": {"mandatory": ["shift"]}
-        },
-        "to": [{
-          "shell_command": "open '/Applications/KeePassXC.app'"
-        }]
-      },
-
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "backslash"
-        },
-        "to": [{
-          "shell_command": "open '/Applications/Launchpad.app'"
-        }]
-      },
-    
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "4"
-        },
-        "to": [{
-          "shell_command": "/usr/local/bin/im-select com.apple.keylayout.ABC"
-        }]
-      },
-    
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "5"
-        },
-        "to": [{
-          "shell_command": "/usr/local/bin/im-select com.apple.keylayout.RussianWin"
-        }]
-      },
-    
-      {
-        "type": "basic",
-        "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
-        "from": {
-          "key_code": "6"
-        },
-        "to": [{
-          "shell_command": "/usr/local/bin/im-select com.apple.inputmethod.Kotoeri.Japanese"
-        }]
-      }
-    
-      ]
+      "ignore": false,
+      "manipulate_caps_lock_led": true,
+      "simple_modifications": []
+    }],
+    "fn_function_keys": [],
+    "name": "Default profile",
+    "selected": true,
+    "simple_modifications": [{
+      "from": {"key_code": "tab"},
+      "to": {"key_code": "left_control"}
     }, {
-      "description": "mac specific keyboard mods",
-      "manipulators": [
+      "from": {"key_code": "return_or_enter"},
+      "to": {"key_code": "right_control"}
+    }],
+    "virtual_hid_keyboard": {
+        "country_code": 0
+    },
+    "complex_modifications": {
+      "parameters": {
+        "basic.simultaneous_threshold_milliseconds": 50,
+        "basic.to_delayed_action_delay_milliseconds": 500,
+        "basic.to_if_alone_timeout_milliseconds": 1000,
+        "basic.to_if_held_down_threshold_milliseconds": 500
+      },
+      "rules": [{
+        "description": "general keyboard mods",
+        "manipulators": [
+        
+        {
+          "description": "Use caps lock as 'meta' key to trigger things",
+          "from": {"key_code": "caps_lock"},
+          "to": [{
+            "set_variable": {
+              "name": "_meta",
+              "value": 1
+            }
+          }],
+          "to_after_key_up": [{
+            "set_variable": {
+              "name": "_meta",
+              "value": 0
+            }
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_control",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "key_code": "left_control",
+            "lazy": true
+          }],
+          "to_if_alone": [{
+            "key_code": "tab"
+          }]
+        },
+  
+        {
+          "description": "ctrl-enter; before next one",
+          "from": {
+            "key_code": "right_control",
+            "modifiers": {"mandatory": ["left_control"]}
+          },
+          "to": [{
+            "key_code": "return_or_enter",
+            "modifiers": ["left_control"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_control",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "key_code": "right_control",
+            "lazy": true
+          }],
+          "to_if_alone": [{
+            "key_code": "return_or_enter"
+          }]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "open_bracket",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "escape"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "close_bracket",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "tab", "modifiers": ["left_command"]}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "delete_or_backspace",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "q", "modifiers": ["left_command"]}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "p",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "delete_or_backspace"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "semicolon",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"pointing_button": "button1"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "quote",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"pointing_button": "button2"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "h",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "left_arrow"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "j",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "down_arrow"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "k",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "up_arrow"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "l",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{"key_code": "right_arrow"}]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "7"
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Utilities/Terminal.app'"
+          }]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "8"
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Visual Studio Code.app'"
+          }]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "9"
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Safari.app'"
+          }]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "0"
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Rambox.app'"
+          }]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "hyphen", "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/Applications/KeePassXC.app'"
+          }]
+        },
+  
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "backslash"
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Launchpad.app'"
+          }]
+        },
       
-      {
-        "description": "control-w => command-w for mac-win consistency",
-        "from": {
-          "key_code": "w", "modifiers": {"mandatory": ["control"]}
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "4"
+          },
+          "to": [{
+            "shell_command": "/usr/local/bin/im-select com.apple.keylayout.ABC"
+          }]
         },
-        "to": [{
-          "key_code": "w", "modifiers": ["left_command"]
-        }],
-        "type": "basic"
-      },
-
-      {
-        "description": "control-t => command-t for mac-win consistency",
-        "from": {
-          "key_code": "t", "modifiers": {"mandatory": ["control"]}
+      
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "5"
+          },
+          "to": [{
+            "shell_command": "/usr/local/bin/im-select com.apple.keylayout.RussianWin"
+          }]
         },
-        "to": [{
-          "key_code": "t", "modifiers": ["left_command"]
-        }],
-        "type": "basic"
-      },
-
-      {
-        "description": "control-s-t => command-s-t for mac-win consistency",
-        "from": {
-          "key_code": "t", "modifiers": {"mandatory": ["control", "shift"]}
+      
+        {
+          "type": "basic",
+          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "from": {
+            "key_code": "6"
+          },
+          "to": [{
+            "shell_command": "/usr/local/bin/im-select com.apple.inputmethod.Kotoeri.Japanese"
+          }]
+        }
+      
+        ]
+      }, {
+        "description": "mac specific keyboard mods",
+        "manipulators": [
+        
+        {
+          "description": "control-w => command-w for mac-win consistency",
+          "from": {
+            "key_code": "w", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "w", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
         },
-        "to": [{
-          "key_code": "t", "modifiers": ["left_command", "shift"]
-        }],
-        "type": "basic"
-      }
-
-      ]
-    }]
-  }
-}]
+  
+        {
+          "description": "control-t => command-t for mac-win consistency",
+          "from": {
+            "key_code": "t", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "t", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-s-t => command-s-t for mac-win consistency",
+          "from": {
+            "key_code": "t",
+            "modifiers": {
+              "mandatory": ["right_control", "shift"]
+            }
+          },
+          "to": [{
+            "key_code": "t", "modifiers": ["left_command", "shift"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-c => command-c for mac-win consistency",
+          "from": {
+            "key_code": "c", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "c", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-v => command-v for mac-win consistency",
+          "from": {
+            "key_code": "v", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "v", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-s => command-s for mac-win consistency",
+          "from": {
+            "key_code": "s", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "s", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-a => command-a for mac-win consistency",
+          "from": {
+            "key_code": "a", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "a", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-f => command-f for mac-win consistency",
+          "from": {
+            "key_code": "f", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "f", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        }
+  
+        ]
+      }]
+    }
+  }]
 }
+  

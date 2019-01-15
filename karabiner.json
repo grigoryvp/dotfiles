@@ -282,6 +282,18 @@
         },
       
         {
+          "description": "notification center; requires w-s-| hotkey",
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "from": {
+            "key_code": "backslash", "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "backslash", "modifiers": ["shift", "command"]
+          }],
+          "type": "basic"
+        },
+      
+        {
           "type": "basic",
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {

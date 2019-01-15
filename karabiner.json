@@ -47,13 +47,13 @@
           "from": {"key_code": "caps_lock"},
           "to": [{
             "set_variable": {
-              "name": "_meta",
+              "name": "_m",
               "value": 1
             }
           }],
           "to_after_key_up": [{
             "set_variable": {
-              "name": "_meta",
+              "name": "_m",
               "value": 0
             }
           }],
@@ -105,7 +105,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "open_bracket",
             "modifiers": {"optional": ["any"]}
@@ -115,7 +115,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "close_bracket",
             "modifiers": {"optional": ["any"]}
@@ -125,7 +125,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "delete_or_backspace",
             "modifiers": {"optional": ["any"]}
@@ -135,7 +135,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "p",
             "modifiers": {"optional": ["any"]}
@@ -151,13 +151,13 @@
           "to": [{
             "key_code": "delete_or_backspace", "modifiers": ["left_command"]
           }],
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         },
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "semicolon",
             "modifiers": {"optional": ["any"]}
@@ -167,7 +167,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "quote",
             "modifiers": {"optional": ["any"]}
@@ -177,7 +177,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "h",
             "modifiers": {"optional": ["any"]}
@@ -187,7 +187,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "j",
             "modifiers": {"optional": ["any"]}
@@ -197,7 +197,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "k",
             "modifiers": {"optional": ["any"]}
@@ -207,7 +207,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "l",
             "modifiers": {"optional": ["any"]}
@@ -217,7 +217,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "7"
           },
@@ -228,7 +228,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "8"
           },
@@ -239,7 +239,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "9"
           },
@@ -250,7 +250,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "0"
           },
@@ -261,7 +261,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "hyphen", "modifiers": {"mandatory": ["shift"]}
           },
@@ -272,7 +272,7 @@
   
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "backslash"
           },
@@ -283,7 +283,7 @@
       
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "4"
           },
@@ -294,7 +294,7 @@
       
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "5"
           },
@@ -305,7 +305,7 @@
       
         {
           "type": "basic",
-          "conditions": [{"type": "variable_if", "name": "_meta", "value": 1}],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "from": {
             "key_code": "6"
           },

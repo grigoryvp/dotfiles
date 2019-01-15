@@ -396,11 +396,32 @@
             "key_code": "f", "modifiers": ["left_command"]
           }],
           "type": "basic"
-        }
+        },
   
+        {
+          "description": "control-b => command-b for mac-win consistency",
+          "from": {
+            "key_code": "b", "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "b", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+  
+        {
+          "description": "control-l => command-l for mac-win consistency",
+          "from": {
+            "key_code": "l", "modifiers": {"mandatory": ["left_control"]}
+          },
+          "to": [{
+            "key_code": "l", "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        }
+
         ]
       }]
     }
   }]
 }
-  

@@ -417,6 +417,12 @@
           "to": [{
             "key_code": "l", "modifiers": ["left_command"]
           }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.apple\\.Safari$"
+            ]
+          }],
           "type": "basic"
         }
 

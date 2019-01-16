@@ -53,6 +53,12 @@
               "value": 1
             }
           }],
+          "to_if_held_down": [{
+            "set_variable": {
+              "name": "_m",
+              "value": 1
+            }
+          }],
           "to_after_key_up": [{
             "set_variable": {
               "name": "_m",

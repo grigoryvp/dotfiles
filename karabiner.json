@@ -45,15 +45,11 @@
         {
           "description": "Use caps lock as 'meta' key to trigger things",
           "from": {
-            "key_code": "caps_lock"
+            "description": "'modifiers' so shift-caps do not trigger caps",
+            "key_code": "caps_lock",
+            "modifiers": {"optional": ["any"]}
           },
           "to": [{
-            "set_variable": {
-              "name": "_m",
-              "value": 1
-            }
-          }],
-          "to_if_held_down": [{
             "set_variable": {
               "name": "_m",
               "value": 1

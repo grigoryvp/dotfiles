@@ -571,6 +571,25 @@
         },
 
         {
+          "description": "control-k => command-k for mac-win consistency",
+          "from": {
+            "key_code": "k",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "k",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.apple\\.Safari$"
+            ]
+          }],
+          "type": "basic"
+        },
+
+        {
           "description": "control-l => command-l for mac-win consistency",
           "from": {
             "key_code": "l",

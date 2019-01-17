@@ -574,7 +574,7 @@
           "description": "control-k => command-k for mac-win consistency",
           "from": {
             "key_code": "k",
-            "modifiers": {"mandatory": ["right_control"]}
+            "modifiers": {"mandatory": ["left_control"]}
           },
           "to": [{
             "key_code": "k",

@@ -139,8 +139,7 @@
         {
           "description": "meta-delete for closing apps",
           "from": {
-            "key_code": "delete_or_backspace",
-            "modifiers": {"optional": ["any"]}
+            "key_code": "delete_or_backspace"
           },
           "to": [{
             "key_code": "q",

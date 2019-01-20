@@ -316,6 +316,18 @@
         },
 
         {
+          "description": "meta-s-equal for task manager",
+          "from": {
+            "key_code": "equal_sign", "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Trello.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "meta-| for launchpad",
           "from": {
             "key_code": "backslash"

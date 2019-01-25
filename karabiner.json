@@ -305,7 +305,8 @@
         {
           "description": "meta-s-hyphen for password manager",
           "from": {
-            "key_code": "hyphen", "modifiers": {"mandatory": ["shift"]}
+            "key_code": "hyphen",
+            "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
             "shell_command": "open '/Applications/KeePassXC.app'"
@@ -317,7 +318,8 @@
         {
           "description": "meta-s-equal for task manager",
           "from": {
-            "key_code": "equal_sign", "modifiers": {"mandatory": ["shift"]}
+            "key_code": "equal_sign",
+            "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
             "shell_command": "open '/Applications/Trello.app'"
@@ -635,6 +637,67 @@
               "^com\\.apple\\.Safari$"
             ]
           }],
+          "type": "basic"
+        }
+
+        ]
+      }, {
+        "description": "multi-key combinations",
+        "manipulators": [
+
+        {
+          "description": "meta-shift-y => command-shift-w",
+          "from": {
+            "key_code": "y",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "y",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+      
+        {
+          "description": "meta-shift-u => command-shift-u",
+          "from": {
+            "key_code": "u",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "u",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-i => command-shift-i",
+          "from": {
+            "key_code": "i",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "i",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-o => command-shift-o",
+          "from": {
+            "key_code": "o",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "o",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         }
 

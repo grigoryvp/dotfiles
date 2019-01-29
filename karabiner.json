@@ -662,7 +662,7 @@
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         },
-      
+
         {
           "description": "meta-shift-u => command-shift-u",
           "from": {
@@ -703,8 +703,63 @@
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
-        }
+        },
 
+        {
+          "description": "meta-shift-n => command-shift-n",
+          "from": {
+            "key_code": "n",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "n",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-m => command-shift-m",
+          "from": {
+            "key_code": "m",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "m",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-, => command-shift-,",
+          "from": {
+            "key_code": "comma",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "comma",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-. => command-shift-.",
+          "from": {
+            "key_code": "period",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "period",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        }
         ]
       }]
     }

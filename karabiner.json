@@ -284,7 +284,7 @@
             "key_code": "9"
           },
           "to": [{
-            "shell_command": "open '/Applications/Safari.app'"
+            "shell_command": "open '/Applications/Google Chrome.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -577,7 +577,8 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$"
+              "^com\\.apple\\.Safari$",
+              "^com\\.google\\.Chrome$"
             ]
           }],
           "type": "basic"
@@ -596,7 +597,8 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$"
+              "^com\\.apple\\.Safari$",
+              "^com\\.google\\.Chrome$"
             ]
           }],
           "type": "basic"
@@ -615,7 +617,8 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$"
+              "^com\\.apple\\.Safari$",
+              "^com\\.google\\.Chrome$"
             ]
           }],
           "type": "basic"
@@ -634,7 +637,8 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$"
+              "^com\\.apple\\.Safari$",
+              "^com\\.google\\.Chrome$"
             ]
           }],
           "type": "basic"

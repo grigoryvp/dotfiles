@@ -396,6 +396,26 @@
         "manipulators": [
 
         {
+          "description": "control-w min apps that close on last window",
+          "from": {
+            "key_code": "w",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "m",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.atlassian\\.trello$",
+              "^com\\.mucommander\\.muCommander$"
+            ]
+          }],
+          "type": "basic"
+        },
+
+        {
           "description": "control-w => command-w for mac-win consistency",
           "from": {
             "key_code": "w",

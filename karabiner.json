@@ -329,6 +329,31 @@
         },
 
         {
+          "description": "meta-s-8 for file manager",
+          "from": {
+            "key_code": "8",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/Applications/muCommander.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-s-0 for mail",
+          "from": {
+            "key_code": "0",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Mail.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+        {
           "description": "meta-| for launchpad",
           "from": {
             "key_code": "backslash"

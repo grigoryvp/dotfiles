@@ -506,6 +506,20 @@
         },
 
         {
+          "description": "control-meta-v => command-option-shift-v",
+          "from": {
+            "key_code": "v",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "v",
+            "modifiers": ["left_command", "left_option", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "control-v => command-v for mac-win consistency",
           "from": {
             "key_code": "v",

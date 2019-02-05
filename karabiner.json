@@ -585,6 +585,19 @@
         },
 
         {
+          "description": "control-y => command-y for mac-win consistency",
+          "from": {
+            "key_code": "y",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "y",
+            "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+
+        {
           "description": "control-1 => command-1 for mac-win consistency",
           "from": {
             "key_code": "1",

@@ -296,7 +296,7 @@
             "key_code": "0"
           },
           "to": [{
-            "shell_command": "open '/Applications/Telegram Desktop.app'"
+            "shell_command": "open /Applications/Telegram*.app"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

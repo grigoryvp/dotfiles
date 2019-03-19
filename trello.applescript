@@ -23,10 +23,10 @@ if foundWindow is not null
       perform action "AXRaise" of window foundWindow
     end tell
   end tell
-  tell window foundWindow of application "Safari" to set current tab to tab foundTab
-else
-  tell application "Safari"
-    set dst to "https://trello.com/b/PRTGVQEY/??"
-    make new document with properties {URL:dst}
+  tell window foundWindow of application "Safari"
+    set current tab to tab foundTab
   end tell
+else
+  set dst to "https://trello.com/b/PRTGVQEY/??"
+  tell application "Safari" to open location dst
 end if

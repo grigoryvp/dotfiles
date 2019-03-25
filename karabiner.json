@@ -152,8 +152,7 @@
         {
           "description": "meta-p for backspace",
           "from": {
-            "key_code": "p",
-            "modifiers": {"optional": ["any"]}
+            "key_code": "p"
           },
           "to": [{
             "key_code": "delete_or_backspace"
@@ -163,10 +162,10 @@
         },
 
         {
-          "description": "meta-slash for deleting things",
+          "description": "meta-shift-p for deleting things",
           "from": {
-            "key_code": "slash",
-            "modifiers": {"optional": ["any"]}
+            "key_code": "p",
+            "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
             "key_code": "delete_or_backspace",
@@ -827,6 +826,20 @@
           },
           "to": [{
             "key_code": "period",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-slash => command-shift-slash",
+          "from": {
+            "key_code": "slash",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "slash",
             "modifiers": ["left_command", "left_shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],

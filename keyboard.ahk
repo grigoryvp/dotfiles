@@ -19,6 +19,10 @@
 ;;  - DllCall("mouse_event", "UInt", 0x800, "UInt", 0, "UInt", 0, "UInt", 120)
 ;;    for mouse wheel will not work, on modern Windows it was replaced with
 ;;    SendInput.
+;;  - It's better to remap 'caps lock' to some not-used keys (like F20)
+;;    using Windows registry and use that resulting key. Such trick prevents
+;;    caps lock from triggering in situations where keyboard hook is not
+;;    working (UAC, lock screen, "Grim Dawn" etc).
 
 codepage = 65001 ; utf-8
 appLastLangHotkey := ""
@@ -26,9 +30,6 @@ appLeaderDownTick = 0
 appLeaderUpTick = 0
 appEnterDownTick = 0
 appEnterUpTick = 0
-
-;;  "Leader key", only works in combinations, doesn't work on it's own
-SetCapsLockState, alwaysoff
 
 if !A_IsAdmin {
   Run *RunAs "%A_ScriptFullPath%"
@@ -51,11 +52,11 @@ $rctrl::
   if (appReturnUpTick >= appReturnDownTick) {
     appReturnDownTick = %A_TickCount%
   }
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     send {mbutton down}
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
-    while (GetKeyState("capslock", "P") && GetKeyState("enter", "P")) {
+    while (GetKeyState("f20", "P") && GetKeyState("enter", "P")) {
       Sleep 10
     }
     send {mbutton up}
@@ -91,7 +92,7 @@ $^lctrl up:: send ^{tab}
 ;; ===========================================================================
 
 *$vk34::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     appLastLangHotkey := "4"
     send ^+4
   }
@@ -101,7 +102,7 @@ $^lctrl up:: send ^{tab}
   return
 
 *$vk35::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     appLastLangHotkey := "5"
     send ^+5
   }
@@ -111,7 +112,7 @@ $^lctrl up:: send ^{tab}
   return
 
 *$vk36::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (appLastLangHotkey = "6") {
       ;;  Switch between Hiragana and Latin input for Japanese keyboard
       send !``
@@ -131,7 +132,7 @@ $^lctrl up:: send ^{tab}
 ;; ===========================================================================
 
 $[::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     send {esc}
   }
   else {
@@ -140,7 +141,7 @@ $[::
   return
 
 *$/::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       send +{delete}
     }
@@ -154,7 +155,7 @@ $[::
   return
 
 $]::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     send !{tab}
   }
   else {
@@ -163,7 +164,7 @@ $]::
   return
 
 *$\::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       send #a
     }
@@ -177,7 +178,7 @@ $]::
   return
 
 *$7::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     send #1
   }
   else {
@@ -186,7 +187,7 @@ $]::
   return
 
 *$8::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     ;;  Run under non-elevated user
     send #2
   }
@@ -196,7 +197,7 @@ $]::
   return
 
 *$9::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     ;;  Run under non-elevated user
     send #3
   }
@@ -206,7 +207,7 @@ $]::
   return
 
 *$0::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     ;;  Run under non-elevated user
     send #4
   }
@@ -216,7 +217,7 @@ $]::
   return
 
 *$-::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  Restore from tray if "allow only one instance" option is set"
       Run KeePass.exe,, hide
@@ -233,7 +234,7 @@ $]::
   return
 
 *$=::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       send #e
     }
@@ -248,7 +249,7 @@ $]::
   return
 
 $backspace::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     wingetactivetitle, title
     if (instr(title, "KeePass")) {
       winminimize A
@@ -263,7 +264,7 @@ $backspace::
   return
 
 $home::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     winmaximize A
   }
   else {
@@ -272,7 +273,7 @@ $home::
   return
 
 *$h::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       SendInput {wheelleft}
     }
@@ -288,7 +289,7 @@ $home::
   }
   return
 *$j::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       Send {wheeldown}
     }
@@ -304,7 +305,7 @@ $home::
   }
   return
 *$k::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       Send {wheelup}
     }
@@ -320,7 +321,7 @@ $home::
   }
   return
 *$l::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       SendInput {wheelright}
     }
@@ -337,7 +338,7 @@ $home::
   return
 
 *$p::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       send ^{backspace}
     }
@@ -362,37 +363,37 @@ $#tab::
 ;; Left and right mouse buttons
 ;; ===========================================================================
 
-$capslock::
+$f20::
   ;;  First press since release? (beware repetition)
   if (appLeaderUpTick >= appLeaderDownTick) {
     appLeaderDownTick = %A_TickCount%
   }
   ;;  For games like WoW right buttons hold are used for movement, so
-  ;;  sometimescaps lock is released while holding tick or semicolon.
+  ;;  sometimes caps lock is released while holding tick or semicolon.
   ;;  Holding caps lock again should return button hold.
   if (GetKeyState(";", "P")) {
     send {lbutton down}
-    while (GetKeyState("capslock", "P") && GetKeyState(";", "P")) {
+    while (GetKeyState("f20", "P") && GetKeyState(";", "P")) {
       Sleep 10
     }
     send {lbutton up}
   }
   else if (GetKeyState("'", "P")) {
     send {rbutton down}
-    while (GetKeyState("capslock", "P") && GetKeyState("'", "P")) {
+    while (GetKeyState("f20", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }
     send {rbutton up}
   }
   return
 
-$capslock up::
+$f20 up::
   appLeaderUpTick = %A_TickCount%
   return
 
 ;;  caps + ; is left mouse button
 *$`;::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
       send ^+{lbutton down}
     }
@@ -411,7 +412,7 @@ $capslock up::
 
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
-    while (GetKeyState("capslock", "P") && GetKeyState(";", "P")) {
+    while (GetKeyState("f20", "P") && GetKeyState(";", "P")) {
       Sleep 10
     }
 
@@ -441,11 +442,11 @@ $capslock up::
 
 ;;  caps + ' is right mouse button
 *$'::
-  if (GetKeyState("capslock", "P")) {
+  if (GetKeyState("f20", "P")) {
     send {rbutton down}
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
-    while (GetKeyState("capslock", "P") && GetKeyState("'", "P")) {
+    while (GetKeyState("f20", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }
     send {rbutton up}

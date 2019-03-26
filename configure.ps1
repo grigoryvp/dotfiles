@@ -27,6 +27,7 @@ class App {
       - Make --full configuration
       - Add perfgraph toolbar
       - Login Chromium
+      - Add 'caps lock' to 'F20' remap using 'sharpkeys' and reboot
 "@;
   }
 
@@ -83,6 +84,7 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("keepass");
     $this._installApp("kpscript");
+    $this._installApp("sharpkeys");
     $this._installApp("hyper");
     $this._installApp("vscode");
     $this._configureVscode();

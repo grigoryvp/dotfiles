@@ -349,6 +349,12 @@ $home::
   }
   return
 
+!`::
+  path := A_MyDocuments "\PowerShell\keyboard_compat.ahk"
+  run autohotkey.exe %path%,, Hide
+  Suspend
+  return
+
 ;;  Some keyboards emulate "edge swipes" by sending these key combonations
 $#a::
   return

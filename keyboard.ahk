@@ -38,8 +38,6 @@ if !A_IsAdmin {
 
 ;;  No warning if key is hold for 2 seconds (HotkeyInterval)
 #MaxHotkeysPerInterval 500
-;;  Better keyboard handling at the cost of +0.5mb of memory.
-#InstallKeybdHook
 
 #inputlevel 1
 tab::lctrl

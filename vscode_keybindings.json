@@ -23,12 +23,12 @@
   "when": "editorTextFocus"
 },
 {
-  "key": "ctrl+'",
+  "key": "ctrl+;",
   "command": "workbench.action.debug.stepOver",
   "when": "inDebugMode"
 },
 {
-  "key": "ctrl+;",
+  "key": "ctrl+'",
   "command": "workbench.action.debug.stepInto",
   "when": "inDebugMode"
 },

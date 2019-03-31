@@ -13,7 +13,14 @@ Follow instructions for post-configuration.
 ## OSX
 
 ```ps1
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew cask install keepassxc
+brew install python node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
+keepassxc-cli show ~/Documents/PowerShell/passwords.kdbx github
+# Add ssh to github
+rm -rf ~/.box-cfg
+git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
 ```
 
 ## Todo

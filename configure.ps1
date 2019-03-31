@@ -220,13 +220,13 @@ class App {
 
     # Have keys to clone with SSH?
     if (Test-Path -Path .ssh\.uploaded_to_github) {
-      $uri = "git@github.com:grigoryvp/my-win-box-cfg.git";
+      $uri = "git@github.com:grigoryvp/box-cfg.git";
     }
     else {
       # Already cloned without keys?
       if (Test-Path -Path $gitCfgFile) { return; }
       # Clone with HTTPS
-      $uri = "https://github.com/grigoryvp/my-win-box-cfg.git";
+      $uri = "https://github.com/grigoryvp/box-cfg.git";
     }
 
     & git clone $uri "$($this._cfgDir).tmp";

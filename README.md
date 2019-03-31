@@ -1,9 +1,21 @@
-# My windows box automatic configuration
+# My windows and OSX box automatic configuration
+
+## Windows
 
 Install PowerShell Core from [releases](https://github.com/PowerShell/PowerShell/releases) page.
 
 ```ps1
-cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/my-win-box-cfg/master/configure.ps1; & .\configure.ps1
+cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1; & .\configure.ps1
+```
+
+Follow instructions for post-configuration.
+
+## OSX
+
+Install PowerShell Core from [releases](https://github.com/PowerShell/PowerShell/releases) page.
+
+```ps1
+cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1; & .\configure.ps1
 ```
 
 ## Todo

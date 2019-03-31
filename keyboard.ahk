@@ -350,7 +350,7 @@ $home::
   return
 
 !`::
-  path := A_MyDocuments "\PowerShell\keyboard_compat.ahk"
+  path := A_MyDocuments "\..\box-cfg\keyboard_compat.ahk"
   run autohotkey.exe %path%,, Hide
   Suspend
   return

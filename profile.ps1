@@ -12,7 +12,7 @@ $env:PIPENV_VENV_IN_PROJECT = 1
 $env:PIPENV_SKIP_LOCK = 1
 
 function cdd() { Set-Location ~/Documents; }
-function cdc() { Set-Location ~/Documents/PowerShell; }
+function cdc() { Set-Location ~/box-cfg; }
 function cdx() { Set-Location ~/.xi; }
 function cdh() { Set-Location ~; }
 
@@ -51,7 +51,7 @@ function gst() {
 function ahk() {
   Start-Process `
     autohotkey.exe `
-    -ArgumentList "$($env:USERPROFILE)\Documents\PowerShell\keyboard.ahk" `
+    -ArgumentList "$($env:USERPROFILE)\box-cfg\keyboard.ahk" `
     -WindowStyle Hidden `
     -Verb RunAs;
 }

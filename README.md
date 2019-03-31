@@ -12,10 +12,8 @@ Follow instructions for post-configuration.
 
 ## OSX
 
-Install PowerShell Core from [releases](https://github.com/PowerShell/PowerShell/releases) page.
-
 ```ps1
-cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1; & .\configure.ps1
+git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 ```
 
 ## Todo

@@ -7,7 +7,7 @@
 	<Application>
 		<LastUpdateCheck>2017-06-15T04:15:35Z</LastUpdateCheck>
 		<LastUsedFile>
-			<Path>..\..\..\..\box-cfg\passwords.kdbx</Path>
+			<Path>..\..\..\..\.box-cfg\passwords.kdbx</Path>
 			<CredProtMode>Obf</CredProtMode>
 			<CredSaveMode>NoSave</CredSaveMode>
 		</LastUsedFile>
@@ -140,7 +140,7 @@
 		</SearchParameters>
 		<KeySources>
 			<Association>
-				<DatabasePath>..\..\..\..\box-cfg\passwords.kdbx</DatabasePath>
+				<DatabasePath>..\..\..\..\.box-cfg\passwords.kdbx</DatabasePath>
 				<Password>true</Password>
 			</Association>
 		</KeySources>

@@ -321,7 +321,7 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "/usr/bin/osascript ~/box-cfg/trello.applescript"
+            "shell_command": "/usr/bin/osascript ~/.box-cfg/trello.applescript"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

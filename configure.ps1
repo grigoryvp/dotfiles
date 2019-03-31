@@ -48,7 +48,7 @@ class App {
     Set-Location -Path $env:USERPROFILE
 
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = "$($env:USERPROFILE)\box-cfg";
+    $this._cfgDir = "$($env:USERPROFILE)\.box-cfg";
     if (-not (Test-Path -Path $this._cfgDir)) {
       New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
     }

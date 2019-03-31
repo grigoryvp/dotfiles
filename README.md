@@ -14,10 +14,10 @@ Follow instructions for post-configuration.
 
 ```ps1
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew cask install keepassxc spectacle karabiner-elements slimbatterymonitor menumeters itsycal short-menu chatty vk-messenger telegram transmission visual-studio-code powershell obs nordvpn mucommander
-brew install python node exa
+brew cask install keepassxc spectacle karabiner-elements slimbatterymonitor yujitach-menumeters itsycal short-menu chatty vk-messenger telegram transmission visual-studio-code powershell obs nordvpn mucommander
+brew install exa python node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
-keepassxc-cli show ~/Documents/PowerShell/passwords.kdbx github
+keepassxc-cli show ~/.box-cfg/passwords.kdbx github
 # Add ssh to github
 rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg

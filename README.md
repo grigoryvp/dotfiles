@@ -14,13 +14,22 @@ Follow instructions for post-configuration.
 
 ```ps1
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew cask install keepassxc
-brew install python node
+brew cask install keepassxc spectacle karabiner-elements slimbatterymonitor menumeters itsycal short-menu chatty vk-messenger telegram transmission visual-studio-code powershell obs nordvpn mucommander
+brew install python node exa
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show ~/Documents/PowerShell/passwords.kdbx github
 # Add ssh to github
 rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
+git clone git@github.com:grigoryvp/xi.git ~/.xi
+# Menu bar, from right to left:
+# spectacle, wifi, bt, clock, itsycal, short-menu, slimbatterymonitor, menumeters
+curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+ln ~/.box-cfg/shell/.bashrc ~/.bashrc
+ln ~/.box-cfg/shell/.screenrc ~/.screenrc
+ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
+cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 ```
 
 ## Todo

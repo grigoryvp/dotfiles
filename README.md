@@ -26,6 +26,7 @@ git clone git@github.com:grigoryvp/xi.git ~/.xi
 # spectacle, wifi, bt, clock, itsycal, short-menu, slimbatterymonitor, menumeters
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 ln ~/.box-cfg/shell/.bashrc ~/.bashrc
+printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json

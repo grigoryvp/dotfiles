@@ -14,7 +14,7 @@ Follow instructions for post-configuration.
 
 ```ps1
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew cask install keepassxc karabiner-elements visual-studio-code spectacle slimbatterymonitor yujitach-menumeters itsycal short-menu chatty vk-messenger telegram transmission powershell obs nordvpn mucommander
+brew cask install keepassxc karabiner-elements visual-studio-code spectacle slimbatterymonitor yujitach-menumeters itsycal short-menu chatty vk-messenger telegram transmission powershell obs mucommander
 brew install exa python node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show ~/.box-cfg/passwords.kdbx github

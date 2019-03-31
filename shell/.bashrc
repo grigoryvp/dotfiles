@@ -216,7 +216,7 @@ fi
 alias cdh="cd ${HOME}"
 alias cdhh="cd ${HHOME}"
 alias cdd="cd ${HHOME}/Documents"
-alias cdp="cd ${HHOME}/Documents/PowerShell"
+alias cdc="cd ${HHOME}/.box-cfg"
 alias cdx="cd ${HHOME}/.xi"
 
 ## docker aliases
@@ -238,8 +238,8 @@ alias dsl='docker service ls'
 alias dsi='docker service inspect --pretty'
 
 ll() {
-  if test -e ~/.cargo/bin/exa; then
-    exa \
+  if test -e /usr/local/bin/exa; then
+    /usr/local/bin/exa \
       -l \
       -a \
       --group-directories-first \

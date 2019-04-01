@@ -14,7 +14,8 @@ Follow instructions for post-configuration.
 
 ```ps1
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code slimbatterymonitor yujitach-menumeters itsycal chatty vk-messenger transmission powershell obs mucommander
+brew update --verbose
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code yujitach-menumeters itsycal transmission powershell obs mucommander
 brew install exa python node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show ~/.box-cfg/passwords.kdbx github
@@ -23,7 +24,7 @@ rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
 git clone git@github.com:grigoryvp/xi.git ~/.xi
 # Menu bar, from right to left:
-# spectacle, wifi, bt, clock, itsycal, short menu, slimbatterymonitor, menumeters
+# spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 ln ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
@@ -32,7 +33,7 @@ ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/k
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-# Install Telegram (Not "Telegram Desktop"), Short Menu, XCode, Affinity from app store.
+# Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Install tampermonkey for Safari.
 # Install https://github.com/SSNikolaevich/DejaVuSansCode/releases
 # Set max key repeat and min delay at "Preferences/Keyboard"

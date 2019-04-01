@@ -31,21 +31,16 @@ ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
-<<<<<<< HEAD
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-# Install Telegram, Short Menu, XCode, Affinity from app store.
+# Install Telegram (Not "Telegram Desktop"), Short Menu, XCode, Affinity from app store.
 # Install tampermonkey for Safari.
+# Install https://github.com/SSNikolaevich/DejaVuSansCode/releases
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
 # Disable corrections in "Preferences/Keyboard/Text".
 # Add languages in "Preferences/Keyboard/Input Process".
 # Configure spectacle hotkeys.
-=======
-# Install https://github.com/SSNikolaevich/DejaVuSansCode/releases
-# Install tampermonkey for safari.
-# Install from store: Telegram (Not "Telegram Desktop"!), XCode
->>>>>>> ab867c67b238d66bad84bbdf5fac4d14de38347a
 ```
 
 ## Todo

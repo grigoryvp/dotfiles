@@ -16,7 +16,8 @@ Follow instructions for post-configuration.
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update --verbose
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code yujitach-menumeters itsycal transmission powershell obs mucommander
-brew install exa python node
+brew install exa python node michaeldfallen/formula/git-radar
+npm i -g git-alias
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show ~/.box-cfg/passwords.kdbx github
 # Add ssh to github

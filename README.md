@@ -27,6 +27,9 @@ git clone git@github.com:grigoryvp/xi.git ~/.xi
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+curl -Ls https://raw.githubusercontent.com/dracula/terminal-app/master/Dracula.terminal > ~/Downloads/Dracula.terminal
+open ~/Downloads/Dracula.terminal
+rm -rf ~/Downloads/Dracula.terminal
 ln ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc

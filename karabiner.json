@@ -1,7 +1,7 @@
 {
   "global": {
     "check_for_updates_on_startup": true,
-    "show_in_menu_bar": true,
+    "show_in_menu_bar": false,
     "show_profile_name_in_menu_bar": false
   },
   "profiles": [{
@@ -202,6 +202,19 @@
         },
 
         {
+          "description": "meta-shift-h for home (vim-like)",
+          "from": {
+            "key_code": "h",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "home"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "meta-h for left arrow (vim-like)",
           "from": {
             "key_code": "h",
@@ -209,6 +222,19 @@
           },
           "to": [{
             "key_code": "left_arrow"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-j for page down (vim-like)",
+          "from": {
+            "key_code": "j",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "page_down"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -228,6 +254,19 @@
         },
 
         {
+          "description": "meta-shift-k for page up (vim-like)",
+          "from": {
+            "key_code": "k",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "page_up"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "meta-k for up arrow (vim-like)",
           "from": {
             "key_code": "k",
@@ -235,6 +274,19 @@
           },
           "to": [{
             "key_code": "up_arrow"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-shift-l for end (vim-like)",
+          "from": {
+            "key_code": "l",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "end"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

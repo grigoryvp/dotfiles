@@ -14,7 +14,7 @@ Follow instructions for post-configuration.
 
 ```ps1
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew cask install keepassxc spectacle karabiner-elements slimbatterymonitor yujitach-menumeters itsycal chatty vk-messenger transmission visual-studio-code powershell obs nordvpn mucommander
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code slimbatterymonitor yujitach-menumeters itsycal chatty vk-messenger transmission powershell obs mucommander
 brew install exa python node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show ~/.box-cfg/passwords.kdbx github
@@ -26,10 +26,12 @@ git clone git@github.com:grigoryvp/xi.git ~/.xi
 # spectacle, wifi, bt, clock, itsycal, short menu, slimbatterymonitor, menumeters
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 ln ~/.box-cfg/shell/.bashrc ~/.bashrc
+printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
+<<<<<<< HEAD
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install Telegram, Short Menu, XCode, Affinity from app store.
 # Install tampermonkey for Safari.
@@ -39,6 +41,11 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Disable corrections in "Preferences/Keyboard/Text".
 # Add languages in "Preferences/Keyboard/Input Process".
 # Configure spectacle hotkeys.
+=======
+# Install https://github.com/SSNikolaevich/DejaVuSansCode/releases
+# Install tampermonkey for safari.
+# Install from store: Telegram (Not "Telegram Desktop"!), XCode
+>>>>>>> ab867c67b238d66bad84bbdf5fac4d14de38347a
 ```
 
 ## Todo

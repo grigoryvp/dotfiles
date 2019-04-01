@@ -30,7 +30,14 @@ ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
-# Install tampermonkey for safari.
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+# Install tampermonkey for Safari.
+# Set max key repeat and min delay at "Preferences/Keyboard"
+# Set notification center shortcut in "Preferences/Keyboard/Shortcuts".
+# Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
+# Disable corrections in "Preferences/Keyboard/Text".
+# Add languages in "Preferences/Keyboard/Input Process".
+# Configure spectacle hotkeys.
 ```
 
 ## Todo

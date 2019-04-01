@@ -44,7 +44,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Set notification center shortcut in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
 # Disable corrections in "Preferences/Keyboard/Text".
-# Add languages in "Preferences/Keyboard/Input Process".
+# Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure spectacle hotkeys.
 ```
 

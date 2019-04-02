@@ -418,7 +418,7 @@ class App {
       scoop bucket add extras;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
-    # Required to install DejaVu Sans Mono
+    # Required to install Monoid font.
     if (-not @(scoop bucket list).Contains("nerd-fonts")) {
       scoop bucket add nerd-fonts;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -528,9 +528,9 @@ class App {
 
 
   _installFonts() {
-    $fileName = "DejaVu Sans Mono Nerd Font Complete Windows Compatible.ttf";
+    $fileName = "Monoid Regular Nerd Font Complete Mono Windows Compatible.ttf";
     if (Test-Path -Path "$env:windir\Fonts\$fileName") { return; }
-    $appName = "DejaVuSansMono-NF";
+    $appName = "Monoid-NF";
     if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.
       & scoop uninstall $appName;

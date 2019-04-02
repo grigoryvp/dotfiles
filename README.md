@@ -15,7 +15,9 @@ Follow instructions for post-configuration.
 ```ps1
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update --verbose
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code yujitach-menumeters itsycal transmission powershell obs mucommander
+brew tap homebrew/cask-fonts
+brew cask install font-monoid
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code yujitach-menumeters itsycal transmission powershell obs mucommander vlc
 brew install exa python node michaeldfallen/formula/git-radar
 npm i -g git-alias
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
@@ -39,7 +41,6 @@ cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Install tampermonkey for Safari.
-# Install https://github.com/SSNikolaevich/DejaVuSansCode/releases
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".

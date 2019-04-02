@@ -16,8 +16,7 @@ Follow instructions for post-configuration.
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install font-monoid
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code yujitach-menumeters itsycal transmission powershell obs mucommander vlc
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid yujitach-menumeters itsycal transmission powershell obs mucommander vlc zoomus
 brew install exa python node michaeldfallen/formula/git-radar
 npm i -g git-alias
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg

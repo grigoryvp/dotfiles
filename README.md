@@ -46,6 +46,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Disable corrections in "Preferences/Keyboard/Text".
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure spectacle hotkeys.
+# "iTunes/Preferences/Devices/Prevent from syncing automatically"
 ```
 
 ## Todo

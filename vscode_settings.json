@@ -112,7 +112,6 @@
   "git.confirmSync": false,
   "java.errors.incompleteClasspath.severity": "ignore",
   "extensions.ignoreRecommendations": false,
-  "workbench.colorTheme": "grigoryvp memory theme",
   "sync.gist": "51458ec2f3c3af9a22574bd623487f84",
   "sync.lastUpload": "2018-08-20T06:09:04.447Z",
   "sync.autoDownload": false,
@@ -137,5 +136,6 @@
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
   "files.eol": "\n",
-  "telemetry.enableTelemetry": false
+  "telemetry.enableTelemetry": false,
+  "workbench.colorTheme": "grigoryvp memory theme"
 }

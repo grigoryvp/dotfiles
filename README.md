@@ -40,6 +40,8 @@ cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 xcode-select --install
 export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
+pyenv init
+echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
 pyenv install 3.7.3
 pyenv global 3.7.3
 rbenv init

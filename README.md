@@ -17,7 +17,7 @@ Follow instructions for post-configuration.
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid yujitach-menumeters itsycal transmission powershell obs mucommander vlc zoomus
-brew install exa python node michaeldfallen/formula/git-radar
+brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
 npm i -g git-alias
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show ~/.box-cfg/passwords.kdbx github
@@ -38,6 +38,14 @@ ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/k
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+xcode-select --install
+export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
+pyenv install 3.7.3
+pyenv global 3.7.3
+rbenv init
+echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+rbenv install 2.6.2
+rbenv global 2.6.2
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Install tampermonkey for Safari.
 # Set max key repeat and min delay at "Preferences/Keyboard"

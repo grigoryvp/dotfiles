@@ -237,6 +237,9 @@ di() {
 alias dsl='docker service ls'
 alias dsi='docker service inspect --pretty'
 
+# Always run tox in quiet mode, it spams a lot of useless info by default.
+alias tox='tox -q'
+
 ll() {
   if test -e /usr/local/bin/exa; then
     /usr/local/bin/exa \

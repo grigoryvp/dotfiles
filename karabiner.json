@@ -393,6 +393,19 @@
         },
 
         {
+          "description": "meta-s-9 for calendar",
+          "from": {
+            "key_code": "9",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/Applications/Calendar.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "meta-s-0 for mail",
           "from": {
             "key_code": "0",

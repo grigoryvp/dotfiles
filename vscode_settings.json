@@ -137,5 +137,6 @@
   "html.autoClosingTags": false,
   "files.eol": "\n",
   "telemetry.enableTelemetry": false,
-  "workbench.colorTheme": "grigoryvp memory theme"
+  "workbench.colorTheme": "grigoryvp memory theme",
+  "debug.node.autoAttach": "on"
 }

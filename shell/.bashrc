@@ -4,14 +4,14 @@
 ##  Colors, used by this init script
 ##  echo -e "${K}K${W}W${R}R${G}G${B}B${Y}Y${M}M${C}C${N}N"
 K='\e[30;47m'
-W='\e[37;40m'
-R='\e[31;40m'
-G='\e[32;40m'
-B='\e[34;40m'
-Y='\e[33;40m'
-M='\e[35;40m'
-C='\e[36;40m'
-N='\033[0m'
+W='\e[37;49m'
+R='\e[31;49m'
+G='\e[32;49m'
+B='\e[34;49m'
+Y='\e[33;49m'
+M='\e[35;49m'
+C='\e[36;49m'
+N='\e[0m'
 
 ##  Bash colors should be escaped for correct length calculation:
 BK="\\[${K}\\]"
@@ -299,7 +299,7 @@ ll() {
 
 psupdate() {
   export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
-  export PS1="${BW}\\W "
+  export PS1="${BN}${BW}\\W "
   if test -n "$PSGITON"; then
     if test -d ~/.git-radar || test -e /usr/local/bin/git-radar; then
       export PS1="${PS1}${BG}${RADAR_CMD} "

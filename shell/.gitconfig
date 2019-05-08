@@ -1,0 +1,17 @@
+[user]
+name = Grigory Petrov
+email = grigory.v.p@gmail.com
+
+[core]
+editor = code
+autocrlf = input
+safecrlf = false
+
+[format]
+pretty = oneline
+
+[push]
+default = simple
+
+[pull]
+rebase = true

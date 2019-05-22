@@ -778,6 +778,25 @@
             ]
           }],
           "type": "basic"
+        },
+
+        {
+          "description": "control-l => command-k for terminal clear",
+          "from": {
+            "key_code": "l",
+            "modifiers": {"mandatory": ["left_control"]}
+          },
+          "to": [{
+            "key_code": "k",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.apple\\.Terminal$"
+            ]
+          }],
+          "type": "basic"
         }
 
         ]

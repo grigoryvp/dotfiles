@@ -311,7 +311,8 @@
             "key_code": "7"
           },
           "to": [{
-            "shell_command": "open '/Applications/Utilities/Terminal.app'"
+            "key_code": "7",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -323,7 +324,8 @@
             "key_code": "8"
           },
           "to": [{
-            "shell_command": "open '/Applications/Visual Studio Code.app'"
+            "key_code": "8",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -335,7 +337,8 @@
             "key_code": "9"
           },
           "to": [{
-            "shell_command": "open '/Applications/Safari.app'"
+            "key_code": "9",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -347,7 +350,8 @@
             "key_code": "0"
           },
           "to": [{
-            "shell_command": "open /Applications/Telegram*.app"
+            "key_code": "0",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -360,7 +364,8 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open '/Applications/KeePassXC.app'"
+            "key_code": "hyphen",
+            "modifiers": ["command", "option", "control", "shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -373,7 +378,8 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "/usr/bin/osascript ~/.box-cfg/trello.applescript"
+            "key_code": "equal_sign",
+            "modifiers": ["command", "option", "control", "shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -386,7 +392,8 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open ~"
+            "key_code": "8",
+            "modifiers": ["command", "option", "control", "shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -399,7 +406,8 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open '/Applications/Calendar.app'"
+            "key_code": "9",
+            "modifiers": ["command", "option", "control", "shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -412,7 +420,8 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open '/Applications/Mail.app'"
+            "key_code": "0",
+            "modifiers": ["command", "option", "control", "shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -423,7 +432,8 @@
             "key_code": "backslash"
           },
           "to": [{
-            "shell_command": "open '/Applications/Launchpad.app'"
+            "key_code": "backslash",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -449,7 +459,8 @@
             "key_code": "4"
           },
           "to": [{
-            "shell_command": "/usr/local/bin/im-select com.apple.keylayout.ABC"
+            "key_code": "4",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -461,7 +472,8 @@
             "key_code": "5"
           },
           "to": [{
-            "shell_command": "/usr/local/bin/im-select com.apple.keylayout.RussianWin"
+            "key_code": "5",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -473,7 +485,8 @@
             "key_code": "6"
           },
           "to": [{
-            "shell_command": "/usr/local/bin/im-select com.apple.inputmethod.Kotoeri.Japanese"
+            "key_code": "6",
+            "modifiers": ["command", "option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

@@ -38,6 +38,7 @@ ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
+cp ~/.box-cfg/automator/* ~/Library/Services/
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 xcode-select --install
 export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
@@ -49,6 +50,7 @@ rbenv init
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 rbenv install 2.6.2
 rbenv global 2.6.2
+# Set hotkeys for services
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Install tampermonkey for Safari.
 # Set max key repeat and min delay at "Preferences/Keyboard"
@@ -65,6 +67,7 @@ rbenv global 2.6.2
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
 * Install "7+ Taskbar Tweaker".
+* Programmatically add services hotkeys.
 
 ## License
 

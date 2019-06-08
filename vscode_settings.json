@@ -97,7 +97,7 @@
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
   "editor.autoClosingQuotes": false,
-  "editor.fontFamily": "Monoid",
+  "editor.fontFamily": "Monoid, Monoid NF",
   "editor.fontSize": 12,
   "editor.fontLigatures": true,
   "window.menuBarVisibility": "toggle",

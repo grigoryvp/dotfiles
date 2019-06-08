@@ -311,8 +311,7 @@
             "key_code": "7"
           },
           "to": [{
-            "key_code": "7",
-            "modifiers": ["command", "option", "control"]
+            "shell_command": "open '/System/Applications/Utilities/Terminal.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -324,8 +323,7 @@
             "key_code": "8"
           },
           "to": [{
-            "key_code": "8",
-            "modifiers": ["command", "option", "control"]
+            "shell_command": "open '/Applications/Visual Studio Code.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -337,8 +335,7 @@
             "key_code": "9"
           },
           "to": [{
-            "key_code": "9",
-            "modifiers": ["command", "option", "control"]
+            "shell_command": "open '/Applications/Safari.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -350,8 +347,7 @@
             "key_code": "0"
           },
           "to": [{
-            "key_code": "0",
-            "modifiers": ["command", "option", "control"]
+            "shell_command": "open /Applications/Telegram*.app"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -364,8 +360,7 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "hyphen",
-            "modifiers": ["command", "option", "control", "shift"]
+            "shell_command": "open '/Applications/KeePassXC.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -378,8 +373,7 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "equal_sign",
-            "modifiers": ["command", "option", "control", "shift"]
+            "shell_command": "/usr/bin/osascript ~/.box-cfg/trello.applescript"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -392,8 +386,7 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "8",
-            "modifiers": ["command", "option", "control", "shift"]
+            "shell_command": "open ~"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -406,8 +399,7 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "9",
-            "modifiers": ["command", "option", "control", "shift"]
+            "shell_command": "open '/System/Applications/Calendar.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -420,8 +412,7 @@
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "0",
-            "modifiers": ["command", "option", "control", "shift"]
+            "shell_command": "open '/System/Applications/Mail.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -458,8 +449,9 @@
             "key_code": "4"
           },
           "to": [{
-            "key_code": "a",
-            "modifiers": ["control", "command"]
+            "select_input_source": {
+              "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+            }
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -471,8 +463,9 @@
             "key_code": "5"
           },
           "to": [{
-            "key_code": "b",
-            "modifiers": ["control", "command"]
+            "select_input_source": {
+              "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
+            }
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -484,8 +477,9 @@
             "key_code": "6"
           },
           "to": [{
-            "key_code": "c",
-            "modifiers": ["control", "command"]
+            "select_input_source": {
+              "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.Japanese$"
+            }
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

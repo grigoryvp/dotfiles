@@ -218,7 +218,7 @@ $]::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  Restore from tray if "allow only one instance" option is set"
-      Run KeePass.exe,, hide
+      Run keepassxc.exe,, hide
       WinActivate, ahk_exe KeePass.exe
     }
     else {
@@ -249,7 +249,7 @@ $]::
 $backspace::
   if (GetKeyState("f20", "P")) {
     wingetactivetitle, title
-    if (instr(title, "KeePass")) {
+    if (instr(title, "KeePassXC")) {
       winminimize A
     }
     else {

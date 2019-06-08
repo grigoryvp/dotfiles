@@ -88,7 +88,7 @@ class App {
     $this._installApp("doublecmd");
     $this._installApp("tray-monitor");
     $this._registerAutohotkeyStartup();
-    $this._registerKeepassStartup();
+    $this._registerKeepassxcStartup();
 
     # Interactive.
     if (-not (Test-Path -Path .ssh\.uploaded_to_github)) {
@@ -111,7 +111,7 @@ class App {
     }
 
     $this._getXi();
-    $this._startKeepass();
+    $this._startKeepassxc();
 
     if (-not (Test-Path -Path ".editorconfig")) {
         $src = "$($this._cfgDir)/.editorconfig";
@@ -474,10 +474,10 @@ class App {
   }
 
 
-  _startKeepass() {
+  _startKeepassxc() {
     if ($this._isTest) { return; }
-    if (Get-Process "KeePass" -ErrorAction SilentlyContinue) { return; }
-    Start-Process  keepass.exe  -WindowStyle Hidden;
+    if (Get-Process "KeePassXC" -ErrorAction SilentlyContinue) { return; }
+    Start-Process  keepassxc.exe  -WindowStyle Hidden;
   }
 
 
@@ -496,15 +496,15 @@ class App {
   }
 
 
-  _registerKeepassStartup() {
+  _registerKeepassxcStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\keepass.bat") { return; }
-    $content = 'pwsh -Command Start-Process keepass.exe';
+    if (Test-Path -Path "$startDir\keepassxc.bat") { return; }
+    $content = 'pwsh -Command Start-Process keepassxc.exe';
     $content += ' -WindowStyle Hidden';
     New-Item `
       -path $startDir `
-      -Name "keepass.bat" `
+      -Name "keepassxc.bat" `
       -Value "$content" `
       -ItemType File | Out-Null;
   }

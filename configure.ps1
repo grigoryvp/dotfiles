@@ -82,8 +82,7 @@ class App {
     $this._getFilesFromGit();
     $this._installApp("sudo");
     $this._installApp("autohotkey");
-    $this._installApp("keepass");
-    $this._installApp("kpscript");
+    $this._installApp("keepassxc");
     $this._installApp("sharpkeys");
     $this._installApp("hyper");
     $this._installApp("vscode");
@@ -112,7 +111,7 @@ class App {
       # Re-clone with SSH keys
       $this._getFilesFromGit();
     }
-    $this._copyToAppDir("KeePass.config.xml", "keepass");
+
     $this._getXi();
     $this._startKeepass();
 
@@ -346,14 +345,15 @@ class App {
     $this._pass = $str;
 
     $db = "$($this._cfgDir)\passwords.kdbx";
-    $verb = "GetEntryString";
-    $cmd = "kpscript $db -c:$verb -pw:$($this._pass) -ref-Title:github";
-    $ret = cmd /c "$cmd -Field:UserName";
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    $this._github.user = $ret[2];
-    $ret = cmd /c "$cmd -Field:Password";
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    $this._github.pass = $ret[2];
+    $ret = & Write-Output $this._pass | keepassxc-cli show $db github;
+    # Insert password to unlock ...:
+    # Title: ...
+    # UserName: ...
+    # Password: ...
+    # URL: ...
+    # Notes: ...
+    $this._github.user = $ret[2].Replace("UserName: ", "");
+    $this._github.pass = $ret[3].Replace("Password: ", "");
   }
 
 

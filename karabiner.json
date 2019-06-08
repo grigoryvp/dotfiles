@@ -458,8 +458,8 @@
             "key_code": "4"
           },
           "to": [{
-            "key_code": "e",
-            "modifiers": ["command", "option", "control"]
+            "key_code": "a",
+            "modifiers": ["control", "command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -471,8 +471,8 @@
             "key_code": "5"
           },
           "to": [{
-            "key_code": "r",
-            "modifiers": ["command", "option", "control"]
+            "key_code": "b",
+            "modifiers": ["control", "command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -484,8 +484,8 @@
             "key_code": "6"
           },
           "to": [{
-            "key_code": "j",
-            "modifiers": ["command", "option", "control"]
+            "key_code": "c",
+            "modifiers": ["control", "command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

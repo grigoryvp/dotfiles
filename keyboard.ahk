@@ -218,8 +218,8 @@ $]::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  Restore from tray if "allow only one instance" option is set"
-      Run KeePass.exe,, hide
-      WinActivate, ahk_exe KeePass.exe
+      Run KeePassXC.exe,, hide
+      WinActivate, ahk_exe KeePassXC.exe
     }
     else {
       ;;  Run under non-elevated user

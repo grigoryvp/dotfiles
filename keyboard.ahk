@@ -249,7 +249,7 @@ $]::
 $backspace::
   if (GetKeyState("f20", "P")) {
     wingetactivetitle, title
-    if (instr(title, "KeePass")) {
+    if (instr(title, "KeePassXC")) {
       winminimize A
     }
     else {

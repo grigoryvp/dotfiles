@@ -72,8 +72,6 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installScoop();
-    # Patch blocked 7zip URL.
-    $this._patchScoopBucket();
     $this._installGit();
     $this._addScoopBuckets();
     # Patch blocked Telegram URL.
@@ -363,23 +361,6 @@ class App {
     $web = New-Object Net.WebClient;
     Invoke-Expression $web.DownloadString('https://get.scoop.sh');
     if (-not $?) { throw "Failed"; }
-  }
-
-
-  _patchScoopBucket() {
-    $bucketPath = "$($env:USERPROFILE)\scoop\apps\scoop\current\bucket";
-    $filePath = "$bucketPath\7zip.json";
-    $manifest = Get-Content $filePath | ConvertFrom-Json;
-    $ROOT = "https://datapacket.dl.sourceforge.net/project/sevenzip/7-Zip";
-    $URL32 = "$ROOT/18.06/7z1806.msi";
-    $H32 = "E1E509FB1FC6C7B7C2F55B1831454084541EE0A6C0A3F67730CDC4CA6BDD443B";
-    $manifest.architecture."32bit".url = $URL32;
-    $manifest.architecture."32bit".hash = $H32;
-    $URL64 = "$ROOT/18.06/7z1806-x64.msi";
-    $H64 = "F00E1588ED54DDF633D8652EB89D0A8F95BD80CCCFC3EED362D81927BEC05AA5";
-    $manifest.architecture."64bit".url = $URL64;
-    $manifest.architecture."64bit".hash = $H64;
-    $manifest | ConvertTo-Json > $filePath;
   }
 
 

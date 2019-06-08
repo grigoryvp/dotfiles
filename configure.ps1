@@ -231,8 +231,8 @@ class App {
     $gitDir = "$($this._cfgDir)\.git";
     Remove-Item `
       -Recurse -Force -ErrorAction SilentlyContinue `
-      $($this._cfgDir)/*;
-    Move-Item -Force "$($this._cfgDir).tmp\*" "$($this._cfgDir)";
+      "$($this._cfgDir)/*";
+    Move-Item -Force "$($this._cfgDir).tmp/*" "$($this._cfgDir)";
     Remove-Item "$($this._cfgDir).tmp";
   }
 

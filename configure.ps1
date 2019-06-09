@@ -24,6 +24,7 @@ class App {
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
       - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'; autostart
       - Disable autostart in Task Manager
+      - Disable snap assist
       - Make --full configuration
       - Add perfgraph toolbar
       - Login Chromium
@@ -57,12 +58,24 @@ class App {
     # Create and set hidden attribute to exclude from 'ls'.
     $oldPsDir = "$($env:USERPROFILE)\Documents\WindowsPowerShell";
     if (-not (Test-Path -Path $oldPsDir)) {
-      New-Item -Path $oldPsDir -ItemType Directory | Out-Null;
+      $ret = & New-Item -Path $oldPsDir -ItemType Directory;
+      $ret.Attributes = 'Hidden';
     }
 
-    # Exclude dirs from 'ls' and 'explorer'
-    $(Get-Item -Force $this._cfgDir).Attributes = 'Hidden';
-    $(Get-Item -Force $oldPsDir).Attributes = 'Hidden';
+    # PowerShell config is loaded from this dir.
+    # Create and set hidden attribute to exclude from 'ls'.
+    $psDir = "$($env:USERPROFILE)\Documents\PowerShell";
+    if (-not (Test-Path -Path $psDir)) {
+      $ret = & New-Item -Path $psDir -ItemType Directory;
+      $ret.Attributes = 'Hidden';
+    }
+
+    # Symlink PowerShel config file into PowerShell config dir.
+    New-Item `
+      -ItemType HardLink `
+      -Path $psDir `
+      -Name "profile.ps1" `
+      -Value "$($this._cfgDir)\profile.ps1"
 
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");

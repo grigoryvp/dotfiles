@@ -240,6 +240,9 @@ alias dsi='docker service inspect --pretty'
 # Always run tox in quiet mode, it spams a lot of useless info by default.
 alias tox='tox -q'
 
+# For windows consistensy
+alias rmf='rm -rf'
+
 ll() {
   if test -e /usr/local/bin/exa; then
     /usr/local/bin/exa \

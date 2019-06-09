@@ -57,6 +57,18 @@ function ahk() {
 }
 
 
+# Windows-OSX-Linux consistency
+function rmf($dst) {
+  Remove-Item $dst -Recurse -Force
+}
+
+
+# Windows-OSX-Linux consistency
+function ll($dst) {
+  Get-ChildItem $dst
+}
+
+
 function Update-VscodeExt() {
   $cfgFileName = "package.json";
   if (-not (Test-Path $cfgFileName)) {

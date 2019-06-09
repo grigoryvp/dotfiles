@@ -195,7 +195,7 @@ class App {
     Install-Module `
       $moduleName `
       -Scope CurrentUser `
-      -AllowPrerelease -Force;
+      -Force;
     if (-not $?) { throw "Failed" }
   }
 
@@ -271,7 +271,7 @@ class App {
 
     # Ms before key is repeated
     $args.Name = 'AutoRepeatDelay';
-    $args.Value = '600';
+    $args.Value = '400';
     New-ItemProperty @args;
 
     # Less is faster

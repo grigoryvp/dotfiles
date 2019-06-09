@@ -239,7 +239,6 @@ class App {
 
     & git clone $uri "$($this._cfgDir).tmp";
     # Replace HTTP git config with SSH one, if any.
-    $gitDir = "$($this._cfgDir)\.git";
     Remove-Item `
       -Recurse -Force -ErrorAction SilentlyContinue `
       "$($this._cfgDir)/*";

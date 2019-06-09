@@ -2,7 +2,7 @@
   "key": "ctrl+k o",
   "command": "workbench.action.addRootFolder"
 }, {
-  "key": "ctrl+k f",
+  "key": "ctrl+k s",
   "command": "workbench.action.toggleSidebarVisibility"
 }, {
   "key": "ctrl+k e",
@@ -43,7 +43,7 @@
   "when": "inDebugMode"
 },
 {
-  "key": "ctrl+k s",
+  "key": "ctrl+k f",
   "command": "workbench.action.findInFiles"
 },
 {

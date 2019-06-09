@@ -22,7 +22,7 @@ class App {
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
-      - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'
+      - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'; autostart
       - Disable autostart in Task Manager
       - Make --full configuration
       - Add perfgraph toolbar

@@ -90,8 +90,6 @@ class App {
     $this._installScoop();
     $this._installGit();
     $this._addScoopBuckets();
-    # Patch blocked Telegram URL.
-    # $this._patchExtrasBucket();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installApp("sudo");
@@ -149,7 +147,7 @@ class App {
       if (-not $this._hasCli("g")) {
         & npm i -g git-alias;
       }
-      # $this._installApp("telegram");
+      $this._installApp("telegram");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }
@@ -376,19 +374,6 @@ class App {
     $web = New-Object Net.WebClient;
     Invoke-Expression $web.DownloadString('https://get.scoop.sh');
     if (-not $?) { throw "Failed"; }
-  }
-
-
-  _patchExtrasBucket() {
-    $bucketPath = "$($env:USERPROFILE)\scoop\buckets\extras";
-    $filePath = "$bucketPath\telegram.json";
-    $manifest = Get-Content $filePath | ConvertFrom-Json;
-    $ROOT = "https://github.com/telegramdesktop/tdesktop/releases/download";
-    $URL = "$ROOT/v1.5.4/tportable.1.5.4.zip";
-    $H = "1BEFF93C0962F393751453E6B4C17F450FBE31D28808756E5B9761B26F1C3EA3";
-    $manifest.url = $URL;
-    $manifest.hash = $H;
-    $manifest | ConvertTo-Json > $filePath;
   }
 
 

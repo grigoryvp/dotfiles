@@ -64,6 +64,22 @@
   "command": "extension.xi.goBack"
 },
 {
+  "key": "ctrl+7",
+  "command": "workbench.action.terminal.focus"
+},
+{
+  "key": "ctrl+8",
+  "command": "workbench.action.focusActiveEditorGroup"
+},
+{
+  "key": "ctrl+9",
+  "command": "workbench.action.toggleMaximizedPanel"
+},
+{
+  "key": "ctrl+0",
+  "command": "workbench.action.terminal.toggleTerminal"
+},
+{
   "key": "ctrl+k ctrl+o",
   "command": "workbench.action.files.openFile"
 }

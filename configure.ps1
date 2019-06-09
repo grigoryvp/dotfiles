@@ -71,11 +71,14 @@ class App {
     }
 
     # Symlink PowerShel config file into PowerShell config dir.
-    New-Item `
-      -ItemType HardLink `
-      -Path $psDir `
-      -Name "profile.ps1" `
-      -Value "$($this._cfgDir)\profile.ps1"
+    $psProfileCfg = "$($this._cfgDir)\profile.ps1";
+    if (-not (Test-Path -Path $psProfileCfg)) {
+      New-Item `
+        -ItemType HardLink `
+        -Path $psDir `
+        -Name "profile.ps1" `
+        -Value $psProfileCfg
+    }
 
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
@@ -205,10 +208,7 @@ class App {
   _installPowershellModule($moduleName) {
     if ($this._isTest) { return; }
     if (Get-InstalledModule | Where-Object Name -eq $moduleName) { return; }
-    Install-Module `
-      $moduleName `
-      -Scope CurrentUser `
-      -Force;
+    Install-Module $moduleName -Scope CurrentUser;
     if (-not $?) { throw "Failed" }
   }
 

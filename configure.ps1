@@ -70,16 +70,6 @@ class App {
       $ret.Attributes = 'Hidden';
     }
 
-    # Symlink PowerShel config file into PowerShell config dir.
-    $psProfileCfg = "$($this._cfgDir)\profile.ps1";
-    if (-not (Test-Path -Path $psProfileCfg)) {
-      New-Item `
-        -ItemType HardLink `
-        -Path $psDir `
-        -Name "profile.ps1" `
-        -Value $psProfileCfg
-    }
-
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
@@ -103,6 +93,16 @@ class App {
     $this._installApp("tray-monitor");
     $this._registerAutohotkeyStartup();
     $this._registerKeepassxcStartup();
+
+    # Symlink PowerShel config file into PowerShell config dir.
+    $psProfileCfg = "$($this._cfgDir)\profile.ps1";
+    if (-not (Test-Path -Path $psProfileCfg)) {
+      New-Item `
+        -ItemType HardLink `
+        -Path $psDir `
+        -Name "profile.ps1" `
+        -Value $psProfileCfg
+    }
 
     # Interactive.
     if (-not (Test-Path -Path .ssh\.uploaded_to_github)) {

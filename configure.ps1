@@ -138,7 +138,6 @@ class App {
       $this._installApp("sysinternals");
       # Need to restart terminal in order to apply env variables.
       $this._installApp("nodejs");
-      $this._installApp("rambox");
       $this._installApp("chromium");
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");

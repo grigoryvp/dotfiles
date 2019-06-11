@@ -95,8 +95,8 @@ class App {
     $this._registerKeepassxcStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
-    $psProfileCfg = "$($this._cfgDir)\profile.ps1";
-    if (-not (Test-Path -Path $psProfileCfg)) {
+    $psProfileCfg = "$($this._cfgDir)/profile.ps1";
+    if (-not (Test-Path -Path "$psDir/profile.ps1")) {
       New-Item `
         -ItemType HardLink `
         -Path $psDir `

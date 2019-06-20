@@ -10,6 +10,8 @@ $env:LANG = "en_US.UTF-8";
 $env:PIPENV_VENV_IN_PROJECT = 1
 # Disable lockfile generation for pipenv (much faster install).
 $env:PIPENV_SKIP_LOCK = 1
+# Enable Python 2.7 apps to write into PowerShell console.
+$env:PYTHONIOENCODING = "UTF-8"
 
 function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/.box-cfg; }
@@ -185,25 +187,6 @@ function Stop-Srv() {
 
 $promptMsg = $null;
 
-function prompt {
-  # Your non-prompt logic here
-  $prompt = "";
-  $prompt += Write-Prompt "[" -ForegroundColor ([ConsoleColor]::DarkGray);
-  if ($promptMsg) {
-    $color = ([ConsoleColor]::Green);
-    $prompt += Write-Prompt $promptMsg -ForegroundColor $color;
-  }
-  else {
-    $color = ([ConsoleColor]::DarkYellow);
-    $prompt += Write-Prompt "..." -ForegroundColor $color;
-  }
-  $prompt += Write-Prompt "] " -ForegroundColor ([ConsoleColor]::DarkGray);
-  if ($GitPromptScriptBlock) {
-    $prompt += & $GitPromptScriptBlock
-  }
-  return $prompt;
-}
-
 function Add-PromptMsg($msg) {
   Set-Variable -Name "promptMsg" -Value $msg -Scope Global;
   [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt();
@@ -224,4 +207,25 @@ Set-PSReadlineKeyHandler -Key Ctrl+l -ScriptBlock {
 
 Set-PSReadlineKeyHandler -Key Ctrl+d -ScriptBlock {
   Add-PromptMsg "dbg";
+}
+
+(& conda.exe shell.powershell hook) | Out-String | Invoke-Expression
+
+# After conda, which tries to replace prompt.
+function prompt {
+  $prompt = "";
+  $prompt += Write-Prompt "[" -ForegroundColor ([ConsoleColor]::DarkGray);
+  if ($promptMsg) {
+    $color = ([ConsoleColor]::Green);
+    $prompt += Write-Prompt $promptMsg -ForegroundColor $color;
+  }
+  else {
+    $color = ([ConsoleColor]::DarkYellow);
+    $prompt += Write-Prompt "..." -ForegroundColor $color;
+  }
+  $prompt += Write-Prompt "] " -ForegroundColor ([ConsoleColor]::DarkGray);
+  if ($GitPromptScriptBlock) {
+    $prompt += & $GitPromptScriptBlock
+  }
+  return $prompt;
 }

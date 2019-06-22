@@ -98,7 +98,9 @@
   "editor.wordWrap": "off",
   "editor.autoClosingQuotes": false,
   "editor.fontFamily": "Monoid, Monoid NF",
+  "terminal.integrated.fontFamily": "Monoid, Monoid NF",
   "editor.fontSize": 12,
+  "terminal.integrated.fontSize": 12,
   "editor.fontLigatures": true,
   "window.menuBarVisibility": "toggle",
   "window.zoomLevel": 0,
@@ -138,5 +140,6 @@
   "files.eol": "\n",
   "telemetry.enableTelemetry": false,
   "workbench.colorTheme": "grigoryvp memory theme",
-  "debug.node.autoAttach": "on"
+  "debug.node.autoAttach": "on",
+  "terminal.integrated.shell.windows": "pwsh.exe"
 }

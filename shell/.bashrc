@@ -74,6 +74,11 @@ export USER="grigoryvp"
 ##  Switchable truecolor for VIM, on by default
 export TRUECOLOR="1"
 
+# Always install dependencies in .venv for pipenv.
+export PIPENV_VENV_IN_PROJECT="1"
+# Do not lock dependencies (very slow).
+export PIPENV_SKIP_LOCK="1"
+
 ##  OSX?
 if test "$(uname)" = "Darwin"; then
   ##  Add color to |ls| output

@@ -8,6 +8,8 @@ catch {
 $env:LANG = "en_US.UTF-8";
 # Always install dependencies in .venv for pipenv.
 $env:PIPENV_VENV_IN_PROJECT = 1
+# Do not lock dependencies (very slow).
+$env:PIPENV_SKIP_LOCK = 1
 # Disable lockfile generation for pipenv (much faster install).
 $env:PIPENV_SKIP_LOCK = 1
 # Enable Python 2.7 apps to write into PowerShell console.

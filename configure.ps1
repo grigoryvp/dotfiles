@@ -288,7 +288,9 @@ class App {
     $args.Value = '30';
     New-ItemProperty @args;
 
-    # Milliseconds to supres bounce (with 30ms it RARELY bounces).
+    #  Milliseconds to supres bounce (with 30ms it RARELY bounces).
+    #! On some laptops like Dell 5490 setting this value will result in fast
+    #  double presses not handled.
     $args.Name = 'BounceTime';
     $args.Value = '35';
     New-ItemProperty @args;

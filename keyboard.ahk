@@ -311,7 +311,8 @@ $backspace::
       ;;  Not used
     }
     else {
-      ;;  Not used
+      ;;  Reserve
+      send #9
     }
   }
   else {
@@ -325,7 +326,8 @@ $backspace::
       ;;  Not used
     }
     else {
-      ;;  Not used
+      ;;  Reserve
+      send #0
     }
   }
   else {

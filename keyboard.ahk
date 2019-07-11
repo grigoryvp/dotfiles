@@ -244,8 +244,14 @@ $backspace::
 
 *$7::
   if (GetKeyState("f20", "P")) {
-    ;;  'meta-7' for file manager; run under non-elevated user
-    send #1
+    if (GetKeyState("shift", "P")) {
+      ;;  'meta-s-7' for password manager; run under non-elevated user
+      send #5
+    }
+    else {
+      ;;  'meta-7' for file manager; run under non-elevated user
+      send #1
+    }
   }
   else {
     send {blind}{vk37}
@@ -254,8 +260,14 @@ $backspace::
 
 *$8::
   if (GetKeyState("f20", "P")) {
-    ;;  'meta-8' for editor; run under non-elevated user
-    send #2
+    if (GetKeyState("shift", "P")) {
+      ;;  'meta-s-8' for task manager; run under non-elevated user
+      send #6
+    }
+    else {
+      ;;  'meta-8' for editor; run under non-elevated user
+      send #2
+    }
   }
   else {
     send {blind}{vk38}
@@ -265,12 +277,8 @@ $backspace::
 *$9::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-9' for calendar
-      WinActivate, ahk_exe chrome.exe
-      WinWait, ahk_exe chrome.exe
-      Send ^t
-      Sleep 100
-      SendInput https://calendar.google.com{Enter}
+      ;;  'meta-s-9' for mail and calendar; run under non-elevated user
+      send #7
     }
     else {
       ;;  'meta-9' for browser; run under non-elevated user
@@ -285,12 +293,8 @@ $backspace::
 *$0::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-0' for mail
-      WinActivate, ahk_exe chrome.exe
-      WinWait, ahk_exe chrome.exe
-      Send ^t
-      Sleep 100
-      SendInput https://mail.google.com{Enter}
+      ;;  'meta-s-0' for slack; run under non-elevated user
+      send #8
     } else {
       ;;  'meta-0' for messenger; run under non-elevated user
       send #4
@@ -304,14 +308,10 @@ $backspace::
 *$-::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-hyphen' for password manager.
-      ;;  Restore from tray if "allow only one instance" option is set"
-      Run KeePassXC.exe,, hide
-      WinActivate, ahk_exe KeePassXC.exe
+      ;;  Not used
     }
     else {
-      ;;  Run under non-elevated user
-      send #5
+      ;;  Not used
     }
   }
   else {
@@ -322,16 +322,10 @@ $backspace::
 *$=::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-equal' for task manager
-      WinActivate, ahk_exe chrome.exe
-      WinWait, ahk_exe chrome.exe
-      Send ^t
-      Sleep 100
-      SendInput https://trello.com/b/PRTGVQEY/%E4%BB%95%E4%BA%8B{Enter}
+      ;;  Not used
     }
     else {
-      ;;  Run under non-elevated user.
-      send #6
+      ;;  Not used
     }
   }
   else {

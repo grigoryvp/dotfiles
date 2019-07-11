@@ -318,12 +318,38 @@
         },
 
         {
+          "description": "meta-s-7 for password manager",
+          "from": {
+            "key_code": "7",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/Applications/KeePassXC.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "meta-8 for editor",
           "from": {
             "key_code": "8"
           },
           "to": [{
             "shell_command": "open '/Applications/Visual Studio Code.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-s-8 for task manager",
+          "from": {
+            "key_code": "8",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "/usr/bin/osascript ~/.box-cfg/trello.applescript"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -342,6 +368,19 @@
         },
 
         {
+          "description": "meta-s-9 for mail and calendar",
+          "from": {
+            "key_code": "9",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "shell_command": "open '/System/Applications/Mail.app'"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "meta-0 for messenger(s)",
           "from": {
             "key_code": "0"
@@ -354,51 +393,13 @@
         },
 
         {
-          "description": "meta-s-9 for calendar",
-          "from": {
-            "key_code": "9",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "shell_command": "open '/System/Applications/Calendar.app'"
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
-          "description": "meta-s-0 for mail",
+          "description": "meta-s-0 for slack",
           "from": {
             "key_code": "0",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open '/System/Applications/Mail.app'"
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-        {
-          "description": "meta-s-hyphen for password manager",
-          "from": {
-            "key_code": "hyphen",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "shell_command": "open '/Applications/KeePassXC.app'"
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
-          "description": "meta-s-equal for task manager",
-          "from": {
-            "key_code": "equal_sign",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "shell_command": "/usr/bin/osascript ~/.box-cfg/trello.applescript"
+            "shell_command": "open '/Applications/Slack.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

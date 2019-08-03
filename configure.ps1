@@ -269,6 +269,11 @@ class App {
     powercfg -change -standby-timeout-dc 0;
     powercfg -change -hibernate-timeout-ac 0;
     powercfg -change -hibernate-timeout-dc 0;
+    #  Set 'plugged in' cooling policy to 'active'
+    powercfg -setacvalueindex scheme_current 54533251-82be-4824-96c1-47b60b740d00 94d3a615-a899-4ac5-ae2b-e4d8f634367f 1
+    #  Set 'on battery' cooling policy to 'active'
+    #! If set to 'passive' will downclock cpu to minimum, unusable
+    powercfg -setdcvalueindex scheme_current 54533251-82be-4824-96c1-47b60b740d00 94d3a615-a899-4ac5-ae2b-e4d8f634367f 1
   }
 
 

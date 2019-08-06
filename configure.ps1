@@ -452,7 +452,12 @@ class App {
           New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
         }
         else {
-          throw "Failed";
+          Write-Host "GitHub API request failure";
+          Write-Host "url: ${url}";
+          Write-Host "headers: ${headers}";
+          Write-Host "body: ${body}";
+          Write-Host $_.Exception;
+          throw "Failed ";
         }
       }
     }

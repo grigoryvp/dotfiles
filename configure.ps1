@@ -29,7 +29,7 @@ class App {
       - Make --full configuration
       - Add perfgraph toolbar
       - Login Chromium
-      - Install emclient, slack, trello from store
+      - Install emclient, battery bar; slack, trello from store
       - Pin files, vscode, chrome, telegram, keepass, trello, emclient, slack
       - Add 'caps lock' to 'F20' remap using 'sharpkeys' and reboot
 "@;

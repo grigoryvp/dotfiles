@@ -451,15 +451,15 @@ class App {
           Write-Host "SSH key already added to GitHub";
           New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
         }
+        elseif ($_.Exception.Response.StatusCode -eq 401) {
+          Write-Host "Failed to add key to GitHub; 2-factor auth?";
+          Write-Host "Upload manually and touch .ssh/${marker}";
+          Write-Host "Login: '$($this._github.user)'";
+          Write-Host "Pass: '$($this._github.pass)'";
+          throw "Failed";
+        }
         else {
-          Write-Host "GitHub API request failure";
-          Write-Host "url: $($url)";
-          Write-Host "user: '$($this._github.user)'";
-          Write-Host "pass: '$($this._github.pass)'";
-          Write-Host "headers:`n $($headers | Format-Table | Out-String)";
-          Write-Host "body:`n`n $($body)";
-          Write-Host "exception:`n`n $($_.Exception)";
-          throw "Failed ";
+          throw "Failed $($_.Exception)";
         }
       }
     }

@@ -3,6 +3,7 @@
 ## Windows
 
 Install PowerShell Core from [releases](https://github.com/PowerShell/PowerShell/releases) page.
+Configure [vpn](https://nordvpn.com/tutorials/windows-10/ikev2/) if needed.
 
 ```ps1
 cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1; & .\configure.ps1

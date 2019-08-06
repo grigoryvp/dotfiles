@@ -456,9 +456,9 @@ class App {
           Write-Host "url: $($url)";
           Write-Host "user: $($this._github.user)";
           Write-Host "pass: $($this._github.pass)";
-          Write-Host "headers: $($headers | Format-Table | Out-String)";
-          Write-Host "body: $($body)";
-          Write-Host "exception: $($_.Exception)";
+          Write-Host "headers:`n $($headers | Format-Table | Out-String)";
+          Write-Host "body:`n $($body)";
+          Write-Host "exception:`n $($_.Exception)";
           throw "Failed ";
         }
       }

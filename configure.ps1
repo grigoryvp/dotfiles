@@ -454,8 +454,8 @@ class App {
         else {
           Write-Host "GitHub API request failure";
           Write-Host "url: $($url)";
-          Write-Host: "user: $($this._github.user)";
-          Write-Host: "pass: $($this._github.pass)";
+          Write-Host "user: $($this._github.user)";
+          Write-Host "pass: $($this._github.pass)";
           Write-Host "headers: $(headers | Format-Table)";
           Write-Host "body: $($body)";
           Write-Host "exception: $($_.Exception)";

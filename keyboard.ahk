@@ -246,11 +246,11 @@ $backspace::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-7' for password manager; run under non-elevated user
-      send #5
+      send #^5
     }
     else {
       ;;  'meta-7' for file manager; run under non-elevated user
-      send #1
+      send #^1
     }
   }
   else {
@@ -262,11 +262,11 @@ $backspace::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-8' for task manager; run under non-elevated user
-      send #6
+      send #^6
     }
     else {
       ;;  'meta-8' for editor; run under non-elevated user
-      send #2
+      send #^2
     }
   }
   else {
@@ -278,11 +278,11 @@ $backspace::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-9' for mail and calendar; run under non-elevated user
-      send #7
+      send #^7
     }
     else {
       ;;  'meta-9' for browser; run under non-elevated user
-      send #3
+      send #^3
     }
   }
   else {
@@ -294,10 +294,10 @@ $backspace::
   if (GetKeyState("f20", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-0' for slack; run under non-elevated user
-      send #8
+      send #^8
     } else {
       ;;  'meta-0' for messenger; run under non-elevated user
-      send #4
+      send #^4
     }
   }
   else {
@@ -312,7 +312,7 @@ $backspace::
     }
     else {
       ;;  Reserve
-      send #9
+      send #^9
     }
   }
   else {
@@ -327,7 +327,7 @@ $backspace::
     }
     else {
       ;;  Reserve
-      send #0
+      send #^0
     }
   }
   else {

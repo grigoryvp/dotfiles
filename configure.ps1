@@ -21,7 +21,8 @@ class App {
     $this._isPublic = ($argList.Contains("--public"));
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
-      - Change Proxy Settings, Turn off "Automatically Detect Settings"
+      - Disable the dynamic contrast "Sensor Monitoring Service"
+      - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
       - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'; autostart
       - Disable autostart in Task Manager

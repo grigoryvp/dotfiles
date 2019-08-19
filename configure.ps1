@@ -29,7 +29,7 @@ class App {
       - Disable snap assist
       - Make --full configuration
       - Add perfgraph toolbar
-      - Login Chromium
+      - Login Chrome
       - Install emclient, battery bar; slack, trello from store
       - Pin files, vscode, chrome, telegram, keepass, trello, emclient, slack
       - Add 'caps lock' to 'F20' remap using 'sharpkeys' and reboot
@@ -143,7 +143,7 @@ class App {
       # Need to restart terminal in order to apply env variables.
       $this._installApp("nodejs");
       $this._installApp("miniconda3");
-      $this._installApp("chromium");
+      $this._installApp("googlechrome");
       $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");

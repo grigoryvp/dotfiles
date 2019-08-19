@@ -46,7 +46,7 @@ enter::rctrl
 
 ;;  Switch between normal and 'compatible' mode for apps/games that
 ;;  can't handle multi-key virtual combinations, like "Grim Dawn"
-pgdn::
+!pgdn::
   path := A_MyDocuments "\..\.box-cfg\keyboard_compat.ahk"
   run autohotkey.exe %path%,, Hide
   Suspend

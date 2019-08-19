@@ -5,7 +5,7 @@
 [::SendInput {esc}
 \::SendInput {lwin}
 
-pgup::
+!pgup::
   path := A_MyDocuments "\..\.box-cfg\keyboard.ahk"
   run autohotkey.exe %path%,, Hide
   Suspend

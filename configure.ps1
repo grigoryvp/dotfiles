@@ -96,7 +96,6 @@ class App {
     $this._installApp("doublecmd");
     $this._installApp("tray-monitor");
     $this._registerAutohotkeyStartup();
-    $this._registerKeepassxcStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
     $psProfileCfg = "$($this._cfgDir)/profile.ps1";
@@ -506,20 +505,6 @@ class App {
     New-Item `
       -path $startDir `
       -Name "autohotkey.bat" `
-      -Value "$content" `
-      -ItemType File | Out-Null;
-  }
-
-
-  _registerKeepassxcStartup() {
-    if ($this._isTest) { return; }
-    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\keepassxc.bat") { return; }
-    $content = 'pwsh -Command Start-Process keepassxc.exe';
-    $content += ' -WindowStyle Hidden';
-    New-Item `
-      -path $startDir `
-      -Name "keepassxc.bat" `
       -Value "$content" `
       -ItemType File | Out-Null;
   }

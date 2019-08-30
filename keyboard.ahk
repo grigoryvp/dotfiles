@@ -403,6 +403,10 @@ $backspace::
       sleep 100
       send #{up}
     }
+    else {
+      ;;  Reserved
+      send {vk59}
+    }
   }
   else {
     send {blind}{vk59}
@@ -416,6 +420,10 @@ $backspace::
       send #{left}
       sleep 100
       send #{down}
+    }
+    else {
+      ;;  Reserved
+      send {vk55}
     }
   }
   else {
@@ -431,6 +439,10 @@ $backspace::
       sleep 100
       send #{up}
     }
+    else {
+      ;;  Reserved
+      send {vk49}
+    }
   }
   else {
     send {blind}{vk49}
@@ -445,6 +457,10 @@ $backspace::
       sleep 100
       send #{down}
     }
+    else {
+      ;;  Reserved
+      send {vk4f}
+    }
   }
   else {
     send {blind}{vk4f}
@@ -456,6 +472,10 @@ $backspace::
     if (GetKeyState("shift", "P")) {
       ;;  'meta-shift-n' => left 1/2, 1/3, 2/3
       send #{left}
+    }
+    else {
+      ;;  Reserved
+      send {vk4e}
     }
   }
   else {
@@ -469,6 +489,10 @@ $backspace::
       ;;  'meta-shift-m' => right 1/2, 1/3, 2/3
       send #{right}
     }
+    else {
+      ;;  Reserved
+      send {vk4d}
+    }
   }
   else {
     send {blind}{vk4d}
@@ -480,6 +504,10 @@ $backspace::
     if (GetKeyState("shift", "P")) {
       ;;  'meta-shift-,' => top 1/2, 1/3, 2/3
       send #{up}
+    }
+    else {
+      ;;  Reserved
+      send {vkbc}
     }
   }
   else {
@@ -493,6 +521,10 @@ $backspace::
       ;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3
       send #{down}
     }
+    else {
+      ;;  Reserved
+      send {vkbe}
+    }
   }
   else {
     send {blind}{vkbe}
@@ -504,6 +536,10 @@ $backspace::
     if (GetKeyState("shift", "P")) {
       ;;  'meta-shift-slash' => maximize
       winmaximize A
+    }
+    else {
+      ;;  Reserved
+      send {vkbf}
     }
   }
   else {

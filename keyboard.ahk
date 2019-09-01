@@ -126,10 +126,20 @@ $^lctrl up:: send ^{tab}
 $]::
   if (GetKeyState("vked", "P")) {
     ;;  'meta-close-bracket' for switching between apps
-    send !{tab}
+    send !{tab down}
   }
   else {
-    send {vkdd}
+    send {vkdd down}
+  }
+  return
+
+$] up::
+  if (GetKeyState("vked", "P")) {
+    ;;  'meta-close-bracket' for switching between apps
+    send !{tab up}
+  }
+  else {
+    send {vkdd up}
   }
   return
 

@@ -119,15 +119,9 @@ $^lctrl up:: send ^{tab}
 ;;  Keys and combinations remap
 ;;  ==========================================================================
 
-$[::
-  if (GetKeyState("vked", "P")) {
-    ;;  'meta-open-bracket' for escape (vim-like).
-    send {esc}
-  }
-  else {
-    send {vkdb}
-  }
-  return
+;;  'meta-open-bracket' for escape (vim-like).
+*$[::remap("down", "vkdb", "esc", "vkdb", "vkdb")
+*$[ up::remap("up", "vkdb", "esc", "vkdb", "vkdb")
 
 $]::
   if (GetKeyState("vked", "P")) {

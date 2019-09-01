@@ -302,6 +302,10 @@ $backspace::
       ;;  'meta-s-|' for notifications.
       send #a
     }
+    else if (GetKeyState("tab", "P")) {
+      ;;  GOG HUD
+      send ^+{tab}
+    }
     else {
       ;;  'meta-|' for launchpad.
       send {lwin}

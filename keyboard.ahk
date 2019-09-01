@@ -19,7 +19,7 @@
 ;;. DllCall("mouse_event", "UInt", 0x800, "UInt", 0, "UInt", 0, "UInt", 120)
 ;;  for mouse wheel will not work, on modern Windows it was replaced with
 ;;  SendInput.
-;;. It's better to remap 'caps lock' to some not-used keys (like F20)
+;;. It's better to remap 'caps lock' to some not-used keys (like F24)
 ;;  using Windows registry and use that resulting key. Such trick prevents
 ;;  caps lock from triggering in situations where keyboard hook is not
 ;;  working (UAC, lock screen, "Grim Dawn" etc).
@@ -44,6 +44,23 @@ tab::lctrl
 enter::rctrl
 #inputlevel 0
 
+remap(direction, from, to1, to2, to3) {
+  if (GetKeyState("vked", "P")) {
+    if (GetKeyState("shift", "P")) {
+      send {%to2% %direction%}
+    }
+    else if (GetKeyState("tab", "P")) {
+      SendInput {%to3% %direction%}
+    }
+    else {
+      send {%to1% %direction%}
+    }
+  }
+  else {
+    send {blind}{%from% %direction%}
+  }
+}
+
 ;;  Switch between normal and 'compatible' mode for apps/games that
 ;;  can't handle multi-key virtual combinations, like "Grim Dawn"
 !pgdn::
@@ -52,8 +69,8 @@ enter::rctrl
   Suspend
   return
 
-;;  Use caps lock as 'meta' key to trigger things (caps remapped to f20).
-$f20 up::
+;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
+$vked up::
   appLeaderUpTick = %A_TickCount%
   return
 
@@ -63,11 +80,11 @@ $rctrl::
   if (appReturnUpTick >= appReturnDownTick) {
     appReturnDownTick = %A_TickCount%
   }
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     send {mbutton down}
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
-    while (GetKeyState("f20", "P") && GetKeyState("enter", "P")) {
+    while (GetKeyState("vked", "P") && GetKeyState("enter", "P")) {
       Sleep 10
     }
     send {mbutton up}
@@ -103,7 +120,7 @@ $^lctrl up:: send ^{tab}
 ;;  ==========================================================================
 
 $[::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     ;;  'meta-open-bracket' for escape (vim-like).
     send {esc}
   }
@@ -113,7 +130,7 @@ $[::
   return
 
 $]::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     ;;  'meta-close-bracket' for switching between apps
     send !{tab}
   }
@@ -123,7 +140,7 @@ $]::
   return
 
 $backspace::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     wingetactivetitle, title
     if (instr(title, "KeePassXC")) {
       winminimize A
@@ -139,7 +156,7 @@ $backspace::
   return
 
 *$p::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-shift-p' for deleting things.
       if (WinActive("ahk_exe explorer.exe")) {
@@ -162,88 +179,32 @@ $backspace::
   }
   return
 
-*$h::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-h' for home (vim-like).
-      send {home}
-    }
-    else if (GetKeyState("tab", "P")) {
-      ;;  Two-finger touchpad normally used for pan navigation.
-      SendInput {wheelleft}
-    }
-    else {
-      ;;  'meta-h' for left arrow (vim-like).
-      send {left}
-    }
-  }
-  else {
-    send {blind}{vk48}
-  }
-  return
+;;  'meta-h' for left arrow (vim-like).
+;;  'meta-shift-h' for home (vim-like).
+;;  'meta-caps-h' for wheel left (but touchpad normally used for pan).
+*$h::remap("down", "vk48", "left", "home", "wheelleft")
+*$h up::remap("up", "vk48", "left", "home", "wheelleft")
 
-*$j::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-j' for page down (vim-like).
-      send {pgdn}
-    }
-    else if (GetKeyState("tab", "P")) {
-      ;;  Two-finger touchpad normally used for pan navigation.
-      Send {wheeldown}
-    }
-    else {
-      ;;  'meta-j' for down arrow (vim-like).
-      send {down}
-    }
-  }
-  else {
-    send {blind}{vk4a}
-  }
-  return
+;;  'meta-j' for down arrow (vim-like).
+;;  'meta-shift-j' for page down (vim-like).
+;;  'meta-caps-j' for wheel down (but touchpad normally used for pan).
+*$j::remap("down", "vk4a", "down", "pgdn", "wheeldown")
+*$j up::remap("up", "vk4a", "down", "pgdn", "wheeldown")
 
-*$k::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-k' for page up (vim-like).
-      send {pgup}
-    }
-    else if (GetKeyState("tab", "P")) {
-      ;;  Two-finger touchpad normally used for pan navigation.
-      Send {wheelup}
-    }
-    else {
-      ;;  'meta-k' for up arrow (vim-like).
-      send {up}
-    }
-  }
-  else {
-    send {blind}{vk4b}
-  }
-  return
+;;  'meta-k' for up arrow (vim-like).
+;;  'meta-shift-k' for page up (vim-like).
+;;  'meta-caps-k' for wheel up (but touchpad normally used for pan).
+*$k::remap("down", "vk4b", "up", "pgup", "wheelup")
+*$k up::remap("up", "vk4b", "up", "pgup", "wheelup")
 
-*$l::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-l' for end (vim-like).
-      send {end}
-    }
-    else if (GetKeyState("tab", "P")) {
-      ;;  Two-finger touchpad normally used for pan navigation.
-      SendInput {wheelright}
-    }
-    else {
-      ;;  'meta-l' for right arrow (vim-like).
-      send {right}
-    }
-  }
-  else {
-    send {blind}{vk4c}
-  }
-  return
+;;  'meta-l' for right arrow (vim-like).
+;;  'meta-shift-l' for end (vim-like).
+;;  'meta-caps-l' for wheel right (but touchpad normally used for pan).
+*$l::remap("down", "vk4c", "right", "end", "wheelright")
+*$l up::remap("up", "vk4c", "right", "end", "wheelright")
 
 *$7::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-7' for password manager; run under non-elevated user
       send #^5
@@ -259,7 +220,7 @@ $backspace::
   return
 
 *$8::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-8' for task manager; run under non-elevated user
       send #^6
@@ -275,7 +236,7 @@ $backspace::
   return
 
 *$9::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-9' for mail and calendar; run under non-elevated user
       send #^7
@@ -291,7 +252,7 @@ $backspace::
   return
 
 *$0::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-0' for slack; run under non-elevated user
       send #^8
@@ -306,7 +267,7 @@ $backspace::
   return
 
 *$-::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  Not used
     }
@@ -321,7 +282,7 @@ $backspace::
   return
 
 *$=::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  Not used
     }
@@ -336,7 +297,7 @@ $backspace::
   return
 
 *$\::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       ;;  'meta-s-|' for notifications.
       send #a
@@ -356,7 +317,7 @@ $backspace::
 ;;  ==========================================================================
 
 *$vk34::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     appLastLangHotkey := "4"
     send ^+4
   }
@@ -366,7 +327,7 @@ $backspace::
   return
 
 *$vk35::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     appLastLangHotkey := "5"
     send ^+5
   }
@@ -376,7 +337,7 @@ $backspace::
   return
 
 *$vk36::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (appLastLangHotkey = "6") {
       ;;  Switch between Hiragana and Latin input for Japanese keyboard
       send !``
@@ -395,163 +356,47 @@ $backspace::
 ;; Multi-key combinations
 ;; ===========================================================================
 
-*$y::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-y' => top left
-      send #{left}
-      sleep 100
-      send #{up}
-    }
-    else {
-      ;;  Reserved
-      send {vk59}
-    }
-  }
-  else {
-    send {blind}{vk59}
-  }
-  return
+;;  'meta-shift-y' => top left (third party tool mapped to f13)
+*$y::remap("down", "vk59", "vk59", "f13", "vk59")
+*$y up::remap("up", "vk59", "vk59", "f13", "vk59")
 
-*$u::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-u' => bottom left
-      send #{left}
-      sleep 100
-      send #{down}
-    }
-    else {
-      ;;  Reserved
-      send {vk55}
-    }
-  }
-  else {
-    send {blind}{vk55}
-  }
-  return
+;;  'meta-shift-u' => bottom left (third party tool mapped to f14)
+*$u::remap("down", "vk55", "vk55", "f14", "vk55")
+*$u up::remap("up", "vk55", "vk55", "f14", "vk55")
 
-*$i::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-i' => top right
-      send #{right}
-      sleep 100
-      send #{up}
-    }
-    else {
-      ;;  Reserved
-      send {vk49}
-    }
-  }
-  else {
-    send {blind}{vk49}
-  }
-  return
+;;  'meta-shift-i' => top right (third party tool mapped to f15)
+*$i::remap("down", "vk49", "vk49", "f15", "vk49")
+*$i up::remap("up", "vk49", "vk49", "f15", "vk49")
 
-*$o::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-o' => bottom right
-      send #{right}
-      sleep 100
-      send #{down}
-    }
-    else {
-      ;;  Reserved
-      send {vk4f}
-    }
-  }
-  else {
-    send {blind}{vk4f}
-  }
-  return
+;;  'meta-shift-o' => botom right (third party tool mapped to f16)
+*$o::remap("down", "vk4f", "vk4f", "f16", "vk4f")
+*$o up::remap("up", "vk4f", "vk4f", "f16", "vk4f")
 
-*$n::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-n' => left 1/2, 1/3, 2/3
-      send #{left}
-    }
-    else {
-      ;;  Reserved
-      send {vk4e}
-    }
-  }
-  else {
-    send {blind}{vk4e}
-  }
-  return
+;;  'meta-shift-n' => left 1/2, 1/3, 2/3 (third party tool mapped to f17)
+*$n::remap("down", "vk4e", "vk4e", "f17", "vk4e")
+*$n up::remap("up", "vk4e", "vk4e", "f17", "vk4e")
 
-*$m::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-m' => right 1/2, 1/3, 2/3
-      send #{right}
-    }
-    else {
-      ;;  Reserved
-      send {vk4d}
-    }
-  }
-  else {
-    send {blind}{vk4d}
-  }
-  return
+;;  'meta-shift-m' => right 1/2, 1/3, 2/3 (third party tool mapped to f18)
+*$m::remap("down", "vk4d", "vk4d", "f18", "vk4d")
+*$m up::remap("up", "vk4d", "vk4d", "f18", "vk4d")
 
-*$,::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-,' => top 1/2, 1/3, 2/3
-      send #{up}
-    }
-    else {
-      ;;  Reserved
-      send {vkbc}
-    }
-  }
-  else {
-    send {blind}{vkbc}
-  }
-  return
+;;  'meta-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
+*$,::remap("down", "vkbc", "vkbc", "f19", "vkbc")
+*$, up::remap("up", "vkbc", "vkbc", "f19", "vkbc")
 
-*$.::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3
-      send #{down}
-    }
-    else {
-      ;;  Reserved
-      send {vkbe}
-    }
-  }
-  else {
-    send {blind}{vkbe}
-  }
-  return
+;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
+*$.::remap("down", "vkbe", "vkbe", "f20", "vkbe")
+*$. up::remap("up", "vkbe", "vkbe", "f20", "vkbe")
 
-*$/::
-  if (GetKeyState("f20", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-slash' => maximize
-      winmaximize A
-    }
-    else {
-      ;;  Reserved
-      send {vkbf}
-    }
-  }
-  else {
-    send {blind}{vkbf}
-  }
-  return
+;;  'meta-shift-/' => maximize (third party tool mapped to f21)
+*$/::remap("down", "vkbf", "vkbf", "f21", "vkbf")
+*$/ up::remap("up", "vkbf", "vkbf", "f21", "vkbf")
 
 ;; ===========================================================================
 ;; Left and right mouse buttons
 ;; ===========================================================================
 
-$f20::
+$vked::
   ;;  First press since release? (beware repetition)
   if (appLeaderUpTick >= appLeaderDownTick) {
     appLeaderDownTick = %A_TickCount%
@@ -561,14 +406,14 @@ $f20::
   ;;  Holding caps lock again should return button hold.
   if (GetKeyState(";", "P")) {
     send {lbutton down}
-    while (GetKeyState("f20", "P") && GetKeyState(";", "P")) {
+    while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
       Sleep 10
     }
     send {lbutton up}
   }
   else if (GetKeyState("'", "P")) {
     send {rbutton down}
-    while (GetKeyState("f20", "P") && GetKeyState("'", "P")) {
+    while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }
     send {rbutton up}
@@ -577,7 +422,7 @@ $f20::
 
 ;;  'meta-semicolon' for left mouse button.
 *$`;::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
       send ^+{lbutton down}
     }
@@ -596,7 +441,7 @@ $f20::
 
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
-    while (GetKeyState("f20", "P") && GetKeyState(";", "P")) {
+    while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
       Sleep 10
     }
 
@@ -626,11 +471,11 @@ $f20::
 
 ;;  'meta-quote' for right mouse button.
 *$'::
-  if (GetKeyState("f20", "P")) {
+  if (GetKeyState("vked", "P")) {
     send {rbutton down}
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
-    while (GetKeyState("f20", "P") && GetKeyState("'", "P")) {
+    while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }
     send {rbutton up}

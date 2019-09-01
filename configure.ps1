@@ -32,7 +32,7 @@ class App {
       - Login Chrome
       - Install emclient, battery bar; slack, trello from store
       - Pin files, vscode, chrome, telegram, keepass, trello, emclient, slack
-      - Add 'caps lock' to 'F20' remap using 'sharpkeys' and reboot
+      - Add 'caps lock' to 'F24' remap using 'sharpkeys' and reboot
 "@;
   }
 

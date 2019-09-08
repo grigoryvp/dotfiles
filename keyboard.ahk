@@ -1,4 +1,5 @@
-﻿#SingleInstance force
+﻿#SingleInstance force ;; Auto-reload
+#Warn ;; Enable warnings, show message box.
 ;;. Using space as dual mode key for alt does not work, since writing
 ;;  text fast always triggers alt-key hotkeys (google docs etc).
 ;;. Using caps lock as dual mode key for backspace does not work since

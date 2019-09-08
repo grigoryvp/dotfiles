@@ -53,6 +53,9 @@ perform(cmd, arg, direction) {
   if (cmd = "winclose") {
     winclose A
   }
+  else if (cmd = "winmaximize") {
+    winmaximize A
+  }
   ;;  Delete things.
   else if (cmd = "delete") {
     if (WinActive("ahk_exe explorer.exe")) {
@@ -291,12 +294,14 @@ $^lctrl up:: send ^{tab}
 *$o up::remap("up", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 
 ;;  'meta-shift-n' => left 1/2, 1/3, 2/3 (third party tool mapped to f17)
-*$n::remap("down", "vk4e", "", "vk4e", "", "f17", "", "vk4e")
-*$n up::remap("up", "vk4e", "", "vk4e", "", "f17", "", "vk4e")
+;;  Stub implementation.
+*$n::remap("down", "vk4e", "", "vk4e", "#", "left", "", "vk4e")
+*$n up::remap("up", "vk4e", "", "vk4e", "#", "left", "", "vk4e")
 
 ;;  'meta-shift-m' => right 1/2, 1/3, 2/3 (third party tool mapped to f18)
-*$m::remap("down", "vk4d", "", "vk4d", "", "f18", "", "vk4d")
-*$m up::remap("up", "vk4d", "", "vk4d", "", "f18", "", "vk4d")
+;;  Stub implementation.
+*$m::remap("down", "vk4d", "", "vk4d", "#", "right", "", "vk4d")
+*$m up::remap("up", "vk4d", "", "vk4d", "#", "right", "", "vk4d")
 
 ;;  'meta-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
 *$,::remap("down", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
@@ -306,9 +311,9 @@ $^lctrl up:: send ^{tab}
 *$.::remap("down", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 *$. up::remap("up", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 
-;;  'meta-shift-/' => maximize (third party tool mapped to f21)
-*$/::remap("down", "vkbf", "", "vkbf", "", "f21", "", "vkbf")
-*$/ up::remap("up", "vkbf", "", "vkbf", "", "f21", "", "vkbf")
+;;  'meta-shift-/' => maximize
+*$/::remap("down", "vkbf", "", "f21", "none", "", "", "vkbf")
+*$/ up::remap("up", "vkbf", "", "f21", "winmaximize", "", "", "vkbf")
 
 ;; ===========================================================================
 ;; Left and right mouse buttons

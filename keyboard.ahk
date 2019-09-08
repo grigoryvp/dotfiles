@@ -49,16 +49,16 @@ tab::lctrl
 enter::rctrl
 #inputlevel 0
 
-remap(direction, from, to1, to2, to3) {
+remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
-      send {%to2% %direction%}
+      send %mod2%{%to2% %direction%}
     }
     else if (GetKeyState("tab", "P")) {
-      SendInput {%to3% %direction%}
+      SendInput %mod3%{%to3% %direction%}
     }
     else {
-      send {%to1% %direction%}
+      send %mod1%{%to1% %direction%}
     }
   }
   else {
@@ -125,28 +125,12 @@ $^lctrl up:: send ^{tab}
 ;;  ==========================================================================
 
 ;;  'meta-open-bracket' for escape (vim-like).
-*$[::remap("down", "vkdb", "esc", "vkdb", "vkdb")
-*$[ up::remap("up", "vkdb", "esc", "vkdb", "vkdb")
+*$[::remap("down", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
+*$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 
-$]::
-  if (GetKeyState("vked", "P")) {
-    ;;  'meta-close-bracket' for switching between apps
-    send !{tab down}
-  }
-  else {
-    send {vkdd down}
-  }
-  return
-
-$] up::
-  if (GetKeyState("vked", "P")) {
-    ;;  'meta-close-bracket' for switching between apps
-    send !{tab up}
-  }
-  else {
-    send {vkdd up}
-  }
-  return
+;;  'meta-close-bracket' for switching between apps.
+*$]::remap("down", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
+*$] up::remap("up", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
 
 $backspace::
   if (GetKeyState("vked", "P")) {
@@ -185,26 +169,26 @@ $backspace::
 ;;  'meta-h' for left arrow (vim-like).
 ;;  'meta-shift-h' for home (vim-like).
 ;;  'meta-caps-h' for wheel left (but touchpad normally used for pan).
-*$h::remap("down", "vk48", "left", "home", "wheelleft")
-*$h up::remap("up", "vk48", "left", "home", "wheelleft")
+*$h::remap("down", "vk48", "", "left", "", "home", "", "wheelleft")
+*$h up::remap("up", "vk48", "", "left", "", "home", "", "wheelleft")
 
 ;;  'meta-j' for down arrow (vim-like).
 ;;  'meta-shift-j' for page down (vim-like).
 ;;  'meta-caps-j' for wheel down (but touchpad normally used for pan).
-*$j::remap("down", "vk4a", "down", "pgdn", "wheeldown")
-*$j up::remap("up", "vk4a", "down", "pgdn", "wheeldown")
+*$j::remap("down", "vk4a", "", "down", "", "pgdn", "", "wheeldown")
+*$j up::remap("up", "vk4a", "", "down", "", "pgdn", "", "wheeldown")
 
 ;;  'meta-k' for up arrow (vim-like).
 ;;  'meta-shift-k' for page up (vim-like).
 ;;  'meta-caps-k' for wheel up (but touchpad normally used for pan).
-*$k::remap("down", "vk4b", "up", "pgup", "wheelup")
-*$k up::remap("up", "vk4b", "up", "pgup", "wheelup")
+*$k::remap("down", "vk4b", "", "up", "", "pgup", "", "wheelup")
+*$k up::remap("up", "vk4b", "", "up", "", "pgup", "", "wheelup")
 
 ;;  'meta-l' for right arrow (vim-like).
 ;;  'meta-shift-l' for end (vim-like).
 ;;  'meta-caps-l' for wheel right (but touchpad normally used for pan).
-*$l::remap("down", "vk4c", "right", "end", "wheelright")
-*$l up::remap("up", "vk4c", "right", "end", "wheelright")
+*$l::remap("down", "vk4c", "", "right", "", "end", "", "wheelright")
+*$l up::remap("up", "vk4c", "", "right", "", "end", "", "wheelright")
 
 *$7::
   if (GetKeyState("vked", "P")) {
@@ -364,40 +348,40 @@ $backspace::
 ;; ===========================================================================
 
 ;;  'meta-shift-y' => top left (third party tool mapped to f13)
-*$y::remap("down", "vk59", "vk59", "f13", "vk59")
-*$y up::remap("up", "vk59", "vk59", "f13", "vk59")
+*$y::remap("down", "vk59", "", "vk59", "", "f13", "", "vk59")
+*$y up::remap("up", "vk59", "", "vk59", "", "f13", "", "vk59")
 
 ;;  'meta-shift-u' => bottom left (third party tool mapped to f14)
-*$u::remap("down", "vk55", "vk55", "f14", "vk55")
-*$u up::remap("up", "vk55", "vk55", "f14", "vk55")
+*$u::remap("down", "vk55", "", "vk55", "", "f14", "", "vk55")
+*$u up::remap("up", "vk55", "", "vk55", "", "f14", "", "vk55")
 
 ;;  'meta-shift-i' => top right (third party tool mapped to f15)
-*$i::remap("down", "vk49", "vk49", "f15", "vk49")
-*$i up::remap("up", "vk49", "vk49", "f15", "vk49")
+*$i::remap("down", "vk49", "", "vk49", "", "f15", "", "vk49")
+*$i up::remap("up", "vk49", "", "vk49", "", "f15", "", "vk49")
 
 ;;  'meta-shift-o' => botom right (third party tool mapped to f16)
-*$o::remap("down", "vk4f", "vk4f", "f16", "vk4f")
-*$o up::remap("up", "vk4f", "vk4f", "f16", "vk4f")
+*$o::remap("down", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
+*$o up::remap("up", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 
 ;;  'meta-shift-n' => left 1/2, 1/3, 2/3 (third party tool mapped to f17)
-*$n::remap("down", "vk4e", "vk4e", "f17", "vk4e")
-*$n up::remap("up", "vk4e", "vk4e", "f17", "vk4e")
+*$n::remap("down", "vk4e", "", "vk4e", "", "f17", "", "vk4e")
+*$n up::remap("up", "vk4e", "", "vk4e", "", "f17", "", "vk4e")
 
 ;;  'meta-shift-m' => right 1/2, 1/3, 2/3 (third party tool mapped to f18)
-*$m::remap("down", "vk4d", "vk4d", "f18", "vk4d")
-*$m up::remap("up", "vk4d", "vk4d", "f18", "vk4d")
+*$m::remap("down", "vk4d", "", "vk4d", "", "f18", "", "vk4d")
+*$m up::remap("up", "vk4d", "", "vk4d", "", "f18", "", "vk4d")
 
 ;;  'meta-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
-*$,::remap("down", "vkbc", "vkbc", "f19", "vkbc")
-*$, up::remap("up", "vkbc", "vkbc", "f19", "vkbc")
+*$,::remap("down", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
+*$, up::remap("up", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
 
 ;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
-*$.::remap("down", "vkbe", "vkbe", "f20", "vkbe")
-*$. up::remap("up", "vkbe", "vkbe", "f20", "vkbe")
+*$.::remap("down", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
+*$. up::remap("up", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 
 ;;  'meta-shift-/' => maximize (third party tool mapped to f21)
-*$/::remap("down", "vkbf", "vkbf", "f21", "vkbf")
-*$/ up::remap("up", "vkbf", "vkbf", "f21", "vkbf")
+*$/::remap("down", "vkbf", "", "vkbf", "", "f21", "", "vkbf")
+*$/ up::remap("up", "vkbf", "", "vkbf", "", "f21", "", "vkbf")
 
 ;; ===========================================================================
 ;; Left and right mouse buttons

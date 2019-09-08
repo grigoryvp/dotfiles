@@ -145,14 +145,8 @@ $] up::
 
 $backspace::
   if (GetKeyState("vked", "P")) {
-    wingetactivetitle, title
-    if (instr(title, "KeePassXC")) {
-      winminimize A
-    }
-    else {
-      ;;  'meta-backspace' (delete on osx) for closing apps
-      winclose A
-    }
+    ;;  'meta-backspace' (delete on osx) for closing apps
+    winclose A
   }
   else {
     send {backspace}

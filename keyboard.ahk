@@ -74,6 +74,12 @@ perform(cmd, arg, direction) {
   }
 }
 
+;;  Remap keydown (direction 'down') or keyup (direction 'up') from key
+;;  specified by 'from' into different things to do. Each thing is specified
+;;  with modifier and 'to'-clause. If modifier is an empty string (default),
+;;  'to'-clause specifies a key to remap. If modifier is reserved string
+;;  see 'perform' implementation. If modifier is ahk key modifier (like '^')
+;;  it is used as modified for key remap.
 remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {

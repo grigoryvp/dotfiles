@@ -49,16 +49,41 @@ tab::lctrl
 enter::rctrl
 #inputlevel 0
 
+perform(cmd, arg, direction) {
+  if (cmd = "winclose") {
+    winclose A
+  }
+  ;;  Delete things.
+  else if (cmd = "delete") {
+    if (WinActive("ahk_exe explorer.exe")) {
+      ;;  Explorer monitors physical 'shift' key, so sending 'delete'
+      ;;  will trigger whift-delete, which is "permanently delete", while
+      ;;  ctrl-d key combination is just 'delte' in most apps.
+      send ^d
+    }
+    else {
+      send {delete}
+    }
+  }
+  ;;  Do nothing (ex for remapping key up action)
+  else if (cmd = "none") {
+  }
+  ;;  Default remap is 'send' with modifier and direction.
+  else {
+    send %cmd%{%arg% %direction%}
+  }
+}
+
 remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
-      send %mod2%{%to2% %direction%}
+      perform(mod2, to2, direction)
     }
     else if (GetKeyState("tab", "P")) {
-      SendInput %mod3%{%to3% %direction%}
+      perform(mod3, to3, direction)
     }
     else {
-      send %mod1%{%to1% %direction%}
+      perform(mod1, to1, direction)
     }
   }
   else {
@@ -132,39 +157,14 @@ $^lctrl up:: send ^{tab}
 *$]::remap("down", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
 *$] up::remap("up", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
 
-$backspace::
-  if (GetKeyState("vked", "P")) {
-    ;;  'meta-backspace' (delete on osx) for closing apps
-    winclose A
-  }
-  else {
-    send {backspace}
-  }
-  return
+;;  'meta-backspace' (delete on osx) for closing apps
+*$vk08::remap("down", "vk08", "none", "", "", "vk08", "", "vk08")
+*$vk08 up::remap("up", "vk08", "winclose", "", "", "vk08", "", "vk08")
 
-*$p::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-shift-p' for deleting things.
-      if (WinActive("ahk_exe explorer.exe")) {
-        ;;  Explorer monitors physical 'shift' key, so sending 'delete'
-        ;;  will trigger whift-delete, which is "permanently delete", while
-        ;;  ctrl-d key combination is just 'delte' in most apps.
-        send ^d
-      }
-      else {
-        send {delete}
-      }
-    }
-    else {
-      ;;  'meta-p' for backspace
-      send {backspace}
-    }
-  }
-  else {
-    send {blind}{vk50}
-  }
-  return
+;;  'meta-p' for backspace
+;;  'meta-shift-p' for deleting things.
+*$p::remap("down", "vk50", "", "backspace", "none", "", "", "vk50")
+*$p up::remap("up", "vk50", "", "backspace", "delete", "", "", "vk50")
 
 ;;  'meta-h' for left arrow (vim-like).
 ;;  'meta-shift-h' for home (vim-like).
@@ -190,118 +190,39 @@ $backspace::
 *$l::remap("down", "vk4c", "", "right", "", "end", "", "wheelright")
 *$l up::remap("up", "vk4c", "", "right", "", "end", "", "wheelright")
 
-*$7::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-7' for password manager; run under non-elevated user
-      send #^5
-    }
-    else {
-      ;;  'meta-7' for file manager; run under non-elevated user
-      send #^1
-    }
-  }
-  else {
-    send {blind}{vk37}
-  }
-  return
+;;  'meta-7' for file manager; run under non-elevated user
+;;  'meta-s-7' for password manager; run under non-elevated user
+*$7::remap("down", "vk37", "#^", "1", "#^", "5", "", "vk37")
+*$7 up::remap("up", "vk37", "#^", "1", "#^", "5", "", "vk37")
 
-*$8::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-8' for task manager; run under non-elevated user
-      send #^6
-    }
-    else {
-      ;;  'meta-8' for editor; run under non-elevated user
-      send #^2
-    }
-  }
-  else {
-    send {blind}{vk38}
-  }
-  return
+;;  'meta-8' for editor; run under non-elevated user
+;;  'meta-s-8' for task manager; run under non-elevated user
+*$8::remap("down", "vk38", "#^", "2", "#^", "6", "", "vk38")
+*$8 up::remap("up", "vk38", "#^", "2", "#^", "6", "", "vk38")
 
-*$9::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-9' for mail and calendar; run under non-elevated user
-      send #^7
-    }
-    else {
-      ;;  'meta-9' for browser; run under non-elevated user
-      send #^3
-    }
-  }
-  else {
-    send {blind}{vk39}
-  }
-  return
+;;  'meta-9' for browser; run under non-elevated user
+;;  'meta-s-9' for mail and calendar; run under non-elevated user
+*$9::remap("down", "vk39", "#^", "3", "#^", "7", "", "vk39")
+*$9 up::remap("up", "vk39", "#^", "3", "#^", "7", "", "vk39")
 
-*$0::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-0' for slack; run under non-elevated user
-      send #^8
-    } else {
-      ;;  'meta-0' for messenger; run under non-elevated user
-      send #^4
-    }
-  }
-  else {
-    send {blind}{vk30}
-  }
-  return
+;;  'meta-0' for messenger; run under non-elevated user
+;;  'meta-s-0' for slack; run under non-elevated user
+*$0::remap("down", "vk30", "#^", "4", "#^", "8", "", "vk30")
+*$0 up::remap("up", "vk30", "#^", "4", "#^", "8", "", "vk30")
 
-*$-::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  Not used
-    }
-    else {
-      ;;  Reserve
-      send #^9
-    }
-  }
-  else {
-    send {blind}{vkbd}
-  }
-  return
+;;  Reserved
+*$-::remap("down", "vkbd", "#^", "9", "", "vkbd", "", "vkbd")
+*$- up::remap("up", "vkbd", "#^", "9", "", "vkbd", "", "vkbd")
 
-*$=::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  Not used
-    }
-    else {
-      ;;  Reserve
-      send #^0
-    }
-  }
-  else {
-    send {blind}{vkbb}
-  }
-  return
+;;  Reserved
+*$=::remap("down", "vkbb", "#^", "0", "", "vkbb", "", "vkbb")
+*$= up::remap("up", "vkbb", "#^", "0", "", "vkbb", "", "vkbb")
 
-*$\::
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      ;;  'meta-s-|' for notifications.
-      send #a
-    }
-    else if (GetKeyState("tab", "P")) {
-      ;;  GOG HUD
-      send ^+{tab}
-    }
-    else {
-      ;;  'meta-|' for launchpad.
-      send {lwin}
-    }
-  }
-  else {
-    send {blind}{vkdc}
-  }
-  return
+;;  'meta-|' for launchpad.
+;;  'meta-s-|' for notifications.
+;;  'meta-c-|' for game HUD's (GOG, steam etc)
+*$\::remap("down", "vkdc", "", "lwin", "#", "a", "+", "tab")
+*$\ up::remap("up", "vkdc", "", "lwin", "#", "a", "+", "tab")
 
 ;;  ==========================================================================
 ;;  Language switch

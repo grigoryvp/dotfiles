@@ -25,12 +25,14 @@
 ;;  caps lock from triggering in situations where keyboard hook is not
 ;;  working (UAC, lock screen, "Grim Dawn" etc).
 
-codepage = 65001 ; utf-8
+codepage := 65001 ; utf-8
 appLastLangHotkey := ""
-appLeaderDownTick = 0
-appLeaderUpTick = 0
-appEnterDownTick = 0
-appEnterUpTick = 0
+appLeaderDownTick := 0
+appLeaderUpTick := 0
+appEnterDownTick := 0
+appEnterUpTick := 0
+appReturnUpTick := 0
+appReturnDownTick := 0
 
 if !A_IsAdmin {
   Run *RunAs "%A_ScriptFullPath%"

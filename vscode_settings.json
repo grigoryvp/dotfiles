@@ -141,5 +141,7 @@
   "telemetry.enableTelemetry": false,
   "workbench.colorTheme": "grigoryvp memory theme",
   "debug.node.autoAttach": "on",
-  "terminal.integrated.shell.windows": "pwsh.exe"
+  "terminal.integrated.shell.windows": "pwsh.exe",
+  "workbench.iconTheme": "vscode-icons",
+  "vsicons.presets.foldersAllDefaultIcon": true
 }

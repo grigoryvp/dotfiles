@@ -566,6 +566,10 @@ class App {
       & code --install-extension EditorConfig.EditorConfig;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
+    if (-not $extList.Contains("vscode-icons-team.vscode-icons")) {
+      & code --install-extension vscode-icons-team.vscode-icons;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
 
     $docCfgDir = "$($env:USERPROFILE)\Documents\.vscode";
     if (-not (Test-Path -Path $docCfgDir)) {

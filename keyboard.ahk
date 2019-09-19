@@ -130,6 +130,21 @@ $rctrl::
   }
   return
 
+;;  caps + shift + enter is shift + middle mouse button
+;;! Can't use '*$rctrl' since it will produce 'enter' keypresses.
++$rctrl::
+  if (appReturnUpTick >= appReturnDownTick) {
+    appReturnDownTick = %A_TickCount%
+  }
+  if (GetKeyState("vked", "P")) {
+    send +{mbutton down}
+    while (GetKeyState("vked", "P") && GetKeyState("enter", "P")) {
+      Sleep 10
+    }
+    send +{mbutton up}
+  }
+  return
+
 $rctrl up::
   appReturnUpTick = %A_TickCount%
   send {rctrl up}

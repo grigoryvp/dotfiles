@@ -2,7 +2,7 @@
 #NoEnv ;; Do not substitute env var value on unbound identifier access.
 #Warn ;; Enable warnings, show message box.
 
-;;. Using space as dual mode key for alt does not work, since writing
+;;. Using space as the dual mode key for alt does not work: writing
 ;;  text fast always triggers alt-key hotkeys (google docs etc).
 ;;. Using caps lock as dual mode key for backspace does not work since
 ;;  it's often mispressed and "backspace" do terrible things like

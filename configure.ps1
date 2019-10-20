@@ -580,8 +580,9 @@ class App {
       {
         "files.exclude": {
           "My Music/": true,
-          "My Pictures": true,
-          "My Videos": true,
+          "My Pictures/": true,
+          "My Videos/": true,
+          "My Games/": true,
           "PowerShell": true,
           "WindowsPowerShell": true,
           "desktop.ini": true,

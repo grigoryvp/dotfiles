@@ -81,7 +81,8 @@ class App {
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
-    $this._installScoop();
+    # Installed manually before running this script so scoop can manage pwsh
+    # $this._installScoop();
     $this._installGit();
     $this._addScoopBuckets();
     # Clone without keys via HTTPS

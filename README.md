@@ -2,11 +2,17 @@
 
 ## Windows
 
-Install PowerShell Core from [releases](https://github.com/PowerShell/PowerShell/releases) page.
 Configure OpenVPN.
 
-```ps1
-cd ~; Invoke-WebRequest -OutFile configure.ps1 -Uri https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1; & .\configure.ps1
+```bat
+rem Allow PowerShell packages to be installed
+powershell.exe -c Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+rem Install scoop
+powershell.exe -c iwr -useb get.scoop.sh | iex
+rem Install Powershell Core
+scoop install pwsh
+rem Configure this box
+pwsh.exe -c iwr -useb https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1 | iex
 ```
 
 Follow instructions for post-configuration.

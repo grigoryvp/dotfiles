@@ -71,7 +71,7 @@ rbenv global 2.6.2
 
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
-* Install "7+ Taskbar Tweaker".
+* Install "7+ Taskbar Tweaker" on Windows.
 
 ## License
 

@@ -191,28 +191,28 @@ $^lctrl up:: send ^{tab}
 *$p up::remap("up", "vk50", "", "backspace", "delete", "", "", "vk50")
 
 ;;  'meta-h' for left arrow (vim-like).
-;;  'meta-shift-h' reserved.
+;;  'meta-shift-h' for shift-left-arrow (vim-like + selection modify).
 ;;  'meta-tab-h' for home (vim-like).
-*$h::remap("down", "vk48", "", "left", "none", "", "", "home")
-*$h up::remap("up", "vk48", "", "left", "none", "", "", "home")
+*$h::remap("down", "vk48", "", "left", "+", "left", "", "home")
+*$h up::remap("up", "vk48", "", "left", "+", "left", "", "home")
 
 ;;  'meta-j' for down arrow (vim-like).
-;;  'meta-shift-j' reserved.
+;;  'meta-shift-j' for shift-down-arrow (vim-like + selection modify).
 ;;  'meta-tab-j' for page down (vim-like).
-*$j::remap("down", "vk4a", "", "down", "none", "", "", "pgdn")
-*$j up::remap("up", "vk4a", "", "down", "none", "", "", "pgdn")
+*$j::remap("down", "vk4a", "", "down", "+", "down", "", "pgdn")
+*$j up::remap("up", "vk4a", "", "down", "+", "down", "", "pgdn")
 
 ;;  'meta-k' for up arrow (vim-like).
-;;  'meta-shift-k' reserved.
+;;  'meta-shift-k' for shift-up-arrow (vim-like + selection modify).
 ;;  'meta-tab-k' for page up (vim-like).
-*$k::remap("down", "vk4b", "", "up", "none", "", "", "pgup")
-*$k up::remap("up", "vk4b", "", "up", "none", "", "", "pgup")
+*$k::remap("down", "vk4b", "", "up", "+", "up", "", "pgup")
+*$k up::remap("up", "vk4b", "", "up", "+", "up", "", "pgup")
 
 ;;  'meta-l' for right arrow (vim-like).
-;;  'meta-shift-l' reserved.
+;;  'meta-shift-l' for shift-down-arrow (vim-like + selection modify).
 ;;  'meta-tab-l' for end (vim-like).
-*$l::remap("down", "vk4c", "", "right", "none", "", "", "end")
-*$l up::remap("up", "vk4c", "", "right", "none", "", "", "end")
+*$l::remap("down", "vk4c", "", "right", "+", "right", "", "end")
+*$l up::remap("up", "vk4c", "", "right", "+", "right", "", "end")
 
 ;;  'meta-7' for file manager; run under non-elevated user
 ;;  'meta-s-7' for password manager; run under non-elevated user

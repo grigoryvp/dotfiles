@@ -192,25 +192,25 @@ $^lctrl up:: send ^{tab}
 
 ;;  'meta-h' for left arrow (vim-like).
 ;;  'meta-shift-h' for home (vim-like).
-;;  'meta-caps-h' for wheel left (but touchpad normally used for pan).
+;;  'meta-tab-h' for wheel left (but touchpad normally used for pan).
 *$h::remap("down", "vk48", "", "left", "", "home", "", "wheelleft")
 *$h up::remap("up", "vk48", "", "left", "", "home", "", "wheelleft")
 
 ;;  'meta-j' for down arrow (vim-like).
 ;;  'meta-shift-j' for page down (vim-like).
-;;  'meta-caps-j' for wheel down (but touchpad normally used for pan).
+;;  'meta-tab-j' for wheel down (but touchpad normally used for pan).
 *$j::remap("down", "vk4a", "", "down", "", "pgdn", "", "wheeldown")
 *$j up::remap("up", "vk4a", "", "down", "", "pgdn", "", "wheeldown")
 
 ;;  'meta-k' for up arrow (vim-like).
 ;;  'meta-shift-k' for page up (vim-like).
-;;  'meta-caps-k' for wheel up (but touchpad normally used for pan).
+;;  'meta-tab-k' for wheel up (but touchpad normally used for pan).
 *$k::remap("down", "vk4b", "", "up", "", "pgup", "", "wheelup")
 *$k up::remap("up", "vk4b", "", "up", "", "pgup", "", "wheelup")
 
 ;;  'meta-l' for right arrow (vim-like).
 ;;  'meta-shift-l' for end (vim-like).
-;;  'meta-caps-l' for wheel right (but touchpad normally used for pan).
+;;  'meta-tab-l' for wheel right (but touchpad normally used for pan).
 *$l::remap("down", "vk4c", "", "right", "", "end", "", "wheelright")
 *$l up::remap("up", "vk4c", "", "right", "", "end", "", "wheelright")
 

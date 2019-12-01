@@ -191,28 +191,28 @@ $^lctrl up:: send ^{tab}
 *$p up::remap("up", "vk50", "", "backspace", "delete", "", "", "vk50")
 
 ;;  'meta-h' for left arrow (vim-like).
-;;  'meta-shift-h' for home (vim-like).
-;;  'meta-tab-h' for wheel left (but touchpad normally used for pan).
-*$h::remap("down", "vk48", "", "left", "", "home", "", "wheelleft")
-*$h up::remap("up", "vk48", "", "left", "", "home", "", "wheelleft")
+;;  'meta-shift-h' reserved.
+;;  'meta-tab-h' for home (vim-like).
+*$h::remap("down", "vk48", "", "left", "none", "", "", "home")
+*$h up::remap("up", "vk48", "", "left", "none", "", "", "home")
 
 ;;  'meta-j' for down arrow (vim-like).
-;;  'meta-shift-j' for page down (vim-like).
-;;  'meta-tab-j' for wheel down (but touchpad normally used for pan).
-*$j::remap("down", "vk4a", "", "down", "", "pgdn", "", "wheeldown")
-*$j up::remap("up", "vk4a", "", "down", "", "pgdn", "", "wheeldown")
+;;  'meta-shift-j' reserved.
+;;  'meta-tab-j' for page down (vim-like).
+*$j::remap("down", "vk4a", "", "down", "none", "", "", "pgdn")
+*$j up::remap("up", "vk4a", "", "down", "none", "", "", "pgdn")
 
 ;;  'meta-k' for up arrow (vim-like).
-;;  'meta-shift-k' for page up (vim-like).
-;;  'meta-tab-k' for wheel up (but touchpad normally used for pan).
-*$k::remap("down", "vk4b", "", "up", "", "pgup", "", "wheelup")
-*$k up::remap("up", "vk4b", "", "up", "", "pgup", "", "wheelup")
+;;  'meta-shift-k' reserved.
+;;  'meta-tab-k' for page up (vim-like).
+*$k::remap("down", "vk4b", "", "up", "none", "", "", "pgup")
+*$k up::remap("up", "vk4b", "", "up", "none", "", "", "pgup")
 
 ;;  'meta-l' for right arrow (vim-like).
-;;  'meta-shift-l' for end (vim-like).
-;;  'meta-tab-l' for wheel right (but touchpad normally used for pan).
-*$l::remap("down", "vk4c", "", "right", "", "end", "", "wheelright")
-*$l up::remap("up", "vk4c", "", "right", "", "end", "", "wheelright")
+;;  'meta-shift-l' reserved.
+;;  'meta-tab-l' for end (vim-like).
+*$l::remap("down", "vk4c", "", "right", "none", "", "", "end")
+*$l up::remap("up", "vk4c", "", "right", "none", "", "", "end")
 
 ;;  'meta-7' for file manager; run under non-elevated user
 ;;  'meta-s-7' for password manager; run under non-elevated user

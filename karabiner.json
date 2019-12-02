@@ -202,10 +202,24 @@
         },
 
         {
-          "description": "meta-shift-h for home (vim-like)",
+          "description": "'meta-shift-h' for shift-left-arrow (vim-like + selection modify)",
           "from": {
             "key_code": "h",
             "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "left_arrow",
+            "modifiers": ["shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "'meta-tab-h' for home (vim-like)",
+          "from": {
+            "key_code": "h",
+            "modifiers": {"mandatory": ["left_control"]}
           },
           "to": [{
             "key_code": "home"
@@ -215,7 +229,7 @@
         },
 
         {
-          "description": "meta-h for left arrow (vim-like)",
+          "description": "'meta-h' for left arrow (vim-like); low priority",
           "from": {
             "key_code": "h",
             "modifiers": {"optional": ["any"]}
@@ -228,10 +242,24 @@
         },
 
         {
-          "description": "meta-shift-j for page down (vim-like)",
+          "description": "'meta-shift-j' for shift-down-arrow (vim-like + selection modify)",
           "from": {
             "key_code": "j",
             "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "down_arrow",
+            "modifiers": ["shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "'meta-tab-j' for page down (vim-like)",
+          "from": {
+            "key_code": "j",
+            "modifiers": {"mandatory": ["left_control"]}
           },
           "to": [{
             "key_code": "page_down"
@@ -241,7 +269,7 @@
         },
 
         {
-          "description": "meta-j for down arrow (vim-like)",
+          "description": "'meta-j' for down arrow (vim-like); low priority",
           "from": {
             "key_code": "j",
             "modifiers": {"optional": ["any"]}
@@ -254,10 +282,24 @@
         },
 
         {
-          "description": "meta-shift-k for page up (vim-like)",
+          "description": "'meta-shift-k' for shift-up-arrow (vim-like + selection modify)",
           "from": {
             "key_code": "k",
             "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "up_arrow",
+            "modifiers": ["shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "'meta-tab-k' for page up (vim-like)",
+          "from": {
+            "key_code": "k",
+            "modifiers": {"mandatory": ["left_control"]}
           },
           "to": [{
             "key_code": "page_up"
@@ -267,7 +309,7 @@
         },
 
         {
-          "description": "meta-k for up arrow (vim-like)",
+          "description": "'meta-k' for up arrow (vim-like); low priority",
           "from": {
             "key_code": "k",
             "modifiers": {"optional": ["any"]}
@@ -280,10 +322,24 @@
         },
 
         {
-          "description": "meta-shift-l for end (vim-like)",
+          "description": "'meta-shift-l' for shift-right-arrow (vim-like + selection modify)",
           "from": {
             "key_code": "l",
             "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "right_arrow",
+            "modifiers": ["shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "'meta-tab-l' for end (vim-like).",
+          "from": {
+            "key_code": "l",
+            "modifiers": {"mandatory": ["left_control"]}
           },
           "to": [{
             "key_code": "end"
@@ -293,7 +349,7 @@
         },
 
         {
-          "description": "meta-l for right arrow (vim-like)",
+          "description": "'meta-l' for right arrow (vim-like); low priority",
           "from": {
             "key_code": "l",
             "modifiers": {"optional": ["any"]}

@@ -209,7 +209,7 @@ $^lctrl up:: send ^{tab}
 *$k up::remap("up", "vk4b", "", "up", "+", "up", "", "pgup")
 
 ;;  'meta-l' for right arrow (vim-like).
-;;  'meta-shift-l' for shift-down-arrow (vim-like + selection modify).
+;;  'meta-shift-l' for shift-right-arrow (vim-like + selection modify).
 ;;  'meta-tab-l' for end (vim-like).
 *$l::remap("down", "vk4c", "", "right", "+", "right", "", "end")
 *$l up::remap("up", "vk4c", "", "right", "+", "right", "", "end")

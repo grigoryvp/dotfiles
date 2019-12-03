@@ -52,12 +52,12 @@ xcode-select --install
 export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
 pyenv init
 echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
-pyenv install 3.7.3
-pyenv global 3.7.3
+pyenv install 3.7.4
+pyenv global 3.7.4
 rbenv init
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-rbenv install 2.6.2
-rbenv global 2.6.2
+rbenv install 2.6.5
+rbenv global 2.6.5
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Install tampermonkey for Safari.
 # Set max key repeat and min delay at "Preferences/Keyboard"

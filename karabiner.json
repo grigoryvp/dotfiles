@@ -751,6 +751,45 @@
         },
 
         {
+          "description": "control-4 => command-4 for mac-win consistency",
+          "from": {
+            "key_code": "4",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "4",
+            "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+
+        {
+          "description": "control-5 => command-5 for mac-win consistency",
+          "from": {
+            "key_code": "5",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "5",
+            "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+
+        {
+          "description": "control-6 => command-6 for mac-win consistency",
+          "from": {
+            "key_code": "6",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "6",
+            "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+
+        {
           "description": "control-b => command-b for mac-win consistency",
           "from": {
             "key_code": "b",

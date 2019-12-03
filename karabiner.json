@@ -367,7 +367,7 @@
             "key_code": "7"
           },
           "to": [{
-            "shell_command": "open ~"
+            "shell_command": "open '/System/Library/CoreServices/Finder.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -399,13 +399,13 @@
         },
 
         {
-          "description": "meta-s-8 for task manager",
+          "description": "meta-s-8 for terminal",
           "from": {
             "key_code": "8",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "/usr/bin/osascript ~/.box-cfg/trello.applescript"
+            "shell_command": "open '/Applications/Utilities/Terminal.app'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -424,13 +424,13 @@
         },
 
         {
-          "description": "meta-s-9 for mail and calendar",
+          "description": "meta-s-9 reserved",
           "from": {
             "key_code": "9",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open '/System/Applications/Mail.app'"
+            "shell_command": ""
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -449,13 +449,13 @@
         },
 
         {
-          "description": "meta-s-0 for slack",
+          "description": "meta-s-0 reserved",
           "from": {
             "key_code": "0",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "shell_command": "open '/Applications/Slack.app'"
+            "shell_command": ""
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

@@ -32,8 +32,6 @@ keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
 rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
 git clone git@github.com:grigoryvp/xi.git ~/.xi
-# Menu bar, from right to left:
-# spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 curl -Ls https://raw.githubusercontent.com/dracula/terminal-app/master/Dracula.terminal > ~/Downloads/Dracula.terminal
 open ~/Downloads/Dracula.terminal
@@ -59,6 +57,8 @@ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 rbenv install 2.6.5
 rbenv global 2.6.5
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
+# Menu bar, from right to left:
+# spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters
 # Install tampermonkey for Safari.
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut in "Preferences/Keyboard/Shortcuts".

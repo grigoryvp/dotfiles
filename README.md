@@ -42,6 +42,7 @@ ln ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
+code
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json

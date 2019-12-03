@@ -45,7 +45,6 @@ ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/k
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 # Start Karabiner-Elements
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 xcode-select --install
 # OSX up to 10.13
 unset CFLAGS
@@ -59,6 +58,8 @@ rbenv init
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 rbenv install 2.6.5
 rbenv global 2.6.5
+# Enable keyboard repeat, need to restart after that
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters

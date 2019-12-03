@@ -67,6 +67,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
+# Add "⌘w" to "Close Tab" in "Preferences/Keyboard/Shortcuts/App Shortcuts" for Safari.
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
 # Disable welcome screen guest user in "Preferences/Users & Groups".

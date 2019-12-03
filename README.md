@@ -27,7 +27,7 @@ brew cask install keepassxc spectacle karabiner-elements visual-studio-code font
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
 npm i -g git-alias
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
-keepassxc-cli show ~/.box-cfg/passwords.kdbx github
+keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
 # Add ssh to github
 rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg

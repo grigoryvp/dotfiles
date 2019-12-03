@@ -61,7 +61,7 @@ rbenv global 2.6.5
 # spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters
 # Install tampermonkey for Safari.
 # Set max key repeat and min delay at "Preferences/Keyboard"
-# Set notification center shortcut in "Preferences/Keyboard/Shortcuts".
+# Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
 # Disable corrections in "Preferences/Keyboard/Text".
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".

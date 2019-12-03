@@ -68,6 +68,7 @@ rbenv global 2.6.5
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
+# Disable welcome screen guest user in "Preferences/Users & Groups".
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure spectacle hotkeys.
 # "iTunes/Preferences/Devices/Prevent from syncing automatically"

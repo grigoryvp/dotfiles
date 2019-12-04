@@ -23,7 +23,7 @@ Follow instructions for post-configuration.
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters itsycal transmission powershell obs vlc zoomus
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs vlc zoomus
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
 npm i -g git-alias
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
@@ -62,7 +62,7 @@ rbenv global 2.6.5
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
 # Menu bar, from right to left:
-# spectacle, wifi, bt, clock, itsycal, short menu, battery monitor, menumeters
+# spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Install tampermonkey for Safari.
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".

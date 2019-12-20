@@ -97,9 +97,22 @@ function Update-VscodeExt() {
     return;
   }
 
-  $extDir = "$env:USERPROFILE\.vscode\extensions\$publisher.$name-$version";
+  $verPartList = $version.split(".");
+
+  $extRoot = "$env:USERPROFILE\.vscode\extensions"
+  $extDir = "";
+  # Try current version and all older build semver since installed
+  # extension is often older than the development one.
+  for ($i = [int]$verPartList[-1]; $i -ge 0; $i --) {
+    $verPartList[-1] = $i
+    $curVer = [System.String]::Join(".", $verPartList);
+    $extDir = "$extRoot\$publisher.$name-$curVer";
+    if (Test-Path $extDir) {
+      break;
+    }
+  }
   if (-not (Test-Path $extDir)) {
-    Write-Error "'$extDir' directory not found";
+    Write-Error "'$extRoot\$publisher.$name-$version...0' dir not found";
     return;
   }
 
@@ -108,9 +121,11 @@ function Update-VscodeExt() {
   }
   Copy-Item *.js $extDir;
   Copy-Item *.json $extDir;
+  Write-Output "Copied into $extDir";
   if (Test-Path -Path src) {
     Copy-Item src/*.js $extDir/src;
     Copy-Item src/*.json $extDir/src;
+    Write-Output "Copied ./src into $extDir/src";
   }
 }
 

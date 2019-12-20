@@ -103,9 +103,9 @@ class App {
     if (-not (Test-Path -Path "$psDir/profile.ps1")) {
       New-Item `
         -ItemType HardLink `
-        -Path $psDir `
+        -Path "$psDir" `
         -Name "profile.ps1" `
-        -Value $psProfileCfg
+        -Value "$psProfileCfg"
     }
 
     # Interactive.

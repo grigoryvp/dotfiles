@@ -26,6 +26,8 @@ brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs vlc zoomus
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
 npm i -g git-alias
+# Fixes 'cannot lock ref' case sensetive issue.
+git config --global fetch.prune true
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
 # Add ssh to github

@@ -31,7 +31,7 @@ class App {
       - Add perfgraph toolbar
       - Login Chrome
       - Install emclient, battery bar; slack, trello from store
-      - Pin files, vscode, chrome, telegram, keepass, trello, emclient, slack
+      - Pin files, vscode, chrome, telegram, keepass, winterm
       - Add 'caps lock' to 'F24' remap using 'sharpkeys' and reboot
 "@;
   }
@@ -91,11 +91,10 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("keepassxc");
     $this._installApp("sharpkeys");
-    $this._installApp("hyper");
     $this._installApp("vscode");
     $this._configureVscode();
-    $this._installApp("doublecmd");
     $this._installApp("tray-monitor");
+    $this._installApp("windows-terminal");
     $this._registerAutohotkeyStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
@@ -138,20 +137,22 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
+      $this._installApp("grigoryvp/telegram");
+      $this._installApp("googlechrome");
+      $this._installApp("foxit-reader");
+      $this._installApp("doublecmd");
       # 'psexec' (required to start non-elevated apps), 'procexp' etc
       $this._installApp("sysinternals");
       # Need to restart terminal in order to apply env variables.
       $this._installApp("nodejs");
       $this._installApp("miniconda3");
-      $this._installApp("googlechrome");
-      $this._installApp("foxit-reader");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
-      $this._installApp("smplayer");
       if (-not $this._hasCli("g")) {
         & npm i -g git-alias;
       }
-      $this._installApp("grigoryvp/telegram");
+      # TODO: configure to save position on exit
+      $this._installApp("mpv");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }
@@ -418,12 +419,6 @@ class App {
     if (-not @(scoop bucket list).Contains("grigoryvp")) {
       $uri = "https://github.com/grigoryvp/scoop-grigoryvp";
       scoop bucket add grigoryvp $uri;
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    # Required to install smplayer
-    if (-not @(scoop bucket list).Contains("jfut")) {
-      $uri = "https://github.com/jfut/scoop-jfut";
-      scoop bucket add jfut $uri;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
   }

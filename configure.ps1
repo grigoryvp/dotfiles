@@ -151,7 +151,7 @@ class App {
       if (-not $this._hasCli("g")) {
         & npm i -g git-alias;
       }
-      $this._installApp("telegram");
+      $this._installApp("grigoryvp/telegram");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }

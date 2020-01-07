@@ -86,6 +86,9 @@
   "[python]": {
     "editor.tabSize": 4
   },
+  "[rust]": {
+    "editor.tabSize": 4
+  },
   "editor.lineNumbers": "off",
   "editor.links": true,
   "editor.minimap.enabled": false,

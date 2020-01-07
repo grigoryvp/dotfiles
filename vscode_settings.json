@@ -143,5 +143,6 @@
   "debug.node.autoAttach": "on",
   "terminal.integrated.shell.windows": "pwsh.exe",
   "workbench.iconTheme": "vscode-icons",
+  "scm.diffDecorations": "none",
   "vsicons.presets.foldersAllDefaultIcon": true
 }

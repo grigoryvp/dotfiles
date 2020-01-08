@@ -5,3 +5,5 @@ indent_style = space
 indent_size = 2
 [*.py]
 indent_size = 4
+[*.rs]
+indent_size = 4

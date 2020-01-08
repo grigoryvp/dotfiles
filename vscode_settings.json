@@ -92,7 +92,7 @@
   "editor.lineNumbers": "off",
   "editor.links": true,
   "editor.minimap.enabled": false,
-  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingBrackets": "never",
   "editor.acceptSuggestionOnEnter": "off",
   "editor.renderIndentGuides": false,
   "editor.renderLineHighlight": "line",

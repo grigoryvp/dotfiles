@@ -116,6 +116,7 @@
   "explorer.openEditors.visible": 0,
   "git.confirmSync": false,
   "java.errors.incompleteClasspath.severity": "ignore",
+  "ruby.useLanguageServer": true,
   "extensions.ignoreRecommendations": false,
   "editor.renderControlCharacters": false,
   "workbench.startupEditor": "none",

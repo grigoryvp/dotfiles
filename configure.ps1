@@ -399,7 +399,7 @@ class App {
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
     & git config --global core.autocrlf input;
     & git config --global user.name "Girogry Petrov";
-    & git config --global user.email "grigory.v.p@gmail.com";
+    & git config --global user.email "grigoryvp@gmail.com";
   }
 
 

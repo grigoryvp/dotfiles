@@ -101,6 +101,7 @@
   "editor.wordWrap": "off",
   "editor.autoClosingQuotes": false,
   "editor.fontFamily": "Monoid, Monoid NF",
+  "editor.semanticHighlighting.enabled": true,
   "terminal.integrated.fontFamily": "Monoid, Monoid NF",
   "editor.fontSize": 12,
   "terminal.integrated.fontSize": 12,

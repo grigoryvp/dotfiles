@@ -15,3 +15,17 @@ default = simple
 
 [pull]
 rebase = true
+
+[alias]
+ch = checkout
+a = add
+aa = add .
+cm = commit -am
+ps = push
+pl = pull --all
+st = status -s
+lg = log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit
+br = branch
+di = diff --ignore-space-change
+dic = diff --ignore-space-change --cached
+dit = difftool --ignore-space-change

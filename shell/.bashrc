@@ -152,55 +152,7 @@ fi
 export PATH=$PATH:~/.rvm/bin # Add RVM to PATH for scripting
 
 ##  git aliases
-alias gl='git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
-alias ga='git add -N'
-alias gb='git branch'
-alias gc='git commit -am'
-alias gd='git diff --ignore-space-change'
-alias gdl='git diff --ignore-space-change --no-index'
-alias gdt='git difftool --ignore-space-change'
-##  Avoid conflict with 'go' programming language.
-alias gg='git checkout'
-alias gm='git mv'
-##  'git push'
-alias gp='git push'
-##  'git up'
-alias gu='git pull --all'
-##  "git status"
-gs() {
-  echo -e "${G}current branch: ${R}$(git rev-parse --abbrev-ref HEAD)${N}"
-  git status -s
-}
-##  "git all status"
-gas() {
-  git submodule foreach git status
-  git status
-}
-##  "git all diff"
-gad() {
-  git submodule foreach git diff
-  git diff
-}
-##  "git all add"
-gaa() {
-  git submodule foreach git add -N .
-  git add -N .
-}
-##  "git all commit"
-gac() {
-  git submodule foreach git commit -am "$1"
-  git commit -am "$1"
-}
-##  "git all push"
-gap() {
-  git submodule foreach git push
-  git push
-}
-##  "git all pull"
-gau() {
-  git pull
-  git submodule update --merge
-}
+alias g=git
 
 ##  svn aliases
 alias svl='svn log'

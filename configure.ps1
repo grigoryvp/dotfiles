@@ -148,9 +148,6 @@ class App {
       $this._installApp("miniconda3");
       $this._installApp("obs-studio");
       $this._installApp("rufus");
-      if (-not $this._hasCli("g")) {
-        & npm i -g git-alias;
-      }
       # TODO: configure to save position on exit
       $this._installApp("mpv");
       # TODO: unattended install for current user

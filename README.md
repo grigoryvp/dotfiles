@@ -23,7 +23,6 @@ brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs vlc zoomus
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
-npm i -g git-alias
 # Fixes 'cannot lock ref' case sensetive issue.
 git config --global fetch.prune true
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
@@ -36,9 +35,11 @@ curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_m
 curl -Ls https://raw.githubusercontent.com/dracula/terminal-app/master/Dracula.terminal > ~/Downloads/Dracula.terminal
 open ~/Downloads/Dracula.terminal
 rm -rf ~/Downloads/Dracula.terminal
+rm -f ~/.bashrc
 ln ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
+rm -f ~/.gitconfig
 ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
 code
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json

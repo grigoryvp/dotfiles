@@ -19,6 +19,7 @@ function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/.box-cfg; }
 function cdx() { Set-Location ~/.xi; }
 function cdh() { Set-Location ~; }
+function g() { & git $args }
 
 function gst() {
   $dirNameList = Get-ChildItem -Name -Directory;

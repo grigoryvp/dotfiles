@@ -11,7 +11,7 @@ rem Install Powershell Core
 scoop install https://raw.githubusercontent.com/grigoryvp/scoop-grigoryvp/master/7zip.json
 scoop install git pwsh
 rem Configure this box
-pwsh.exe -c iwr -useb https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1 | iex
+pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1 | iex"
 ```
 
 Follow instructions for post-configuration.

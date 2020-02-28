@@ -114,8 +114,6 @@ class App {
       }
     }
     # Interactive.
-    $this._startAutohotkey();
-    # Interactive.
     $this._installFonts();
 
     if (-not $this._isPublic) {
@@ -153,6 +151,9 @@ class App {
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }
+
+    # Interactive.
+    $this._startAutohotkey();
 
     Pop-Location;
     if ($this._isTest) {

@@ -1,6 +1,6 @@
 # My windows and OSX box automatic configuration
 
-## Windows
+## Windows install via cmd.exe
 
 ```bat
 rem Allow PowerShell packages to be installed
@@ -8,7 +8,8 @@ powershell.exe -c Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 rem Install scoop
 powershell.exe -c iwr -useb get.scoop.sh | iex
 rem Install Powershell Core
-scoop install https://raw.githubusercontent.com/grigoryvp/scoop-grigoryvp/master/7zip.json git pwsh
+scoop install https://raw.githubusercontent.com/grigoryvp/scoop-grigoryvp/master/7zip.json
+scoop install git pwsh
 rem Configure this box
 pwsh.exe -c iwr -useb https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1 | iex
 ```

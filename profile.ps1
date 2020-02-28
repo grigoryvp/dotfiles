@@ -227,7 +227,9 @@ Set-PSReadlineKeyHandler -Key Ctrl+d -ScriptBlock {
   Add-PromptMsg "dbg";
 }
 
-(& conda.exe shell.powershell hook) | Out-String | Invoke-Expression
+if (Get-Command "conda.exe" -ErrorAction SilentlyContinue) {
+  (& conda.exe shell.powershell hook) | Out-String | Invoke-Expression
+}
 
 # After conda, which tries to replace prompt.
 function prompt {

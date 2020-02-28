@@ -364,7 +364,8 @@ class App {
     $this._pass = $str;
 
     $db = "$($this._cfgDir)\passwords.kdbx";
-    $ret = & Write-Output $this._pass | keepassxc-cli show $db github;
+    # -s to show protected attribute (password) as clear text.
+    $ret = & Write-Output $this._pass | keepassxc-cli show -s $db github;
     # Insert password to unlock ...:
     # Title: ...
     # UserName: ...

@@ -27,11 +27,12 @@ class App {
       - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'; autostart
       - Disable autostart in Task Manager
       - Disable snap assist
+      - Disable touchbar click
       - Make --full configuration
       - Add perfgraph toolbar
-      - Login Chrome
-      - Install emclient, battery bar; slack, trello from store
-      - Pin files, vscode, chrome, telegram, keepass, winterm
+      - Login Edge
+      - Install battery bar from store
+      - Pin files, vscode, edge, telegram, keepass, wt
       - Add 'caps lock' to 'F24' remap using 'sharpkeys' and reboot
 "@;
   }
@@ -87,6 +88,8 @@ class App {
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
+    # VCRUNTIME140_1.dll required for windows-terminal
+    $this._installApp("extras/vcredist2019");
     $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepassxc");
@@ -136,7 +139,6 @@ class App {
     # Optional installs
     if ($this._isFull) {
       $this._installApp("grigoryvp/telegram");
-      $this._installApp("googlechrome");
       $this._installApp("foxit-reader");
       $this._installApp("doublecmd");
       # 'psexec' (required to start non-elevated apps), 'procexp' etc
@@ -448,6 +450,7 @@ class App {
           New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
         }
         elseif ($_.Exception.Response.StatusCode -eq 401) {
+          # TODO: try to upload via auth token.
           Write-Host "Failed to add key to GitHub; 2-factor auth?";
           Write-Host "Upload manually and touch .ssh/${marker}";
           Write-Host "Login: '$($this._github.user)'";

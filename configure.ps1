@@ -93,6 +93,7 @@ class App {
     $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepassxc");
+    # TODO: modify registry instead of using sharpkeys
     $this._installApp("sharpkeys");
     $this._installApp("vscode");
     $this._configureVscode();

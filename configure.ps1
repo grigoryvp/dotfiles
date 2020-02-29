@@ -102,14 +102,24 @@ class App {
     $this._registerAutohotkeyStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
-    $psProfileCfg = "$($this._cfgDir)/profile.ps1";
-    if (-not (Test-Path -Path "$psDir/profile.ps1")) {
-      New-Item `
-        -ItemType HardLink `
-        -Path "$psDir" `
-        -Name "profile.ps1" `
-        -Value "$psProfileCfg"
+    if (Test-Path -Path "$psDir/profile.ps1") {
+      Remove-Item "$psDir/profile.ps1";
     }
+    New-Item `
+      -ItemType HardLink `
+      -Path "$psDir" `
+      -Name "profile.ps1" `
+      -Value "$($this._cfgDir)/profile.ps1"
+
+    # Symlink git config.
+    if (Test-Path -Path "$($env:HOME)/.gitconfig") {
+      Remove-Item "$($env:HOME)/.gitconfig";
+    }
+    New-Item `
+      -ItemType HardLink `
+      -Path "$($env:HOME)" `
+      -Name ".gitconfig" `
+      -Value "$($this._cfgDir)/shell/.gitconfig"
 
     # Interactive.
     if (-not (Test-Path -Path .ssh\.uploaded_to_github)) {
@@ -130,7 +140,6 @@ class App {
     }
 
     $this._getXi();
-    $this._startKeepassxc();
 
     if (-not (Test-Path -Path ".editorconfig")) {
         $src = "$($this._cfgDir)/.editorconfig";
@@ -484,13 +493,6 @@ class App {
       Verb = 'RunAs'
     };
     Start-Process @args;
-  }
-
-
-  _startKeepassxc() {
-    if ($this._isTest) { return; }
-    if (Get-Process "KeePassXC" -ErrorAction SilentlyContinue) { return; }
-    Start-Process  keepassxc.exe  -WindowStyle Hidden;
   }
 
 

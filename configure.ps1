@@ -120,6 +120,8 @@ class App {
       -Path "$($env:HOME)" `
       -Name ".gitconfig" `
       -Value "$($this._cfgDir)/shell/.gitconfig"
+    
+    # TODO: symlink '~\AppData\Local\Microsoft\Windows Terminal\profiles.json'
 
     # Interactive.
     if (-not (Test-Path -Path .ssh\.uploaded_to_github)) {

@@ -30,9 +30,8 @@ class App {
       - Make --full configuration
       - Add perfgraph toolbar
       - Login Edge
-      - Install battery bar from store
-      - Pin files, vscode, edge, telegram, keepass, wt
-      - Add 'caps lock' to 'F24' remap using 'sharpkeys' and reboot
+      - Pin files, vscode, edge, telegram, keepass, cmd
+      - Reboot
 "@;
   }
 
@@ -74,6 +73,7 @@ class App {
       $ret.Attributes = 'Hidden';
     }
 
+    $this._mapCapsToF24();
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
@@ -92,8 +92,6 @@ class App {
     $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepassxc");
-    # TODO: modify registry instead of using sharpkeys
-    $this._installApp("sharpkeys");
     $this._installApp("vscode");
     $this._configureVscode();
     $this._installApp("tray-monitor");
@@ -344,6 +342,15 @@ class App {
     $args.Name = 'Flags';
     $args.Value = '1';
     New-ItemProperty @args;
+  }
+
+
+  _mapCapsToF24() {
+    if ($this._isTest) { return; }
+    Start-Process pwsh `
+      -Wait `
+      -Verb RunAs `
+      -ArgumentList "./map_caps_to_f24.ps1";
   }
 
 

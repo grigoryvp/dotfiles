@@ -27,10 +27,10 @@ class App {
       - Disable autostart in Task Manager
       - Disable snap assist
       - Disable touchbar click
-      - Make --full configuration
       - Add perfgraph toolbar
       - Login Edge
       - Pin files, vscode, edge, telegram, keepass, cmd
+      - Make --full configuration
       - Reboot
 "@;
   }

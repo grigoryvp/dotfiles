@@ -24,7 +24,6 @@ class App {
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
-      - Select tray icons: 'batteryicon', 'ramicon', 'cpuicon'; autostart
       - Disable autostart in Task Manager
       - Disable snap assist
       - Disable touchbar click
@@ -98,8 +97,14 @@ class App {
     $this._installApp("vscode");
     $this._configureVscode();
     $this._installApp("tray-monitor");
+    $this._installApp("battery-info-view");
     $this._installApp("windows-terminal");
     $this._registerAutohotkeyStartup();
+    $this._configureBatteryInfoView();
+    $this._registerBatteryInfoViewStartup();
+    $this._registerBatteryIconStartup();
+    $this._registerCpuIconStartup();
+    $this._registerRamIconStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (Test-Path -Path "$psDir/profile.ps1") {
@@ -180,18 +185,21 @@ class App {
 
 
   [Boolean] _hasCli($name) {
+    if ($this._isTest) { return $false; }
     Get-Command $name -ErrorAction SilentlyContinue;
     return $?;
   }
 
 
   [Boolean] _isAppStatusInstalled($appName) {
+    if ($this._isTest) { return $false; }
     $res = & scoop info $appName;
     if ($LASTEXITCODE -ne 0) { return $false; }
     return (-not ($res | Out-String).Contains("Installed: No"));
   }
 
   [Boolean] _hasApp($appName) {
+    if ($this._isTest) { return $false; }
     if (-not $this._isAppStatusInstalled($appName)) { return $false; }
     $res = @(& scoop info $appName);
     $installMarkIdx = $res.IndexOf("Installed:");
@@ -229,6 +237,7 @@ class App {
 
 
   _copyToAppDir($fileName, $appName) {
+    if ($this._isTest) { return; }
     $srcPath = "$($this._cfgDir)\$fileName";
     $dstPath = "$($env:USERPROFILE)\scoop\apps\$appName\current\";
     Copy-Item -Path $srcPath -Destination $dstPath -Force;
@@ -236,6 +245,7 @@ class App {
 
 
   _getFilesFromGit() {
+    if ($this._isTest) { return; }
     $gitCfgFile = "$($this._cfgDir)\.git\config";
     if (Test-Path -Path $gitCfgFile) {
       $gitCfg = Get-Content $gitCfgFile | Out-String;
@@ -338,6 +348,7 @@ class App {
 
 
   _setTouchpadOptions() {
+    if ($this._isTest) { return; }
     $root = "HKCU:\Software\Microsoft\Windows\CurrentVersion";
     $uri = "$root\PrecisionTouchPad";
     $propName = "AAPThreshold";
@@ -352,6 +363,7 @@ class App {
 
 
   _setInputMethodOptions() {
+    if ($this._isTest) { return; }
     $current = & powershell.exe -Command Get-WinUserLanguageList | Out-String;
     if (-not $current.Contains("LanguageTag     : ru")) {
       $cmd = '' +
@@ -478,6 +490,7 @@ class App {
 
 
   _prompt($msg) {
+    if ($this._isTest) { return; }
     Write-Host -NoNewLine $msg;
     [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null;
     Write-Host "";
@@ -501,10 +514,12 @@ class App {
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\autohotkey.bat") { return; }
-    $content = 'pwsh -Command Start-Process autohotkey.exe';
-    $content += ' -ArgumentList "' + $this._cfgDir + '\keyboard.ahk"';
-    $content += ' -WindowStyle Hidden -Verb RunAs';
+    if (Test-Path -Path "$startDir\autohotkey.bat") {
+      Remove-Item "$startDir\autohotkey.bat";
+    }
+    $content = "pwsh -Command Start-Process autohotkey.exe";
+    $content += " -ArgumentList `"$($this._cfgDir)\keyboard.ahk`"";
+    $content += " -WindowStyle Hidden -Verb RunAs";
     New-Item `
       -path $startDir `
       -Name "autohotkey.bat" `
@@ -514,6 +529,7 @@ class App {
 
 
   _installFonts() {
+    if ($this._isTest) { return; }
     $fileName = "Monoid Regular Nerd Font Complete Mono Windows Compatible.ttf";
     if (Test-Path -Path "$env:windir\Fonts\$fileName") { return; }
     $appName = "Monoid-NF";
@@ -529,6 +545,7 @@ class App {
 
 
   _getXi() {
+    if ($this._isTest) { return; }
     $dstDir = "$($env:USERPROFILE)\.xi";
     if (Test-Path -Path $dstDir) { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
@@ -538,6 +555,7 @@ class App {
 
 
   _configureVscode() {
+    if ($this._isTest) { return; }
     $dstDir = "$($env:APPDATA)\Code\User";
     if (-not (Test-Path -Path $dstDir)) {
       # Not created during install, only on first UI start.
@@ -603,6 +621,85 @@ class App {
 
     ##  Exclude from 'ls'.
     $(Get-Item -Force $docCfgDir).Attributes = 'Hidden';
+  }
+
+
+  _configureBatteryInfoView() {
+    if ($this._isTest) { return; }
+    $appPath = "$($env:HOME)/scoop/apps/battery-info-view/current";
+    $appCfgPath = "$($appPath)/BatteryInfoView.cfg";
+    if (Test-Path -Path "$appCfgPath" ) {
+      Remove-Item "$appCfgPath";
+    }
+    New-Item `
+      -ItemType HardLink `
+      -Path "$appPath" `
+      -Name "BatteryInfoView.cfg" `
+      -Value "$($this._cfgDir)/BatteryInfoView.cfg"
+  }
+
+
+  _registerBatteryInfoViewStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path -Path "$startDir\battery-info-view.bat") {
+      Remove-Item "$startDir\battery-info-view.bat";
+    }
+    $content = "pwsh -Command Start-Process BatteryInfoView.exe";
+    $content += " -WindowStyle Hidden";
+    New-Item `
+      -path $startDir `
+      -Name "battery-info-view.bat" `
+      -Value "$content" `
+      -ItemType File | Out-Null;
+  }
+
+
+  _registerBatteryIconStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path -Path "$startDir\battery-icon.bat") {
+      Remove-Item "$startDir\battery-icon.bat";
+    }
+    $content = "pwsh -Command Start-Process BatteryIcon.exe";
+    $content += " -WindowStyle Hidden";
+    New-Item `
+      -path $startDir `
+      -Name "battery-icon.bat" `
+      -Value "$content" `
+      -ItemType File | Out-Null;
+  }
+
+
+  _registerCpuIconStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path -Path "$startDir\cpu-icon.bat") {
+      Remove-Item "$startDir\cpu-icon.bat";
+    }
+    $content = "pwsh -Command Start-Process CpuIcon.exe";
+    $content += " -WindowStyle Hidden";
+    New-Item `
+      -path $startDir `
+      -Name "cpu-icon.bat" `
+      -Value "$content" `
+      -ItemType File | Out-Null;
+  }
+
+
+  _registerRamIconStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path -Path "$startDir\ram-icon.bat") {
+      Remove-Item "$startDir\ram-icon.bat";
+    }
+    $content = "pwsh -Command Start-Process RamIcon.exe";
+    $content += " -WindowStyle Hidden";
+    New-Item `
+      -path $startDir `
+      -Name "ram-icon.bat" `
+      -Value "$content" `
+      -ItemType File | Out-Null;
   }
 }
 

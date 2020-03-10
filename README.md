@@ -22,7 +22,7 @@ Follow instructions for post-configuration.
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs vlc zoomus
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs zoomus mpv
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
 # Fixes 'cannot lock ref' case sensetive issue.
 git config --global fetch.prune true
@@ -45,6 +45,7 @@ ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
 code
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
+echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Start Karabiner-Elements
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 xcode-select --install

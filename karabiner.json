@@ -802,7 +802,7 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$",
+              "^com\\.microsoft\\.edgemax$",
               "^com\\.google\\.Chrome$"
             ]
           }],
@@ -822,7 +822,7 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$",
+              "^com\\.microsoft\\.edgemac$",
               "^com\\.google\\.Chrome$"
             ]
           }],
@@ -842,7 +842,7 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$",
+              "^com\\.microsoft\\.edgemac$",
               "^com\\.google\\.Chrome$"
             ]
           }],
@@ -862,7 +862,7 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.apple\\.Safari$",
+              "^com\\.microsoft\\.edgemac$",
               "^com\\.google\\.Chrome$"
             ]
           }],

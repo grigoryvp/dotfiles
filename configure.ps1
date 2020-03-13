@@ -10,6 +10,7 @@ class App {
   $_github = @{
     user = "foo";
     pass = "bar";
+    token = "baz";
   };
   #endregion
 
@@ -408,6 +409,7 @@ class App {
     # Notes: ...
     $this._github.user = $ret[2].Replace("UserName: ", "");
     $this._github.pass = $ret[3].Replace("Password: ", "");
+    $this._github.token = $ret[5].Replace("Notes: ", "");
   }
 
 

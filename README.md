@@ -55,8 +55,8 @@ unset CFLAGS
 # export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
 pyenv init
 echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
-pyenv install 3.7.4
-pyenv global 3.7.4
+pyenv install 3.8.1
+pyenv global 3.8.1
 rbenv init
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 rbenv install 2.6.5

@@ -82,6 +82,7 @@ class App {
       }
     }
 
+    $this._installApp("sudo");
     $this._mapCapsToF24();
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
@@ -98,7 +99,6 @@ class App {
     $this._getFilesFromGit();
     # VCRUNTIME140_1.dll required for windows-terminal
     $this._installApp("extras/vcredist2019");
-    $this._installApp("sudo");
     $this._installApp("autohotkey");
     $this._installApp("keepassxc");
     $this._installApp("vscode");
@@ -360,10 +360,7 @@ class App {
 
   _mapCapsToF24() {
     if ($this._isTest) { return; }
-    Start-Process pwsh `
-      -Wait `
-      -Verb RunAs `
-      -ArgumentList "./map_caps_to_f24.ps1";
+    sudo pwsh "./map_caps_to_f24.ps1";
   }
 
 

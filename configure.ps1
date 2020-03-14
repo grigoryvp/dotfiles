@@ -21,11 +21,9 @@ class App {
     $this._isFull = ($argList.Contains("--full"));
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
-    # Crossplatform stub for macOS tests.
-    if (!$env:USERPROFILE) { $env:USERPROFILE = "~"; }
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = "$($env:USERPROFILE)/.box-cfg";
-    $this._psDir = "$($env:USERPROFILE)/Documents/PowerShell";
+    $this._cfgDir = "~/.box-cfg";
+    $this._psDir = "~/Documents/PowerShell";
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Disable adaptive contrast for the built-in Intel GPU, if any
@@ -44,7 +42,6 @@ class App {
 
 
   configure() {
-    Push-Location;
 
     # Required by Posh-Git, sudo etc.
     if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
@@ -57,9 +54,8 @@ class App {
     }
 
     if (!$this._isTest) {
-      Set-Location -Path $env:USERPROFILE
-      if (-not (Test-Path -Path $this._cfgDir)) {
-        New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
+      if (-not (Test-Path -Path "$this._cfgDir")) {
+        New-Item -Path "$this._cfgDir" -ItemType Directory | Out-Null;
       }
     }
 
@@ -186,7 +182,6 @@ class App {
     # Interactive.
     $this._startAutohotkey();
 
-    Pop-Location;
     if ($this._isTest) {
       Write-Host "Test complete";
     }

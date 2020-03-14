@@ -80,7 +80,6 @@ class App {
 
     # Used by '_mapCapsToF24'.
     $this._installApp("sudo");
-    $this._mapCapsToF24();
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
@@ -94,6 +93,8 @@ class App {
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
+    # After additional files are received
+    $this._mapCapsToF24();
     # VCRUNTIME140_1.dll required for windows-terminal
     $this._installApp("extras/vcredist2019");
     $this._installApp("autohotkey");

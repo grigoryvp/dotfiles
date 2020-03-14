@@ -22,8 +22,8 @@ class App {
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = "~/.box-cfg";
-    $this._psDir = "~/Documents/PowerShell";
+    $this._cfgDir = Resolve-Path (Join-Path "~" ".box-cfg");
+    $this._psDir = Resolve-Path (Join-Path "~" "Documents" "PowerShell");
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Disable adaptive contrast for the built-in Intel GPU, if any
@@ -360,7 +360,7 @@ class App {
 
   _mapCapsToF24() {
     if ($this._isTest) { return; }
-    sudo pwsh "$($this._cfgDir)/map_caps_to_f24.ps1";
+    & sudo pwsh (Join-Path $this._cfgDir "map_caps_to_f24.ps1");
   }
 
 
@@ -439,9 +439,6 @@ class App {
     scoop uninstall 7zip;
     scoop install git;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    & git config --global core.autocrlf input;
-    & git config --global user.name "Girogry Petrov";
-    & git config --global user.email "grigoryvp@gmail.com";
   }
 
 
@@ -562,7 +559,7 @@ class App {
 
   _getXi() {
     if ($this._isTest) { return; }
-    $dstDir = "$($env:USERPROFILE)/.xi";
+    $dstDir = Resolve-Path (Join-Path "~" ".xi");
     if (Test-Path -Path $dstDir) { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;

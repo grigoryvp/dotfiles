@@ -299,7 +299,7 @@ class App {
       $uri = "https://github.com/grigoryvp/box-cfg.git";
     }
 
-    $tmpDirName = $this._path(@("~", ".bot-cfg-tmp"));
+    $tmpDirName = $this._path(@("~", ".box-cfg-tmp"));
     Write-Host "Cloning into temp dir $tmpDirName"
     & git clone "$uri" "$tmpDirName";
     # Replace HTTP git config with SSH one, if any.

@@ -299,13 +299,18 @@ class App {
       $uri = "https://github.com/grigoryvp/box-cfg.git";
     }
 
-    & git clone $uri "$($this._cfgDir).tmp";
+    $tmpDirName = $this._path(@("~", ".bot-cfg-tmp"));
+    Write-Host "Cloning into temp dir $tmpDirName"
+    & git clone "$uri" "$tmpDirName";
     # Replace HTTP git config with SSH one, if any.
-    Remove-Item "$($this._cfgDir)" `
-      -Recurse -Force -ErrorAction SilentlyContinue;
-    New-Item -Path "$($this._cfgDir)" -ItemType Directory | Out-Null;
-    Move-Item -Force "$($this._cfgDir).tmp/*" "$($this._cfgDir)";
-    Remove-Item "$($this._cfgDir).tmp";
+    Write-Host "Removing current dir $($this._cfgDir)"
+    Remove-Item "$($this._cfgDir)" -Recurse -Force;
+    Write-Host "Recreating config dir $($this._cfgDir)"
+    New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
+    Write-Host "Moving files $tmpDirName => $($this._cfgDir)";
+    Move-Item -Force "$tmpDirName/*" "$($this._cfgDir)";
+    Write-Host "Removing temp dir $tmpDirName";
+    Remove-Item "$tmpDirName" -Recurse -Force;
   }
 
 

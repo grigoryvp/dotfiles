@@ -575,10 +575,7 @@ class App {
       # if install fails, scoop will treat app as installed.
       & scoop uninstall $appName;
     }
-    Start-Process scoop.cmd `
-      -Wait `
-      -Verb RunAs `
-      -ArgumentList "install $appName";
+    & sudo scoop install "$appName";
   }
 
 

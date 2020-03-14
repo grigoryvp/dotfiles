@@ -69,8 +69,12 @@ class App {
     if (-not $this._isTest) {
       $oldPsDir = $this._path(@("~", "Documents", "WindowsPowerShell"));
       if (-not (Test-Path -Path "$oldPsDir")) {
+        Write-Host "Creating $oldPsDir";
         $ret = & New-Item -Path "$oldPsDir" -ItemType Directory;
         $ret.Attributes = 'Hidden';
+      }
+      else {
+        Write-Host "$oldPsDir already exists";
       }
     }
 
@@ -78,8 +82,12 @@ class App {
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
       if (-not (Test-Path -Path "$($this._psDir)")) {
+        Write-Host "Creating $($this._psDir)";
         $ret = & New-Item -Path "$($this._psDir)" -ItemType Directory;
         $ret.Attributes = 'Hidden';
+      }
+      else {
+        Write-Host "$($this._psDir) already exists";
       }
     }
 

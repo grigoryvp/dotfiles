@@ -6,7 +6,7 @@
 rem Allow PowerShell packages to be installed
 powershell.exe -c Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 rem Install scoop
-powershell.exe -c iwr -useb get.scoop.sh | iex
+powershell.exe -c "iwr -useb get.scoop.sh | iex"
 rem Install Powershell Core
 scoop install https://raw.githubusercontent.com/grigoryvp/scoop-grigoryvp/master/7zip.json
 scoop install git pwsh

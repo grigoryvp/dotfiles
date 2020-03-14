@@ -7,6 +7,7 @@ class App {
   $_POST_INSTALL_MSG = "";
   $_pass = $null;
   $_cfgDir = $null;
+  $_psDir = $null;
   $_github = @{
     user = "foo";
     pass = "bar";
@@ -20,6 +21,11 @@ class App {
     $this._isFull = ($argList.Contains("--full"));
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
+    # Crossplatform stub for macOS tests.
+    if (!$env:USERPROFILE) { $env:USERPROFILE = "~"; }
+    # Version-controlled dir with scripts, powershell config, passwords etc.
+    $this._cfgDir = "$($env:USERPROFILE)/.box-cfg";
+    $this._psDir = "$($env:USERPROFILE)/Documents/PowerShell";
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Disable adaptive contrast for the built-in Intel GPU, if any
@@ -50,28 +56,30 @@ class App {
         -Scope CurrentUser;
     }
 
-    Set-Location -Path $env:USERPROFILE
-
-    # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = "$($env:USERPROFILE)\.box-cfg";
-    if (-not (Test-Path -Path $this._cfgDir)) {
-      New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
+    if (!$this._isTest) {
+      Set-Location -Path $env:USERPROFILE
+      if (-not (Test-Path -Path $this._cfgDir)) {
+        New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
+      }
     }
 
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
-    $oldPsDir = "$($env:USERPROFILE)\Documents\WindowsPowerShell";
-    if (-not (Test-Path -Path $oldPsDir)) {
-      $ret = & New-Item -Path $oldPsDir -ItemType Directory;
-      $ret.Attributes = 'Hidden';
+    if (!$this._isTest) {
+      $oldPsDir = "$($env:USERPROFILE)/Documents/WindowsPowerShell";
+      if (-not (Test-Path -Path $oldPsDir)) {
+        $ret = & New-Item -Path $oldPsDir -ItemType Directory;
+        $ret.Attributes = 'Hidden';
+      }
     }
 
     # PowerShell config is loaded from this dir.
     # Create and set hidden attribute to exclude from 'ls'.
-    $psDir = "$($env:USERPROFILE)\Documents\PowerShell";
-    if (-not (Test-Path -Path $psDir)) {
-      $ret = & New-Item -Path $psDir -ItemType Directory;
-      $ret.Attributes = 'Hidden';
+    if (!$this._isTest) {
+      if (-not (Test-Path -Path $this._psDir)) {
+        $ret = & New-Item -Path $this._psDir -ItemType Directory;
+        $ret.Attributes = 'Hidden';
+      }
     }
 
     $this._mapCapsToF24();
@@ -106,33 +114,38 @@ class App {
     $this._registerRamIconStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
-    if (Test-Path -Path "$psDir/profile.ps1") {
-      Remove-Item "$psDir/profile.ps1";
+    if (!$this._isTest) {
+      if (Test-Path -Path "$($this._psDir)/profile.ps1") {
+        Remove-Item "$($this._psDir)/profile.ps1";
+      }
+      New-Item `
+        -ItemType HardLink `
+        -Path "$($this._psDir)" `
+        -Name "profile.ps1" `
+        -Value "$($this._cfgDir)/profile.ps1";
     }
-    New-Item `
-      -ItemType HardLink `
-      -Path "$psDir" `
-      -Name "profile.ps1" `
-      -Value "$($this._cfgDir)/profile.ps1"
 
     # Symlink git config.
-    if (Test-Path -Path "$($env:HOME)/.gitconfig") {
-      Remove-Item "$($env:HOME)/.gitconfig";
+    if (!$this._isTest) {
+      if (Test-Path -Path "$($env:HOME)/.gitconfig") {
+        Remove-Item "$($env:HOME)/.gitconfig";
+      }
+      New-Item `
+        -ItemType HardLink `
+        -Path "$($env:HOME)" `
+        -Name ".gitconfig" `
+        -Value "$($this._cfgDir)/shell/.gitconfig";
     }
-    New-Item `
-      -ItemType HardLink `
-      -Path "$($env:HOME)" `
-      -Name ".gitconfig" `
-      -Value "$($this._cfgDir)/shell/.gitconfig"
     
-    # TODO: symlink '~\AppData\Local\Microsoft\Windows Terminal\profiles.json'
+    # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
 
     # Interactive.
-    if (-not (Test-Path -Path .ssh\.uploaded_to_github)) {
+    if (-not (Test-Path -Path .ssh/.uploaded_to_github)) {
       if (-not $this._isPublic) {
         $this._askForGithubCredentials();
       }
     }
+
     # Interactive.
     $this._installFonts();
 
@@ -237,15 +250,15 @@ class App {
 
   _copyToAppDir($fileName, $appName) {
     if ($this._isTest) { return; }
-    $srcPath = "$($this._cfgDir)\$fileName";
-    $dstPath = "$($env:USERPROFILE)\scoop\apps\$appName\current\";
+    $srcPath = "$($this._cfgDir)/$fileName";
+    $dstPath = "$($env:USERPROFILE)/scoop/apps/$appName/current/";
     Copy-Item -Path $srcPath -Destination $dstPath -Force;
   }
 
 
   _getFilesFromGit() {
     if ($this._isTest) { return; }
-    $gitCfgFile = "$($this._cfgDir)\.git\config";
+    $gitCfgFile = "$($this._cfgDir)/.git/config";
     if (Test-Path -Path $gitCfgFile) {
       $gitCfg = Get-Content $gitCfgFile | Out-String;
       # Already cloned with SSH?
@@ -253,7 +266,7 @@ class App {
     }
 
     # Have keys to clone with SSH?
-    if (Test-Path -Path .ssh\.uploaded_to_github) {
+    if (Test-Path -Path ".ssh/.uploaded_to_github") {
       $uri = "git@github.com:grigoryvp/box-cfg.git";
     }
     else {
@@ -275,7 +288,7 @@ class App {
 
   _generateSshKey() {
     if ($this._isTest) { return; }
-    if (Test-Path -Path .ssh\id_rsa) { return; }
+    if (Test-Path -Path .ssh/id_rsa) { return; }
     if (-not (Test-Path -Path .ssh)) {
       New-Item -Path .ssh -ItemType Directory | Out-Null;
     }
@@ -391,14 +404,13 @@ class App {
 
 
   _askForGithubCredentials() {
-    if ($this._isTest) { return; }
     $pass = Read-Host -AsSecureString -Prompt "Enter password"
 
-    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($pass);
-    $str = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+    $ptr = [Security.SecureStringMarshal]::SecureStringToCoTaskMemAnsi($pass);
+    $str = [Runtime.InteropServices.Marshal]::PtrToStringAnsi($ptr);
     $this._pass = $str;
 
-    $db = "$($this._cfgDir)\passwords.kdbx";
+    $db = "$($this._cfgDir)/passwords.kdbx";
     # -s to show protected attribute (password) as clear text.
     $ret = & Write-Output $this._pass | keepassxc-cli show -s $db github;
     # Insert password to unlock ...:
@@ -459,23 +471,21 @@ class App {
 
 
   _uploadSshKey() {
-    if ($this._isTest) { return; }
     $marker = ".uploaded_to_github";
-    if (Test-Path -Path .ssh\$marker) { return; }
+    if (Test-Path -Path ".ssh/$marker") { return; }
 
-    $pair = "$($this._github.user):$($this._github.pass)";
+    $pair = "$($this._github.user):$($this._github.token)";
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
     $creds = [System.Convert]::ToBase64String($bytes)
     $headers = @{Authorization = "Basic $creds";}
     $body = ConvertTo-Json @{
       title = "box key $(Get-Date)";
-      key = (Get-Content ".ssh/id_rsa.pub" | Out-String);
+      key = (Get-Content "~/.ssh/id_rsa.pub" | Out-String);
     }
     $url = "https://api.github.com/user/keys"
     if (-not $this._isTest) {
       try {
         Invoke-WebRequest -Method 'POST' -Headers $headers -Body $body $url;
-        New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
       }
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
@@ -484,7 +494,7 @@ class App {
         }
         elseif ($_.Exception.Response.StatusCode -eq 401) {
           # TODO: try to upload via auth token.
-          Write-Host "Failed to add key to GitHub; 2-factor auth?";
+          Write-Host "Failed to add key to GitHub";
           Write-Host "Upload manually and touch .ssh/${marker}";
           Write-Host "Login: '$($this._github.user)'";
           Write-Host "Pass: '$($this._github.pass)'";
@@ -494,6 +504,7 @@ class App {
           throw "Failed $($_.Exception)";
         }
       }
+      New-Item -path "~/.ssh" -Name $marker -ItemType File | Out-Null;
     }
   }
 
@@ -512,7 +523,7 @@ class App {
     $this._prompt("Press any key to elevate the keyboard script...");
     $args = @{
       FilePath = 'autohotkey.exe'
-      ArgumentList = "$($this._cfgDir)\keyboard.ahk"
+      ArgumentList = "$($this._cfgDir)/keyboard.ahk"
       WindowStyle = 'Hidden'
       Verb = 'RunAs'
     };
@@ -555,7 +566,7 @@ class App {
 
   _getXi() {
     if ($this._isTest) { return; }
-    $dstDir = "$($env:USERPROFILE)\.xi";
+    $dstDir = "$($env:USERPROFILE)/.xi";
     if (Test-Path -Path $dstDir) { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;
@@ -565,18 +576,18 @@ class App {
 
   _configureVscode() {
     if ($this._isTest) { return; }
-    $dstDir = "$($env:APPDATA)\Code\User";
+    $dstDir = "$($env:APPDATA)/Code/User";
     if (-not (Test-Path -Path $dstDir)) {
       # Not created during install, only on first UI start.
       New-Item -Path $dstDir -ItemType Directory | Out-Null;
     }
 
-    $srcPath = "$($this._cfgDir)\vscode_settings.json";
-    $dstPath = "$dstDir\settings.json";
+    $srcPath = "$($this._cfgDir)/vscode_settings.json";
+    $dstPath = "$dstDir/settings.json";
     Copy-Item -Path $srcPath -Destination $dstPath -Force;
 
-    $srcPath = "$($this._cfgDir)\vscode_keybindings.json";
-    $dstPath = "$dstDir\keybindings.json";
+    $srcPath = "$($this._cfgDir)/vscode_keybindings.json";
+    $dstPath = "$dstDir/keybindings.json";
     Copy-Item -Path $srcPath -Destination $dstPath -Force;
 
     $extList = @(& code --list-extensions);
@@ -601,7 +612,7 @@ class App {
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
 
-    $docCfgDir = "$($env:USERPROFILE)\Documents\.vscode";
+    $docCfgDir = "$($env:USERPROFILE)/Documents/.vscode";
     if (-not (Test-Path -Path $docCfgDir)) {
       New-Item -Path $docCfgDir -ItemType Directory | Out-Null;
     }

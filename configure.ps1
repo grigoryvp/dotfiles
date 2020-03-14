@@ -58,7 +58,7 @@ class App {
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
-    if (!$this._isTest) {
+    if (-not $this._isTest) {
       if (-not (Test-Path -Path "$this._cfgDir")) {
         New-Item -Path "$this._cfgDir" -ItemType Directory | Out-Null;
       }
@@ -66,7 +66,7 @@ class App {
 
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
-    if (!$this._isTest) {
+    if (-not $this._isTest) {
       $oldPsDir = $this._path(@("~", "Documents", "WindowsPowerShell"));
       if (-not (Test-Path -Path $oldPsDir)) {
         $ret = & New-Item -Path $oldPsDir -ItemType Directory;
@@ -76,7 +76,7 @@ class App {
 
     # PowerShell config is loaded from this dir.
     # Create and set hidden attribute to exclude from 'ls'.
-    if (!$this._isTest) {
+    if (-not $this._isTest) {
       if (-not (Test-Path -Path $this._psDir)) {
         $ret = & New-Item -Path $this._psDir -ItemType Directory;
         $ret.Attributes = 'Hidden';
@@ -116,7 +116,7 @@ class App {
     $this._registerRamIconStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
-    if (!$this._isTest) {
+    if (-not $this._isTest) {
       $path = $this._path(@($this._psDir, "profile.ps1"));
       if (Test-Path -Path "$path") {
         Remove-Item "$path";
@@ -129,7 +129,7 @@ class App {
     }
 
     # Symlink git config.
-    if (!$this._isTest) {
+    if (-not $this._isTest) {
       $path = $this._path(@("~", ".gitconfig"));
       if (Test-Path -Path "$path") {
         Remove-Item "$path";

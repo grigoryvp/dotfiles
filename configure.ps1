@@ -82,6 +82,7 @@ class App {
       }
     }
 
+    # Used by '_mapCapsToF24'.
     $this._installApp("sudo");
     $this._mapCapsToF24();
     $this._installPowershellModule("posh-git");

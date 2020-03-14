@@ -8,6 +8,7 @@ class App {
   $_pass = $null;
   $_cfgDir = $null;
   $_psDir = $null;
+  $_pathIntrinsics = $null;
   $_github = @{
     user = "foo";
     pass = "bar";
@@ -16,14 +17,15 @@ class App {
   #endregion
 
 
-  App($argList) {
+  App($argList, $pathIntrinsics) {
+    $this._pathIntrinsics = $pathIntrinsics;
     $this._isTest = ($argList.Contains("--test"));
     $this._isFull = ($argList.Contains("--full"));
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = Resolve-Path (Join-Path "~" ".box-cfg");
-    $this._psDir = Resolve-Path (Join-Path "~" "Documents" "PowerShell");
+    $this._cfgDir = $this._path(@("~", ".box-cfg"));
+    $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Disable adaptive contrast for the built-in Intel GPU, if any
@@ -226,6 +228,12 @@ class App {
   }
 
 
+  [String] _path([array] $pathList) {
+    $joined = [io.path]::combine([string[]]$pathList)
+    return $this._pathIntrinsics.GetUnresolvedProviderPathFromPSPath($joined);
+  }
+
+
   _installApp($appName) {
     if ($this._isTest) { return; }
     if ($this._hasApp($appName)) { return; }
@@ -360,7 +368,7 @@ class App {
 
   _mapCapsToF24() {
     if ($this._isTest) { return; }
-    & sudo pwsh (Join-Path $this._cfgDir "map_caps_to_f24.ps1");
+    & sudo pwsh $this._path(@($this._cfgDir, "map_caps_to_f24.ps1"));
   }
 
 
@@ -559,7 +567,7 @@ class App {
 
   _getXi() {
     if ($this._isTest) { return; }
-    $dstDir = Resolve-Path (Join-Path "~" ".xi");
+    $dstDir = $this._path(@("~", ".xi"));
     if (Test-Path -Path $dstDir) { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;
@@ -718,5 +726,6 @@ class App {
 
 # Stop on unhandled exceptions.
 $ErrorActionPreference = "Stop";
-$app = [App]::new($args);
+$pathIntrinsics = $ExecutionContext.SessionState.Path;
+$app = [App]::new($args, $pathIntrinsics);
 $app.configure();

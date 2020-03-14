@@ -105,7 +105,6 @@ class App {
     $this._configureVscode();
     $this._installApp("tray-monitor");
     $this._installApp("battery-info-view");
-    $this._installApp("windows-terminal");
     $this._registerAutohotkeyStartup();
     $this._configureBatteryInfoView();
     $this._registerBatteryInfoViewStartup();

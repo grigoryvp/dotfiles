@@ -360,7 +360,7 @@ class App {
 
   _mapCapsToF24() {
     if ($this._isTest) { return; }
-    sudo pwsh "./map_caps_to_f24.ps1";
+    sudo pwsh "$($this._cfgDir)/map_caps_to_f24.ps1";
   }
 
 

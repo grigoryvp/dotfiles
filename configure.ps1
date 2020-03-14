@@ -67,7 +67,7 @@ class App {
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
     if (!$this._isTest) {
-      $oldPsDir = "$($env:USERPROFILE)/Documents/WindowsPowerShell";
+      $oldPsDir = $this._path(@("~", "Documents", "WindowsPowerShell"));
       if (-not (Test-Path -Path $oldPsDir)) {
         $ret = & New-Item -Path $oldPsDir -ItemType Directory;
         $ret.Attributes = 'Hidden';
@@ -117,32 +117,35 @@ class App {
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (!$this._isTest) {
-      if (Test-Path -Path "$($this._psDir)/profile.ps1") {
-        Remove-Item "$($this._psDir)/profile.ps1";
+      $path = $this._path(@($this._psDir, "profile.ps1"));
+      if (Test-Path -Path "$path") {
+        Remove-Item "$path";
       }
       New-Item `
         -ItemType HardLink `
         -Path "$($this._psDir)" `
         -Name "profile.ps1" `
-        -Value "$($this._cfgDir)/profile.ps1";
+        -Value "$path";
     }
 
     # Symlink git config.
     if (!$this._isTest) {
-      if (Test-Path -Path "$($env:HOME)/.gitconfig") {
-        Remove-Item "$($env:HOME)/.gitconfig";
+      $path = $this._path(@("~", ".gitconfig"));
+      if (Test-Path -Path "$path") {
+        Remove-Item "$path";
       }
       New-Item `
         -ItemType HardLink `
-        -Path "$($env:HOME)" `
+        -Path "~"
         -Name ".gitconfig" `
-        -Value "$($this._cfgDir)/shell/.gitconfig";
+        -Value $this._path(@($this._cfgDir, "shell", ".gitconfig"));
     }
     
     # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
 
     # Interactive.
-    if (-not (Test-Path -Path .ssh/.uploaded_to_github)) {
+    $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+    if (-not (Test-Path -Path "$markerPath")) {
       if (-not $this._isPublic) {
         $this._askForGithubCredentials();
       }
@@ -163,8 +166,8 @@ class App {
     $this._getXi();
 
     if (-not (Test-Path -Path ".editorconfig")) {
-        $src = "$($this._cfgDir)/.editorconfig";
-        Copy-Item -Path $src -Destination . -Force | Out-Null;
+        $src = $this._path(@($this._cfgDir, ".editorconfig"));
+        Copy-Item -Path "$src" -Destination . -Force | Out-Null;
     }
 
     # Optional installs
@@ -257,15 +260,15 @@ class App {
 
   _copyToAppDir($fileName, $appName) {
     if ($this._isTest) { return; }
-    $srcPath = "$($this._cfgDir)/$fileName";
-    $dstPath = "$($env:USERPROFILE)/scoop/apps/$appName/current/";
-    Copy-Item -Path $srcPath -Destination $dstPath -Force;
+    $srcPath = $this._path(@($this._cfgDir, $fileName));
+    $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
+    Copy-Item -Path "$srcPath" -Destination "$dstPath" -Force;
   }
 
 
   _getFilesFromGit() {
     if ($this._isTest) { return; }
-    $gitCfgFile = "$($this._cfgDir)/.git/config";
+    $gitCfgFile = $this._path(@($this._cfgDir, ".git", "config"));
     if (Test-Path -Path $gitCfgFile) {
       $gitCfg = Get-Content $gitCfgFile | Out-String;
       # Already cloned with SSH?
@@ -273,7 +276,8 @@ class App {
     }
 
     # Have keys to clone with SSH?
-    if (Test-Path -Path ".ssh/.uploaded_to_github") {
+    $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+    if (Test-Path -Path "$markerPath") {
       $uri = "git@github.com:grigoryvp/box-cfg.git";
     }
     else {
@@ -285,9 +289,9 @@ class App {
 
     & git clone $uri "$($this._cfgDir).tmp";
     # Replace HTTP git config with SSH one, if any.
-    Remove-Item `
-      -Recurse -Force -ErrorAction SilentlyContinue `
-      "$($this._cfgDir)/*";
+    Remove-Item "$($this._cfgDir)" `
+      -Recurse -Force -ErrorAction SilentlyContinue;
+    New-Item -Path "$this._cfgDir" -ItemType Directory | Out-Null;
     Move-Item -Force "$($this._cfgDir).tmp/*" "$($this._cfgDir)";
     Remove-Item "$($this._cfgDir).tmp";
   }
@@ -295,7 +299,7 @@ class App {
 
   _generateSshKey() {
     if ($this._isTest) { return; }
-    if (Test-Path -Path .ssh/id_rsa) { return; }
+    if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) { return; }
     if (-not (Test-Path -Path .ssh)) {
       New-Item -Path .ssh -ItemType Directory | Out-Null;
     }
@@ -414,7 +418,7 @@ class App {
     $str = [Runtime.InteropServices.Marshal]::PtrToStringAnsi($ptr);
     $this._pass = $str;
 
-    $db = "$($this._cfgDir)/passwords.kdbx";
+    $db = $this._path(@($this._cfgDir, "passwords.kdbx"));
     # -s to show protected attribute (password) as clear text.
     $ret = & Write-Output $this._pass | keepassxc-cli show -s $db github;
     # Insert password to unlock ...:
@@ -473,7 +477,7 @@ class App {
 
   _uploadSshKey() {
     $marker = ".uploaded_to_github";
-    if (Test-Path -Path ".ssh/$marker") { return; }
+    if (Test-Path -Path $this._path(@("~", ".ssh", "$marker"))) { return; }
 
     $pair = "$($this._github.user):$($this._github.token)";
     $bytes = [System.Text.Encoding]::ASCII.GetBytes($pair);
@@ -524,7 +528,7 @@ class App {
     $this._prompt("Press any key to elevate the keyboard script...");
     $args = @{
       FilePath = 'autohotkey.exe'
-      ArgumentList = "$($this._cfgDir)/keyboard.ahk"
+      ArgumentList = $this._path(@($this._cfgDir, "keyboard.ahk"))
       WindowStyle = 'Hidden'
       Verb = 'RunAs'
     };
@@ -577,18 +581,18 @@ class App {
 
   _configureVscode() {
     if ($this._isTest) { return; }
-    $dstDir = "$($env:APPDATA)/Code/User";
+    $dstDir = $this._path(@($env:APPDATA, "Code", "User"));
     if (-not (Test-Path -Path $dstDir)) {
       # Not created during install, only on first UI start.
       New-Item -Path $dstDir -ItemType Directory | Out-Null;
     }
 
-    $srcPath = "$($this._cfgDir)/vscode_settings.json";
-    $dstPath = "$dstDir/settings.json";
+    $srcPath = $this._path(@($this._cfgDir, "vscode_settings.json"));
+    $dstPath = $this._path(@($dstDir, "settings.json"));
     Copy-Item -Path $srcPath -Destination $dstPath -Force;
 
-    $srcPath = "$($this._cfgDir)/vscode_keybindings.json";
-    $dstPath = "$dstDir/keybindings.json";
+    $srcPath = $this._path(@($this._cfgDir, "vscode_keybindings.json"));
+    $dstPath = $this._path(@($dstDir, "keybindings.json"));
     Copy-Item -Path $srcPath -Destination $dstPath -Force;
 
     $extList = @(& code --list-extensions);
@@ -613,7 +617,7 @@ class App {
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
 
-    $docCfgDir = "$($env:USERPROFILE)/Documents/.vscode";
+    $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path $docCfgDir)) {
       New-Item -Path $docCfgDir -ItemType Directory | Out-Null;
     }
@@ -647,8 +651,9 @@ class App {
 
   _configureBatteryInfoView() {
     if ($this._isTest) { return; }
-    $appPath = "$($env:HOME)/scoop/apps/battery-info-view/current";
-    $appCfgPath = "$($appPath)/BatteryInfoView.cfg";
+    $appPath = $this._path(@("~",
+     "scoop", "apps", "battery-info-view", "current"));
+    $appCfgPath = $this._path(@($appPath, "BatteryInfoView.cfg"));
     if (Test-Path -Path "$appCfgPath" ) {
       Remove-Item "$appCfgPath";
     }
@@ -656,7 +661,7 @@ class App {
       -ItemType HardLink `
       -Path "$appPath" `
       -Name "BatteryInfoView.cfg" `
-      -Value "$($this._cfgDir)/BatteryInfoView.cfg"
+      -Value $this._path(@($this._cfgDir, "BatteryInfoView.cfg"))
   }
 
 

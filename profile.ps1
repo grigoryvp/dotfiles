@@ -64,7 +64,7 @@ function ahk() {
 
 # Windows-OSX-Linux consistency
 function rmf($dst) {
-  Remove-Item $dst -Recurse -Force
+  Remove-Item $dst -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 

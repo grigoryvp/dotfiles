@@ -300,6 +300,10 @@ class App {
     }
 
     $tmpDirName = $this._path(@("~", ".box-cfg-tmp"));
+    if (Test-Path -Path "$tmpDirName") {
+      Write-Host "Removing existing temp dir $tmpDirName"
+      Remove-Item "$tmpDirName" -Recurse -Force;
+    }
     Write-Host "Cloning into temp dir $tmpDirName"
     & git clone "$uri" "$tmpDirName";
     # Replace HTTP git config with SSH one, if any.

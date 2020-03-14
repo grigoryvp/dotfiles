@@ -53,6 +53,9 @@ class App {
         -Scope CurrentUser;
     }
 
+    # For 'Install-Module'
+    Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
+
     if (!$this._isTest) {
       if (-not (Test-Path -Path "$this._cfgDir")) {
         New-Item -Path "$this._cfgDir" -ItemType Directory | Out-Null;

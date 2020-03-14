@@ -698,7 +698,7 @@
           "conditions": [{
             "type": "frontmost_application_unless",
             "bundle_identifiers": [
-              "^com\\.microsoft\\.edgemax$"
+              "^com\\.microsoft\\.edgemac$"
             ]
           }],
           "type": "basic"
@@ -808,7 +808,7 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
-              "^com\\.microsoft\\.edgemax$",
+              "^com\\.microsoft\\.edgemac$",
               "^com\\.google\\.Chrome$"
             ]
           }],

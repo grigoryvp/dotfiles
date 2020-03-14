@@ -148,7 +148,7 @@ class App {
       Write-Host "Creating hardlink $src => $dst";
       New-Item `
         -ItemType HardLink `
-        -Path "~"
+        -Path "~" `
         -Name ".gitconfig" `
         -Value "$src"
     }

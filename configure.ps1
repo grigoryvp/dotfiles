@@ -68,8 +68,8 @@ class App {
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
       $oldPsDir = $this._path(@("~", "Documents", "WindowsPowerShell"));
-      if (-not (Test-Path -Path $oldPsDir)) {
-        $ret = & New-Item -Path $oldPsDir -ItemType Directory;
+      if (-not (Test-Path -Path "$oldPsDir")) {
+        $ret = & New-Item -Path "$oldPsDir" -ItemType Directory;
         $ret.Attributes = 'Hidden';
       }
     }
@@ -77,8 +77,8 @@ class App {
     # PowerShell config is loaded from this dir.
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
-      if (-not (Test-Path -Path $this._psDir)) {
-        $ret = & New-Item -Path $this._psDir -ItemType Directory;
+      if (-not (Test-Path -Path "$this._psDir")) {
+        $ret = & New-Item -Path "$this._psDir" -ItemType Directory;
         $ret.Attributes = 'Hidden';
       }
     }
@@ -225,8 +225,8 @@ class App {
     $installDir = $installDir.Trim();
     # if install fails, scoop will treat app as installed, but install dir
     # is not created.
-    if (-not (Test-Path -Path $installDir)) { return $false; }
-    $content = Get-ChildItem $installDir;
+    if (-not (Test-Path -Path "$installDir")) { return $false; }
+    $content = Get-ChildItem "$installDir";
     return ($content.Length -gt 0);
   }
 
@@ -269,8 +269,8 @@ class App {
   _getFilesFromGit() {
     if ($this._isTest) { return; }
     $gitCfgFile = $this._path(@($this._cfgDir, ".git", "config"));
-    if (Test-Path -Path $gitCfgFile) {
-      $gitCfg = Get-Content $gitCfgFile | Out-String;
+    if (Test-Path -Path "$gitCfgFile") {
+      $gitCfg = Get-Content "$gitCfgFile" | Out-String;
       # Already cloned with SSH?
       if ($gitCfg.Contains("git@github.com")) { return; }
     }
@@ -282,7 +282,7 @@ class App {
     }
     else {
       # Already cloned without keys?
-      if (Test-Path -Path $gitCfgFile) { return; }
+      if (Test-Path -Path "$gitCfgFile") { return; }
       # Clone with HTTPS
       $uri = "https://github.com/grigoryvp/box-cfg.git";
     }
@@ -291,7 +291,7 @@ class App {
     # Replace HTTP git config with SSH one, if any.
     Remove-Item "$($this._cfgDir)" `
       -Recurse -Force -ErrorAction SilentlyContinue;
-    New-Item -Path "$this._cfgDir" -ItemType Directory | Out-Null;
+    New-Item -Path "$($this._cfgDir)" -ItemType Directory | Out-Null;
     Move-Item -Force "$($this._cfgDir).tmp/*" "$($this._cfgDir)";
     Remove-Item "$($this._cfgDir).tmp";
   }
@@ -300,8 +300,9 @@ class App {
   _generateSshKey() {
     if ($this._isTest) { return; }
     if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) { return; }
-    if (-not (Test-Path -Path .ssh)) {
-      New-Item -Path .ssh -ItemType Directory | Out-Null;
+    $sshDir = $this._path(@("~", ".ssh"));
+    if (-not (Test-Path -Path "$sshDir" )) {
+      New-Item -Path "$sshDir" -ItemType Directory | Out-Null;
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
@@ -572,7 +573,7 @@ class App {
   _getXi() {
     if ($this._isTest) { return; }
     $dstDir = $this._path(@("~", ".xi"));
-    if (Test-Path -Path $dstDir) { return; }
+    if (Test-Path -Path "$dstDir") { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     & git clone $uri $dstDir;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -582,18 +583,18 @@ class App {
   _configureVscode() {
     if ($this._isTest) { return; }
     $dstDir = $this._path(@($env:APPDATA, "Code", "User"));
-    if (-not (Test-Path -Path $dstDir)) {
+    if (-not (Test-Path -Path "$dstDir")) {
       # Not created during install, only on first UI start.
-      New-Item -Path $dstDir -ItemType Directory | Out-Null;
+      New-Item -Path "$dstDir" -ItemType Directory | Out-Null;
     }
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_settings.json"));
     $dstPath = $this._path(@($dstDir, "settings.json"));
-    Copy-Item -Path $srcPath -Destination $dstPath -Force;
+    Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_keybindings.json"));
     $dstPath = $this._path(@($dstDir, "keybindings.json"));
-    Copy-Item -Path $srcPath -Destination $dstPath -Force;
+    Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
 
     $extList = @(& code --list-extensions);
     if (-not $extList.Contains("grigoryvp.language-xi")) {
@@ -618,8 +619,8 @@ class App {
     }
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
-    if (-not (Test-Path -Path $docCfgDir)) {
-      New-Item -Path $docCfgDir -ItemType Directory | Out-Null;
+    if (-not (Test-Path -Path "$docCfgDir")) {
+      New-Item -Path "$docCfgDir" -ItemType Directory | Out-Null;
     }
 
     $content = @'

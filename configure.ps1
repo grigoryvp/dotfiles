@@ -59,8 +59,8 @@ class App {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
     if (-not $this._isTest) {
-      if (-not (Test-Path -Path "$this._cfgDir")) {
-        New-Item -Path "$this._cfgDir" -ItemType Directory | Out-Null;
+      if (-not (Test-Path -Path "$($this._cfgDir)")) {
+        New-Item -Path "$($this._cfgDir)" -ItemType Directory | Out-Null;
       }
     }
 
@@ -77,8 +77,8 @@ class App {
     # PowerShell config is loaded from this dir.
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
-      if (-not (Test-Path -Path "$this._psDir")) {
-        $ret = & New-Item -Path "$this._psDir" -ItemType Directory;
+      if (-not (Test-Path -Path "$($this._psDir)")) {
+        $ret = & New-Item -Path "$($this._psDir)" -ItemType Directory;
         $ret.Attributes = 'Hidden';
       }
     }

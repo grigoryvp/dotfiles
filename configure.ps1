@@ -69,7 +69,7 @@ class App {
     if (-not $this._isTest) {
       $oldPsDir = $this._path(@("~", "Documents", "WindowsPowerShell"));
       if (-not (Test-Path -Path "$oldPsDir")) {
-        Write-Host "Creating $oldPsDir";
+        Write-Host "Creating dir $oldPsDir";
         $ret = & New-Item -Path "$oldPsDir" -ItemType Directory;
         $ret.Attributes = 'Hidden';
       }
@@ -82,7 +82,7 @@ class App {
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
       if (-not (Test-Path -Path "$($this._psDir)")) {
-        Write-Host "Creating $($this._psDir)";
+        Write-Host "Creating dir $($this._psDir)";
         $ret = & New-Item -Path "$($this._psDir)" -ItemType Directory;
         $ret.Attributes = 'Hidden';
       }
@@ -125,29 +125,32 @@ class App {
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
-      $path = $this._path(@($this._psDir, "profile.ps1"));
-      if (Test-Path -Path "$path") {
-        Remove-Item "$path";
+      $src = $this._path(@($this._cfgDir, "profile.ps1"));
+      $dst = $this._path(@($this._psDir, "profile.ps1"));
+      if (Test-Path -Path "$dst") {
+        Remove-Item "$dst";
       }
-      Write-Host "Hardlink $($this._psDir) + profile.ps1 => $path";
+      Write-Host "Creating hardlink $src => $dst";
       New-Item `
         -ItemType HardLink `
         -Path "$($this._psDir)" `
         -Name "profile.ps1" `
-        -Value "$path";
+        -Value "$src";
     }
 
     # Symlink git config.
     if (-not $this._isTest) {
-      $path = $this._path(@("~", ".gitconfig"));
-      if (Test-Path -Path "$path") {
-        Remove-Item "$path";
+      $src = $this._path(@($this._cfgDir, "shell", ".gitconfig"));
+      $dst = $this._path(@("~", ".gitconfig"));
+      if (Test-Path -Path "$dst") {
+        Remove-Item "$dst";
       }
+      Write-Host "Creating hardlink $src => $dst";
       New-Item `
         -ItemType HardLink `
         -Path "~"
         -Name ".gitconfig" `
-        -Value $this._path(@($this._cfgDir, "shell", ".gitconfig"));
+        -Value "$src"
     }
     
     # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'

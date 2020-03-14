@@ -129,6 +129,7 @@ class App {
       if (Test-Path -Path "$path") {
         Remove-Item "$path";
       }
+      Write-Host "Hardlink $($this._psDir) + profile.ps1 => $path";
       New-Item `
         -ItemType HardLink `
         -Path "$($this._psDir)" `

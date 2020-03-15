@@ -54,6 +54,8 @@ function gst() {
 
 
 function ahk() {
+  # Restart if already running
+  # if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
   Start-Process `
     autohotkey.exe `
     -ArgumentList "$($env:USERPROFILE)\.box-cfg\keyboard.ahk" `

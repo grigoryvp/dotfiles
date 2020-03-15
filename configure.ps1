@@ -106,10 +106,6 @@ class App {
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
-    # After additional files are received
-    $this._mapCapsToF24();
-    # VCRUNTIME140_1.dll required for windows-terminal
-    $this._installApp("extras/vcredist2019");
     $this._installApp("autohotkey");
     $this._installApp("keepassxc");
     $this._installApp("vscode");
@@ -163,12 +159,18 @@ class App {
       }
     }
 
-    # Interactive.
-    $this._installFonts();
-
     if (-not $this._isPublic) {
       $this._uploadSshKey();
     }
+
+    $this._prompt("Press any key to begin elevation prompts...");
+
+    # After additional files are received
+    # Interactive
+    $this._mapCapsToF24();
+
+    # Interactive.
+    $this._installFonts();
 
     if (-not $this._isPublic) {
       # Re-clone with SSH keys
@@ -199,9 +201,6 @@ class App {
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }
-
-    # Interactive.
-    $this._startAutohotkey();
 
     if ($this._isTest) {
       Write-Host "Test complete";
@@ -544,20 +543,6 @@ class App {
   }
 
   
-  _startAutohotkey() {
-    if ($this._isTest) { return; }
-    if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
-    $this._prompt("Press any key to elevate the keyboard script...");
-    $args = @{
-      FilePath = 'autohotkey.exe'
-      ArgumentList = $this._path(@($this._cfgDir, "keyboard.ahk"))
-      WindowStyle = 'Hidden'
-      Verb = 'RunAs'
-    };
-    Start-Process @args;
-  }
-
-
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"

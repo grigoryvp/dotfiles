@@ -163,7 +163,9 @@ class App {
       $this._uploadSshKey();
     }
 
-    $this._prompt("Press any key to begin elevation prompts...");
+    if ($this._needMapCapsToF24() -or $this._needInstallFonst()) {
+      $this._prompt("Press any key to begin elevation prompts...");
+    }
 
     # After additional files are received
     # Interactive
@@ -391,8 +393,22 @@ class App {
   }
 
 
+  [Boolean] _needMapCapsToF24() {
+    if ($this._isTest) { return $false; }
+    $val = Get-ItemProperty `
+      -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" `
+      -Name "Scancode Map" `
+      -ErrorAction SilentlyContinue;
+    if ($val) {
+      $len = $val.'Scancode Map'.Length;
+      # Already set?
+      if ($len -eq 20) { return $false; }
+    }
+    return $true;
+  }
+
   _mapCapsToF24() {
-    if ($this._isTest) { return; }
+    if (-not $this._needMapCapsToF24()) { return; }
     & sudo pwsh $this._path(@($this._cfgDir, "map_caps_to_f24.ps1"));
   }
 
@@ -560,10 +576,15 @@ class App {
   }
 
 
+  [Boolean] _needInstallFonst() {
+    if ($this._isTest) { return $false; }
+    $name = "Monoid Regular Nerd Font Complete Mono Windows Compatible.ttf";
+    if (Test-Path -Path "$env:windir\Fonts\$name") { return $false; }
+    return $true;
+  }
+
   _installFonts() {
-    if ($this._isTest) { return; }
-    $fileName = "Monoid Regular Nerd Font Complete Mono Windows Compatible.ttf";
-    if (Test-Path -Path "$env:windir\Fonts\$fileName") { return; }
+    if (-not $this._needInstallFonst()) { return; }
     $appName = "Monoid-NF";
     if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.

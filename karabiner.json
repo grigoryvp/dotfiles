@@ -695,12 +695,6 @@
             "key_code": "z",
             "modifiers": ["left_command"]
           }],
-          "conditions": [{
-            "type": "frontmost_application_unless",
-            "bundle_identifiers": [
-              "^com\\.microsoft\\.edgemac$"
-            ]
-          }],
           "type": "basic"
         },
 

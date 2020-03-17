@@ -47,6 +47,8 @@ code
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
+# Disable spotlight for better battery life:
+sudo mdutil -a -i off
 # Start Karabiner-Elements
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 xcode-select --install

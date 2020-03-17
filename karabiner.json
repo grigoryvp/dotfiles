@@ -725,6 +725,19 @@
         },
 
         {
+          "description": "control-k => command-k for mac-win consistency",
+          "from": {
+            "key_code": "k",
+            "modifiers": {"mandatory": ["right_control"]}
+          },
+          "to": [{
+            "key_code": "k",
+            "modifiers": ["left_command"]
+          }],
+          "type": "basic"
+        },
+
+        {
           "description": "control-1 => command-1 for mac-win consistency",
           "from": {
             "key_code": "1",

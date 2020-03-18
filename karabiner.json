@@ -834,6 +834,7 @@
           "conditions": [{
             "type": "frontmost_application_if",
             "bundle_identifiers": [
+              "^com\\.microsoft\\.edgemac$",
               "^com\\.google\\.Chrome$"
             ]
           }],

@@ -65,7 +65,7 @@
         },
 
         {
-          "description": "dual mode 'caps lock': control if not alone",
+          "description": "dual mode 'tab': control if not alone",
           "from": {
             "key_code": "left_control",
             "modifiers": {"optional": ["any"]}

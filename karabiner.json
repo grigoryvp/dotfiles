@@ -202,6 +202,19 @@
         },
 
         {
+          "description": "meta-slash for middle mouse button",
+          "from": {
+            "key_code": "slash",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "pointing_button": "button3"
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "'meta-shift-h' for shift-left-arrow (vim-like + selection modify)",
           "from": {
             "key_code": "h",
@@ -1038,13 +1051,13 @@
         },
 
         {
-          "description": "meta-shift-slash => maximize",
+          "description": "meta-shift-space => maximize",
           "from": {
-            "key_code": "slash",
+            "key_code": "space",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "slash",
+            "key_code": "space",
             "modifiers": ["left_command", "left_shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],

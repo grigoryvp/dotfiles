@@ -26,6 +26,8 @@
 ;;  using Windows registry and use that resulting key. Such trick prevents
 ;;  caps lock from triggering in situations where keyboard hook is not
 ;;  working (UAC, lock screen, "Grim Dawn" etc).
+;;. '/' is much better fit for middle mouse button since triple-mode 'enter'
+;;  is overkill.
 
 codepage := 65001 ; utf-8
 appLastLangHotkey := ""
@@ -109,51 +111,48 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   return
 
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
-$vked up::
-  appLeaderUpTick = %A_TickCount%
-  return
-
-;;  caps + enter is middle mouse button
-$rctrl::
+$vked::
   ;;  First press since release? (beware repetition)
-  if (appReturnUpTick >= appReturnDownTick) {
-    appReturnDownTick = %A_TickCount%
+  if (appLeaderUpTick >= appLeaderDownTick) {
+    appLeaderDownTick = %A_TickCount%
   }
-  if (GetKeyState("vked", "P")) {
+  ;;  For games like WoW right buttons hold are used for movement, so
+  ;;  sometimes caps lock is released while holding tick or semicolon.
+  ;;  Holding caps lock again should return button hold.
+  if (GetKeyState(";", "P")) {
+    send {lbutton down}
+    while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
+      Sleep 10
+    }
+    send {lbutton up}
+  }
+  else if (GetKeyState("'", "P")) {
+    send {rbutton down}
+    while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
+      Sleep 10
+    }
+    send {rbutton up}
+  }
+  else if (GetKeyState("/", "P")) {
     send {mbutton down}
-    ;;  For games where holding mouse button moves something and caps can
-    ;;  be released and pressed back while still holding key).
-    while (GetKeyState("vked", "P") && GetKeyState("enter", "P")) {
+    while (GetKeyState("vked", "P") && GetKeyState("/", "P")) {
       Sleep 10
     }
     send {mbutton up}
   }
   return
 
-;;  caps + shift + enter is shift + middle mouse button
-;;! Can't use '*$rctrl' since it will produce 'enter' keypresses.
-+$rctrl::
-  if (appReturnUpTick >= appReturnDownTick) {
-    appReturnDownTick = %A_TickCount%
-  }
-  if (GetKeyState("vked", "P")) {
-    send +{mbutton down}
-    while (GetKeyState("vked", "P") && GetKeyState("enter", "P")) {
-      Sleep 10
-    }
-    send +{mbutton up}
-  }
+;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
+$vked up::
+  appLeaderUpTick = %A_TickCount%
   return
 
+;;  'Enter' up
 $rctrl up::
   appReturnUpTick = %A_TickCount%
   send {rctrl up}
   if (A_PriorKey = "RControl") {
-    ;;  No 'caps lock' was released after return was pressed? (protect
-    ;;  against accidental caps lock release while enter is used with it).
-    if (appLeaderUpTick < appReturnDownTick) {
-      send {enter}
-    }
+    send {enter}
   }
   return
 
@@ -326,37 +325,13 @@ $^lctrl up:: send ^{tab}
 *$.::remap("down", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 *$. up::remap("up", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 
-;;  'meta-shift-/' => maximize
-*$/::remap("down", "vkbf", "", "f21", "none", "", "", "vkbf")
-*$/ up::remap("up", "vkbf", "", "f21", "winmaximize", "", "", "vkbf")
+;;  'meta-shift-n' => maximize
+*$space::remap("down", "vk20", "", "f21", "none", "", "", "vk20")
+*$space up::remap("up", "vk20", "", "f21", "winmaximize", "", "", "vk20")
 
 ;; ===========================================================================
-;; Left and right mouse buttons
+;; Left, right and middle mouse buttons
 ;; ===========================================================================
-
-$vked::
-  ;;  First press since release? (beware repetition)
-  if (appLeaderUpTick >= appLeaderDownTick) {
-    appLeaderDownTick = %A_TickCount%
-  }
-  ;;  For games like WoW right buttons hold are used for movement, so
-  ;;  sometimes caps lock is released while holding tick or semicolon.
-  ;;  Holding caps lock again should return button hold.
-  if (GetKeyState(";", "P")) {
-    send {lbutton down}
-    while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
-      Sleep 10
-    }
-    send {lbutton up}
-  }
-  else if (GetKeyState("'", "P")) {
-    send {rbutton down}
-    while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
-      Sleep 10
-    }
-    send {rbutton up}
-  }
-  return
 
 ;;  'meta-semicolon' for left mouse button.
 *$`;::
@@ -420,6 +395,22 @@ $vked::
   }
   else {
     send {blind}{vkde}
+  }
+  return
+
+;;  'meta-slash' for middle mouse button.
+*$/::
+  if (GetKeyState("vked", "P")) {
+    send {mbutton down}
+    ;;  For games where holding mouse button moves something and caps can
+    ;;  be released and pressed back while still holding key).
+    while (GetKeyState("vked", "P") && GetKeyState("/", "P")) {
+      Sleep 10
+    }
+    send {mbutton up}
+  }
+  else {
+    send {blind}{vkbf}
   }
   return
 

@@ -37,6 +37,7 @@ class App {
       - Add perfgraph toolbar
       - Login and sync browser
       - Pin files, vscode, browser, telegram, keepass, cmd
+      - Uninstall 'OneDrive' and other software
       - Make --full configuration
 "@;
   }

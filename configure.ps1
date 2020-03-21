@@ -35,10 +35,9 @@ class App {
       - Disable snap assist
       - Disable touchbar click
       - Add perfgraph toolbar
-      - Login Edge
-      - Pin files, vscode, edge, telegram, keepass, cmd
+      - Login and sync browser
+      - Pin files, vscode, browser, telegram, keepass, cmd
       - Make --full configuration
-      - Reboot
 "@;
   }
 

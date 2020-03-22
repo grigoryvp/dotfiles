@@ -70,7 +70,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install https://ryanhanson.dev/scroll
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
-# Install tampermonkey for Safari.
+# Dock: cmd, vscode, browser, files, keepass, telegram
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
@@ -80,6 +80,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Disable welcome screen guest user in "Preferences/Users & Groups".
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure spectacle hotkeys.
+# Configure Snap hotkey as "command".
 # "iTunes/Preferences/Devices/Prevent from syncing automatically"
 ```
 

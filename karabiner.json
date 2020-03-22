@@ -375,100 +375,130 @@
         },
 
         {
-          "description": "meta-7 for file manager",
+          "description": "meta-2 for 1st app",
+          "from": {
+            "key_code": "2"
+          },
+          "to": [{
+            "key_code": "1",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-3 for 2nd app",
+          "from": {
+            "key_code": "3"
+          },
+          "to": [{
+            "key_code": "2",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-4 for 3nd app",
+          "from": {
+            "key_code": "4"
+          },
+          "to": [{
+            "key_code": "3",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-5 for 4th app",
+          "from": {
+            "key_code": "5"
+          },
+          "to": [{
+            "key_code": "4",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-6 for 5th app",
+          "from": {
+            "key_code": "6"
+          },
+          "to": [{
+            "key_code": "5",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "meta-7 for 6th app",
           "from": {
             "key_code": "7"
           },
           "to": [{
-            "shell_command": "open '/System/Library/CoreServices/Finder.app'"
+            "key_code": "6",
+            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         },
 
         {
-          "description": "meta-s-7 for password manager",
-          "from": {
-            "key_code": "7",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "shell_command": "open '/Applications/KeePassXC.app'"
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
-          "description": "meta-8 for editor",
+          "description": "meta-8 for 7th app",
           "from": {
             "key_code": "8"
           },
           "to": [{
-            "shell_command": "open '/Applications/Visual Studio Code.app'"
+            "key_code": "7",
+            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         },
 
         {
-          "description": "meta-s-8 for terminal",
-          "from": {
-            "key_code": "8",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "shell_command": "open '/Applications/Utilities/Terminal.app'"
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
-          "description": "meta-9 for browser",
+          "description": "meta-9 for 8th app",
           "from": {
             "key_code": "9"
           },
           "to": [{
-            "shell_command": "open '/Applications/Microsoft Edge.app'"
+            "key_code": "8",
+            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         },
 
         {
-          "description": "meta-s-9 reserved",
-          "from": {
-            "key_code": "9",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "shell_command": ""
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
-          "description": "meta-0 for messenger(s)",
+          "description": "meta-0 for 9th app",
           "from": {
             "key_code": "0"
           },
           "to": [{
-            "shell_command": "open /Applications/Telegram*.app"
+            "key_code": "9",
+            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
         },
 
         {
-          "description": "meta-s-0 reserved",
+          "description": "meta-minus for 10th app",
           "from": {
-            "key_code": "0",
-            "modifiers": {"mandatory": ["shift"]}
+            "key_code": "hyphen"
           },
           "to": [{
-            "shell_command": ""
+            "key_code": "0",
+            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -501,20 +531,6 @@
         },
 
         {
-          "description": "1-st language switch meta-5",
-          "from": {
-            "key_code": "4"
-          },
-          "to": [{
-            "select_input_source": {
-              "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
-            }
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
           "description": "1-st language switch meta-f",
           "from": {
             "key_code": "f"
@@ -529,20 +545,6 @@
         },
 
         {
-          "description": "2-nd language switch meta-5",
-          "from": {
-            "key_code": "5"
-          },
-          "to": [{
-            "select_input_source": {
-              "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
-            }
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
           "description": "2-nd language switch meta-d",
           "from": {
             "key_code": "d"
@@ -550,20 +552,6 @@
           "to": [{
             "select_input_source": {
               "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
-            }
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
-          "type": "basic"
-        },
-
-        {
-          "description": "3-rd language switch meta-6",
-          "from": {
-            "key_code": "6"
-          },
-          "to": [{
-            "select_input_source": {
-              "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.Japanese$"
             }
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],

@@ -180,6 +180,10 @@ $^lctrl up:: send ^{tab}
 *$]::remap("down", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
 *$] up::remap("up", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
 
+;;  'meta-plus' reserved
+*$=::remap("down", "vkbb", "", "vkbb", "", "vkbb", "", "vkbb")
+*$= up::remap("up", "vkbb", "", "vkbb", "", "vkbb", "", "vkbb")
+
 ;;  'meta-backspace' (delete on osx) for closing apps
 *$vk08::remap("down", "vk08", "none", "", "", "vk08", "", "vk08")
 *$vk08 up::remap("up", "vk08", "winclose", "", "", "vk08", "", "vk08")
@@ -213,34 +217,6 @@ $^lctrl up:: send ^{tab}
 *$l::remap("down", "vk4c", "", "right", "+", "right", "", "end")
 *$l up::remap("up", "vk4c", "", "right", "+", "right", "", "end")
 
-;;  'meta-7' for file manager; run under non-elevated user
-;;  'meta-s-7' for password manager; run under non-elevated user
-*$7::remap("down", "vk37", "#^", "1", "#^", "5", "", "vk37")
-*$7 up::remap("up", "vk37", "#^", "1", "#^", "5", "", "vk37")
-
-;;  'meta-8' for editor; run under non-elevated user
-;;  'meta-s-8' for task manager; run under non-elevated user
-*$8::remap("down", "vk38", "#^", "2", "#^", "6", "", "vk38")
-*$8 up::remap("up", "vk38", "#^", "2", "#^", "6", "", "vk38")
-
-;;  'meta-9' for browser; run under non-elevated user
-;;  'meta-s-9' for mail and calendar; run under non-elevated user
-*$9::remap("down", "vk39", "#^", "3", "#^", "7", "", "vk39")
-*$9 up::remap("up", "vk39", "#^", "3", "#^", "7", "", "vk39")
-
-;;  'meta-0' for messenger; run under non-elevated user
-;;  'meta-s-0' for slack; run under non-elevated user
-*$0::remap("down", "vk30", "#^", "4", "#^", "8", "", "vk30")
-*$0 up::remap("up", "vk30", "#^", "4", "#^", "8", "", "vk30")
-
-;;  Reserved
-*$-::remap("down", "vkbd", "#^", "9", "", "vkbd", "", "vkbd")
-*$- up::remap("up", "vkbd", "#^", "9", "", "vkbd", "", "vkbd")
-
-;;  Reserved
-*$=::remap("down", "vkbb", "#^", "0", "", "vkbb", "", "vkbb")
-*$= up::remap("up", "vkbb", "#^", "0", "", "vkbb", "", "vkbb")
-
 ;;  'meta-|' for launchpad.
 ;;  'meta-s-|' for notifications.
 ;;  'meta-c-|' for game HUD's (GOG, steam etc)
@@ -248,19 +224,52 @@ $^lctrl up:: send ^{tab}
 *$\ up::remap("up", "vkdc", "", "lwin", "#", "a", "+", "tab")
 
 ;;  ==========================================================================
-;;  Language switch
+;;  App launcher
 ;;  ==========================================================================
 
-;;  meta-4 switch to 1st language
-*$vk34::
-  if (GetKeyState("vked", "P")) {
-    appLastLangHotkey := "4"
-    send ^+4
-  }
-  else {
-    send {blind}{vk34}
-  }
-  return
+;;  'meta-2' fo 1st app
+*$2::remap("down", "vk32", "#^", "1", "", "vk32", "", "vk32")
+*$2 up::remap("up", "vk32", "#^", "1", "", "vk32", "", "vk32")
+
+;;  'meta-3' fo 2nd app
+*$3::remap("down", "vk33", "#^", "2", "", "vk33", "", "vk33")
+*$3 up::remap("up", "vk33", "#^", "2", "", "vk33", "", "vk33")
+
+;;  'meta-4' fo 3nd app
+*$4::remap("down", "vk34", "#^", "3", "", "vk34", "", "vk34")
+*$4 up::remap("up", "vk34", "#^", "3", "", "vk34", "", "vk34")
+
+;;  'meta-5' fo 4th app
+*$5::remap("down", "vk35", "#^", "4", "", "vk35", "", "vk35")
+*$5 up::remap("up", "vk35", "#^", "4", "", "vk35", "", "vk35")
+
+;;  'meta-6' fo 5th app
+*$6::remap("down", "vk36", "#^", "5", "", "vk36", "", "vk36")
+*$6 up::remap("up", "vk36", "#^", "5", "", "vk36", "", "vk36")
+
+;;  'meta-7' for 6th app
+*$7::remap("down", "vk37", "#^", "6", "", "vk37", "", "vk37")
+*$7 up::remap("up", "vk37", "#^", "6", "", "vk37", "", "vk37")
+
+;;  'meta-8' for 7th app
+*$8::remap("down", "vk38", "#^", "7", "", "vk38", "", "vk38")
+*$8 up::remap("up", "vk38", "#^", "7", "", "vk38", "", "vk38")
+
+;;  'meta-9' for 8th app
+*$9::remap("down", "vk39", "#^", "8", "", "vk39", "", "vk39")
+*$9 up::remap("up", "vk39", "#^", "8", "", "vk39", "", "vk39")
+
+;;  'meta-0' for 9th app
+*$0::remap("down", "vk30", "#^", "9", "", "vk30", "", "vk30")
+*$0 up::remap("up", "vk30", "#^", "9", "", "vk30", "", "vk30")
+
+;;  'meta-minus' for 10th app
+*$-::remap("down", "vkbd", "#^", "0", "", "vkbd", "", "vkbd")
+*$- up::remap("up", "vkbd", "#^", "0", "", "vkbd", "", "vkbd")
+
+;;  ==========================================================================
+;;  Language switch
+;;  ==========================================================================
 
 ;;  meta-f switch to 1st language
 *$vk46::
@@ -273,17 +282,6 @@ $^lctrl up:: send ^{tab}
   }
   return
 
-;;  meta-5 switch to 2nd language
-*$vk35::
-  if (GetKeyState("vked", "P")) {
-    appLastLangHotkey := "5"
-    send ^+5
-  }
-  else {
-    send {blind}{vk35}
-  }
-  return
-
 ;;  meta-d switch to 2nd language
 *$vk44::
   if (GetKeyState("vked", "P")) {
@@ -292,23 +290,6 @@ $^lctrl up:: send ^{tab}
   }
   else {
     send {blind}{vk44}
-  }
-  return
-
-;;  meta-6 switch to 3nd language
-*$vk36::
-  if (GetKeyState("vked", "P")) {
-    if (appLastLangHotkey = "6") {
-      ;;  Switch between Hiragana and Latin input for Japanese keyboard
-      send !``
-    }
-    else {
-      appLastLangHotkey := "6"
-      send ^+6
-    }
-  }
-  else {
-    send {blind}{vk36}
   }
   return
 

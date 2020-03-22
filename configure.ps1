@@ -38,7 +38,7 @@ class App {
       - Disable touchbar click
       - Add perfgraph toolbar
       - Login and sync browser
-      - Pin files, vscode, browser, telegram, keepass, cmd
+      - Pin cmd, vscode, browser, files, keepass, telegram
       - Uninstall 'OneDrive' and other software
 "@;
   }

@@ -66,7 +66,8 @@ rbenv install 2.6.5
 rbenv global 2.6.5
 # Enable keyboard repeat, need to restart after that
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-# Install Short Menu, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
+# Install Short Menu, Snap, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
+# Install https://ryanhanson.dev/scroll
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Install tampermonkey for Safari.

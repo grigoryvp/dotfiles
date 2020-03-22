@@ -251,6 +251,7 @@ $^lctrl up:: send ^{tab}
 ;;  Language switch
 ;;  ==========================================================================
 
+;;  meta-4 switch to 1st language
 *$vk34::
   if (GetKeyState("vked", "P")) {
     appLastLangHotkey := "4"
@@ -261,6 +262,18 @@ $^lctrl up:: send ^{tab}
   }
   return
 
+;;  meta-f switch to 1st language
+*$vk46::
+  if (GetKeyState("vked", "P")) {
+    appLastLangHotkey := "4"
+    send ^+4
+  }
+  else {
+    send {blind}{vk46}
+  }
+  return
+
+;;  meta-5 switch to 2nd language
 *$vk35::
   if (GetKeyState("vked", "P")) {
     appLastLangHotkey := "5"
@@ -271,6 +284,18 @@ $^lctrl up:: send ^{tab}
   }
   return
 
+;;  meta-d switch to 2nd language
+*$vk44::
+  if (GetKeyState("vked", "P")) {
+    appLastLangHotkey := "5"
+    send ^+5
+  }
+  else {
+    send {blind}{vk44}
+  }
+  return
+
+;;  meta-6 switch to 3nd language
 *$vk36::
   if (GetKeyState("vked", "P")) {
     if (appLastLangHotkey = "6") {
@@ -284,6 +309,23 @@ $^lctrl up:: send ^{tab}
   }
   else {
     send {blind}{vk36}
+  }
+  return
+
+;;  meta-s switch to 3nd language
+*$vk53::
+  if (GetKeyState("vked", "P")) {
+    if (appLastLangHotkey = "6") {
+      ;;  Switch between Hiragana and Latin input for Japanese keyboard
+      send !``
+    }
+    else {
+      appLastLangHotkey := "6"
+      send ^+6
+    }
+  }
+  else {
+    send {blind}{vk53}
   }
   return
 

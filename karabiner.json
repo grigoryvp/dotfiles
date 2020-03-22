@@ -202,13 +202,13 @@
         },
 
         {
-          "description": "meta-slash for middle mouse button",
+          "description": "meta-slash for command",
           "from": {
             "key_code": "slash",
             "modifiers": {"optional": ["any"]}
           },
           "to": [{
-            "pointing_button": "button3"
+            "key_code": "command"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"
@@ -515,6 +515,20 @@
         },
 
         {
+          "description": "1-st language switch meta-f",
+          "from": {
+            "key_code": "f"
+          },
+          "to": [{
+            "select_input_source": {
+              "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+            }
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "2-nd language switch meta-5",
           "from": {
             "key_code": "5"
@@ -529,9 +543,37 @@
         },
 
         {
+          "description": "2-nd language switch meta-d",
+          "from": {
+            "key_code": "d"
+          },
+          "to": [{
+            "select_input_source": {
+              "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
+            }
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
           "description": "3-rd language switch meta-6",
           "from": {
             "key_code": "6"
+          },
+          "to": [{
+            "select_input_source": {
+              "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.Japanese$"
+            }
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
+          "type": "basic"
+        },
+
+        {
+          "description": "3-rd language switch meta-s",
+          "from": {
+            "key_code": "s"
           },
           "to": [{
             "select_input_source": {

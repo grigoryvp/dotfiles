@@ -208,7 +208,7 @@
             "modifiers": {"optional": ["any"]}
           },
           "to": [{
-            "key_code": "command"
+            "key_code": "right_command"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}],
           "type": "basic"

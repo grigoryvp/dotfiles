@@ -29,6 +29,7 @@ class App {
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Make --full configuration
+      - Remap middle button into 'movement to scroll' via X-Mouse
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
@@ -107,6 +108,7 @@ class App {
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installApp("autohotkey");
+    $this._installApp("xmousebuttoncontrol");
     $this._installApp("keepassxc");
     $this._installApp("vscode");
     $this._configureVscode();
@@ -118,6 +120,7 @@ class App {
     $this._registerBatteryIconStartup();
     $this._registerCpuIconStartup();
     $this._registerRamIconStartup();
+    $this._registerXMouseButtonControlStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -749,6 +752,22 @@ class App {
     New-Item `
       -path $startDir `
       -Name "ram-icon.bat" `
+      -Value "$content" `
+      -ItemType File | Out-Null;
+  }
+
+
+  _registerXMouseButtonControlStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path -Path "$startDir\x-mouse-button-control.bat") {
+      Remove-Item "$startDir\x-mouse-button-control.bat";
+    }
+    $content = "pwsh -Command Start-Process XMouseButtonControl.exe";
+    $content += " -WindowStyle Hidden";
+    New-Item `
+      -path $startDir `
+      -Name "x-mouse-button-control.bat" `
       -Value "$content" `
       -ItemType File | Out-Null;
   }

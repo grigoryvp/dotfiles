@@ -249,8 +249,12 @@ function prompt {
   }
   Write-Host "] " -NoNewLine -ForegroundColor $COLOR_DGRAY;
   $location = $(Get-Location).ToString().Replace($env:USERPROFILE, "~");
-  Write-Host $location -NoNewLine -ForegroundColor $COLOR_MAGENTA;
-  Write-Host " $" -NoNewLine -ForegroundColor $COLOR_BLUE;
+  $locationItemList = $location.Replace("\", "/").Split("/");
+  foreach ($locationItem in $locationItemList) {
+    Write-Host $locationItem -NoNewLine -ForegroundColor $COLOR_MAGENTA;
+    Write-Host "/" -NoNewLine -ForegroundColor $COLOR_BLUE;
+  }
+  Write-Host " $" -NoNewLine -ForegroundColor $COLOR_DGRAY;
   # Return something to replace default prompt.
   return " ";
 }

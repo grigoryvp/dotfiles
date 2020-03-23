@@ -22,7 +22,6 @@ $COLOR_DYELLOW = ([ConsoleColor]::DarkYellow);
 $COLOR_GREEN = ([ConsoleColor]::Green);
 $COLOR_BLUE = ([ConsoleColor]::Blue);
 $COLOR_MAGENTA = ([ConsoleColor]::Magenta);
-$COLOR_YELLOW = ([ConsoleColor]::Yellow);
 
 function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/.box-cfg; }

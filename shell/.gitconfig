@@ -24,7 +24,7 @@ ap = add -p
 cm = commit -am
 ps = push
 pl = pull --all
-st = status -s
+st = status --short --branch
 lg = log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit
 br = branch
 di = diff --ignore-space-change

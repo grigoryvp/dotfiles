@@ -1,5 +1,7 @@
 try {
-  Import-Module posh-git;
+  # Very slow
+  # Provides 'Write-Prompt'
+  # Import-Module posh-git;
 }
 catch {
 }
@@ -14,6 +16,13 @@ $env:PIPENV_SKIP_LOCK = 1
 $env:PIPENV_SKIP_LOCK = 1
 # Enable Python 2.7 apps to write into PowerShell console.
 $env:PYTHONIOENCODING = "UTF-8"
+
+$COLOR_DGRAY = ([ConsoleColor]::DarkGray);
+$COLOR_DYELLOW = ([ConsoleColor]::DarkYellow);
+$COLOR_GREEN = ([ConsoleColor]::Green);
+$COLOR_BLUE = ([ConsoleColor]::Blue);
+$COLOR_MAGENTA = ([ConsoleColor]::Magenta);
+$COLOR_YELLOW = ([ConsoleColor]::Yellow);
 
 function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/.box-cfg; }
@@ -52,7 +61,6 @@ function gst() {
   }
 }
 
-
 function ahk() {
   # Restart if already running
   # if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
@@ -63,18 +71,15 @@ function ahk() {
     -Verb RunAs;
 }
 
-
 # Windows-OSX-Linux consistency
 function rmf($dst) {
   Remove-Item $dst -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-
 # Windows-OSX-Linux consistency
 function ll($dst) {
   Get-ChildItem $dst
 }
-
 
 function Update-VscodeExt() {
   $cfgFileName = "package.json";
@@ -229,25 +234,24 @@ Set-PSReadlineKeyHandler -Key Ctrl+d -ScriptBlock {
   Add-PromptMsg "dbg";
 }
 
-if (Get-Command "conda.exe" -ErrorAction SilentlyContinue) {
-  (& conda.exe shell.powershell hook) | Out-String | Invoke-Expression
-}
+# Very slow
+# if (Get-Command "conda.exe" -ErrorAction SilentlyContinue) {
+#   (& conda.exe shell.powershell hook) | Out-String | Invoke-Expression
+# }
 
 # After conda, which tries to replace prompt.
 function prompt {
-  $prompt = "";
-  $prompt += Write-Prompt "[" -ForegroundColor ([ConsoleColor]::DarkGray);
+  Write-Host "[" -NoNewLine -ForegroundColor $COLOR_DGRAY;
   if ($promptMsg) {
-    $color = ([ConsoleColor]::Green);
-    $prompt += Write-Prompt $promptMsg -ForegroundColor $color;
+    Write-Host $promptMsg -NoNewLine -ForegroundColor $COLOR_GREEN;
   }
   else {
-    $color = ([ConsoleColor]::DarkYellow);
-    $prompt += Write-Prompt "..." -ForegroundColor $color;
+    Write-Host "..." -NoNewLine -ForegroundColor $COLOR_DYELLOW;
   }
-  $prompt += Write-Prompt "] " -ForegroundColor ([ConsoleColor]::DarkGray);
-  if ($GitPromptScriptBlock) {
-    $prompt += & $GitPromptScriptBlock
-  }
-  return $prompt;
+  Write-Host "] " -NoNewLine -ForegroundColor $COLOR_DGRAY;
+  $location = $(Get-Location).ToString().Replace($env:USERPROFILE, "~");
+  Write-Host $location -NoNewLine -ForegroundColor $COLOR_MAGENTA;
+  Write-Host " $" -NoNewLine -ForegroundColor $COLOR_BLUE;
+  # Return something to replace default prompt.
+  return " ";
 }

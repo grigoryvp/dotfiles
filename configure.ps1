@@ -1,3 +1,7 @@
+function New-Hardlink() { New-Item -ItemType HardLink -Force @Args; }
+function New-Dir() { New-Item -ItemType Directory -Force @Args; }
+function New-File() { New-Item -ItemType File -Force @Args; }
+
 class App {
 
   #region Instance properties
@@ -61,7 +65,7 @@ class App {
 
     if (-not $this._isTest) {
       if (-not (Test-Path -Path "$($this._cfgDir)")) {
-        New-Item -Path "$($this._cfgDir)" -ItemType Directory | Out-Null;
+        New-Dir -Path "$($this._cfgDir)" | Out-Null;
       }
     }
 
@@ -71,7 +75,7 @@ class App {
       $oldPsDir = $this._path(@("~", "Documents", "WindowsPowerShell"));
       if (-not (Test-Path -Path "$oldPsDir")) {
         Write-Host "Creating dir $oldPsDir";
-        $ret = & New-Item -Path "$oldPsDir" -ItemType Directory;
+        $ret = & New-Dir -Path "$oldPsDir";
         $ret.Attributes = 'Hidden';
       }
       else {
@@ -84,7 +88,7 @@ class App {
     if (-not $this._isTest) {
       if (-not (Test-Path -Path "$($this._psDir)")) {
         Write-Host "Creating dir $($this._psDir)";
-        $ret = & New-Item -Path "$($this._psDir)" -ItemType Directory;
+        $ret = & New-Dir -Path "$($this._psDir)";
         $ret.Attributes = 'Hidden';
       }
       else {
@@ -114,8 +118,8 @@ class App {
     $this._configureVscode();
     $this._installApp("tray-monitor");
     $this._installApp("battery-info-view");
+    $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
     $this._registerAutohotkeyStartup();
-    $this._configureBatteryInfoView();
     $this._registerBatteryInfoViewStartup();
     $this._registerBatteryIconStartup();
     $this._registerCpuIconStartup();
@@ -130,11 +134,7 @@ class App {
         Remove-Item "$dst";
       }
       Write-Host "Creating hardlink $src => $dst";
-      New-Item `
-        -ItemType HardLink `
-        -Path "$($this._psDir)" `
-        -Name "profile.ps1" `
-        -Value "$src";
+      New-Hardlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
     }
 
     # Symlink git config.
@@ -145,11 +145,7 @@ class App {
         Remove-Item "$dst";
       }
       Write-Host "Creating hardlink $src => $dst";
-      New-Item `
-        -ItemType HardLink `
-        -Path "~" `
-        -Name ".gitconfig" `
-        -Value "$src"
+      New-Hardlink -Path "~" -Name ".gitconfig" -Value "$src";
     }
     
     # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
@@ -276,9 +272,25 @@ class App {
 
   _copyToAppDir($fileName, $appName) {
     if ($this._isTest) { return; }
-    $srcPath = $this._path(@($this._cfgDir, $fileName));
+    $srcFilePath = $this._path(@($this._cfgDir, $fileName));
     $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
-    Copy-Item -Path "$srcPath" -Destination "$dstPath" -Force;
+    $dstFilePath = $this._path(@($dstPath, $fileName));
+    if (Test-Path -Path "$dstFilePath" ) {
+      Remove-Item "$dstFilePath";
+    }
+    Copy-Item -Path "$srcFilePath" -Destination "$dstPath" -Force;
+  }
+
+
+  _linkToAppDir($fileName, $appName) {
+    if ($this._isTest) { return; }
+    $srcFilePath = $this._path(@($this._cfgDir, $fileName));
+    $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
+    $dstFilePath = $this._path(@($dstPath, $fileName));
+    if (Test-Path -Path "$dstFilePath" ) {
+      Remove-Item "$dstFilePath";
+    }
+    New-Hardlink -Path "$dstPath" -Name "$fileName" -Value "$srcFilePath";
   }
 
 
@@ -314,7 +326,7 @@ class App {
     Write-Host "Removing current dir $($this._cfgDir)"
     Remove-Item "$($this._cfgDir)" -Recurse -Force;
     Write-Host "Recreating config dir $($this._cfgDir)"
-    New-Item -Path $this._cfgDir -ItemType Directory | Out-Null;
+    New-Dir -Path $this._cfgDir | Out-Null;
     Write-Host "Moving files $tmpDirName => $($this._cfgDir)";
     Move-Item -Force "$tmpDirName/*" "$($this._cfgDir)";
     Write-Host "Removing temp dir $tmpDirName";
@@ -327,7 +339,7 @@ class App {
     if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) { return; }
     $sshDir = $this._path(@("~", ".ssh"));
     if (-not (Test-Path -Path "$sshDir" )) {
-      New-Item -Path "$sshDir" -ItemType Directory | Out-Null;
+      New-Dir -Path "$sshDir" | Out-Null;
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
@@ -535,7 +547,7 @@ class App {
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
           Write-Host "SSH key already added to GitHub";
-          New-Item -path .ssh -Name $marker -ItemType File | Out-Null;
+          New-File -path .ssh -Name $marker | Out-Null;
         }
         elseif ($_.Exception.Response.StatusCode -eq 401) {
           # TODO: try to upload via auth token.
@@ -549,7 +561,7 @@ class App {
           throw "Failed $($_.Exception)";
         }
       }
-      New-Item -path "~/.ssh" -Name $marker -ItemType File | Out-Null;
+      New-File -path "~/.ssh" -Name $marker | Out-Null;
     }
   }
 
@@ -571,11 +583,7 @@ class App {
     $content = "pwsh -Command Start-Process autohotkey.exe";
     $content += " -ArgumentList `"$($this._cfgDir)\keyboard.ahk`"";
     $content += " -WindowStyle Hidden -Verb RunAs";
-    New-Item `
-      -path $startDir `
-      -Name "autohotkey.bat" `
-      -Value "$content" `
-      -ItemType File | Out-Null;
+    New-File -path $startDir -Name "autohotkey.bat" -Value "$content" | Out-Null;
   }
 
 
@@ -612,7 +620,7 @@ class App {
     $dstDir = $this._path(@($env:APPDATA, "Code", "User"));
     if (-not (Test-Path -Path "$dstDir")) {
       # Not created during install, only on first UI start.
-      New-Item -Path "$dstDir" -ItemType Directory | Out-Null;
+      New-Dir -Path "$dstDir" | Out-Null;
     }
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_settings.json"));
@@ -647,7 +655,7 @@ class App {
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {
-      New-Item -Path "$docCfgDir" -ItemType Directory | Out-Null;
+      New-Dir -Path "$docCfgDir" | Out-Null;
     }
 
     $content = @'
@@ -665,31 +673,14 @@ class App {
       }
 '@;
 
-    New-Item `
+    New-File `
       -path $docCfgDir `
       -Name "settings.json" `
       -Value "$content" `
-      -ItemType File `
-      -Force | Out-Null;
+      | Out-Null;
 
     ##  Exclude from 'ls'.
     $(Get-Item -Force $docCfgDir).Attributes = 'Hidden';
-  }
-
-
-  _configureBatteryInfoView() {
-    if ($this._isTest) { return; }
-    $appPath = $this._path(@("~",
-     "scoop", "apps", "battery-info-view", "current"));
-    $appCfgPath = $this._path(@($appPath, "BatteryInfoView.cfg"));
-    if (Test-Path -Path "$appCfgPath" ) {
-      Remove-Item "$appCfgPath";
-    }
-    New-Item `
-      -ItemType HardLink `
-      -Path "$appPath" `
-      -Name "BatteryInfoView.cfg" `
-      -Value $this._path(@($this._cfgDir, "BatteryInfoView.cfg"))
   }
 
 
@@ -701,11 +692,11 @@ class App {
     }
     $content = "pwsh -Command Start-Process BatteryInfoView.exe";
     $content += " -WindowStyle Hidden";
-    New-Item `
-      -path $startDir `
+    New-File `
+      -Path $startDir `
       -Name "battery-info-view.bat" `
       -Value "$content" `
-      -ItemType File | Out-Null;
+      | Out-Null;
   }
 
 
@@ -717,11 +708,11 @@ class App {
     }
     $content = "pwsh -Command Start-Process BatteryIcon.exe";
     $content += " -WindowStyle Hidden";
-    New-Item `
-      -path $startDir `
+    New-File `
+      -Path $startDir `
       -Name "battery-icon.bat" `
       -Value "$content" `
-      -ItemType File | Out-Null;
+      | Out-Null;
   }
 
 
@@ -733,11 +724,11 @@ class App {
     }
     $content = "pwsh -Command Start-Process CpuIcon.exe";
     $content += " -WindowStyle Hidden";
-    New-Item `
+    New-File `
       -path $startDir `
       -Name "cpu-icon.bat" `
       -Value "$content" `
-      -ItemType File | Out-Null;
+      | Out-Null;
   }
 
 
@@ -749,11 +740,11 @@ class App {
     }
     $content = "pwsh -Command Start-Process RamIcon.exe";
     $content += " -WindowStyle Hidden";
-    New-Item `
+    New-File `
       -path $startDir `
       -Name "ram-icon.bat" `
       -Value "$content" `
-      -ItemType File | Out-Null;
+      | Out-Null;
   }
 
 
@@ -765,11 +756,11 @@ class App {
     }
     $content = "pwsh -Command Start-Process XMouseButtonControl.exe";
     $content += " -WindowStyle Hidden";
-    New-Item `
+    New-File `
       -path $startDir `
       -Name "x-mouse-button-control.bat" `
       -Value "$content" `
-      -ItemType File | Out-Null;
+      | Out-Null;
   }
 }
 

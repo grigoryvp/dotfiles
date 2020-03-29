@@ -136,14 +136,19 @@ if test "$(uname)" = "Darwin"; then
   # Installed here by 'brew install michaeldfallen/formula/git-radar'
   if test "$SHELL" = "/bin/zsh"; then
     export RADAR_CMD='$(/usr/local/bin/git-radar --zsh --fetch)'
-    ##  Substring re-interpolation.
-    setopt promptsubst
   else
     export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
   fi
   # Swift version manager
   if which swiftenv > /dev/null; then
     eval "$(swiftenv init -)"
+  fi
+
+  if test "$SHELL" = "/bin/zsh"; then
+    ##  Substring re-interpolation.
+    setopt promptsubst
+    ##  Do not display "no matches found" error for blobs
+    setopt +o nomatch
   fi
 else
   ##  Remap caps lock to backspace.
@@ -287,7 +292,7 @@ psupdate() {
   export PS1="${BN}${BW}${PS1_WORKDIR} "
   if test -n "$PSGITON"; then
     if test -d ~/.git-radar || test -e /usr/local/bin/git-radar; then
-      export PS1="${PS1}${BG}${RADAR_CMD} "
+      export PS1="${PS1}${BG}${RADAR_CMD}"
     fi
   fi
   export PS1="${PS1}${BM}{${DOCKER_MACHINE_NAME}} "

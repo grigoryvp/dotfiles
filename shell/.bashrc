@@ -16,6 +16,7 @@ M="${ESC}[35;49m"
 C="${ESC}[36;49m"
 N="${ESC}[0m"
 
+##  Bash/Zsh differences.
 if test "$SHELL" = "/bin/zsh"; then
   BK="${K}"
   BW="${W}"
@@ -28,6 +29,10 @@ if test "$SHELL" = "/bin/zsh"; then
   BN="${N}"
   PS1_WORKDIR="%~"
   PS1_DOLLAR="$"
+  ##  Substring re-interpolation.
+  setopt promptsubst
+  ##  Do not display "no matches found" error for blobs
+  setopt +o nomatch
 else
   ##  Bash colors should be escaped for correct length calculation:
   BK="\\[${K}\\]"
@@ -142,13 +147,6 @@ if test "$(uname)" = "Darwin"; then
   # Swift version manager
   if which swiftenv > /dev/null; then
     eval "$(swiftenv init -)"
-  fi
-
-  if test "$SHELL" = "/bin/zsh"; then
-    ##  Substring re-interpolation.
-    setopt promptsubst
-    ##  Do not display "no matches found" error for blobs
-    setopt +o nomatch
   fi
 else
   ##  Remap caps lock to backspace.

@@ -40,6 +40,7 @@ rm -rf ~/Downloads/Dracula.terminal
 rm -f ~/.bashrc
 ln ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
+printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 rm -f ~/.gitconfig
 ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig

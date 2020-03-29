@@ -27,7 +27,7 @@ if test "$SHELL" = "/bin/zsh"; then
   BC="${C}"
   BN="${N}"
   PS1_WORKDIR="%~"
-  PS1_DOLLAR="%$"
+  PS1_DOLLAR="$"
 else
   ##  Bash colors should be escaped for correct length calculation:
   BK="\\[${K}\\]"

@@ -16,16 +16,32 @@ M="${ESC}[35;49m"
 C="${ESC}[36;49m"
 N="${ESC}[0m"
 
-##  Bash colors should be escaped for correct length calculation:
-BK="\\[${K}\\]"
-BW="\\[${W}\\]"
-BR="\\[${R}\\]"
-BG="\\[${G}\\]"
-BB="\\[${B}\\]"
-BY="\\[${Y}\\]"
-BM="\\[${M}\\]"
-BC="\\[${C}\\]"
-BN="\\[${N}\\]"
+if test "$SHELL" = "/bin/zsh"; then
+  BK="${K}]"
+  BW="${W}]"
+  BR="${R}]"
+  BG="${G}]"
+  BB="${B}]"
+  BY="${Y}]"
+  BM="${M}]"
+  BC="${C}]"
+  BN="${N}]"
+  PS1_WORKDIR="%W"
+  PS1_DOLLAR="%\$"
+else
+  ##  Bash colors should be escaped for correct length calculation:
+  BK="\\[${K}\\]"
+  BW="\\[${W}\\]"
+  BR="\\[${R}\\]"
+  BG="\\[${G}\\]"
+  BB="\\[${B}\\]"
+  BY="\\[${Y}\\]"
+  BM="\\[${M}\\]"
+  BC="\\[${C}\\]"
+  BN="\\[${N}\\]"
+  PS1_WORKDIR="\\W"
+  PS1_DOLLAR="\\\$"
+fi
 
 ##  Disable terminal/ssh freeze with C-S:
 stty -ixon
@@ -119,7 +135,7 @@ if test "$(uname)" = "Darwin"; then
   export ANDROID_HOME=/usr/local/opt/android-sdk
   # Installed here by 'brew install michaeldfallen/formula/git-radar'
   if test "$SHELL" = "/bin/zsh"; then
-    export RADAR_CMD='\$(/usr/local/bin/git-radar --zsh --fetch)'
+    export RADAR_CMD='%$(/usr/local/bin/git-radar --zsh --fetch)'
   else
     export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
   fi
@@ -266,19 +282,14 @@ ll() {
 
 psupdate() {
   export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
-  PROMPT_STR="${BN}${BW}\\W "
+  export PS1="${BN}${BW}${PS1_WORKDIR} "
   if test -n "$PSGITON"; then
     if test -d ~/.git-radar || test -e /usr/local/bin/git-radar; then
-      PROMPT_STR="${PROMPT_STR}${BG}${RADAR_CMD} "
+      export PS1="${PS1}${BG}${RADAR_CMD} "
     fi
   fi
-  PROMPT_STR="${PROMPT_STR}${BM}{${DOCKER_MACHINE_NAME}} "
-  PROMPT_STR="${PROMPT_STR}${BY}\\\$ ${BN}"
-  if test "$SHELL" = "/bin/zsh"; then
-    export PROMPT=$PROMPT_STR
-  else
-    export PS1=$PROMPT_STR
-  fi
+  export PS1="${PS1}${BM}{${DOCKER_MACHINE_NAME}} "
+  export PS1="${PS1}${BY}{$PS1_DOLLAR} ${BN}"
 }
 
 psgiton() {

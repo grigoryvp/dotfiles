@@ -37,8 +37,7 @@ curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_m
 curl -Ls https://raw.githubusercontent.com/dracula/terminal-app/master/Dracula.terminal > ~/Downloads/Dracula.terminal
 open ~/Downloads/Dracula.terminal
 rm -rf ~/Downloads/Dracula.terminal
-rm -f ~/.bashrc
-ln ~/.box-cfg/shell/.bashrc ~/.bashrc
+cp ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc

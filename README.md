@@ -83,7 +83,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Disable sleep in "Preferences/Energy Saver".
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure "Spectacle" hotkeys.
-# Configure "Snap" for "command-shift-number" (browser tabs conflict).
+# Configure "Snap" for "command-shift-option-control-number".
 # Configure "Scroll" hotkey as "command".
 # For old macOS versions:
 # Disable welcome screen guest user in "Preferences/Users & Groups".

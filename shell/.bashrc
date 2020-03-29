@@ -136,6 +136,8 @@ if test "$(uname)" = "Darwin"; then
   # Installed here by 'brew install michaeldfallen/formula/git-radar'
   if test "$SHELL" = "/bin/zsh"; then
     export RADAR_CMD='$(/usr/local/bin/git-radar --zsh --fetch)'
+    ##  Substring re-interpolation.
+    setopt promptsubst
   else
     export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
   fi

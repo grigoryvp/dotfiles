@@ -195,27 +195,39 @@ $^lctrl up:: send ^{tab}
 
 ;;  'meta-h' for left arrow (vim-like).
 ;;  'meta-shift-h' for shift-left-arrow (vim-like + selection modify).
-;;  'meta-tab-h' for home (vim-like).
-*$h::remap("down", "vk48", "", "left", "+", "left", "", "home")
-*$h up::remap("up", "vk48", "", "left", "+", "left", "", "home")
+*$h::remap("down", "vk48", "", "left", "+", "left", "", "vk48")
+*$h up::remap("up", "vk48", "", "left", "+", "left", "", "vk48")
 
 ;;  'meta-j' for down arrow (vim-like).
 ;;  'meta-shift-j' for shift-down-arrow (vim-like + selection modify).
-;;  'meta-tab-j' for page down (vim-like).
-*$j::remap("down", "vk4a", "", "down", "+", "down", "", "pgdn")
-*$j up::remap("up", "vk4a", "", "down", "+", "down", "", "pgdn")
+*$j::remap("down", "vk4a", "", "down", "+", "down", "", "vk4a")
+*$j up::remap("up", "vk4a", "", "down", "+", "down", "", "vk4a")
 
 ;;  'meta-k' for up arrow (vim-like).
 ;;  'meta-shift-k' for shift-up-arrow (vim-like + selection modify).
-;;  'meta-tab-k' for page up (vim-like).
-*$k::remap("down", "vk4b", "", "up", "+", "up", "", "pgup")
-*$k up::remap("up", "vk4b", "", "up", "+", "up", "", "pgup")
+*$k::remap("down", "vk4b", "", "up", "+", "up", "", "vk4b")
+*$k up::remap("up", "vk4b", "", "up", "+", "up", "", "vk4b")
 
 ;;  'meta-l' for right arrow (vim-like).
 ;;  'meta-shift-l' for shift-right-arrow (vim-like + selection modify).
-;;  'meta-tab-l' for end (vim-like).
-*$l::remap("down", "vk4c", "", "right", "+", "right", "", "end")
-*$l up::remap("up", "vk4c", "", "right", "+", "right", "", "end")
+*$l::remap("down", "vk4c", "", "right", "+", "right", "", "vk4c")
+*$l up::remap("up", "vk4c", "", "right", "+", "right", "", "vk4c")
+
+;;  'meta-w' for home.
+*$w::remap("down", "vk57", "", "home", "", "vk57", "", "vk57")
+*$w up::remap("up", "vk57", "", "home", "", "vk57", "", "vk57")
+
+;;  'meta-e' for page down.
+*$e::remap("down", "vk45", "", "pgdn", "", "vk45", "", "vk45")
+*$e up::remap("up", "vk45", "", "pgdn", "", "vk45", "", "vk45")
+
+;;  'meta-r' for page up.
+*$r::remap("down", "vk52", "", "pgup", "", "vk52", "", "vk52")
+*$r up::remap("up", "vk52", "", "pgup", "", "vk52", "", "vk52")
+
+;;  'meta-t' for end.
+*$t::remap("down", "vk54", "", "end", "", "vk54", "", "vk54")
+*$t up::remap("up", "vk54", "", "end", "", "vk54", "", "vk54")
 
 ;;  'meta-|' for launchpad.
 ;;  'meta-s-|' for notifications.

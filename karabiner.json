@@ -229,10 +229,10 @@
         },
 
         {
-          "description": "'meta-tab-h' for home (vim-like)",
+          "description": "'meta-w' for home",
           "from": {
-            "key_code": "h",
-            "modifiers": {"mandatory": ["left_control"]}
+            "key_code": "w",
+            "modifiers": {"optional": ["any"]}
           },
           "to": [{
             "key_code": "home"
@@ -269,10 +269,10 @@
         },
 
         {
-          "description": "'meta-tab-j' for page down (vim-like)",
+          "description": "'meta-e' for page down",
           "from": {
-            "key_code": "j",
-            "modifiers": {"mandatory": ["left_control"]}
+            "key_code": "e",
+            "modifiers": {"optional": ["any"]}
           },
           "to": [{
             "key_code": "page_down"
@@ -309,10 +309,10 @@
         },
 
         {
-          "description": "'meta-tab-k' for page up (vim-like)",
+          "description": "'meta-r' for page up",
           "from": {
-            "key_code": "k",
-            "modifiers": {"mandatory": ["left_control"]}
+            "key_code": "r",
+            "modifiers": {"optional": ["any"]}
           },
           "to": [{
             "key_code": "page_up"
@@ -349,10 +349,10 @@
         },
 
         {
-          "description": "'meta-tab-l' for end (vim-like).",
+          "description": "'meta-t' for end",
           "from": {
-            "key_code": "l",
-            "modifiers": {"mandatory": ["left_control"]}
+            "key_code": "t",
+            "modifiers": {"optional": ["any"]}
           },
           "to": [{
             "key_code": "end"

@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 # coding:utf-8 vi:et:ts=2
 
+##  bash/zsh portable way to encode "Escape" character.
+ESC=$(printf '\033')
+
 ##  Colors, used by this init script
 ##  echo -e "${K}K${W}W${R}R${G}G${B}B${Y}Y${M}M${C}C${N}N"
-K='\e[30;47m'
-W='\e[37;49m'
-R='\e[31;49m'
-G='\e[32;49m'
-B='\e[34;49m'
-Y='\e[33;49m'
-M='\e[35;49m'
-C='\e[36;49m'
-N='\e[0m'
+K="${ESC}[30;47m"
+W="${ESC}[37;49m"
+R="${ESC}[31;49m"
+G="${ESC}[32;49m"
+B="${ESC}[34;49m"
+Y="${ESC}[33;49m"
+M="${ESC}[35;49m"
+C="${ESC}[36;49m"
+N="${ESC}[0m"
 
 ##  Bash colors should be escaped for correct length calculation:
 BK="\\[${K}\\]"

@@ -119,7 +119,7 @@ if test "$(uname)" = "Darwin"; then
   export ANDROID_HOME=/usr/local/opt/android-sdk
   # Installed here by 'brew install michaeldfallen/formula/git-radar'
   if test "$SHELL" = "/bin/zsh"; then
-    export RADAR_CMD='$(/usr/local/bin/git-radar --zsh --fetch)'
+    export RADAR_CMD='\$(/usr/local/bin/git-radar --zsh --fetch)'
   else
     export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
   fi

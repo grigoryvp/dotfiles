@@ -20,14 +20,14 @@ Follow instructions for post-configuration.
 ## OSX
 
 ```ps1
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs zoomus mpv
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
-# Fixes 'cannot lock ref' case sensetive issue.
-git config --global fetch.prune true
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
+# Confirm execution of downloaded app.
+open /Applications/KeePassXC.app
 keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
 # Add ssh to github
 rm -rf ~/.box-cfg
@@ -46,27 +46,31 @@ ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
 code
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
+mpv
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery life:
 sudo mdutil -a -i off
-# Start Karabiner-Elements
+open /Applications/Karabiner-Elements.app
+# Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".
+# From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin' add
+# 'karabiner_grabber', 'karabiner_observer', 'karabiner_console_user_server'
+# into "Accessibility".
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
-xcode-select --install
 # OSX up to 10.13
 unset CFLAGS
 # OSX 10.14 and later (XCode version)
-# export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
+export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
 pyenv init
 echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
-pyenv install 3.8.1
-pyenv global 3.8.1
+pyenv install 3.8.2 2.7.17
+pyenv global 3.8.2
 rbenv init
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-rbenv install 2.6.5
-rbenv global 2.6.5
+rbenv install 2.7.0
+rbenv global 2.7.0
 # Enable keyboard repeat, need to restart after that
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-# Install Short Menu, Snap, Battery Monitor, XCode, Affinity, Telegram (Not "Telegram Desktop"), Chatty from app store.
+# App store: Snap, Battery Monitor, Telegram, XCode, Affinity.
 # Install https://ryanhanson.dev/scroll
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
@@ -77,10 +81,12 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Add "⌘w" to "Close Tab" in "Preferences/Keyboard/Shortcuts/App Shortcuts" for Safari.
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
-# Disable welcome screen guest user in "Preferences/Users & Groups".
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
-# Configure spectacle hotkeys.
-# Configure Snap hotkey as "command".
+# Configure "Spectacle" hotkeys.
+# Configure "Snap" for "command-shift-number" (browser tabs conflict).
+# Configure "Scroll" hotkey as "command".
+# For old macOS versions:
+# Disable welcome screen guest user in "Preferences/Users & Groups".
 # "iTunes/Preferences/Devices/Prevent from syncing automatically"
 ```
 

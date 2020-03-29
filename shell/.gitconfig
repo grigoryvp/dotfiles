@@ -16,6 +16,10 @@ default = simple
 [pull]
 rebase = true
 
+[fetch]
+# Fixes 'cannot lock ref' macOS case sensetive issue.
+prune = true
+
 [alias]
 ch = checkout
 a = add

@@ -65,7 +65,7 @@ class App {
 
     if (-not $this._isTest) {
       if (-not (Test-Path -Path "$($this._cfgDir)")) {
-        New-Dir -Path "$($this._cfgDir)" | Out-Null;
+        New-Dir -Path "$($this._cfgDir)";
       }
     }
 
@@ -182,7 +182,7 @@ class App {
 
     if (-not (Test-Path -Path ".editorconfig")) {
         $src = $this._path(@($this._cfgDir, ".editorconfig"));
-        Copy-Item -Path "$src" -Destination . -Force | Out-Null;
+        Copy-Item -Path "$src" -Destination . -Force;
     }
 
     # Optional installs
@@ -326,7 +326,7 @@ class App {
     Write-Host "Removing current dir $($this._cfgDir)"
     Remove-Item "$($this._cfgDir)" -Recurse -Force;
     Write-Host "Recreating config dir $($this._cfgDir)"
-    New-Dir -Path $this._cfgDir | Out-Null;
+    New-Dir -Path $this._cfgDir;
     Write-Host "Moving files $tmpDirName => $($this._cfgDir)";
     Move-Item -Force "$tmpDirName/*" "$($this._cfgDir)";
     Write-Host "Removing temp dir $tmpDirName";
@@ -339,7 +339,7 @@ class App {
     if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) { return; }
     $sshDir = $this._path(@("~", ".ssh"));
     if (-not (Test-Path -Path "$sshDir" )) {
-      New-Dir -Path "$sshDir" | Out-Null;
+      New-Dir -Path "$sshDir";
     }
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
@@ -547,7 +547,7 @@ class App {
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
           Write-Host "SSH key already added to GitHub";
-          New-File -path .ssh -Name $marker | Out-Null;
+          New-File -path .ssh -Name $marker;
         }
         elseif ($_.Exception.Response.StatusCode -eq 401) {
           # TODO: try to upload via auth token.
@@ -561,7 +561,7 @@ class App {
           throw "Failed $($_.Exception)";
         }
       }
-      New-File -path "~/.ssh" -Name $marker | Out-Null;
+      New-File -path "~/.ssh" -Name $marker;
     }
   }
 
@@ -569,7 +569,7 @@ class App {
   _prompt($msg) {
     if ($this._isTest) { return; }
     Write-Host -NoNewLine $msg;
-    [System.Console]::ReadKey("NoEcho,IncludeKeyDown") | Out-Null;
+    [System.Console]::ReadKey("NoEcho,IncludeKeyDown");
     Write-Host "";
   }
 
@@ -583,7 +583,7 @@ class App {
     $content = "pwsh -Command Start-Process autohotkey.exe";
     $content += " -ArgumentList `"$($this._cfgDir)\keyboard.ahk`"";
     $content += " -WindowStyle Hidden -Verb RunAs";
-    New-File -path $startDir -Name "autohotkey.bat" -Value "$content" | Out-Null;
+    New-File -path $startDir -Name "autohotkey.bat" -Value "$content";
   }
 
 
@@ -620,7 +620,7 @@ class App {
     $dstDir = $this._path(@($env:APPDATA, "Code", "User"));
     if (-not (Test-Path -Path "$dstDir")) {
       # Not created during install, only on first UI start.
-      New-Dir -Path "$dstDir" | Out-Null;
+      New-Dir -Path "$dstDir";
     }
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_settings.json"));
@@ -655,7 +655,7 @@ class App {
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {
-      New-Dir -Path "$docCfgDir" | Out-Null;
+      New-Dir -Path "$docCfgDir";
     }
 
     $content = @'
@@ -673,11 +673,7 @@ class App {
       }
 '@;
 
-    New-File `
-      -path $docCfgDir `
-      -Name "settings.json" `
-      -Value "$content" `
-      | Out-Null;
+    New-File -path $docCfgDir -Name "settings.json" -Value "$content";
 
     ##  Exclude from 'ls'.
     $(Get-Item -Force $docCfgDir).Attributes = 'Hidden';
@@ -692,11 +688,8 @@ class App {
     }
     $content = "pwsh -Command Start-Process BatteryInfoView.exe";
     $content += " -WindowStyle Hidden";
-    New-File `
-      -Path $startDir `
-      -Name "battery-info-view.bat" `
-      -Value "$content" `
-      | Out-Null;
+    $name = "battery-info-view.bat"
+    New-File -Path $startDir -Name $name -Value "$content";
   }
 
 
@@ -708,11 +701,8 @@ class App {
     }
     $content = "pwsh -Command Start-Process BatteryIcon.exe";
     $content += " -WindowStyle Hidden";
-    New-File `
-      -Path $startDir `
-      -Name "battery-icon.bat" `
-      -Value "$content" `
-      | Out-Null;
+    $name = "battery-icon.bat";
+    New-File -Path $startDir -Name $name -Value "$content";
   }
 
 
@@ -724,11 +714,8 @@ class App {
     }
     $content = "pwsh -Command Start-Process CpuIcon.exe";
     $content += " -WindowStyle Hidden";
-    New-File `
-      -path $startDir `
-      -Name "cpu-icon.bat" `
-      -Value "$content" `
-      | Out-Null;
+    $name = "cpu-icon.bat";
+    New-File -path $startDir -Name $name -Value "$content";
   }
 
 
@@ -740,11 +727,8 @@ class App {
     }
     $content = "pwsh -Command Start-Process RamIcon.exe";
     $content += " -WindowStyle Hidden";
-    New-File `
-      -path $startDir `
-      -Name "ram-icon.bat" `
-      -Value "$content" `
-      | Out-Null;
+    $name = "ram-icon.bat";
+    New-File -path $startDir -Name $name -Value "$content";
   }
 
 
@@ -756,11 +740,8 @@ class App {
     }
     $content = "pwsh -Command Start-Process XMouseButtonControl.exe";
     $content += " -WindowStyle Hidden";
-    New-File `
-      -path $startDir `
-      -Name "x-mouse-button-control.bat" `
-      -Value "$content" `
-      | Out-Null;
+    $name = "x-mouse-button-control.bat";
+    New-File -path $startDir -Name $name -Value "$content" `
   }
 }
 

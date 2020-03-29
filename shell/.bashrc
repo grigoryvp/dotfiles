@@ -118,7 +118,11 @@ if test "$(uname)" = "Darwin"; then
   ##  brew install android-sdk
   export ANDROID_HOME=/usr/local/opt/android-sdk
   # Installed here by 'brew install michaeldfallen/formula/git-radar'
-  export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
+  if test "$SHELL" = "/bin/zsh"; then
+    export RADAR_CMD='$(/usr/local/bin/git-radar --zsh --fetch)'
+  else
+    export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
+  fi
   # Swift version manager
   if which swiftenv > /dev/null; then
     eval "$(swiftenv init -)"
@@ -262,14 +266,19 @@ ll() {
 
 psupdate() {
   export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
-  export PS1="${BN}${BW}\\W "
+  PROMPT_STR="${BN}${BW}\\W "
   if test -n "$PSGITON"; then
     if test -d ~/.git-radar || test -e /usr/local/bin/git-radar; then
-      export PS1="${PS1}${BG}${RADAR_CMD} "
+      PROMPT_STR="${PROMPT_STR}${BG}${RADAR_CMD} "
     fi
   fi
-  export PS1="${PS1}${BM}{${DOCKER_MACHINE_NAME}} "
-  export PS1="${PS1}${BY}\\\$ ${BN}"
+  PROMPT_STR="${PROMPT_STR}${BM}{${DOCKER_MACHINE_NAME}} "
+  PROMPT_STR="${PROMPT_STR}${BY}\\\$ ${BN}"
+  if test "$SHELL" = "/bin/zsh"; then
+    export PROMPT=$PROMPT_STR
+  else
+    export PS1=$PROMPT_STR
+  fi
 }
 
 psgiton() {

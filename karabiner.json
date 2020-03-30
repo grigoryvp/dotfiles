@@ -37,15 +37,34 @@
             "key_code": "caps_lock",
             "modifiers": {"optional": ["any"]}
           },
+          "parameters": {
+            "basic.to_if_held_down_threshold_milliseconds": 500
+          },
           "to": [{
             "set_variable": {
               "name": "_m",
               "value": 1
             }
           }],
+          "to_if_held_down": [{
+            "set_variable": {
+              "name": "_m",
+              "value": 1
+            }
+          }, {
+            "set_variable": {
+              "name": "_m_held",
+              "value": 1
+            }
+          }],
           "to_after_key_up": [{
             "set_variable": {
               "name": "_m",
+              "value": 0
+            }
+          }, {
+            "set_variable": {
+              "name": "_m_held",
               "value": 0
             }
           }]
@@ -540,7 +559,15 @@
               "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
             }
           }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }, {
+            "type": "variable_unless",
+            "name": "_m_held",
+            "value": 1
+          }]
         },
 
         {
@@ -554,7 +581,15 @@
               "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
             }
           }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }, {
+            "type": "variable_unless",
+            "name": "_m_held",
+            "value": 1
+          }]
         },
 
         {
@@ -568,7 +603,15 @@
               "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.Japanese$"
             }
           }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }, {
+            "type": "variable_unless",
+            "name": "_m_held",
+            "value": 1
+          }]
         }
 
         ]

@@ -33,7 +33,7 @@ class App {
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Make --full configuration
-      - Remap middle button into 'movement to scroll' via X-Mouse
+      - Remap mouse button 4 into 'movement to scroll' via X-Mouse
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings

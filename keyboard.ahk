@@ -142,6 +142,9 @@ $vked::
   }
   return
 
+;;  meta+rshift for mouse4 hold => map to one-finger scroll
+vked & vka1::xbutton1
+
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
 $vked up::
   appLeaderUpTick = %A_TickCount%

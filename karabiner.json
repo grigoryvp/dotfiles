@@ -202,15 +202,14 @@
         },
 
         {
-          "description": "meta-shift for single finger scroll",
-          "type": "mouse_motion_to_scroll",
+          "description": "meta-rshift for central mouse button",
+          "type": "basic",
           "from": {
-            "modifiers": {"mandatory": ["right_shift"]}
+            "key_code": "right_shift"
           },
-          "options": {
-            "momentum_scroll_enabled": true,
-            "speed_multiplier": 1.0
-          },
+          "to": [{
+            "pointing_button": "button4"
+          }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
 

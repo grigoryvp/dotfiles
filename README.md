@@ -73,6 +73,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # App store: Snap, Battery Monitor, Telegram, XCode, Affinity.
 # Install https://ryanhanson.dev/scroll
 # Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
+# Install https://www.marcmoini.com/sx_en.html
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Dock: cmd, vscode, browser, files, keepass, telegram
@@ -85,7 +86,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure "Spectacle" hotkeys.
 # Configure "Snap" for "command-shift-option-control-number".
-# Configure "Scroll" hotkey as "command".
+# Configure "Smart Scroll" for "Grab scroll without moving cursor".
 # For old macOS versions:
 # Disable welcome screen guest user in "Preferences/Users & Groups".
 # "iTunes/Preferences/Devices/Prevent from syncing automatically"

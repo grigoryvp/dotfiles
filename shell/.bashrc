@@ -149,9 +149,6 @@ if test "$(uname)" = "Darwin"; then
   if which swiftenv > /dev/null; then
     eval "$(swiftenv init -)"
   fi
-
-  # May fix the "Cannot rebase onto multiple branches" issue.
-  trap - HUP
 else
   ##  Remap caps lock to backspace.
   # gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace']"

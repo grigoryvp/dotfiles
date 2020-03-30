@@ -14,7 +14,7 @@ pretty = oneline
 default = simple
 
 [pull]
-# Introduces "Cannot rebase onto multiple branches" macOS issue.
+# "pull --all" introduces "Cannot rebase onto multiple branches" macOS issue.
 rebase = true
 
 [fetch]
@@ -28,7 +28,7 @@ aa = add .
 ap = add -p
 cm = commit -am
 ps = push
-pl = pull --all
+pl = pull
 st = status --short --branch
 lg = log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit
 br = branch

@@ -144,10 +144,14 @@ if test "$(uname)" = "Darwin"; then
   else
     export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
   fi
+
   # Swift version manager
   if which swiftenv > /dev/null; then
     eval "$(swiftenv init -)"
   fi
+
+  # May fix the "Cannot rebase onto multiple branches" issue.
+  trap - HUP
 else
   ##  Remap caps lock to backspace.
   # gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace']"

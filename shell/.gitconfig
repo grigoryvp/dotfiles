@@ -14,10 +14,11 @@ pretty = oneline
 default = simple
 
 [pull]
+# Introduces "Cannot rebase onto multiple branches" macOS issue.
 rebase = true
 
 [fetch]
-# Fixes 'cannot lock ref' macOS case sensetive issue.
+# Fixes "cannot lock ref" macOS case sensetive issue.
 prune = true
 
 [alias]

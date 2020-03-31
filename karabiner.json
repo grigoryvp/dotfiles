@@ -227,7 +227,7 @@
             "key_code": "right_shift"
           },
           "to": [{
-            "pointing_button": "button4"
+            "pointing_button": "button6"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },

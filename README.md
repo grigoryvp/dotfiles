@@ -86,7 +86,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
 # Configure "Spectacle" hotkeys.
 # Configure "Snap" for "command-shift-option-control-number".
-# Configure "Smart Scroll" for "Grab scroll without moving cursor".
+# Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
 # For old macOS versions:
 # Disable welcome screen guest user in "Preferences/Users & Groups".
 # "iTunes/Preferences/Devices/Prevent from syncing automatically"

@@ -922,6 +922,7 @@
             "bundle_identifiers": [
               "^com\\.microsoft\\.edgemac$",
               "^com\\.apple\\.Safari$",
+              "^org\\.chromium\\.Chromium$",
               "^com\\.google\\.Chrome$"
             ]
           }]
@@ -943,6 +944,7 @@
             "bundle_identifiers": [
               "^com\\.microsoft\\.edgemac$",
               "^com\\.apple\\.Safari$",
+              "^org\\.chromium\\.Chromium$",
               "^com\\.google\\.Chrome$"
             ]
           }]
@@ -964,6 +966,7 @@
             "bundle_identifiers": [
               "^com\\.microsoft\\.edgemac$",
               "^com\\.apple\\.Safari$",
+              "^org\\.chromium\\.Chromium$",
               "^com\\.google\\.Chrome$"
             ]
           }]
@@ -985,6 +988,7 @@
             "bundle_identifiers": [
               "^com\\.microsoft\\.edgemac$",
               "^com\\.apple\\.Safari$",
+              "^org\\.chromium\\.Chromium$",
               "^com\\.google\\.Chrome$"
             ]
           }]

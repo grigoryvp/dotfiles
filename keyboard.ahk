@@ -331,6 +331,18 @@ $^lctrl up:: send ^{tab}
   send {blind}{vk53}
   return
 
+;;  meta-g for emoji selector
+*$vk47::
+  if (GetKeyState("vked", "P")) {
+    ;;  Explicit meta-key (meta is hold while gaming).
+    if (A_PriorKey = "") {
+      send #{vkbe}
+      return
+    }
+  }
+  send {blind}{vk47}
+  return
+
 ;; ===========================================================================
 ;; Multi-key combinations
 ;; ===========================================================================

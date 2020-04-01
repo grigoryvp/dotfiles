@@ -549,7 +549,7 @@
         },
 
         {
-          "description": "1-st language switch meta-f",
+          "description": "meta-f switch to 1st language",
           "type": "basic",
           "from": {
             "key_code": "f"
@@ -571,7 +571,7 @@
         },
 
         {
-          "description": "2-nd language switch meta-d",
+          "description": "meta-d switch to 2nd language",
           "type": "basic",
           "from": {
             "key_code": "d"
@@ -593,7 +593,7 @@
         },
 
         {
-          "description": "3-rd language switch meta-s",
+          "description": "meta-s switch to 3nd language",
           "type": "basic",
           "from": {
             "key_code": "s"
@@ -602,6 +602,27 @@
             "select_input_source": {
               "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.Japanese$"
             }
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }, {
+            "type": "variable_unless",
+            "name": "_m_held",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "meta-g for emoji selector",
+          "type": "basic",
+          "from": {
+            "key_code": "g"
+          },
+          "to": [{
+            "key_code": "spacebar",
+            "modifiers": ["left_command", "left_control"]
           }],
           "conditions": [{
             "type": "variable_if",

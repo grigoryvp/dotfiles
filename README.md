@@ -23,7 +23,7 @@ Follow instructions for post-configuration.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs mpv
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs mpv bitbar
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
@@ -74,6 +74,7 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install https://ryanhanson.dev/scroll
 # Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
 # Install https://www.marcmoini.com/sx_en.html
+# Install https://getbitbar.com/plugins/Network/ping.10s.sh
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Dock: cmd, vscode, browser, files, keepass, telegram lite

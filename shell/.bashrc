@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # coding:utf-8 vi:et:ts=2
 
+#  Non-interactive shell?
+if test "${-#*i}" == "${-}"; then
+  return
+fi
+
 ##  bash/zsh portable way to encode "Escape" character.
 ESC=$(printf '\033')
 

@@ -32,6 +32,7 @@ class App {
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
+      - Reboot
       - Make --full configuration
       - Remap mouse button 4 into 'movement to scroll' via X-Mouse
       - Disable adaptive contrast for the built-in Intel GPU, if any
@@ -39,11 +40,11 @@ class App {
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
       - Disable autostart in Task Manager
       - Disable snap assist
-      - Disable touchbar click
+      - Disable touchpad click
       - Add perfgraph toolbar
-      - Login and sync browser
       - Pin cmd, vscode, browser, files, keepass, telegram
       - Uninstall 'OneDrive' and other software
+      - Login and sync browser
 "@;
   }
 
@@ -187,16 +188,14 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
+      # General-purpose messaging.
       $this._installApp("grigoryvp/telegram");
+      # PDF view.
       $this._installApp("foxit-reader");
-      $this._installApp("doublecmd");
       # 'psexec' (required to start non-elevated apps), 'procexp' etc
       $this._installApp("sysinternals");
-      # Need to restart terminal in order to apply env variables.
-      $this._installApp("nodejs");
-      $this._installApp("miniconda3");
+      # Desktop recording.
       $this._installApp("obs-studio");
-      $this._installApp("rufus");
       # TODO: configure to save position on exit
       $this._installApp("mpv");
       # TODO: unattended install for current user

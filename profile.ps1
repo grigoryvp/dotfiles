@@ -27,7 +27,7 @@ function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/.box-cfg; }
 function cdx() { Set-Location ~/.xi; }
 function cdh() { Set-Location ~; }
-function g() { & git $args }
+function g() { & git $Args }
 
 function gst() {
   $dirNameList = Get-ChildItem -Name -Directory;
@@ -78,6 +78,11 @@ function rmf($dst) {
 # Windows-OSX-Linux consistency
 function ll($dst) {
   Get-ChildItem $dst
+}
+
+# Windows-OSX-Linux consistency
+function grep() {
+  Select-String -Path $Args[1] -Pattern $Args[0]
 }
 
 function Update-VscodeExt() {
@@ -144,14 +149,14 @@ function Start-Srv() {
     return;
   }
   $job = {
-    Set-Location $args[0];
+    Set-Location $Args[0];
     $driveName = 'site';
-    $args = @{
+    $Args = @{
       Name = $driveName
       PSProvider = 'FileSystem'
       Root = $PWD.Path
     };
-    New-PSDrive @args;
+    New-PSDrive @Args;
     $listener = New-Object System.Net.HttpListener;
     $listener.Prefixes.Add("http://localhost:8080/");
     $listener.Start();

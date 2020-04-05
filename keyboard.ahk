@@ -229,6 +229,22 @@ $^lctrl up:: send ^{tab}
 *$t::remap("down", "vk54", "", "end", "", "vk54", "", "vk54")
 *$t up::remap("up", "vk54", "", "end", "", "vk54", "", "vk54")
 
+;;  'meta-x' for F5.
+*$x::remap("down", "vk58", "", "f5", "", "vk58", "", "vk58")
+*$x up::remap("up", "vk58", "", "f5", "", "vk58", "", "vk58")
+
+;;  'meta-c' for F6.
+*$c::remap("down", "vk43", "", "f6", "", "vk43", "", "vk43")
+*$c up::remap("up", "vk43", "", "f6", "", "vk43", "", "vk43")
+
+;;  'meta-v' for F7.
+*$v::remap("down", "vk56", "", "f7", "", "vk56", "", "vk56")
+*$v up::remap("up", "vk56", "", "f7", "", "vk56", "", "vk56")
+
+;;  'meta-b' for F8.
+*$b::remap("down", "vk42", "", "f8", "", "vk42", "", "vk42")
+*$b up::remap("up", "vk42", "", "f8", "", "vk42", "", "vk42")
+
 ;;  'meta-|' for launchpad.
 ;;  'meta-s-|' for notifications.
 ;;  'meta-c-|' for game HUD's (GOG, steam etc)

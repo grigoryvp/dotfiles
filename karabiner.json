@@ -672,6 +672,70 @@
             "name": "_m",
             "value": 1
           }]
+        },
+
+        {
+          "description": "meta-b for F8",
+          "type": "basic",
+          "from": {
+            "key_code": "b"
+          },
+          "to": [{
+            "key_code": "f8"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "meta-v for F7",
+          "type": "basic",
+          "from": {
+            "key_code": "v"
+          },
+          "to": [{
+            "key_code": "f7"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "meta-c for F6",
+          "type": "basic",
+          "from": {
+            "key_code": "c"
+          },
+          "to": [{
+            "key_code": "f6"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "meta-x for F5",
+          "type": "basic",
+          "from": {
+            "key_code": "x"
+          },
+          "to": [{
+            "key_code": "f5"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
         }
 
         ]

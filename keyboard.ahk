@@ -283,11 +283,10 @@ $^lctrl up:: send ^{tab}
 ;;  Language switch
 ;;  ==========================================================================
 
-;;  meta-f switch to 1st language
+;;  meta-shift-f switch to 1st language
 *$vk46::
   if (GetKeyState("vked", "P")) {
-    ;;  Explicit meta-key (meta is hold while gaming).
-    if (A_PriorKey = "") {
+    if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "4"
       send ^+4
       return
@@ -299,8 +298,7 @@ $^lctrl up:: send ^{tab}
 ;;  meta-d switch to 2nd language
 *$vk44::
   if (GetKeyState("vked", "P")) {
-    ;;  Explicit meta-key (meta is hold while gaming).
-    if (A_PriorKey = "") {
+    if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "5"
       send ^+5
       return
@@ -312,8 +310,7 @@ $^lctrl up:: send ^{tab}
 ;;  meta-s switch to 3nd language
 *$vk53::
   if (GetKeyState("vked", "P")) {
-    ;;  Explicit meta-key (meta is hold while gaming).
-    if (A_PriorKey = "") {
+    if (GetKeyState("shift", "P")) {
       if (appLastLangHotkey = "6") {
         ;;  Switch between Hiragana and Latin input for Japanese keyboard
         send !``

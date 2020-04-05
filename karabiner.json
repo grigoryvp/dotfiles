@@ -536,10 +536,11 @@
         },
 
         {
-          "description": "meta-f switch to 1st language",
+          "description": "meta-shift-f switch to 1st language",
           "type": "basic",
           "from": {
-            "key_code": "f"
+            "key_code": "f",
+            "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
             "select_input_source": {
@@ -550,18 +551,15 @@
             "type": "variable_if",
             "name": "_m",
             "value": 1
-          }, {
-            "type": "variable_unless",
-            "name": "_m_held",
-            "value": 1
           }]
         },
 
         {
-          "description": "meta-d switch to 2nd language",
+          "description": "meta-shift-d switch to 2nd language",
           "type": "basic",
           "from": {
-            "key_code": "d"
+            "key_code": "d",
+            "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
             "select_input_source": {
@@ -572,18 +570,15 @@
             "type": "variable_if",
             "name": "_m",
             "value": 1
-          }, {
-            "type": "variable_unless",
-            "name": "_m_held",
-            "value": 1
           }]
         },
 
         {
-          "description": "meta-s switch to 3nd language",
+          "description": "meta-shift-s switch to 3nd language",
           "type": "basic",
           "from": {
-            "key_code": "s"
+            "key_code": "s",
+            "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
             "select_input_source": {
@@ -593,10 +588,6 @@
           "conditions": [{
             "type": "variable_if",
             "name": "_m",
-            "value": 1
-          }, {
-            "type": "variable_unless",
-            "name": "_m_held",
             "value": 1
           }]
         },

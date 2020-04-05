@@ -129,20 +129,6 @@
         },
 
         {
-          "description": "meta-close-bracket for switching between apps",
-          "type": "basic",
-          "from": {
-            "key_code": "close_bracket",
-            "modifiers": {"optional": ["any"]}
-          },
-          "to": [{
-            "key_code": "tab",
-            "modifiers": ["left_command"]
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
-        },
-
-        {
           "description": "meta-delete for closing apps",
           "type": "basic",
           "from": {
@@ -221,10 +207,11 @@
         },
 
         {
-          "description": "meta-rshift for central mouse button",
+          "description": "meta-close-bracket for 6th mouse button",
           "type": "basic",
           "from": {
-            "key_code": "right_shift"
+            "key_code": "close_bracket",
+            "modifiers": {"optional": ["any"]}
           },
           "to": [{
             "pointing_button": "button6"

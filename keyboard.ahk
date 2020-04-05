@@ -142,9 +142,6 @@ $vked::
   }
   return
 
-;;  meta+rshift for mouse4 hold => map to one-finger scroll
-vked & vka1::xbutton1
-
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
 $vked up::
   appLeaderUpTick = %A_TickCount%
@@ -179,9 +176,9 @@ $^lctrl up:: send ^{tab}
 *$[::remap("down", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 *$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 
-;;  'meta-close-bracket' for switching between apps.
-*$]::remap("down", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
-*$] up::remap("up", "vkdd", "!", "tab", "", "vkdd", "", "vkdd")
+;;  'meta-close-bracket' for mouse button 4
+*$]::remap("down", "vkdd", "", "xbutton1", "", "vkdd", "", "vkdd")
+*$] up::remap("up", "vkdd", "", "xbutton1", "", "vkdd", "", "vkdd")
 
 ;;  'meta-plus' reserved
 *$=::remap("down", "vkbb", "", "vkbb", "", "vkbb", "", "vkbb")

@@ -536,6 +536,40 @@
         },
 
         {
+          "description": "meta-shift-g for emoji selector",
+          "type": "basic",
+          "from": {
+            "key_code": "g",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "spacebar",
+            "modifiers": ["left_command", "left_control"]
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "meta-g for F4",
+          "type": "basic",
+          "from": {
+            "key_code": "g"
+          },
+          "to": [{
+            "key_code": "F4"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
           "description": "meta-shift-f switch to 1st language",
           "type": "basic",
           "from": {
@@ -546,6 +580,22 @@
             "select_input_source": {
               "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
             }
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "meta-f for F3",
+          "type": "basic",
+          "from": {
+            "key_code": "f"
+          },
+          "to": [{
+            "key_code": "F3"
           }],
           "conditions": [{
             "type": "variable_if",
@@ -574,6 +624,22 @@
         },
 
         {
+          "description": "meta-d for F2",
+          "type": "basic",
+          "from": {
+            "key_code": "d"
+          },
+          "to": [{
+            "key_code": "F2"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
           "description": "meta-shift-s switch to 3nd language",
           "type": "basic",
           "from": {
@@ -593,22 +659,17 @@
         },
 
         {
-          "description": "meta-g for emoji selector",
+          "description": "meta-s for F1",
           "type": "basic",
           "from": {
-            "key_code": "g"
+            "key_code": "s"
           },
           "to": [{
-            "key_code": "spacebar",
-            "modifiers": ["left_command", "left_control"]
+            "key_code": "F1"
           }],
           "conditions": [{
             "type": "variable_if",
             "name": "_m",
-            "value": 1
-          }, {
-            "type": "variable_unless",
-            "name": "_m_held",
             "value": 1
           }]
         }

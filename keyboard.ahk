@@ -283,30 +283,54 @@ $^lctrl up:: send ^{tab}
 ;;  Language switch
 ;;  ==========================================================================
 
+;;  meta-g for F4
+;;  meta-g for emoji selector
+*$vk47::
+  if (GetKeyState("vked", "P")) {
+    if (GetKeyState("shift", "P")) {
+      send #{vkbe}
+    }
+    else {
+      send {blind}{vk73}
+    }
+    return
+  }
+  send {blind}{vk47}
+  return
+
+;;  meta-f for F3
 ;;  meta-shift-f switch to 1st language
 *$vk46::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "4"
       send ^+4
-      return
     }
+    else {
+      send {blind}{vk72}
+    }
+    return
   }
   send {blind}{vk46}
   return
 
+;;  meta-d for F2
 ;;  meta-d switch to 2nd language
 *$vk44::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "5"
       send ^+5
-      return
     }
+    else {
+      send {blind}{vk71}
+    }
+    return
   }
   send {blind}{vk44}
   return
 
+;;  meta-d for F1
 ;;  meta-s switch to 3nd language
 *$vk53::
   if (GetKeyState("vked", "P")) {
@@ -319,22 +343,13 @@ $^lctrl up:: send ^{tab}
         appLastLangHotkey := "6"
         send ^+6
       }
-      return
     }
+    else {
+      send {blind}{vk70}
+    }
+    return
   }
   send {blind}{vk53}
-  return
-
-;;  meta-g for emoji selector
-*$vk47::
-  if (GetKeyState("vked", "P")) {
-    ;;  Explicit meta-key (meta is hold while gaming).
-    if (A_PriorKey = "") {
-      send #{vkbe}
-      return
-    }
-  }
-  send {blind}{vk47}
   return
 
 ;; ===========================================================================

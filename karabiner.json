@@ -560,7 +560,7 @@
             "key_code": "g"
           },
           "to": [{
-            "key_code": "F4"
+            "key_code": "f4"
           }],
           "conditions": [{
             "type": "variable_if",
@@ -595,7 +595,7 @@
             "key_code": "f"
           },
           "to": [{
-            "key_code": "F3"
+            "key_code": "f3"
           }],
           "conditions": [{
             "type": "variable_if",
@@ -630,7 +630,7 @@
             "key_code": "d"
           },
           "to": [{
-            "key_code": "F2"
+            "key_code": "f2"
           }],
           "conditions": [{
             "type": "variable_if",
@@ -665,7 +665,7 @@
             "key_code": "s"
           },
           "to": [{
-            "key_code": "F1"
+            "key_code": "f1"
           }],
           "conditions": [{
             "type": "variable_if",

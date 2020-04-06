@@ -39,6 +39,7 @@ class App {
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
       - Disable autostart in Task Manager
+      - Disable autostart in Task Scheduler
       - Disable snap assist
       - Disable touchpad click
       - Add perfgraph toolbar

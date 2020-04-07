@@ -24,7 +24,7 @@ Follow instructions for post-configuration.
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-monoid menumeters transmission powershell obs mpv bitbar
-brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv
+brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv nodeenv
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app
@@ -66,8 +66,12 @@ pyenv install 3.8.2 2.7.17
 pyenv global 3.8.2
 rbenv init
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-rbenv install 2.7.0
-rbenv global 2.7.0
+rbenv install 2.7.1
+rbenv global 2.7.1
+nodeenv init
+echo 'eval "$(nodeenv init -)"' >> ~/.bash_profile
+nodeenv install 13.12.0
+nodeenv global 13.12.0
 # Enable keyboard repeat, need to restart after that
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # App store: Snap, Battery Monitor, Telegram, XCode, Affinity.

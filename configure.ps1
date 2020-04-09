@@ -513,7 +513,7 @@ class App {
       scoop bucket add extras;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
-    # Required to install Monoid font.
+    # Required to install fonts.
     if (-not @(scoop bucket list).Contains("nerd-fonts")) {
       scoop bucket add nerd-fonts;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -589,14 +589,14 @@ class App {
 
   [Boolean] _needInstallFonst() {
     if ($this._isTest) { return $false; }
-    $name = "Monoid Regular Nerd Font Complete Mono Windows Compatible.ttf";
+    $name = "JetBrainsMono-Regular.ttf";
     if (Test-Path -Path "$env:windir\Fonts\$name") { return $false; }
     return $true;
   }
 
   _installFonts() {
     if (-not $this._needInstallFonst()) { return; }
-    $appName = "Monoid-NF";
+    $appName = "JetBrains-Mono";
     if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.
       & scoop uninstall $appName;

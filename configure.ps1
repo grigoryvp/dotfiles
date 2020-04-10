@@ -43,7 +43,7 @@ class App {
       - Disable snap assist
       - Disable touchpad click
       - Add perfgraph toolbar
-      - Pin cmd, vscode, browser, files, keepass, telegram
+      - Pin pwsh (+icon), vscode, browser, files, keepass, telegram
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
 "@;

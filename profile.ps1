@@ -256,7 +256,12 @@ function prompt {
     Write-Host "..." -NoNewLine -ForegroundColor $COLOR_DYELLOW;
   }
   Write-Host "] " -NoNewLine -ForegroundColor $COLOR_DGRAY;
-  $location = $(Get-Location).ToString().Replace($env:USERPROFILE, "~");
+  if ($env:USERPROFILE) {
+    $location = $(Get-Location).ToString().Replace($env:USERPROFILE, "~");
+  }
+  else {
+    $location = $(Get-Location).ToString().Replace($env:HOME, "~");
+  }
   $locationItemList = $location.Replace("\", "/").Split("/");
   foreach ($locationItem in $locationItemList) {
     Write-Host $locationItem -NoNewLine -ForegroundColor $COLOR_MAGENTA;

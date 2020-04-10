@@ -23,7 +23,7 @@ Follow instructions for post-configuration.
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
 brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv nodeenv
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
@@ -34,10 +34,6 @@ rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
 git clone git@github.com:grigoryvp/xi.git ~/.xi
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
-curl -Ls https://raw.githubusercontent.com/dracula/terminal-app/master/Dracula.terminal > ~/Downloads/Dracula.terminal
-open ~/Downloads/Dracula.terminal
-rm -rf ~/Downloads/Dracula.terminal
-# Configure theme as "default", set "JetBrains" font, pwsh shell
 cp ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
@@ -84,9 +80,10 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://getbitbar.com/plugins/Network/ping.10s.sh
+# Configure iTerm2 theme, set "JetBrains" font, "/usr/local/bin/pwsh" shell
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
-# Dock: cmd, vscode, browser, files, keepass, telegram lite
+# Dock: iTerm2, vscode, browser, files, keepass, telegram lite
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".

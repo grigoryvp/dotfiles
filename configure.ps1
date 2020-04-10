@@ -34,6 +34,7 @@ class App {
       Config complete. Manual things to do
       - Reboot
       - Make --full configuration
+      - "colortool.exe Dracula-ColorTool.itermcolors" and confirm cmd.exe cfg
       - Remap mouse button 4 into 'movement to scroll' via X-Mouse
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
@@ -100,6 +101,8 @@ class App {
 
     # Used by '_mapCapsToF24'.
     $this._installApp("sudo");
+    # Used for cmd.exe color scheme configuration
+    $this._installApp("colortool");
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();

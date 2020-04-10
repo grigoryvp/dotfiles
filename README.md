@@ -40,9 +40,13 @@ rm -rf ~/Downloads/Dracula.terminal
 cp ~/.box-cfg/shell/.bashrc ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
+rm -f ~/.screenrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 rm -f ~/.gitconfig
 ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
+mkdir -p ~/.config/powershell
+rm -f ~/.config/powershell/profile.ps1
+ln ~/.box-cfg/profile.ps1 ~/.config/powershell/profile.ps1
 code
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json

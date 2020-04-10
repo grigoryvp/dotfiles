@@ -1119,10 +1119,10 @@
         },
 
         {
-          "description": "control-l => command-k for terminal clear",
+          "description": "control-k => command-k for terminal clear",
           "type": "basic",
           "from": {
-            "key_code": "l",
+            "key_code": "k",
             "modifiers": {"mandatory": ["left_control"]}
           },
           "to": [{

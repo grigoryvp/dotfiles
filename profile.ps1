@@ -6,6 +6,9 @@ try {
 catch {
 }
 
+# Used for Elixir repl.
+Remove-Alias -Force -Name iex
+
 # For git to correctly show unicode files content.
 $env:LANG = "en_US.UTF-8";
 # Always install dependencies in .venv for pipenv.

@@ -138,7 +138,7 @@
   "files.eol": "\n",
   "telemetry.enableTelemetry": false,
   "workbench.colorTheme": "grigoryvp memory theme",
-  "debug.node.autoAttach": false,
+  "debug.node.autoAttach": "disabled",
   "terminal.integrated.shell.windows": "pwsh.exe",
   "workbench.iconTheme": "vscode-icons",
   "scm.diffDecorations": "none",

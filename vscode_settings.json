@@ -80,6 +80,13 @@
     }]
   }],
 
+  "ruby.useLanguageServer": true,
+  "ruby.lint": {
+    "rubocop": {
+      "lint": true
+    }
+  },
+
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
@@ -99,7 +106,7 @@
   "editor.rulers": [78],
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
-  "editor.autoClosingQuotes": false,
+  "editor.autoClosingQuotes": "never",
   "editor.fontFamily": "JetBrains Mono",
   "editor.semanticHighlighting.enabled": true,
   "terminal.integrated.fontFamily": "Monoid, Monoid NF",
@@ -117,7 +124,6 @@
   "explorer.openEditors.visible": 0,
   "git.confirmSync": false,
   "java.errors.incompleteClasspath.severity": "ignore",
-  "ruby.useLanguageServer": true,
   "extensions.ignoreRecommendations": false,
   "editor.renderControlCharacters": false,
   "workbench.startupEditor": "none",

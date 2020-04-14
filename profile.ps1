@@ -275,4 +275,6 @@ function prompt {
 if ($IsMacOS) {
   # Homebrew will refuse to link Ruby 2.7 over os-provided 2.3 version.
   $Env:PATH = "/usr/local/opt/ruby/bin:$Env:PATH";
+  # Homebrew can --link Python, but modify path for consistancy with Ruby.
+  $Env:PATH = "/usr/local/opt/python@3.8/bin:$Env:PATH";
 }

@@ -271,3 +271,8 @@ function prompt {
   # Return something to replace default prompt.
   return " ";
 }
+
+if ($IsMacOS) {
+  # Homebrew will refuse to link Ruby 2.7 over os-provided 2.3 version.
+  $Env:PATH = "/usr/local/opt/ruby/bin:$Env:PATH";
+}

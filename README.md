@@ -24,7 +24,7 @@ Follow instructions for post-configuration.
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
-brew install exa node michaeldfallen/formula/git-radar readline xz pyenv rbenv nodeenv
+brew install exa michaeldfallen/formula/git-radar readline xz python@3.8 ruby node php
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app
@@ -51,7 +51,8 @@ code --install-extension EditorConfig.EditorConfig
 code --install-extension vscode-icons-team.vscode-icons
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
-mpv
+# Create config dir.
+mpv --help
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery life:
 sudo mdutil -a -i off
@@ -61,29 +62,14 @@ open /Applications/Karabiner-Elements.app
 # 'karabiner_grabber', 'karabiner_observer', 'karabiner_console_user_server'
 # into "Accessibility".
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
-# OSX up to 10.13
-unset CFLAGS
-# OSX 10.14 and later (XCode version)
-export CFLAGS="-I$(xcrun --show-sdk-path)/usr/include"
-pyenv init
-echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
-pyenv install 3.8.2 2.7.17
-pyenv global 3.8.2
-rbenv init
-echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-rbenv install 2.7.1
-rbenv global 2.7.1
-nodeenv init
-echo 'eval "$(nodeenv init -)"' >> ~/.bash_profile
-nodeenv install 13.12.0
-nodeenv global 13.12.0
 # Enable keyboard repeat, need to restart after that
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-# App store: Snap, Battery Monitor, Telegram, XCode, Affinity.
-# Install https://ryanhanson.dev/scroll
-# Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
+defaults write -g ApplePressAndHoldEnabled -bool false
+defaults write -g NSAutomaticCapitalizationEnabled -bool false
+defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
+# App store: Snap, Battery Monitor, Telegram Lite, XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://getbitbar.com/plugins/Network/ping.10s.sh
+# Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
 # Configure iTerm2 theme, set "JetBrains" font, "/usr/local/bin/pwsh" shell
 # Menu bar, from right to left:
 # spectacle, wifi, bt, clock, short menu, battery monitor, menumeters

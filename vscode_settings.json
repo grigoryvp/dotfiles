@@ -143,5 +143,6 @@
   "workbench.iconTheme": "vscode-icons",
   "scm.diffDecorations": "none",
   "vsicons.presets.foldersAllDefaultIcon": true,
+  "vsicons.dontShowNewVersionMessage": true,
   "keyboard.dispatch": "keyCode"
 }

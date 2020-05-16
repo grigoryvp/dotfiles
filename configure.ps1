@@ -201,7 +201,7 @@ class App {
       # Desktop recording.
       $this._installApp("obs-studio");
       # TODO: configure to save position on exit
-      $this._installApp("mpv");
+      $this._installApp("mpc-hc-fork");
       # TODO: unattended install for current user
       $this._installApp("perfgraph");
     }

@@ -147,6 +147,17 @@ $vked up::
   appLeaderUpTick = %A_TickCount%
   return
 
+;;  Supress rshift+caps that produces char codes in chrome and erases
+;;  cell content in spreadsheets while switching language via meta-s-f.
+$+vked::
+  if (appLeaderUpTick >= appLeaderDownTick) {
+    appLeaderDownTick = %A_TickCount%
+  }
+  return
+$+vked up::
+  appLeaderUpTick = %A_TickCount%
+  return
+
 ;;  'Enter' up
 $rctrl up::
   appReturnUpTick = %A_TickCount%

@@ -2,41 +2,31 @@
 # coding:utf-8 vi:et:ts=2
 
 #  Non-interactive shell?
-if [ "${-#*i}" == "${-}" ]; then
+if ! [ -t 0 ]; then
   return
 fi
-
-K=""
-W=""
-R=""
-G=""
-B=""
-Y=""
-M=""
-C=""
-N=""
 
 ##  bash/zsh portable way to encode "Escape" character.
 PS_ESC=$(printf '\033')
 
 if [ -n "$ZSH_VERSION" ]; then
   ##  Colors should be escaped for correct length calculation.
-  PS_K="%%{${PS_ESC}[30;47m}%%"
-  PS_W="%%{${PS_ESC}[37;49m}%%"
-  PS_R="%%{${PS_ESC}[31;49m}%%"
-  PS_G="%%{${PS_ESC}[32;49m}%%"
-  PS_B="%%{${PS_ESC}[34;49m}%%"
-  PS_Y="%%{${PS_ESC}[33;49m}%%"
-  PS_M="%%{${PS_ESC}[35;49m}%%"
-  PS_C="%%{${PS_ESC}[36;49m}%%"
-  PS_N="%%{${PS_ESC}[0m}%%"
+  PS_K="%{${PS_ESC}[30;47m%}"
+  PS_W="%{${PS_ESC}[37;49m%}"
+  PS_R="%{${PS_ESC}[31;49m%}"
+  PS_G="%{${PS_ESC}[32;49m%}"
+  PS_B="%{${PS_ESC}[34;49m%}"
+  PS_Y="%{${PS_ESC}[33;49m%}"
+  PS_M="%{${PS_ESC}[35;49m%}"
+  PS_C="%{${PS_ESC}[36;49m%}"
+  PS_N="%{${PS_ESC}[0m%}"
   PS_WORKDIR="%~"
   PS_DOLLAR="$"
   ##  Substring re-interpolation.
   setopt promptsubst
   ##  Do not display "no matches found" error for blobs
   setopt +o nomatch
-else
+elif [ -n "$BASH_VERSION" ]; then
   ##  Colors should be escaped for correct length calculation.
   PS_K="\\[${PS_ESC}[30;47m\\]"
   PS_W="\\[${PS_ESC}[37;49m\\]"
@@ -49,6 +39,8 @@ else
   PS_N="\\[${PS_ESC}[0m\\]"
   PS_WORKDIR="\\W"
   PS_DOLLAR="\\\$"
+else
+  echo "Unsupported shell"
 fi
 
 ##  Disable terminal/ssh freeze with C-S:

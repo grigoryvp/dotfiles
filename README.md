@@ -17,6 +17,12 @@ pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/box-cfg/maste
 
 Follow instructions for post-configuration.
 
+## WSL
+
+```sh
+printf '. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
+```
+
 ## OSX
 
 ```ps1

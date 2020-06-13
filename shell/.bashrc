@@ -188,14 +188,16 @@ svd() {
   svn diff --diff-cmd colordiff $@ | less -R
 }
 
-##  "HOST HOME" for Windows "home" on LSW.
-if cat /proc/sys/kernel/osrelease 2>/dev/null | grep -q Microsoft; then
-  export HHOME=/mnt/c/Users/user
+##  "HOST HOME" for Windows "home" on WSL
+if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+  HHOME=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null))
+  ##  Remove '\r' from the end of the 'cmd.exe' output
+  export HHOME=$(echo $HHOME | tr -d '\r')
 else
   export HHOME=~
 fi
 
-## cd aliases (for consistency with win that don't have ~).
+## cd aliases for wsl-mac-nix consistency
 alias cdh="cd ${HOME}"
 alias cdhh="cd ${HHOME}"
 alias cdd="cd ${HHOME}/Documents"

@@ -32,8 +32,8 @@ if [ "$SHELL" = "/bin/zsh" ]; then
   BM="${M}"
   BC="${C}"
   BN="${N}"
-  PS1_WORKDIR="%~"
-  PS1_DOLLAR="$"
+  PS_WORKDIR="%~"
+  PS_DOLLAR="$"
   ##  Substring re-interpolation.
   setopt promptsubst
   ##  Do not display "no matches found" error for blobs
@@ -49,8 +49,8 @@ else
   BM="\\[${M}\\]"
   BC="\\[${C}\\]"
   BN="\\[${N}\\]"
-  PS1_WORKDIR="\\W"
-  PS1_DOLLAR="\\\$"
+  PS_WORKDIR="\\W"
+  PS_DOLLAR="\\\$"
 fi
 
 ##  Disable terminal/ssh freeze with C-S:
@@ -293,14 +293,14 @@ ll() {
 
 psupdate() {
   export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
-  export PS1="${BN}${BW}${PS1_WORKDIR} "
+  export PS1="${BN}${BW}${PS_WORKDIR} "
   if [ -n "$PSGITON" ]; then
     if [ -d ~/.git-radar ] || [ -e /usr/local/bin/git-radar ]; then
       export PS1="${PS1}${BG}${RADAR_CMD}"
     fi
   fi
   export PS1="${PS1}${BM}{${DOCKER_MACHINE_NAME}} "
-  export PS1="${PS1}${BY}${PS1_DOLLAR} ${BN}"
+  export PS1="${PS1}${BY}${PS_DOLLAR} ${BN}"
 }
 
 psgiton() {

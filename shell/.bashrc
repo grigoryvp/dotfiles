@@ -239,12 +239,10 @@ my_list() {
   else
     ##! No spaces, '*' should be used instead.
     IGNORED=( \
-      "Adobe" \
-      "Anki" \
-      "Bayonetta" \
       "WindowsPowerShell" \
+      "PowerShell" \
       "desktop.ini" \
-      "Diablo*" \
+      ".vscode" \
     )
     CMD_IGNORE=""
     IGNORED_COUNT=0

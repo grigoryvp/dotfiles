@@ -8,6 +8,8 @@ fi
 
 ##  bash/zsh portable way to encode "Escape" character.
 PS_ESC=$(printf '\033')
+##  Show git in PS1 by default
+PS_GIT_ON=1
 
 if [ -n "$ZSH_VERSION" ]; then
   ##  Colors should be escaped for correct length calculation.
@@ -282,31 +284,32 @@ my_list() {
 }
 alias ll=my_list
 
-psupdate() {
-  export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
-  export PS1="${PS_N}${PS_W}${PS_WORKDIR} "
-  if [ -n "$PSGITON" ]; then
+_prompt_command() {
+  PS_EXIT="$?"
+  export PS1="${PS_N}${PS_W}${PS_WORKDIR} ${PS_N}"
+  if [ -n "$PS_GIT_ON" ]; then
     if [ -d ~/.git-radar ] || [ -e /usr/local/bin/git-radar ]; then
-      export PS1="${PS1}${PS_G}${RADAR_CMD}"
+      export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
+      export PS1="${PS1}${PS_G}${RADAR_CMD}${PS_N}"
     fi
   fi
-  export PS1="${PS1}${PS_M}{${DOCKER_MACHINE_NAME}} "
+  if [ -n "${DOCKER_MACHINE_NAME}" ]; then
+    export PS1="${PS1}${PS_M}{${DOCKER_MACHINE_NAME}} ${PS_N}"
+  fi
+  export PS1="${PS1}(${PS_C}${PS_EXIT}${PS_N}) "
   export PS1="${PS1}${PS_Y}${PS_DOLLAR} ${PS_N}"
 }
+export PROMPT_COMMAND=_prompt_command
 
 psgiton() {
-  export PSGITON=1
+  export PS_GIT_ON=1
   psupdate
 }
 
 psgitoff() {
-  export PSGITON=
+  export PS_GIT_ON=
   psupdate
 }
-
-#psupdate
-##  Experimental on by default
-psgiton
 
 venv2() {
   if ! [ -d ./.env ]; then

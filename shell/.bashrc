@@ -6,32 +6,30 @@ if [ "${-#*i}" == "${-}" ]; then
   return
 fi
 
+K=""
+W=""
+R=""
+G=""
+B=""
+Y=""
+M=""
+C=""
+N=""
+
 ##  bash/zsh portable way to encode "Escape" character.
-ESC=$(printf '\033')
+PS_ESC=$(printf '\033')
 
-##  Colors used by this init script
-##  echo -e "${K}K${W}W${R}R${G}G${B}B${Y}Y${M}M${C}C${N}N"
-K="${ESC}[30;47m"
-W="${ESC}[37;49m"
-R="${ESC}[31;49m"
-G="${ESC}[32;49m"
-B="${ESC}[34;49m"
-Y="${ESC}[33;49m"
-M="${ESC}[35;49m"
-C="${ESC}[36;49m"
-N="${ESC}[0m"
-
-##  Bash/Zsh differences.
-if [ "$SHELL" = "/bin/zsh" ]; then
-  BK="${K}"
-  BW="${W}"
-  BR="${R}"
-  BG="${G}"
-  BB="${B}"
-  BY="${Y}"
-  BM="${M}"
-  BC="${C}"
-  BN="${N}"
+if [ -n "$ZSH_VERSION" ]; then
+  ##  Colors should be escaped for correct length calculation.
+  PS_K="%%{${PS_ESC}[30;47m}%%"
+  PS_W="%%{${PS_ESC}[37;49m}%%"
+  PS_R="%%{${PS_ESC}[31;49m}%%"
+  PS_G="%%{${PS_ESC}[32;49m}%%"
+  PS_B="%%{${PS_ESC}[34;49m}%%"
+  PS_Y="%%{${PS_ESC}[33;49m}%%"
+  PS_M="%%{${PS_ESC}[35;49m}%%"
+  PS_C="%%{${PS_ESC}[36;49m}%%"
+  PS_N="%%{${PS_ESC}[0m}%%"
   PS_WORKDIR="%~"
   PS_DOLLAR="$"
   ##  Substring re-interpolation.
@@ -39,16 +37,16 @@ if [ "$SHELL" = "/bin/zsh" ]; then
   ##  Do not display "no matches found" error for blobs
   setopt +o nomatch
 else
-  ##  Bash colors should be escaped for correct length calculation:
-  BK="\\[${K}\\]"
-  BW="\\[${W}\\]"
-  BR="\\[${R}\\]"
-  BG="\\[${G}\\]"
-  BB="\\[${B}\\]"
-  BY="\\[${Y}\\]"
-  BM="\\[${M}\\]"
-  BC="\\[${C}\\]"
-  BN="\\[${N}\\]"
+  ##  Colors should be escaped for correct length calculation.
+  PS_K="\\[${PS_ESC}[30;47m\\]"
+  PS_W="\\[${PS_ESC}[37;49m\\]"
+  PS_R="\\[${PS_ESC}[31;49m\\]"
+  PS_G="\\[${PS_ESC}[32;49m\\]"
+  PS_B="\\[${PS_ESC}[34;49m\\]"
+  PS_Y="\\[${PS_ESC}[33;49m\\]"
+  PS_M="\\[${PS_ESC}[35;49m\\]"
+  PS_C="\\[${PS_ESC}[36;49m\\]"
+  PS_N="\\[${PS_ESC}[0m\\]"
   PS_WORKDIR="\\W"
   PS_DOLLAR="\\\$"
 fi
@@ -234,7 +232,7 @@ alias tox='tox -q'
 # For windows consistensy
 alias rmf='rm -rf'
 
-ll() {
+my_list() {
   if [ -e /usr/local/bin/exa ]; then
     /usr/local/bin/exa \
       -l \
@@ -290,17 +288,18 @@ ll() {
     fi
   fi
 }
+alias ll=my_list
 
 psupdate() {
   export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
-  export PS1="${BN}${BW}${PS_WORKDIR} "
+  export PS1="${PS_N}${PS_W}${PS_WORKDIR} "
   if [ -n "$PSGITON" ]; then
     if [ -d ~/.git-radar ] || [ -e /usr/local/bin/git-radar ]; then
-      export PS1="${PS1}${BG}${RADAR_CMD}"
+      export PS1="${PS1}${PS_G}${RADAR_CMD}"
     fi
   fi
-  export PS1="${PS1}${BM}{${DOCKER_MACHINE_NAME}} "
-  export PS1="${PS1}${BY}${PS_DOLLAR} ${BN}"
+  export PS1="${PS1}${PS_M}{${DOCKER_MACHINE_NAME}} "
+  export PS1="${PS1}${PS_Y}${PS_DOLLAR} ${PS_N}"
 }
 
 psgiton() {

@@ -312,54 +312,90 @@ $^lctrl up:: send ^{tab}
 
 ;;  meta-g for F4
 ;;  meta-g for emoji selector
-*$vk47::
+*$g::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       send #{vkbe}
     }
     else {
-      send {blind}{vk73}
+      send {blind}{vk73 down}
     }
     return
   }
-  send {blind}{vk47}
+  send {blind}{vk47 down}
+  return
+
+*$g up::
+  if (GetKeyState("vked", "P")) {
+    if (GetKeyState("shift", "P")) {
+    }
+    else {
+      send {blind}{vk73 up}
+    }
+    return
+  }
+  send {blind}{vk47 up}
   return
 
 ;;  meta-f for F3
 ;;  meta-shift-f switch to 1st language
-*$vk46::
+*$f::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "4"
       send ^+4
     }
     else {
-      send {blind}{vk72}
+      send {blind}{vk72 down}
     }
     return
   }
-  send {blind}{vk46}
+  send {blind}{vk46 down}
+  return
+
+*$f up::
+  if (GetKeyState("vked", "P")) {
+    if (GetKeyState("shift", "P")) {
+    }
+    else {
+      send {blind}{vk72 up}
+    }
+    return
+  }
+  send {blind}{vk46 up}
   return
 
 ;;  meta-d for F2
 ;;  meta-d switch to 2nd language
-*$vk44::
+*$d::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "5"
       send ^+5
     }
     else {
-      send {blind}{vk71}
+      send {blind}{vk71 down}
     }
     return
   }
-  send {blind}{vk44}
+  send {blind}{vk44 down}
   return
 
-;;  meta-d for F1
+*$d up::
+  if (GetKeyState("vked", "P")) {
+    if (GetKeyState("shift", "P")) {
+    }
+    else {
+      send {blind}{vk71 up}
+    }
+    return
+  }
+  send {blind}{vk44 up}
+  return
+
+;;  meta-s for F1
 ;;  meta-s switch to 3nd language
-*$vk53::
+*$s::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       if (appLastLangHotkey = "6") {
@@ -372,11 +408,23 @@ $^lctrl up:: send ^{tab}
       }
     }
     else {
-      send {blind}{vk70}
+      send {blind}{vk70 down}
     }
     return
   }
-  send {blind}{vk53}
+  send {blind}{vk53 down}
+  return
+
+*$s up::
+  if (GetKeyState("vked", "P")) {
+    if (GetKeyState("shift", "P")) {
+    }
+    else {
+      send {blind}{vk70 up}
+    }
+    return
+  }
+  send {blind}{vk53 up}
   return
 
 ;; ===========================================================================

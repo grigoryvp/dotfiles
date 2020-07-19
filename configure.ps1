@@ -35,7 +35,7 @@ class App {
       - Reboot
       - Make --full configuration
       - "colortool.exe Dracula-ColorTool.itermcolors" and confirm cmd.exe cfg
-      - Remap mouse button 4 into 'movement to scroll' via X-Mouse
+      - Map Mouse4 => 'movement to scroll' via X-Mouse; turn off ScrollLock
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings

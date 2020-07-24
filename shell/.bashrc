@@ -358,6 +358,12 @@ pp() {
 ##  For ~/.install_... to detect if file already sourced.
 export BASHRC_LOADED=1
 
+##  Load rbenv, if installed
+if [ -d $HOME/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
+
 ##  Load pyenv, if installed
 if [ -d $HOME/.pyenv ]; then
   export PATH="$HOME/.pyenv/bin:$PATH"

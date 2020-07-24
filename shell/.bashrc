@@ -358,9 +358,15 @@ pp() {
 ##  For ~/.install_... to detect if file already sourced.
 export BASHRC_LOADED=1
 
-export PATH="$PATH:$HOME/.rvm/bin"
+##  Load pyenv, if installed
+if [ -d $HOME/.pyenv ]; then
+  export PATH="$HOME/.pyenv/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
-##  Load nvm, if installed
-if [ -e $HOME/.nvm/nvm.sh ]; then
-  . $HOME/.nvm/nvm.sh
+##  Load nodenv, if installed
+if [ -d $HOME/.nodenv ]; then
+  export PATH="$HOME/.nodenv/bin:$PATH"
+  eval "$(nodenv init -)"
 fi

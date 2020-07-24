@@ -31,7 +31,7 @@ printf '[include]\npath = /mnt/c/Users/user/.box-cfg/shell/git-cfg.toml\n' >> ~/
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
-brew install exa michaeldfallen/formula/git-radar readline xz python@3.8 ruby node php
+brew install exa michaeldfallen/formula/git-radar readline xz node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app

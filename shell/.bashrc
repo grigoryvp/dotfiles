@@ -199,10 +199,10 @@ fi
 
 ## cd aliases for wsl-mac-nix consistency
 alias cdh="cd ${HOME}"
-alias cdhh="cd ${HHOME}"
-alias cdd="cd ${HHOME}/Documents"
+alias cdd="cd ${HOME}/Documents"
+alias cdx="cd ${HOME}/.xi"
 alias cdc="cd ${HHOME}/.box-cfg"
-alias cdx="cd ${HHOME}/.xi"
+alias cdhh="cd ${HHOME}"
 
 ## docker aliases
 dmg() {

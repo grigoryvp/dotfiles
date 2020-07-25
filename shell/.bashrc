@@ -204,6 +204,11 @@ alias cdx="cd ${HOME}/.xi"
 alias cdc="cd ${HHOME}/.box-cfg"
 alias cdhh="cd ${HHOME}"
 
+## python virtual environment
+alias vec="python -m venv .venv"
+alias vea=". .venv/bin/activate"
+alias ved="deactivate"
+
 ## docker aliases
 dmg() {
   if [ -z "$1" ]; then
@@ -295,6 +300,9 @@ _prompt_command() {
   fi
   if [ -n "${DOCKER_MACHINE_NAME}" ]; then
     export PS1="${PS1}${PS_M}{${DOCKER_MACHINE_NAME}} ${PS_N}"
+  fi
+  if [ -n "${VIRTUAL_ENV}" ]; then
+    export PS1="${PS1}🐍 "
   fi
   export PS1="${PS1}(${PS_C}${PS_EXIT}${PS_N}) "
   export PS1="${PS1}${PS_Y}${PS_DOLLAR} ${PS_N}"

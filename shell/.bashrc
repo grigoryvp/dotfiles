@@ -206,10 +206,11 @@ alias cdx="cd ${HOME}/.xi"
 alias cdc="cd ${HHOME}/.box-cfg"
 alias cdhh="cd ${HHOME}"
 
-##  python virtual environment
-alias vec="python -m venv .venv"
+##  Python virtual environment; built-in 'venv' instals old bundled 'pip'.
+alias vec="python -m virtualenv .venv"
 alias vea=". .venv/bin/activate"
 alias ved="deactivate"
+alias ver="rm -rf .venv"
 
 ##  docker aliases
 dmg() {

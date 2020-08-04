@@ -95,9 +95,11 @@ export USER="grigoryvp"
 ##  Switchable truecolor for VIM, on by default
 export TRUECOLOR="1"
 
-# Always install dependencies in .venv for pipenv.
+##  Always install dependencies in .venv for poetry.
+export POETRY_VIRTUALENVS_IN_PROJECT="1"
+##  Always install dependencies in .venv for pipenv.
 export PIPENV_VENV_IN_PROJECT="1"
-# Do not lock dependencies (very slow).
+##  Do not lock dependencies (very slow).
 export PIPENV_SKIP_LOCK="1"
 
 ##  OSX?
@@ -117,7 +119,7 @@ if [ "$(uname)" = "Darwin" ]; then
     export PATH=/opt/subversion/bin:$PATH
   fi
 
-  ## homebrew tools installed?
+  ##  homebrew tools installed?
   if [ -e /usr/local/sbin ]; then
     export PATH=/usr/local/sbin:$PATH
   fi
@@ -135,14 +137,14 @@ if [ "$(uname)" = "Darwin" ]; then
   export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
   ##  brew install android-sdk
   export ANDROID_HOME=/usr/local/opt/android-sdk
-  # Installed here by 'brew install michaeldfallen/formula/git-radar'
+  ##  Installed here by 'brew install michaeldfallen/formula/git-radar'
   if [ "$SHELL" = "/bin/zsh" ]; then
     export RADAR_CMD='$(/usr/local/bin/git-radar --zsh --fetch)'
   else
     export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
   fi
 
-  # Swift version manager
+  ##  Swift version manager
   if which swiftenv > /dev/null; then
     eval "$(swiftenv init -)"
   fi
@@ -197,19 +199,19 @@ else
   export HHOME=~
 fi
 
-## cd aliases for wsl-mac-nix consistency
+##  cd aliases for wsl-mac-nix consistency
 alias cdh="cd ${HOME}"
 alias cdd="cd ${HOME}/Documents"
 alias cdx="cd ${HOME}/.xi"
 alias cdc="cd ${HHOME}/.box-cfg"
 alias cdhh="cd ${HHOME}"
 
-## python virtual environment
+##  python virtual environment
 alias vec="python -m venv .venv"
 alias vea=". .venv/bin/activate"
 alias ved="deactivate"
 
-## docker aliases
+##  docker aliases
 dmg() {
   if [ -z "$1" ]; then
     docker-machine env -u >~/tmp/docker-machine-env

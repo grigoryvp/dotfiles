@@ -212,6 +212,12 @@ alias vea=". .venv/bin/activate"
 alias ved="deactivate"
 alias ver="rm -rf .venv"
 
+alias poi="poetry init --no-interaction"
+alias poa="poetry add"
+alias por="poetry run"
+alias pop="poetry run python"
+alias pom="poetry run python manage.py"
+
 ##  docker aliases
 dmg() {
   if [ -z "$1" ]; then

@@ -1,4 +1,4 @@
-# My windows and OSX box automatic configuration
+# My Windows, WSL, OSX box auto config
 
 ## Windows install via cmd.exe
 

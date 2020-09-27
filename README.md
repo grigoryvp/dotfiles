@@ -1,4 +1,4 @@
-# My Windows, WSL, OSX box auto config
+# My Win, WSL, OSX box auto config
 
 ## Windows install via cmd.exe
 
@@ -101,7 +101,6 @@ defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
-* Install "7+ Taskbar Tweaker" on Windows.
 
 ## License
 

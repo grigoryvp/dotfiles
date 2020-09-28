@@ -109,7 +109,7 @@
   "editor.autoClosingQuotes": "never",
   "editor.fontFamily": "JetBrains Mono",
   "editor.semanticHighlighting.enabled": true,
-  "terminal.integrated.fontFamily": "Monoid, Monoid NF",
+  "terminal.integrated.fontFamily": "JetBrains Mono",
   "editor.fontSize": 16,
   "terminal.integrated.fontSize": 16,
   "editor.fontLigatures": true,

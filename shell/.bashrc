@@ -298,6 +298,7 @@ my_list() {
   fi
 }
 alias ll=my_list
+alias ff=ag
 
 _prompt_command() {
   PS_EXIT="$?"

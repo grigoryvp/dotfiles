@@ -22,6 +22,7 @@ Follow instructions for post-configuration.
 ```sh
 printf '. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
 printf '[include]\npath = /mnt/c/Users/user/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
+cp /mnt/c/Users/user/.box-cfg/shell/.gitattributes ~/.gitattributes
 ```
 
 ## OSX
@@ -48,6 +49,8 @@ rm -f ~/.screenrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 rm -f ~/.gitconfig
 ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
+rm -f ~/.gitattributes
+ln ~/.box-cfg/shell/.gitattributes ~/.gitattributes
 printf '[include]\npath = ~/.box-cfg/git-cfg.toml\n' >> ~/.gitconfig
 mkdir -p ~/.config/powershell
 rm -f ~/.config/powershell/profile.ps1

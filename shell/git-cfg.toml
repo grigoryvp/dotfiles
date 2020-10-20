@@ -6,6 +6,8 @@ email = grigoryvp@gmail.com
 editor = code
 autocrlf = input
 safecrlf = false
+# Hunk header descriptions https://github.com/git/git/blob/master/userdiff.c
+attributesfile = ~/.gitattributes
 
 [format]
 pretty = oneline

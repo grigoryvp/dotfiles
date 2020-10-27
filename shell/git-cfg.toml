@@ -1,19 +1,19 @@
 [user]
-name = Grigory Petrov
-email = grigoryvp@gmail.com
+name = "Grigory Petrov"
+email = "grigoryvp@gmail.com"
 
 [core]
-editor = code
-autocrlf = input
+editor = "code"
+autocrlf = "input"
 safecrlf = false
 # Hunk header descriptions https://github.com/git/git/blob/master/userdiff.c
-attributesfile = ~/.gitattributes
+attributesfile = "~/.gitattributes"
 
 [format]
-pretty = oneline
+pretty = "oneline"
 
 [push]
-default = simple
+default = "simple"
 
 [pull]
 # "pull --all" introduces "Cannot rebase onto multiple branches" macOS issue.
@@ -24,16 +24,16 @@ rebase = true
 prune = true
 
 [alias]
-ch = checkout
-a = add
-aa = add .
-ap = add -p
-cm = commit -m
-ps = push
-pl = pull
-st = status --short --branch
-lg = log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit
-br = branch
-di = diff --ignore-space-change
-dic = diff --ignore-space-change --cached
-dit = difftool --ignore-space-change
+ch = "checkout"
+a = "add"
+aa = "add ."
+ap = "add -p"
+cm = "commit -m"
+ps = "push"
+pl = "pull"
+st = "status --short --branch"
+lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+br = "branch"
+di = "diff --ignore-space-change"
+dic = "diff --ignore-space-change --cached"
+dit = "difftool --ignore-space-change"

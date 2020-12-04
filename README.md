@@ -48,8 +48,7 @@ printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
 rm -f ~/.screenrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
-rm -f ~/.gitconfig
-ln ~/.box-cfg/shell/.gitconfig ~/.gitconfig
+printf '[include]\npath = ~/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 rm -f ~/.gitattributes
 ln ~/.box-cfg/shell/.gitattributes ~/.gitattributes
 printf '[include]\npath = ~/.box-cfg/git-cfg.toml\n' >> ~/.gitconfig

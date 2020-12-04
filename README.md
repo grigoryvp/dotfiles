@@ -20,7 +20,7 @@ Follow instructions for post-configuration.
 ## WSL
 
 ```sh
-printf '. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
+printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
 printf '[include]\npath = /mnt/c/Users/user/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 cp /mnt/c/Users/user/.box-cfg/shell/.gitattributes ~/.gitattributes
 ```
@@ -28,21 +28,22 @@ cp /mnt/c/Users/user/.box-cfg/shell/.gitattributes ~/.gitattributes
 ## OSX
 
 ```ps1
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+softwareupdate --install-rosetta --agre-to-license
+arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
-brew install exa michaeldfallen/formula/git-radar readline xz node
+arch -x86_64 brew install exa michaeldfallen/formula/git-radar readline xz node
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
-open /Applications/KeePassXC.app
+open /Applications/KeePassXC.app ~/.box-cfg/passwords.kdbx
 keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
 # Add ssh to github
 rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
 git clone git@github.com:grigoryvp/xi.git ~/.xi
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
-cp ~/.box-cfg/shell/.bashrc ~/.bashrc
+printf '#!/bin/sh\n. ~/.box-cfg/shell/.bashrc\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
 rm -f ~/.screenrc

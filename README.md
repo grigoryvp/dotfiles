@@ -42,16 +42,14 @@ keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
 rm -rf ~/.box-cfg
 git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
 git clone git@github.com:grigoryvp/xi.git ~/.xi
-curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 printf '#!/bin/sh\n. ~/.box-cfg/shell/.bashrc\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
 rm -f ~/.screenrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
-printf '[include]\npath = ~/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 rm -f ~/.gitattributes
 ln ~/.box-cfg/shell/.gitattributes ~/.gitattributes
-printf '[include]\npath = ~/.box-cfg/git-cfg.toml\n' >> ~/.gitconfig
+printf '[include]\npath = ~/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 mkdir -p ~/.config/powershell
 rm -f ~/.config/powershell/profile.ps1
 ln ~/.box-cfg/profile.ps1 ~/.config/powershell/profile.ps1
@@ -69,14 +67,17 @@ echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
 # Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".
-# From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin' add
-# 'karabiner_grabber', 'karabiner_observer', 'karabiner_console_user_server'
-# into "Accessibility".
+# From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin'
+# For older MacOS/Karabiner also add 'karabiner_grabber',
+# 'karabiner_observer', 'karabiner_console_user_server' into "Accessibility".
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 # Enable keyboard repeat, need to restart after that
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g NSAutomaticCapitalizationEnabled -bool false
 defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
+# Input method name lookup for debug purpose
+curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+# Add "Russian-PC" and "Japanese-Romaji" input methods.
 # App store: Snap, Battery Monitor, Telegram Lite, XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://getbitbar.com/plugins/Network/ping.10s.sh

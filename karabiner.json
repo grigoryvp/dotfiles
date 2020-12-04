@@ -648,7 +648,7 @@
           },
           "to": [{
             "select_input_source": {
-              "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.Japanese$"
+              "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.RomajiTyping\\.Japanese$"
             }
           }],
           "conditions": [{

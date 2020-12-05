@@ -68,8 +68,6 @@ sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
 # Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".
 # From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin'
-# For older MacOS/Karabiner also add 'karabiner_grabber',
-# 'karabiner_observer', 'karabiner_console_user_server' into "Accessibility".
 cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
 # Enable keyboard repeat, need to restart after that
 defaults write -g ApplePressAndHoldEnabled -bool false
@@ -77,14 +75,14 @@ defaults write -g NSAutomaticCapitalizationEnabled -bool false
 defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
-# Add "Russian-PC" and "Japanese-Romaji" input methods.
+# Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # App store: Snap, Battery Monitor, Telegram Lite, XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html
-# Install https://getbitbar.com/plugins/Network/ping.10s.sh
-# Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
+# Configure "Snap" for "command-shift-option-control-number".
+# Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
+# Configure "Spectacle" hotkeys.
 # Configure iTerm2 theme, set "JetBrains" font, "/usr/local/bin/pwsh" shell
-# Menu bar, from right to left:
-# spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
+# Menu: spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Dock: iTerm2, vscode, browser, files, keepass, telegram lite
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
@@ -92,11 +90,11 @@ curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_m
 # Add "⌘w" to "Close Tab" in "Preferences/Keyboard/Shortcuts/App Shortcuts" for Safari.
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
-# Add "Russian - PC", "Japanese" in "Preferences/Keyboard/Input Process".
-# Configure "Spectacle" hotkeys.
-# Configure "Snap" for "command-shift-option-control-number".
-# Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
 # For old macOS versions:
+# Add 'karabiner_grabber', 'karabiner_observer',
+#   'karabiner_console_user_server' into "Accessibility".
+# Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
+# Install https://getbitbar.com/plugins/Network/ping.10s.sh
 # Disable welcome screen guest user in "Preferences/Users & Groups".
 # "iTunes/Preferences/Devices/Prevent from syncing automatically"
 ```

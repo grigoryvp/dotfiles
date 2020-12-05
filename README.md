@@ -83,7 +83,8 @@ curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_m
 # Configure "Spectacle" hotkeys.
 # Configure iTerm2 theme, set "JetBrains" font, "/usr/local/bin/pwsh" shell
 # Menu: spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
-# Dock: iTerm2, vscode, browser, files, keepass, telegram lite
+# Drop "/System/Library/CoreServices/Finder.app" into dock.
+# Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram lite
 # Set max key repeat and min delay at "Preferences/Keyboard"
 # Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
 # Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".

@@ -1132,6 +1132,50 @@
         },
 
         {
+          "description": "control-open-bracket => command-open-bracket for mac-win consistency",
+          "type": "basic",
+          "from": {
+            "key_code": "open_bracket",
+            "modifiers": {"mandatory": ["left_control"]}
+          },
+          "to": [{
+            "key_code": "open_bracket",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.microsoft\\.edgemac$",
+              "^com\\.apple\\.Safari$",
+              "^org\\.chromium\\.Chromium$",
+              "^com\\.google\\.Chrome$"
+            ]
+          }]
+        },
+
+        {
+          "description": "control-close-bracket => command-close-bracket for mac-win consistency",
+          "type": "basic",
+          "from": {
+            "key_code": "close_bracket",
+            "modifiers": {"mandatory": ["left_control"]}
+          },
+          "to": [{
+            "key_code": "close_bracket",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.microsoft\\.edgemac$",
+              "^com\\.apple\\.Safari$",
+              "^org\\.chromium\\.Chromium$",
+              "^com\\.google\\.Chrome$"
+            ]
+          }]
+        },
+
+        {
           "description": "control-k => command-k for terminal clear",
           "type": "basic",
           "from": {

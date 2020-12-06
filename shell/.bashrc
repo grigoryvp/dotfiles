@@ -321,7 +321,9 @@ _prompt_command() {
 }
 export PROMPT_COMMAND=_prompt_command
 # ZSH alternative to "PROMPT_COMMAND"
-precmd() { eval "$PROMPT_COMMAND" }
+precmd() {
+  eval "$PROMPT_COMMAND"
+}
 
 psgiton() {
   export PS_GIT_ON=1

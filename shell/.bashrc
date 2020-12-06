@@ -305,7 +305,8 @@ _prompt_command() {
   export PS1="${PS_N}${PS_W}${PS_WORKDIR} ${PS_N}"
   if [ -n "$PS_GIT_ON" ]; then
     if [ -d ~/.git-radar ] || [ -e /usr/local/bin/git-radar ]; then
-      export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes}"
+      #! Space in format to separate non-empty git info from next prompt part
+      export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes} "
       export PS1="${PS1}${PS_G}${RADAR_CMD}${PS_N}"
     fi
   fi
@@ -319,6 +320,8 @@ _prompt_command() {
   export PS1="${PS1}${PS_Y}${PS_DOLLAR} ${PS_N}"
 }
 export PROMPT_COMMAND=_prompt_command
+# ZSH alternative to "PROMPT_COMMAND"
+precmd() { eval "$PROMPT_COMMAND" }
 
 psgiton() {
   export PS_GIT_ON=1

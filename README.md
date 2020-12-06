@@ -21,6 +21,7 @@ Follow instructions for post-configuration.
 
 ```sh
 printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
+printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.zshrc
 printf '[include]\npath = /mnt/c/Users/user/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 cp /mnt/c/Users/user/.box-cfg/shell/.gitattributes ~/.gitattributes
 git clone https://github.com/michaeldfallen/git-radar ~/.git-radar

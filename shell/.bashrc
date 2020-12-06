@@ -305,8 +305,8 @@ _prompt_command() {
   export PS1="${PS_N}${PS_W}${PS_WORKDIR} ${PS_N}"
   if [ -n "$PS_GIT_ON" ]; then
     if [ -d ~/.git-radar ] || [ -e /usr/local/bin/git-radar ]; then
-      #! Space in format to separate non-empty git info from next prompt part
-      export GIT_RADAR_FORMAT="git:%{branch}%{local} %{changes} "
+      #! Spaces before optional changes and before next prompt part.
+      export GIT_RADAR_FORMAT="git:%{branch}%{local}%{ :changes} "
       export PS1="${PS1}${PS_G}${RADAR_CMD}${PS_N}"
     fi
   fi

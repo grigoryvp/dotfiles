@@ -35,7 +35,7 @@ arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebr
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
-arch -x86_64 brew install exa michaeldfallen/formula/git-radar readline xz
+arch -x86_64 brew install exa michaeldfallen/formula/git-radar readline xz lsd
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app ~/.box-cfg/passwords.kdbx

@@ -120,6 +120,7 @@ class App {
     $this._installApp("xmousebuttoncontrol");
     $this._installApp("keepassxc");
     $this._installApp("vscode");
+    $this._installApp("lsd");
     $this._configureVscode();
     $this._installApp("tray-monitor");
     $this._installApp("battery-info-view");

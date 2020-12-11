@@ -91,8 +91,9 @@ pyenv global 3.9.1
 rbenv global 2.7.2
 nodenv global 15.3.0
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
-# App store: Snap, Battery Monitor, Telegram Lite, XCode, Affinity.
+# App store: Snap, Battery Monitor, XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html
+# Install https://macos.telegram.org/
 # Configure "Snap" for "command-shift-option-control-number".
 # Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
 # Configure "Spectacle" hotkeys.

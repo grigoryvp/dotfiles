@@ -35,7 +35,7 @@ arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebr
 brew update --verbose
 brew tap homebrew/cask-fonts
 brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
-arch -x86_64 brew install exa michaeldfallen/formula/git-radar readline xz node
+arch -x86_64 brew install exa michaeldfallen/formula/git-radar readline xz
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app ~/.box-cfg/passwords.kdbx
@@ -77,6 +77,19 @@ defaults write -g NSAutomaticCapitalizationEnabled -bool false
 defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+git clone https://github.com/rbenv/ruby-build.git $(rbenv root)/plugins/ruby-build
+git clone https://github.com/nodenv/nodenv.git ~/.nodenv
+git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-build
+# Reload shell
+arch -x86_64 pyenv install 3.9.1
+arch -x86_64 rbenv install 2.7.2
+arch -x86_64 nodenv install 15.3.0
+pyenv global 3.9.1
+rbenv global 2.7.2
+nodenv global 15.3.0
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # App store: Snap, Battery Monitor, Telegram Lite, XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html

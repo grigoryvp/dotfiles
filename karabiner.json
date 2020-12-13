@@ -829,20 +829,6 @@
         },
 
         {
-          "description": "control-meta-v => command-option-shift-v",
-          "type": "basic",
-          "from": {
-            "key_code": "v",
-            "modifiers": {"mandatory": ["right_control"]}
-          },
-          "to": [{
-            "key_code": "v",
-            "modifiers": ["left_command", "left_option", "left_shift"]
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
-        },
-
-        {
           "description": "control-v => command-v for mac-win consistency",
           "type": "basic",
           "from": {
@@ -856,7 +842,7 @@
         },
 
         {
-          "description": "control-shift-v => command-shift-v for mac-win consistency",
+          "description": "control-shift-v => command-option-shift-v for mac-win consistency",
           "type": "basic",
           "from": {
             "key_code": "v",
@@ -864,7 +850,7 @@
           },
           "to": [{
             "key_code": "v",
-            "modifiers": ["left_command", "left_shift"]
+            "modifiers": ["left_command", "left_option", "left_shift"]
           }]
         },
 

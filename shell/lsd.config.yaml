@@ -1,0 +1,15 @@
+display: all
+layout: oneline
+blocks:
+  - permission
+  - user
+  - size
+  - name
+color:
+  when: always
+ignore-globs:
+  - .DS_Store
+sorting:
+  column: name
+  reverse: false
+  dir-grouping: first

@@ -24,6 +24,8 @@ printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
 printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.zshrc
 printf '[include]\npath = /mnt/c/Users/user/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 cp /mnt/c/Users/user/.box-cfg/shell/.gitattributes ~/.gitattributes
+mkdir -p ~/.config/lsd/
+cp /mnt/c/Users/user/.box-cfg/shell/lsd.config.yaml ~/.config/lsd/config.yaml
 git clone https://github.com/michaeldfallen/git-radar ~/.git-radar
 ```
 
@@ -51,6 +53,8 @@ rm -f ~/.screenrc
 ln ~/.box-cfg/shell/.screenrc ~/.screenrc
 rm -f ~/.gitattributes
 ln ~/.box-cfg/shell/.gitattributes ~/.gitattributes
+mkdir -p ~/.config/lsd/
+ln ~/.box-cfg/shell/lsd.config.yaml ~/.config/lsd/config.yaml
 printf '[include]\npath = ~/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 mkdir -p ~/.config/powershell
 rm -f ~/.config/powershell/profile.ps1

@@ -577,7 +577,7 @@ class App {
     Write-Host "";
   }
 
-  
+
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
@@ -593,14 +593,15 @@ class App {
 
   [Boolean] _needInstallFonst() {
     if ($this._isTest) { return $false; }
-    $name = "JetBrainsMono-Regular.ttf";
+    $name =
+      "JetBrains Mono Regular Nerd Font Complete Windows Compatible.ttf";
     if (Test-Path -Path "$env:windir\Fonts\$name") { return $false; }
     return $true;
   }
 
   _installFonts() {
     if (-not $this._needInstallFonst()) { return; }
-    $appName = "JetBrains-Mono";
+    $appName = "JetBrainsMono-NF";
     if ($this._isAppStatusInstalled($appName)) {
       # if install fails, scoop will treat app as installed.
       & scoop uninstall $appName;

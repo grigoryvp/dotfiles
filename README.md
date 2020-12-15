@@ -34,7 +34,7 @@ softwareupdate --install-rosetta --agre-to-license
 arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono menumeters transmission powershell obs mpv bitbar iterm2
+brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono-nerd-font menumeters transmission powershell obs mpv bitbar iterm2
 arch -x86_64 brew install exa michaeldfallen/formula/git-radar readline xz lsd
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
@@ -97,7 +97,7 @@ nodenv global 15.3.0
 # Configure "Snap" for "command-shift-option-control-number".
 # Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
 # Configure "Spectacle" hotkeys.
-# Configure iTerm2 theme, set "JetBrains" font, "/usr/local/bin/pwsh" shell
+# Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram lite

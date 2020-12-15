@@ -244,7 +244,13 @@ alias tox='tox -q'
 alias rmf='rm -rf'
 
 my_list() {
-  if [ -e /usr/local/bin/exa ]; then
+  if [ -e /usr/local/bin/lsd ]; then
+    /usr/local/bin/lsd \
+      -l \
+      -a \
+      --ignore-glob .DS_Store\|desktop.ini\|PowerShell\|My\ Games \
+      "$@"
+  elif [ -e /usr/local/bin/exa ]; then
     /usr/local/bin/exa \
       -l \
       -a \

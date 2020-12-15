@@ -107,6 +107,7 @@ nodenv global 15.3.0
 # Add "⌘w" to "Close Tab" in "Preferences/Keyboard/Shortcuts/App Shortcuts" for Safari.
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
+# Enable password lock in "Preferences/Security/General/Require password".
 # For old macOS versions:
 # Add 'karabiner_grabber', 'karabiner_observer',
 #   'karabiner_console_user_server' into "Accessibility".

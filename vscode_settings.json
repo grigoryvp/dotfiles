@@ -140,7 +140,7 @@
   "workbench.colorTheme": "grigoryvp memory theme",
   "debug.node.autoAttach": "disabled",
   "terminal.integrated.shell.windows": "pwsh.exe",
-  "workbench.iconTheme": "vscode-icons",
+  "workbench.iconTheme": "vs-seti",
   "scm.diffDecorations": "none",
   "vsicons.presets.foldersAllDefaultIcon": true,
   "vsicons.dontShowNewVersionMessage": true,

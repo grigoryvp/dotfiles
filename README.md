@@ -63,7 +63,6 @@ code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
-code --install-extension vscode-icons-team.vscode-icons
 ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 # Create config dir.

@@ -129,7 +129,7 @@
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
   "workbench.editor.labelFormat": "short",
-  "workbench.activityBar.visible": false,
+  "workbench.activityBar.visible": true,
   "workbench.editor.highlightModifiedTabs": true,
   "npm.enableScriptExplorer": true,
   "breadcrumbs.enabled": true,

@@ -168,6 +168,20 @@
         },
 
         {
+          "description": "meta-tab-semicolon for command-lmb",
+          "type": "basic",
+          "from": {
+            "key_code": "semicolon",
+            "modifiers": {"mandatory": ["left_control"]}
+          },
+          "to": [{
+            "pointing_button": "button1",
+            "modifiers": ["left_command"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+        },
+
+        {
           "description": "meta-semicolon for left mouse button",
           "type": "basic",
           "from": {

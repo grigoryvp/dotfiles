@@ -71,6 +71,20 @@
         },
 
         {
+          "description": "Use backspace as right alt",
+          "type": "basic",
+          "from": {
+            "key_code": "delete_or_backspace",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "key_code": "right_alt",
+            "lazy": true
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+        },
+
+        {
           "description": "dual mode 'tab': control if not alone",
           "type": "basic",
           "from": {
@@ -124,19 +138,6 @@
           },
           "to": [{
             "key_code": "escape"
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
-        },
-
-        {
-          "description": "meta-delete for closing apps",
-          "type": "basic",
-          "from": {
-            "key_code": "delete_or_backspace"
-          },
-          "to": [{
-            "key_code": "q",
-            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -519,6 +520,20 @@
           "to": [{
             "key_code": "0",
             "modifiers": ["left_command", "left_option", "control", "shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+        },
+
+        {
+          "description": "meta-shift-plus for closing apps",
+          "type": "basic",
+          "from": {
+            "key_code": "equal_sign",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "q",
+            "modifiers": ["left_command"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },

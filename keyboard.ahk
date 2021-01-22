@@ -49,6 +49,7 @@ if (!A_IsAdmin) {
 #inputlevel 1
 tab::lctrl
 enter::rctrl
+backspace::ralt
 #inputlevel 0
 
 perform(cmd, arg, direction) {
@@ -191,13 +192,9 @@ $^lctrl up:: send ^{tab}
 *$]::remap("down", "vkdd", "", "xbutton1", "", "vkdd", "", "vkdd")
 *$] up::remap("up", "vkdd", "", "xbutton1", "", "vkdd", "", "vkdd")
 
-;;  'meta-plus' reserved
-*$=::remap("down", "vkbb", "", "vkbb", "", "vkbb", "", "vkbb")
-*$= up::remap("up", "vkbb", "", "vkbb", "", "vkbb", "", "vkbb")
-
-;;  'meta-backspace' (delete on osx) for closing apps
-*$vk08::remap("down", "vk08", "none", "", "", "vk08", "", "vk08")
-*$vk08 up::remap("up", "vk08", "winclose", "", "", "vk08", "", "vk08")
+;;  'meta-shift-plus' for closing apps
+*$=::remap("down", "vkbb", "", "vkbb", "none", "", "", "vkbb")
+*$= up::remap("up", "vkbb", "", "vkbb", "winclose", "", "", "vkbb")
 
 ;;  'meta-p' for backspace
 ;;  'meta-shift-p' for deleting things.
@@ -311,7 +308,7 @@ $^lctrl up:: send ^{tab}
 ;;  ==========================================================================
 
 ;;  meta-g for F4
-;;  meta-g for emoji selector
+;;  meta-shift-g for emoji selector
 *$g::
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -465,7 +462,7 @@ $^lctrl up:: send ^{tab}
 *$.::remap("down", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 *$. up::remap("up", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 
-;;  'meta-shift-n' => maximize
+;;  'meta-shift-space' => maximize
 *$space::remap("down", "vk20", "", "f21", "none", "", "", "vk20")
 *$space up::remap("up", "vk20", "", "f21", "winmaximize", "", "", "vk20")
 

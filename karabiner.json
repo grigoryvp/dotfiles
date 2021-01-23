@@ -80,8 +80,7 @@
           "to": [{
             "key_code": "right_alt",
             "lazy": true
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+          }]
         },
 
         {

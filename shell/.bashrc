@@ -91,7 +91,6 @@ export LANG="en_US.UTF-8"
 export LANGUAGE="en_US:en"
 export LC_ALL="en_US.UTF-8"
 
-export USER="grigoryvp"
 ##  Switchable truecolor for VIM, on by default
 export TRUECOLOR="1"
 

@@ -118,9 +118,9 @@ if [ "$(uname)" = "Darwin" ]; then
     export PATH=/opt/subversion/bin:$PATH
   fi
 
-  ##  homebrew tools installed?
-  if [ -e /usr/local/sbin ]; then
-    export PATH=/usr/local/sbin:$PATH
+  ##  MacOS Apple Silicon homebrew installed?
+  if [ -e /opt/homebrew/bin/brew ]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
   fi
 
   ##  custom mongo installed?

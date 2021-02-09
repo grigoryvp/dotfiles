@@ -36,8 +36,7 @@ softwareupdate --install-rosetta --agre-to-license
 arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-brew cask install keepassxc spectacle karabiner-elements visual-studio-code font-jetbrains-mono-nerd-font menumeters transmission powershell obs mpv bitbar iterm2
-arch -x86_64 brew install michaeldfallen/formula/git-radar readline xz exa lsd
+brew install keepassxc rectangle karabiner-elements visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app ~/.box-cfg/passwords.kdbx
@@ -99,9 +98,9 @@ nodenv global 15.3.0
 # Install https://macos.telegram.org/
 # Configure "Snap" for "command-shift-option-control-number".
 # Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
-# Configure "Spectacle" hotkeys.
+# Configure "Rectangle" hotkeys.
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
-# Menu: spectacle, wifi, bt, clock, short menu, battery monitor, menumeters
+# Menu: rectangle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram lite
 # Set max key repeat and min delay at "Preferences/Keyboard"

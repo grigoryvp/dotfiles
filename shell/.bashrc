@@ -138,9 +138,9 @@ if [ "$(uname)" = "Darwin" ]; then
   export ANDROID_HOME=/usr/local/opt/android-sdk
   ##  Installed here by 'brew install michaeldfallen/formula/git-radar'
   if [ "$SHELL" = "/bin/zsh" ]; then
-    export RADAR_CMD='$(/usr/local/bin/git-radar --zsh --fetch)'
+    export RADAR_CMD='$(git-radar --zsh --fetch)'
   else
-    export RADAR_CMD='$(/usr/local/bin/git-radar --bash --fetch)'
+    export RADAR_CMD='$(git-radar --bash --fetch)'
   fi
 
   ##  Swift version manager
@@ -305,7 +305,7 @@ _prompt_command() {
   PS_EXIT="$?"
   export PS1="${PS_N}${PS_W}${PS_WORKDIR} ${PS_N}"
   if [ -n "$PS_GIT_ON" ]; then
-    if [ -d ~/.git-radar ] || [ -e /usr/local/bin/git-radar ]; then
+    if [ -d ~/.git-radar ] || which git-radar >/dev/null; then
       #! Spaces before optional changes and before next prompt part.
       export GIT_RADAR_FORMAT="git:%{branch}%{local}%{ :changes} "
       export PS1="${PS1}${PS_G}${RADAR_CMD}${PS_N}"

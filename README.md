@@ -103,10 +103,12 @@ nodenv global 15.3.0
 # Menu: rectangle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram lite
-# Set max key repeat and min delay at "Preferences/Keyboard"
-# Set notification center shortcut to "shift-command-backslash" in "Preferences/Keyboard/Shortcuts".
-# Disable "⇧⌘/" in "Preferences/Keyboard/Shortcuts/App Shortcuts".
-# Add "⌘w" to "Close Tab" in "Preferences/Keyboard/Shortcuts/App Shortcuts" for Safari.
+# Set max key repeat and min delay in "Preferences/Keyboard"
+# Set "⇧⌘\" to "Notification Center" in "Preferences/Keyboard/Shortcuts".
+# In "Preferences/Keyboard/Shortcuts/App Shortcuts":
+# * Remove "⇧⌘/"
+# * Add "⌘W" to "Close Tab" for "Safari".
+# * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram".
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
 # Enable password lock in "Preferences/Security/General/Require password".

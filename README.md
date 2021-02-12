@@ -36,6 +36,8 @@ softwareupdate --install-rosetta --agre-to-license
 arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
+# For Python 3.9.1 on Apple Silicon
+brew install readline openssl
 brew install keepassxc rectangle karabiner-elements visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
@@ -86,12 +88,13 @@ git clone https://github.com/rbenv/ruby-build.git $(rbenv root)/plugins/ruby-bui
 git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-build
 # Reload shell
-arch -x86_64 pyenv install 3.9.1
-arch -x86_64 rbenv install 2.7.2
-arch -x86_64 nodenv install 15.3.0
+pyenv install 3.9.1
 pyenv global 3.9.1
-rbenv global 2.7.2
-nodenv global 15.3.0
+pip install --upgrade pip
+rbenv install 3.0.0
+rbenv global 3.0.0
+nodenv install 15.8.0
+nodenv global 15.8.0
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # App store: Snap, Battery Monitor, XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html

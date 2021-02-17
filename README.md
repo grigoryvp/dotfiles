@@ -100,7 +100,11 @@ nodenv global 15.8.0
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://macos.telegram.org/
 # Configure "Snap" for "command-shift-option-control-number".
-# Configure "Smart Scroll" for "Grab scroll without moving cursor", button 6.
+# Configure "Smart Scroll":
+# * Disable "Hover Scroll".
+# * "Grab scroll without moving cursor" to button 6.
+# * Enable "Scroll without moving cursor".
+# * Disable "Inertia".
 # Configure "Rectangle" hotkeys.
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: rectangle, wifi, bt, clock, short menu, battery monitor, menumeters

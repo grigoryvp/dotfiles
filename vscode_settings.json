@@ -144,5 +144,6 @@
   "scm.diffDecorations": "none",
   "vsicons.presets.foldersAllDefaultIcon": true,
   "vsicons.dontShowNewVersionMessage": true,
-  "keyboard.dispatch": "keyCode"
+  "keyboard.dispatch": "keyCode",
+  "python.languageServer": "Pylance"
 }

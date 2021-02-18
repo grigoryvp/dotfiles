@@ -19,6 +19,9 @@ default = "simple"
 # Fixes "cannot lock ref" macOS case sensetive issue.
 prune = true
 
+[pull]
+rebase = true
+
 [alias]
 ch = "checkout"
 a = "add"
@@ -26,7 +29,7 @@ aa = "add ."
 ap = "add -p"
 cm = "commit -m"
 ps = "push"
-pl = "pull --all --prune --rebase"
+pl = "pull"
 st = "status --short --branch"
 lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 br = "branch"

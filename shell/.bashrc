@@ -8,8 +8,8 @@ fi
 
 ##  bash/zsh portable way to encode "Escape" character.
 PS_ESC=$(printf '\033')
-##  Show git in PS1 by default
-PS_GIT_ON=1
+##  Don't show git in PS by default, it conflicts with the "g" alias.
+PS_GIT_ON=
 
 if [ -n "$ZSH_VERSION" ]; then
   ##  Colors should be escaped for correct length calculation.

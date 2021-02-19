@@ -20,6 +20,7 @@ default = "simple"
 prune = true
 
 [pull]
+# "fatal: Cannot rebase onto multiple branches" if git-radar is used.
 rebase = true
 
 [alias]

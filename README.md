@@ -12,7 +12,7 @@ rem Install Powershell Core
 scoop install https://raw.githubusercontent.com/grigoryvp/scoop-grigoryvp/master/7zip.json
 scoop install git pwsh
 rem Configure this box
-pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/box-cfg/master/configure.ps1 | iex"
+pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/dotfile/master/configure.ps1 | iex"
 ```
 
 Follow instructions for post-configuration.
@@ -20,12 +20,12 @@ Follow instructions for post-configuration.
 ## WSL
 
 ```sh
-printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.bashrc
-printf '#!/bin/sh\n. /mnt/c/Users/user/.box-cfg/shell/.bashrc\n' >> ~/.zshrc
-printf '[include]\npath = /mnt/c/Users/user/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
-cp /mnt/c/Users/user/.box-cfg/shell/.gitattributes ~/.gitattributes
+printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/.bashrc\n' >> ~/.bashrc
+printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/.bashrc\n' >> ~/.zshrc
+printf '[include]\npath = /mnt/c/Users/user/dotfiles/git-cfg.toml\n' >> ~/.gitconfig
+cp /mnt/c/Users/user/dotfiles/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/
-cp /mnt/c/Users/user/.box-cfg/shell/lsd.config.yaml ~/.config/lsd/config.yaml
+cp /mnt/c/Users/user/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
 git clone https://github.com/michaeldfallen/git-radar ~/.git-radar
 ```
 
@@ -39,31 +39,31 @@ brew tap homebrew/cask-fonts
 # For Python 3.9.1 on Apple Silicon
 brew install readline openssl
 brew install keepassxc rectangle karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
-git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
+git clone https://github.com/grigoryvp/dotfile.git ~/dotfiles
 # Confirm execution of downloaded app.
-open /Applications/KeePassXC.app ~/.box-cfg/passwords.kdbx
-keepassxc-cli show -s ~/.box-cfg/passwords.kdbx github
+open /Applications/KeePassXC.app ~/dotfiles/passwords.kdbx
+keepassxc-cli show -s ~/dotfiles/passwords.kdbx github
 # Add ssh to github
-rm -rf ~/.box-cfg
-git clone git@github.com:grigoryvp/box-cfg.git ~/.box-cfg
+rm -rf ~/dotfiles
+git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
 git clone git@github.com:grigoryvp/xi.git ~/.xi
-printf '#!/bin/sh\n. ~/.box-cfg/shell/.bashrc\n' > ~/.bashrc
+printf '#!/bin/sh\n. ~/dotfiles/.bashrc\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
 ln -fs /hammerspoon.lua ~/.hammerspoon/init.lua
-ln -fs ~/.box-cfg/shell/.screenrc ~/.screenrc
-ln -fs ~/.box-cfg/shell/.gitattributes ~/.gitattributes
+ln -fs ~/dotfiles/.screenrc ~/.screenrc
+ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/
-ln -fs ~/.box-cfg/shell/lsd.config.yaml ~/.config/lsd/config.yaml
-printf '[include]\npath = ~/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
+ln -fs ~/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
+printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' >> ~/.gitconfig
 mkdir -p ~/.config/powershell
-ln -fs ~/.box-cfg/profile.ps1 ~/.config/powershell/profile.ps1
+ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
-ln -fs ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
-ln -fs ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
+ln -fs ~/dotfiles/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+ln -fs ~/dotfiles/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 # Create config dir.
 mpv --help
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
@@ -72,7 +72,7 @@ sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
 # Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".
 # From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin'
-cp ~/.box-cfg/karabiner.json ~/.config/karabiner/karabiner.json
+cp ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 # Enable keyboard repeat, need to restart after that
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g NSAutomaticCapitalizationEnabled -bool false

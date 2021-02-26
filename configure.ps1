@@ -28,7 +28,7 @@ class App {
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
     # Version-controlled dir with scripts, powershell config, passwords etc.
-    $this._cfgDir = $this._path(@("~", ".box-cfg"));
+    $this._cfgDir = $this._path(@("~", "dotfiles"));
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
@@ -310,16 +310,16 @@ class App {
     # Have keys to clone with SSH?
     $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
     if (Test-Path -Path "$markerPath") {
-      $uri = "git@github.com:grigoryvp/box-cfg.git";
+      $uri = "git@github.com:grigoryvp/dotfiles.git";
     }
     else {
       # Already cloned without keys?
       if (Test-Path -Path "$gitCfgFile") { return; }
       # Clone with HTTPS
-      $uri = "https://github.com/grigoryvp/box-cfg.git";
+      $uri = "https://github.com/grigoryvp/dotfiles.git";
     }
 
-    $tmpDirName = $this._path(@("~", ".box-cfg-tmp"));
+    $tmpDirName = $this._path(@("~", "dotfiles-tmp"));
     if (Test-Path -Path "$tmpDirName") {
       Write-Host "Removing existing temp dir $tmpDirName"
       Remove-Item "$tmpDirName" -Recurse -Force;

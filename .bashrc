@@ -202,7 +202,7 @@ fi
 alias cdh="cd ${HOME}"
 alias cdd="cd ${HOME}/Documents"
 alias cdx="cd ${HOME}/.xi"
-alias cdc="cd ${HHOME}/.box-cfg"
+alias cdc="cd ${HHOME}/dotfiles"
 alias cdhh="cd ${HHOME}"
 
 ##  Python virtual environment; built-in 'venv' instals old bundled 'pip'.

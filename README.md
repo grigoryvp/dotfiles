@@ -55,7 +55,7 @@ ln -fs ~/dotfiles/.screenrc ~/.screenrc
 ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/
 ln -fs ~/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
-printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' >> ~/.gitconfig
+printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
 mkdir -p ~/.config/powershell
 ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi

@@ -38,7 +38,7 @@ brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.9.1 on Apple Silicon
 brew install readline openssl
-brew install keepassxc rectangle karabiner-elements visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
+brew install keepassxc rectangle karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
 git clone https://github.com/grigoryvp/box-cfg.git ~/.box-cfg
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app ~/.box-cfg/passwords.kdbx
@@ -50,22 +50,20 @@ git clone git@github.com:grigoryvp/xi.git ~/.xi
 printf '#!/bin/sh\n. ~/.box-cfg/shell/.bashrc\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
-rm -f ~/.screenrc
-ln ~/.box-cfg/shell/.screenrc ~/.screenrc
-rm -f ~/.gitattributes
-ln ~/.box-cfg/shell/.gitattributes ~/.gitattributes
+ln -fs /hammerspoon.lua ~/.hammerspoon/init.lua
+ln -fs ~/.box-cfg/shell/.screenrc ~/.screenrc
+ln -fs ~/.box-cfg/shell/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/
-ln ~/.box-cfg/shell/lsd.config.yaml ~/.config/lsd/config.yaml
+ln -fs ~/.box-cfg/shell/lsd.config.yaml ~/.config/lsd/config.yaml
 printf '[include]\npath = ~/.box-cfg/shell/git-cfg.toml\n' >> ~/.gitconfig
 mkdir -p ~/.config/powershell
-rm -f ~/.config/powershell/profile.ps1
-ln ~/.box-cfg/profile.ps1 ~/.config/powershell/profile.ps1
+ln -fs ~/.box-cfg/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
-ln ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
-ln ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
+ln -fs ~/.box-cfg/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+ln -fs ~/.box-cfg/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
 # Create config dir.
 mpv --help
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf

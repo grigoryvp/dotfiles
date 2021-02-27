@@ -27,7 +27,7 @@ $COLOR_BLUE = ([ConsoleColor]::Blue);
 $COLOR_MAGENTA = ([ConsoleColor]::Magenta);
 
 function cdd() { Set-Location ~/Documents; }
-function cdc() { Set-Location ~/.box-cfg; }
+function cdc() { Set-Location ~/dotfiles; }
 function cdx() { Set-Location ~/.xi; }
 function cdh() { Set-Location ~; }
 function g() { & git $Args }
@@ -68,7 +68,7 @@ function ahk() {
   # if (Get-Process "AutoHotkey" -ErrorAction SilentlyContinue) { return; }
   Start-Process `
     autohotkey.exe `
-    -ArgumentList "$($env:USERPROFILE)\.box-cfg\keyboard.ahk" `
+    -ArgumentList "$($env:USERPROFILE)\dotfiles\keyboard.ahk" `
     -WindowStyle Hidden `
     -Verb RunAs;
 }

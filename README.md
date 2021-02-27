@@ -20,9 +20,9 @@ Follow instructions for post-configuration.
 ## WSL
 
 ```sh
-printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/.bashrc\n' >> ~/.bashrc
-printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/.bashrc\n' >> ~/.zshrc
-printf '[include]\npath = /mnt/c/Users/user/dotfiles/git-cfg.toml\n' >> ~/.gitconfig
+printf '/mnt/c/Users/user/dotfiles/.bashrc\n' >> ~/.bashrc
+printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/.bashrc\n' > ~/.zshrc
+printf '[include]\npath = /mnt/c/Users/user/dotfiles/git-cfg.toml\n' > ~/.gitconfig
 cp /mnt/c/Users/user/dotfiles/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/
 cp /mnt/c/Users/user/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml

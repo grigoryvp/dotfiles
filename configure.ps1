@@ -10,6 +10,7 @@ class App {
   $_isPublic = $false;
   $_POST_INSTALL_MSG = "";
   $_pass = $null;
+  $_cfgDirLinux = $null;
   $_cfgDir = $null;
   $_psDir = $null;
   $_pathIntrinsics = $null;
@@ -28,6 +29,7 @@ class App {
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
     # Version-controlled dir with scripts, powershell config, passwords etc.
+    $this._cfgDirLinux = "~/dotfiles";
     $this._cfgDir = $this._path(@("~", "dotfiles"));
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
     $this._POST_INSTALL_MSG = @"
@@ -119,7 +121,8 @@ class App {
     $this._installApp("autohotkey");
     $this._installApp("xmousebuttoncontrol");
     $this._installApp("keepassxc");
-    $this._installApp("vscode");
+    # TODO: Replace with "winget install Microsoft.VisualStudioCode-User-x64" for shim
+    # $this._installApp("vscode");
     $this._installApp("lsd");
     $this._configureVscode();
     $this._installApp("tray-monitor");
@@ -143,15 +146,15 @@ class App {
       New-Hardlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
     }
 
-    # Symlink git config.
+    # Create git config with link to the git-cfg.toml
     if (-not $this._isTest) {
-      $src = $this._path(@($this._cfgDir, "shell", ".gitconfig"));
+      $src = $this._path(@($this._cfgDir, ".gitconfig"));
       $dst = $this._path(@("~", ".gitconfig"));
       if (Test-Path -Path "$dst") {
         Remove-Item "$dst";
       }
-      Write-Host "Creating hardlink $src => $dst";
-      New-Hardlink -Path "~" -Name ".gitconfig" -Value "$src";
+      $content = "[include]`npath = `"$($this._cfgDirLinux)/git-cfg.toml`"`n";
+      New-File -Path "~" -Name ".gitconfig" -Value "$content";
     }
     
     # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
@@ -551,7 +554,7 @@ class App {
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
           Write-Host "SSH key already added to GitHub";
-          New-File -path .ssh -Name $marker;
+          New-File -Path .ssh -Name $marker;
         }
         elseif ($_.Exception.Response.StatusCode -eq 401) {
           # TODO: try to upload via auth token.
@@ -565,7 +568,7 @@ class App {
           throw "Failed $($_.Exception)";
         }
       }
-      New-File -path "~/.ssh" -Name $marker;
+      New-File -Path "~/.ssh" -Name $marker;
     }
   }
 
@@ -587,7 +590,7 @@ class App {
     $content = "pwsh -Command Start-Process autohotkey.exe";
     $content += " -ArgumentList `"$($this._cfgDir)\keyboard.ahk`"";
     $content += " -WindowStyle Hidden -Verb RunAs";
-    New-File -path $startDir -Name "autohotkey.bat" -Value "$content";
+    New-File -Path $startDir -Name "autohotkey.bat" -Value "$content";
   }
 
 
@@ -615,8 +618,9 @@ class App {
     $dstDir = $this._path(@("~", ".xi"));
     if (Test-Path -Path "$dstDir") { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
-    & git clone $uri $dstDir;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    # Todo: clone into WSL ~/.xi
+    # & git clone $uri $dstDir;
+    # if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
 
 
@@ -674,7 +678,7 @@ class App {
       }
 '@;
 
-    New-File -path $docCfgDir -Name "settings.json" -Value "$content";
+    New-File -Path $docCfgDir -Name "settings.json" -Value "$content";
 
     ##  Exclude from 'ls'.
     $(Get-Item -Force $docCfgDir).Attributes = 'Hidden';

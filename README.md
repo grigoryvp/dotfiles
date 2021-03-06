@@ -95,10 +95,9 @@ rbenv global 3.0.0
 nodenv install 15.8.0
 nodenv global 15.8.0
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
-# App store: Snap, Battery Monitor, XCode, Affinity.
+# App store: XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://macos.telegram.org/
-# Configure "Snap" for "command-shift-option-control-number".
 # Configure "Smart Scroll":
 # * Disable "Hover Scroll".
 # * "Grab scroll without moving cursor" to button 6.

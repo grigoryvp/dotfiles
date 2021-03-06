@@ -72,7 +72,8 @@ sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
 # Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".
 # From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin'
-cp ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
+# Karabiner can't detect config file change if linked via symlink.
+ln -f ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 # Enable keyboard repeat, need to restart after that
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g NSAutomaticCapitalizationEnabled -bool false

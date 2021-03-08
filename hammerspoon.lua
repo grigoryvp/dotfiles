@@ -26,3 +26,13 @@ for i, hotkey in ipairs(hotkeys) do
     clickDockItem(i + 1)
   end)
 end
+
+
+pingSrv = hs.network.ping.echoRequest("1.1.1.1")
+pingSrv:setCallback(function() end)
+pingSrv:start()
+
+
+hs.timer.doEvery(0.2, function()
+  pingSrv:sendPayload()
+end)

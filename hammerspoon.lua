@@ -33,6 +33,42 @@ pingSrv:setCallback(function() end)
 pingSrv:start()
 
 
-hs.timer.doEvery(0.2, function()
+menuItem = hs.menubar.new()
+lastCpuUsage = hs.host.cpuUsageTicks()
+cpuLoadHistory = {}
+maxCpuLoadHistory = 10
+
+
+function onTimer()
+
   pingSrv:sendPayload()
+
+  curCpuUsage = hs.host.cpuUsageTicks()
+  activeDiff = curCpuUsage.overall.active - lastCpuUsage.overall.active
+  idleDiff = curCpuUsage.overall.idle - lastCpuUsage.overall.idle
+  lastCpuUsage = curCpuUsage
+
+  cpuLoad = activeDiff * 100 / (activeDiff + idleDiff)
+  table.insert(cpuLoadHistory, cpuLoad)
+  if #cpuLoadHistory > maxCpuLoadHistory then
+    table.remove(cpuLoadHistory, 1)
+  end
+  cpuLoadAverage = 0
+  for _, v in ipairs(cpuLoadHistory) do
+    cpuLoadAverage = cpuLoadAverage + v
+  end
+  cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
+
+  titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage) ..
+    " bat: " .. string.format("%05.2f", hs.battery.percentage())
+  titleObj = hs.styledtext.new(titleStr, {font={name="Courier"}})
+  menuItem:setTitle(titleObj)
+end
+
+
+timer = hs.timer.doEvery(0.2, function()
+  isOk, err = pcall(onTimer)
+  if not isOk then
+    print(err)
+  end
 end)

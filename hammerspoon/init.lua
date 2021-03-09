@@ -4,15 +4,19 @@ package.path = package.path .. ";/Users/user/dotfiles/hammerspoon/?.lua"
 require "helpers"
 
 
-local menuItem = hs.menubar.new()
-local lastCpuUsage = hs.host.cpuUsageTicks()
-local cpuLoadHistory = {}
-local maxCpuLoadHistory = 10
-local cpuLoadAverage = 0
-local pingHistory = {}
-local maxPingHistory = 5
-local pingAverage = 0
-local batteryCharge = 0
+menuItem = hs.menubar.new()
+lastCpuUsage = hs.host.cpuUsageTicks()
+cpuLoadHistory = {}
+maxCpuLoadHistory = 10
+cpuLoadAverage = 0
+icmpHistory = {}
+-- Five pings per seconf for near-realtime network monitoring
+icmpSendInterval = 0.2
+-- Pings more than 2 seconds are as bad as having no internet
+icmpTimeout = 2.0
+maxIcmpHistory = (1 / icmpSendInterval) * icmpTimeout + 1
+pingAverage = 0
+batteryCharge = 0
 
 
 function clickDockItem(number)
@@ -40,7 +44,7 @@ for i, hotkey in ipairs(hotkeys) do
 end
 
 
-local pingSrv = hs.network.ping.echoRequest("1.1.1.1")
+pingSrv = hs.network.ping.echoRequest("1.1.1.1")
 pingSrv:setCallback(function(self, msg, ...)
   if msg == "didStart" then
     local address = ...
@@ -49,12 +53,24 @@ pingSrv:setCallback(function(self, msg, ...)
     print("ping server failed with " .. error)
   elseif msg == "sendPacket" then
     local icmp, seq = ...
+    timeSec = hs.timer.absoluteTime() / 1000000000;
+    table.insert(icmpHistory, {seq=seq, timeSend=timeSec})
+    if #icmpHistory > maxIcmpHistory then
+      table.remove(icmpHistory, 1)
+    end
   elseif msg == "sendPacketFailed" then
     local icmp, seq, error = ...
     print("ping send error " .. error)
     table.insert(pingHistory, -1)
   elseif msg == "receivedPacket" then
     local icmp, seq = ...
+    for _, item in ipairs(icmpHistory) do
+      if item.seq == seq then
+        timeSec = hs.timer.absoluteTime() / 1000000000;
+        item.timeRecv = timeSec
+        break
+      end
+    end
   elseif msg == "receivedUnexpectedPacket" then
     local icmp = ...
     print("received unexpected icmp ")
@@ -63,7 +79,7 @@ end)
 pingSrv:start()
 
 
-local counter = 0
+counter = 0
 function onTimer()
 
   counter = counter + 1
@@ -97,7 +113,7 @@ function onTimer()
 end
 
 
-local timer = hs.timer.doEvery(0.2, function()
+timer = hs.timer.doEvery(icmpSendInterval, function()
   isOk, err = pcall(onTimer)
   if not isOk then
     print(err)

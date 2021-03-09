@@ -122,14 +122,14 @@ function onTimer()
 
   batteryCharge = hs.battery.percentage()
 
-  local titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage) ..
-    " bat: " .. string.format("%.0f", batteryCharge)
+  local titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage)
   if pingAverage ~= 0 then
     pingStr = string.format("%04.0f", pingAverage * 1000)
     titleStr = titleStr .. " net: " .. pingStr
   else
     titleStr = titleStr .. " net: n/a"
   end
+  titleStr = titleStr .. " bat: " .. string.format("%.0f", batteryCharge)
   titleObj = hs.styledtext.new(titleStr, {font={name="Courier"}})
   menuItem:setTitle(titleObj)
 end

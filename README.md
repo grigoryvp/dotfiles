@@ -50,7 +50,7 @@ git clone git@github.com:grigoryvp/xi.git ~/.xi
 printf '#!/bin/sh\n. ~/dotfiles/.bashrc\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '#!/bin/sh\n. ~/.bash_profile\n' > ~/.zshrc
-ln -fs ~/dotfiles/hammerspoon.lua ~/.hammerspoon/init.lua
+ln -fs ~/dotfiles/hammerspoon/init.lua ~/.hammerspoon/init.lua
 ln -fs ~/dotfiles/.screenrc ~/.screenrc
 ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/

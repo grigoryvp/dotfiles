@@ -104,10 +104,32 @@ function onTimer()
     cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
   end
 
+  -- Updating ping too often make "numbers jump"
+  if counter % 5 == 0 then
+    pingAverage = 0
+    local pingItems = 0
+    for _, item in ipairs(icmpHistory) do
+      if item.timeRecv then
+        local ping = item.timeRecv - item.timeSend
+        pingAverage = pingAverage + ping
+        pingItems = pingItems + 1
+      end
+    end
+    if pingItems > 0 then
+      pingAverage = pingAverage / pingItems
+    end
+  end
+
   batteryCharge = hs.battery.percentage()
 
   local titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage) ..
     " bat: " .. string.format("%.0f", batteryCharge)
+  if pingAverage ~= 0 then
+    pingStr = string.format("%04.0f", pingAverage * 1000)
+    titleStr = titleStr .. " net: " .. pingStr
+  else
+    titleStr = titleStr .. " net: n/a"
+  end
   titleObj = hs.styledtext.new(titleStr, {font={name="Courier"}})
   menuItem:setTitle(titleObj)
 end

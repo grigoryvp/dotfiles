@@ -3,6 +3,14 @@ idir = function (o) for i, v in ipairs(o) do print(i, "~>", v) end end
 cls = hs.console.clearConsole
 
 
+menuItem = hs.menubar.new()
+lastCpuUsage = hs.host.cpuUsageTicks()
+cpuLoadHistory = {}
+maxCpuLoadHistory = 10
+cpuLoadAverage = 0
+batteryCharge = 0
+
+
 function clickDockItem(number)
   dock = hs.application("Dock")
   axapp = hs.axuielement.applicationElement(dock)
@@ -33,34 +41,35 @@ pingSrv:setCallback(function() end)
 pingSrv:start()
 
 
-menuItem = hs.menubar.new()
-lastCpuUsage = hs.host.cpuUsageTicks()
-cpuLoadHistory = {}
-maxCpuLoadHistory = 10
-
-
+counter = 0
 function onTimer()
 
+  counter = counter + 1
   pingSrv:sendPayload()
 
   curCpuUsage = hs.host.cpuUsageTicks()
   activeDiff = curCpuUsage.overall.active - lastCpuUsage.overall.active
   idleDiff = curCpuUsage.overall.idle - lastCpuUsage.overall.idle
   lastCpuUsage = curCpuUsage
-
   cpuLoad = activeDiff * 100 / (activeDiff + idleDiff)
   table.insert(cpuLoadHistory, cpuLoad)
   if #cpuLoadHistory > maxCpuLoadHistory then
     table.remove(cpuLoadHistory, 1)
   end
-  cpuLoadAverage = 0
-  for _, v in ipairs(cpuLoadHistory) do
-    cpuLoadAverage = cpuLoadAverage + v
+
+  -- Updating cpu load too often make "numbers jump"
+  if counter % 5 == 0 then
+    cpuLoadAverage = 0
+    for _, v in ipairs(cpuLoadHistory) do
+      cpuLoadAverage = cpuLoadAverage + v
+    end
+    cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
   end
-  cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
+
+  batteryCharge = hs.battery.percentage()
 
   titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage) ..
-    " bat: " .. string.format("%05.2f", hs.battery.percentage())
+    " bat: " .. string.format("%05.2f", batteryCharge)
   titleObj = hs.styledtext.new(titleStr, {font={name="Courier"}})
   menuItem:setTitle(titleObj)
 end

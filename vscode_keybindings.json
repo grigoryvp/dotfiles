@@ -1,9 +1,9 @@
 [{
+  "key": "ctrl+k ctrl+h",
+  "command": "workbench.action.toggleSidebarVisibility"
+}, {
   "key": "ctrl+k o",
   "command": "workbench.action.addRootFolder"
-}, {
-  "key": "ctrl+k s",
-  "command": "workbench.action.toggleSidebarVisibility"
 }, {
   "key": "ctrl+k e",
   "command": "workbench.view.explorer"
@@ -47,7 +47,7 @@
   "command": "workbench.action.findInFiles"
 },
 {
-  "key": "ctrl+k x",
+  "key": "ctrl+k ctrl+k",
   "command": "extension.xi.lookup"
 },
 {

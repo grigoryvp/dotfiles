@@ -146,7 +146,7 @@ function onTimer()
       local val = (load / 0.50) * 0.25 + 0.50
       table.insert(cpuGraph, {val = val, color = orange})
     else
-      local load = {red = 1}
+      local red = {red = 1}
       local val = (load / 1.00) * 0.25 + 0.75
       table.insert(cpuGraph, {val = val, color = red})
     end

@@ -109,11 +109,11 @@ function onTimer()
       elseif ping < 0.5 then
         local orange = {red = 1, green = 0.5}
         local val = (ping / 0.50) * 0.25 + 0.50
-        graphItem = netGraph, {val = val, color = orange}
+        graphItem = {val = val, color = orange}
       elseif ping < 2.0 then
         local red = {red = 1}
         local val = (ping / 2.00) * 0.25 + 0.75
-        graphItem = netGraph, {val = val, color = red}
+        graphItem = {val = val, color = red}
       end
       -- Pings more than 2 seconds are as bad as having no internet
     end

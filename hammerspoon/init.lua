@@ -15,7 +15,6 @@ icmpSendInterval = 0.2
 -- Pings more than 2 seconds are as bad as having no internet
 icmpTimeout = 2.0
 maxIcmpHistory = 20
-batteryCharge = 0
 
 
 function clickDockItem(number)

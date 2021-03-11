@@ -2,9 +2,10 @@
 package.path = package.path .. ";/Users/user/dotfiles/hammerspoon/?.lua"
 
 require "helpers"
+require "menuitem"
 
 
-menuItem = hs.menubar.new()
+menuItem = menuitem:new()
 lastCpuUsage = hs.host.cpuUsageTicks()
 cpuLoadHistory = {}
 maxCpuLoadHistory = 10
@@ -54,7 +55,7 @@ pingSrv:setCallback(function(self, msg, ...)
   elseif msg == "sendPacket" then
     local icmp, seq = ...
     timeSec = hs.timer.absoluteTime() / 1000000000;
-    table.insert(icmpHistory, {seq=seq, timeSend=timeSec})
+    table.insert(icmpHistory, {seq = seq, timeSend = timeSec})
     if #icmpHistory > maxIcmpHistory then
       table.remove(icmpHistory, 1)
     end
@@ -130,8 +131,12 @@ function onTimer()
     titleStr = titleStr .. " net: n/a"
   end
   titleStr = titleStr .. " bat: " .. string.format("%.0f", batteryCharge)
-  titleObj = hs.styledtext.new(titleStr, {font={name="Courier"}})
-  menuItem:setTitle(titleObj)
+
+  menuItem:clear()
+  menuItem:addGraph()
+  menuItem:addSpacer(4)
+  menuItem:addText(titleStr)
+  menuItem:update()
 end
 
 

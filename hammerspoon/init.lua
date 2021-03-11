@@ -15,8 +15,7 @@ icmpHistory = {}
 icmpSendInterval = 0.2
 -- Pings more than 2 seconds are as bad as having no internet
 icmpTimeout = 2.0
-maxIcmpHistory = (1 / icmpSendInterval) * icmpTimeout + 1
-pingAverage = 0
+maxIcmpHistory = 20
 batteryCharge = 0
 
 
@@ -52,17 +51,13 @@ pingSrv:setCallback(function(self, msg, ...)
   elseif msg == "didFail" then
     local error = ...
     print("ping server failed with " .. error)
-  elseif msg == "sendPacket" then
+  elseif msg == "sendPacket" or msg == "sendPacketFailed" then
     local icmp, seq = ...
     timeSec = hs.timer.absoluteTime() / 1000000000;
     table.insert(icmpHistory, {seq = seq, timeSend = timeSec})
     if #icmpHistory > maxIcmpHistory then
       table.remove(icmpHistory, 1)
     end
-  elseif msg == "sendPacketFailed" then
-    local icmp, seq, error = ...
-    print("ping send error " .. error)
-    table.insert(pingHistory, -1)
   elseif msg == "receivedPacket" then
     local icmp, seq = ...
     for _, item in ipairs(icmpHistory) do
@@ -86,6 +81,11 @@ function onTimer()
   counter = counter + 1
   pingSrv:sendPayload()
 
+  -- Updating too often yields high CPU usage
+  if counter % 5 ~= 0 then
+    return
+  end
+
   local curCpuUsage = hs.host.cpuUsageTicks()
   local activeDiff = curCpuUsage.overall.active - lastCpuUsage.overall.active
   local idleDiff = curCpuUsage.overall.idle - lastCpuUsage.overall.idle
@@ -96,44 +96,49 @@ function onTimer()
     table.remove(cpuLoadHistory, 1)
   end
 
-  -- Updating cpu load too often make "numbers jump"
-  if counter % 5 == 0 then
-    cpuLoadAverage = 0
-    for _, v in ipairs(cpuLoadHistory) do
-      cpuLoadAverage = cpuLoadAverage + v
-    end
-    cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
+  cpuLoadAverage = 0
+  for _, v in ipairs(cpuLoadHistory) do
+    cpuLoadAverage = cpuLoadAverage + v
   end
+  cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
 
-  -- Updating ping too often make "numbers jump"
-  if counter % 5 == 0 then
-    pingAverage = 0
-    local pingItems = 0
-    for _, item in ipairs(icmpHistory) do
-      if item.timeRecv then
-        local ping = item.timeRecv - item.timeSend
-        pingAverage = pingAverage + ping
-        pingItems = pingItems + 1
+  local graph = {}
+  for i = #icmpHistory, 1, -1 do
+    local item = icmpHistory[i]
+    if item.timeRecv then
+      local ping = item.timeRecv - item.timeSend
+      if ping < 0.05 then
+        local green = {green = 1}
+        table.insert(graph, {val = (ping / 0.05) * 0.25, color = green})
+      elseif ping < 0.2 then
+        local yellow = {red = 1, green = 1}
+        table.insert(graph, {val = (ping / 0.20) * 0.50, color = yellow})
+      elseif ping < 0.5 then
+        local orange = {red = 1, green = 0.5}
+        table.insert(graph, {val = (ping / 0.50) * 0.75, color = orange})
+      elseif ping < 2.0 then
+        local red = {red = 1}
+        table.insert(graph, {val = (ping / 2.0) * 1.00, color = red})
       end
-    end
-    if pingItems > 0 then
-      pingAverage = pingAverage / pingItems
+    else
+      -- If no reply is received draw gray columns of different height
+      -- for visual "in progress" feedback
+      local grey = {red = 0.5, green = 0.5, blue = 0.5}
+      if (counter + i) % 2 == 0 then
+        table.insert(graph, {val = 0.2, color = grey})
+      else
+        table.insert(graph, {val = 0.4, color = grey})
+      end
     end
   end
 
   batteryCharge = hs.battery.percentage()
 
   local titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage)
-  if pingAverage ~= 0 then
-    pingStr = string.format("%04.0f", pingAverage * 1000)
-    titleStr = titleStr .. " net: " .. pingStr
-  else
-    titleStr = titleStr .. " net: n/a"
-  end
   titleStr = titleStr .. " bat: " .. string.format("%.0f", batteryCharge)
 
   menuItem:clear()
-  menuItem:addGraph()
+  menuItem:addGraph(graph)
   menuItem:addSpacer(4)
   menuItem:addText(titleStr)
   menuItem:update()

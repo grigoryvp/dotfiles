@@ -57,8 +57,7 @@ function menuitem:update()
       totalWidth = totalWidth + width
 
     elseif widget.type == "graph" then
-      -- Graphs are square
-      local width = menuHeight
+      local width = #widget.graph * 2 + 2
       self._canvas:insertElement({
         type = "rectangle",
         frame = {
@@ -70,6 +69,27 @@ function menuitem:update()
         strokeColor = {red = 1, green = 1, blue = 1},
         action = "stroke"
       })
+      for i = 1, #widget.graph do
+        local item = widget.graph[i]
+        local height = item.val * (menuHeight - 2)
+        if height < 2 then
+          height = 2
+        end
+        if height > menuHeight - 2 then
+          height = menuHeight - 2
+        end
+        self._canvas:insertElement({
+          type = "rectangle",
+          frame = {
+            x = curOffset + 1 + (i - 1) * 2,
+            y = menuHeight - 1 - height,
+            w = 2,
+            h = height
+          },
+          fillColor = item.color,
+          action = "fill"
+        })
+      end
       curOffset = curOffset + width
       totalWidth = totalWidth + width
     end
@@ -86,8 +106,8 @@ function menuitem:addText(text)
 end
 
 
-function menuitem:addGraph()
-  table.insert(self._widgets, {type = "graph"})
+function menuitem:addGraph(graph)
+  table.insert(self._widgets, {type = "graph", graph = graph})
 end
 
 

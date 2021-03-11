@@ -8,8 +8,7 @@ require "menuitem"
 menuItem = menuitem:new()
 lastCpuUsage = hs.host.cpuUsageTicks()
 cpuLoadHistory = {}
-maxCpuLoadHistory = 10
-cpuLoadAverage = 0
+maxCpuLoadHistory = 20
 icmpHistory = {}
 -- Five pings per seconf for near-realtime network monitoring
 icmpSendInterval = 0.2
@@ -81,66 +80,89 @@ function onTimer()
   counter = counter + 1
   pingSrv:sendPayload()
 
-  -- Updating too often yields high CPU usage
-  if counter % 5 ~= 0 then
-    return
-  end
-
   local curCpuUsage = hs.host.cpuUsageTicks()
   local activeDiff = curCpuUsage.overall.active - lastCpuUsage.overall.active
   local idleDiff = curCpuUsage.overall.idle - lastCpuUsage.overall.idle
   lastCpuUsage = curCpuUsage
-  local cpuLoad = activeDiff * 100 / (activeDiff + idleDiff)
+  local cpuLoad = activeDiff / (activeDiff + idleDiff)
   table.insert(cpuLoadHistory, cpuLoad)
   if #cpuLoadHistory > maxCpuLoadHistory then
     table.remove(cpuLoadHistory, 1)
   end
 
-  cpuLoadAverage = 0
-  for _, v in ipairs(cpuLoadHistory) do
-    cpuLoadAverage = cpuLoadAverage + v
+  -- Updating too often yields high CPU usage
+  if counter % 5 ~= 0 then
+    return
   end
-  cpuLoadAverage = cpuLoadAverage / #cpuLoadHistory
 
-  local graph = {}
+  local netGraph = {}
   for i = #icmpHistory, 1, -1 do
     local item = icmpHistory[i]
     if item.timeRecv then
       local ping = item.timeRecv - item.timeSend
       if ping < 0.05 then
         local green = {green = 1}
-        table.insert(graph, {val = (ping / 0.05) * 0.25, color = green})
+        local val = (ping / 0.05) * 0.25
+        table.insert(netGraph, {val = val, color = green})
       elseif ping < 0.2 then
         local yellow = {red = 1, green = 1}
-        table.insert(graph, {val = (ping / 0.20) * 0.50, color = yellow})
+        local val = (ping / 0.20) * 0.25 + 0.25
+        table.insert(netGraph, {val = val, color = yellow})
       elseif ping < 0.5 then
         local orange = {red = 1, green = 0.5}
-        table.insert(graph, {val = (ping / 0.50) * 0.75, color = orange})
+        local val = (ping / 0.50) * 0.25 + 0.50
+        table.insert(netGraph, {val = val, color = orange})
       elseif ping < 2.0 then
         local red = {red = 1}
-        table.insert(graph, {val = (ping / 2.0) * 1.00, color = red})
+        local val = (ping / 2.00) * 0.25 + 0.75
+        table.insert(netGraph, {val = val, color = red})
       end
     else
       -- If no reply is received draw gray columns of different height
       -- for visual "in progress" feedback
       local grey = {red = 0.5, green = 0.5, blue = 0.5}
       if (counter + i) % 2 == 0 then
-        table.insert(graph, {val = 0.2, color = grey})
+        table.insert(netGraph, {val = 0.2, color = grey})
       else
-        table.insert(graph, {val = 0.4, color = grey})
+        table.insert(netGraph, {val = 0.4, color = grey})
       end
     end
   end
 
-  batteryCharge = hs.battery.percentage()
-
-  local titleStr = "cpu: " .. string.format("%05.2f", cpuLoadAverage)
-  titleStr = titleStr .. " bat: " .. string.format("%.0f", batteryCharge)
+  local cpuGraph = {}
+  for i = #cpuLoadHistory, 1, -1 do
+    local load = cpuLoadHistory[i]
+    if load < 0.10 then
+      local green = {green = 1}
+      local val = (load / 0.10) * 0.25
+      table.insert(cpuGraph, {val = val, color = green})
+    elseif load < 0.20 then
+      local yellow = {red = 1, green = 1}
+      local val = (load / 0.20) * 0.25 + 0.25
+      table.insert(cpuGraph, {val = val, color = yellow})
+    elseif load < 0.50 then
+      local orange = {red = 1, green = 0.5}
+      local val = (load / 0.50) * 0.25 + 0.50
+      table.insert(cpuGraph, {val = val, color = orange})
+    else
+      local load = {red = 1}
+      local val = (load / 1.00) * 0.25 + 0.75
+      table.insert(cpuGraph, {val = val, color = red})
+    end
+  end
 
   menuItem:clear()
-  menuItem:addGraph(graph)
+  menuItem:addText("net")
   menuItem:addSpacer(4)
-  menuItem:addText(titleStr)
+  menuItem:addGraph(netGraph)
+  menuItem:addSpacer(4)
+  menuItem:addText("cpu")
+  menuItem:addSpacer(4)
+  menuItem:addGraph(cpuGraph)
+  menuItem:addSpacer(4)
+  menuItem:addText("bat")
+  menuItem:addSpacer(4)
+  menuItem:addText(string.format("%.0f", hs.battery.percentage()))
   menuItem:update()
 end
 

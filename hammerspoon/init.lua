@@ -12,8 +12,6 @@ maxCpuLoadHistory = 20
 icmpHistory = {}
 -- Five pings per seconf for near-realtime network monitoring
 icmpSendInterval = 0.2
--- Pings more than 2 seconds are as bad as having no internet
-icmpTimeout = 2.0
 maxIcmpHistory = 20
 
 
@@ -97,28 +95,31 @@ function onTimer()
   local netGraph = {}
   for i = #icmpHistory, 1, -1 do
     local item = icmpHistory[i]
+    local graphItem = nil
     if item.timeRecv then
       local ping = item.timeRecv - item.timeSend
       if ping < 0.05 then
         local green = {green = 1}
         local val = (ping / 0.05) * 0.25
-        table.insert(netGraph, {val = val, color = green})
+        graphItem = {val = val, color = green}
       elseif ping < 0.2 then
         local yellow = {red = 1, green = 1}
         local val = (ping / 0.20) * 0.25 + 0.25
-        table.insert(netGraph, {val = val, color = yellow})
+        graphItem = {val = val, color = yellow}
       elseif ping < 0.5 then
         local orange = {red = 1, green = 0.5}
         local val = (ping / 0.50) * 0.25 + 0.50
-        table.insert(netGraph, {val = val, color = orange})
+        graphItem = netGraph, {val = val, color = orange}
       elseif ping < 2.0 then
         local red = {red = 1}
         local val = (ping / 2.00) * 0.25 + 0.75
-        table.insert(netGraph, {val = val, color = red})
+        graphItem = netGraph, {val = val, color = red}
       end
-    else
-      -- If no reply is received draw gray columns of different height
-      -- for visual "in progress" feedback
+      -- Pings more than 2 seconds are as bad as having no internet
+    end
+    if not graphItem then
+      -- If no reply is received or reply took more than 2 seconds draw gray
+      -- columns of different height for visual "in progress" feedback
       local grey = {red = 0.5, green = 0.5, blue = 0.5}
       if (counter + i) % 2 == 0 then
         table.insert(netGraph, {val = 0.2, color = grey})
@@ -126,6 +127,7 @@ function onTimer()
         table.insert(netGraph, {val = 0.4, color = grey})
       end
     end
+    table.insert(netGraph, graphItem)
   end
 
   local cpuGraph = {}

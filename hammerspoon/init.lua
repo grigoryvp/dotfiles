@@ -152,7 +152,47 @@ function onTimer()
     end
   end
 
+  local isTelegram = false
+  local isMail = false
+  local isSlack = false
+  for _, item in ipairs(axapp[1]) do
+    if item.AXRoleDescription == "application dock item" then
+      if item.AXTitle == "Telegram" and item.AXStatusLabel then
+        isTelegram = true
+      end
+      if item.AXTitle == "Mail" and item.AXStatusLabel then
+        isMail = true
+      end
+      if item.AXTitle == "Slack" and item.AXStatusLabel then
+        isSlack = true
+      end
+    end
+  end
+
   menuItem:clear()
+  notificationsText = ""
+  -- Flash notification icons on notifications
+  if counter % 10 == 0 then
+    if isTelegram and isSlack then
+      notificationsText = "M"
+    elseif isTelegram then
+      notificationsText = "T"
+    elseif isSlack then
+      notificationsText = "S"
+    else
+      notificationsText = " "
+    end
+    notificationsText = notificationsText .. " "
+    if isMail then
+      notificationsText = notificationsText .. "E"
+    else
+      notificationsText = notificationsText .. " "
+    end
+  else
+    notificationsText = "   "
+  end
+  menuItem:addText(notificationsText)
+  menuItem:addSpacer(4)
   menuItem:addText("net")
   menuItem:addSpacer(4)
   menuItem:addGraph(netGraph)

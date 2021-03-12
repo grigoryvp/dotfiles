@@ -181,7 +181,7 @@ function onTimer()
   -- Flash notification icons on notifications
   if counter % 10 == 0 then
     menuItem:addText(table.concat(notifications, " "))
-    menuItem:addSpacer(4)
+    menuItem:addSpacer(10)
   end
 
   menuItem:addText("net")

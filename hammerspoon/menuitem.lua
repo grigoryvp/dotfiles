@@ -72,12 +72,8 @@ function menuitem:update()
       for i = 1, #widget.graph do
         local item = widget.graph[i]
         local height = item.val * (menuHeight - 2)
-        if height < 2 then
-          height = 2
-        end
-        if height > menuHeight - 2 then
-          height = menuHeight - 2
-        end
+        if height < 2 then height = 2 end
+        if height > menuHeight - 2 then height = menuHeight - 2 end
         self._canvas:insertElement({
           type = "rectangle",
           frame = {

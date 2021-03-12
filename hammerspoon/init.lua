@@ -169,8 +169,36 @@ end
 
 
 timer = hs.timer.doEvery(icmpSendInterval, function()
-  isOk, err = pcall(onTimer)
+  local isOk, err = pcall(onTimer)
   if not isOk then
     print(err)
   end
+end)
+
+
+hs.hotkey.bind("⌃", "w", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local app = wnd:application()
+
+  -- Speed optimization to close tabs fast if they are exposed
+  -- (searching for app menu items takes some time)
+  if wnd:tabCount() > 0 then
+    app:selectMenuItem("Close Tab")
+    return
+  end
+
+  local menu = app:findMenuItem("Close Editor")
+  if menu and menu.enabled then
+    app:selectMenuItem("Close Editor")
+    return
+  end
+
+  local menu = app:findMenuItem("Close Tab")
+  if menu and menu.enabled then
+    app:selectMenuItem("Close Tab")
+    return
+  end
+
+  wnd:close()
 end)

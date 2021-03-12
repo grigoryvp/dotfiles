@@ -181,10 +181,11 @@ hs.hotkey.bind("⌃", "w", function()
   if not wnd then return end
   local app = wnd:application()
 
-  -- Speed optimization to close tabs fast if they are exposed
-  -- (searching for app menu items takes some time)
+  -- Speed optimization to close tabs fast if they are exposed like in
+  -- Safari or iTerm2 (searching for app menu items takes some time)
   if wnd:tabCount() > 0 then
-    app:selectMenuItem("Close Tab")
+    local delay = 50000
+    hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
     return
   end
 

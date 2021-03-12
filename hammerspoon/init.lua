@@ -19,13 +19,23 @@ axapp = hs.axuielement.applicationElement(dock)
 
 function clickDockItem(number)
   local currentNumber = 1
+  local isSeparatorFound = false
   for _, item in ipairs(axapp[1]) do
     if item.AXRoleDescription == "application dock item" then
-      if currentNumber == number then
-        item:doAXPress()
-        return
+      -- Hotkeys affect items to the right of user-placed separator
+      -- (system preferences for now). To the left are items that are
+      -- iterested only for notifications.
+      if isSeparatorFound then
+        if currentNumber == number then
+          item:doAXPress()
+          return
+        end
+        currentNumber = currentNumber + 1
+      else
+        if item.AXTitle == "System Preferences" then
+          isSeparatorFound = true
+        end
       end
-      currentNumber = currentNumber + 1
     end
   end
 end
@@ -34,8 +44,7 @@ end
 local hotkeys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 for i, hotkey in ipairs(hotkeys) do
   hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, hotkey, function()
-    -- skip finder in dock
-    clickDockItem(i + 1)
+    clickDockItem(i)
   end)
 end
 

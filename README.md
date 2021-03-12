@@ -118,6 +118,7 @@ nodenv global 15.8.0
 # * Remove "⇧⌘/"
 # * Add "⌘W" to "Close Tab" for "Safari".
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram".
+# In "Preferenes/Dock & Menu Bar" remove all icons except 24h clock.
 # Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
 # Enable password lock in "Preferences/Security/General/Require password".

@@ -13,11 +13,11 @@ icmpHistory = {}
 -- Five pings per seconf for near-realtime network monitoring
 icmpSendInterval = 0.2
 maxIcmpHistory = 20
+dock = hs.application("Dock")
+axapp = hs.axuielement.applicationElement(dock)
 
 
 function clickDockItem(number)
-  local dock = hs.application("Dock")
-  local axapp = hs.axuielement.applicationElement(dock)
   local currentNumber = 1
   for _, item in ipairs(axapp[1]) do
     if item.AXRoleDescription == "application dock item" then

@@ -178,9 +178,13 @@ function onTimer()
 
   menuItem:clear()
 
-  -- Flash notification icons on notifications
-  if counter % 10 == 0 then
-    menuItem:addText(table.concat(notifications, " "))
+  if #notifications > 0 then
+    -- Flash notification icons
+    if counter % 10 == 0 then
+      menuItem:addText(table.concat(notifications, " "))
+    else
+      menuItem:addText(string.rep(" ", #notifications * 2 - 1))
+    end
     menuItem:addSpacer(10)
   end
 

@@ -38,7 +38,9 @@ brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.9.1 on Apple Silicon
 brew install readline openssl
-brew install keepassxc rectangle karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
+brew install mas keepassxc rectangle karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
+# Amphetamine, Xcode
+mas install 937984704 497799835
 git clone https://github.com/grigoryvp/dotfile.git ~/dotfiles
 # Confirm execution of downloaded app.
 open /Applications/KeePassXC.app ~/dotfiles/passwords.kdbx
@@ -95,7 +97,6 @@ rbenv global 3.0.0
 nodenv install 15.8.0
 nodenv global 15.8.0
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
-# App store: XCode, Affinity.
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://macos.telegram.org/
 # Configure "Smart Scroll":
@@ -104,6 +105,7 @@ nodenv global 15.8.0
 # * Enable "Scroll without moving cursor".
 # * Disable "Inertia".
 # Configure "Rectangle" hotkeys.
+# Configure Amphetamine autostart and auto session on start and wake.
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: rectangle, wifi, bt, clock, short menu, battery monitor, menumeters
 # Drop "/System/Library/CoreServices/Finder.app" into dock.

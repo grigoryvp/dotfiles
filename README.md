@@ -38,6 +38,8 @@ brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.9.1 on Apple Silicon
 brew install readline openssl
+# For keepassxc-cli
+brew install --build-from-source libgpg-error
 brew install mas keepassxc rectangle karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
 # Amphetamine, Xcode
 mas install 937984704 497799835

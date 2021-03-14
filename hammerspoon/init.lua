@@ -113,15 +113,15 @@ function onTimer()
         graphItem = {val = val, color = green}
       elseif ping < 0.2 then
         local yellow = {red = 1, green = 1}
-        local val = (ping / 0.20) * 0.25 + 0.25
+        local val = ((ping - 0.05) / (0.20 - 0.05)) * 0.25 + 0.25
         graphItem = {val = val, color = yellow}
       elseif ping < 0.5 then
         local orange = {red = 1, green = 0.5}
-        local val = (ping / 0.50) * 0.25 + 0.50
+        local val = ((ping - 0.20) / (0.50 - 0.20)) * 0.25 + 0.50
         graphItem = {val = val, color = orange}
       elseif ping < 2.0 then
         local red = {red = 1}
-        local val = (ping / 2.00) * 0.25 + 0.75
+        local val = ((ping - 0.50) / (2.00 - 0.50)) * 0.25 + 0.75
         graphItem = {val = val, color = red}
       end
       -- Pings more than 2 seconds are as bad as having no internet
@@ -148,15 +148,15 @@ function onTimer()
       table.insert(cpuGraph, {val = val, color = green})
     elseif load < 0.20 then
       local yellow = {red = 1, green = 1}
-      local val = (load / 0.20) * 0.25 + 0.25
+      local val = ((load - 0.10) / (0.20 - 0.10)) * 0.25 + 0.25
       table.insert(cpuGraph, {val = val, color = yellow})
     elseif load < 0.50 then
       local orange = {red = 1, green = 0.5}
-      local val = (load / 0.50) * 0.25 + 0.50
+      local val = ((load - 0.20) / (0.50 - 0.20)) * 0.25 + 0.50
       table.insert(cpuGraph, {val = val, color = orange})
     else
       local red = {red = 1}
-      local val = (load / 1.00) * 0.25 + 0.75
+      local val = ((load - 0.50) / (1.00 - 0.50)) * 0.25 + 0.75
       table.insert(cpuGraph, {val = val, color = red})
     end
   end

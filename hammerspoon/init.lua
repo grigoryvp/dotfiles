@@ -41,9 +41,9 @@ function clickDockItem(number)
 end
 
 
-local hotkeys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
+local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-"}
 for i, hotkey in ipairs(hotkeys) do
-  hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, hotkey, function()
+  hs.hotkey.bind({"⌘", "⌃", "⌥"}, hotkey, function()
     clickDockItem(i)
   end)
 end

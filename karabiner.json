@@ -400,8 +400,8 @@
             "key_code": "2"
           },
           "to": [{
-            "key_code": "1",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "2",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -413,8 +413,8 @@
             "key_code": "3"
           },
           "to": [{
-            "key_code": "2",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "3",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -426,8 +426,8 @@
             "key_code": "4"
           },
           "to": [{
-            "key_code": "3",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "4",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -439,8 +439,8 @@
             "key_code": "5"
           },
           "to": [{
-            "key_code": "4",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "5",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -452,8 +452,8 @@
             "key_code": "6"
           },
           "to": [{
-            "key_code": "5",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "6",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -465,8 +465,8 @@
             "key_code": "7"
           },
           "to": [{
-            "key_code": "6",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "7",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -478,8 +478,8 @@
             "key_code": "8"
           },
           "to": [{
-            "key_code": "7",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "8",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -491,8 +491,8 @@
             "key_code": "9"
           },
           "to": [{
-            "key_code": "8",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "9",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -504,8 +504,8 @@
             "key_code": "0"
           },
           "to": [{
-            "key_code": "9",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "0",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -517,8 +517,8 @@
             "key_code": "hyphen"
           },
           "to": [{
-            "key_code": "0",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "key_code": "hyphen",
+            "modifiers": ["left_command", "left_option", "control"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },

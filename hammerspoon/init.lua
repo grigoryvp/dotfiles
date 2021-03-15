@@ -49,6 +49,19 @@ for i, hotkey in ipairs(hotkeys) do
 end
 
 
+-- meta-shift-2 opens Trello
+hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
+  local app = hs.application.find("com.apple.Safari")
+  if not app then
+    app = hs.application.open("Safari")
+  else
+    app:activate()
+    app:selectMenuItem("New Tab")
+  end
+  hs.eventtap.keyStrokes("https://trello.com\n", app)
+end)
+
+
 pingSrv = hs.network.ping.echoRequest("1.1.1.1")
 pingSrv:setCallback(function(self, msg, ...)
   if msg == "didStart" then
@@ -212,14 +225,27 @@ end)
 
 
 hs.hotkey.bind("⌃", "w", function()
+  local delay = 50000
   local wnd = hs.window.frontmostWindow()
   if not wnd then return end
   local app = wnd:application()
 
+  if app:bundleID() == "com.apple.Safari" then
+    if wnd:tabCount() > 0 then
+      -- Close active tab
+      hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
+    else
+      -- Safari can't close last tab, so create empty and close first
+      app:selectMenuItem("New Tab")
+      wnd:focusTab(1)
+      hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
+    end
+    return
+  end
+
   -- Speed optimization to close tabs fast if they are exposed like in
   -- Safari or iTerm2 (searching for app menu items takes some time)
   if wnd:tabCount() > 0 then
-    local delay = 50000
     hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
     return
   end

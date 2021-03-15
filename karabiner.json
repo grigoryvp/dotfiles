@@ -407,6 +407,20 @@
         },
 
         {
+          "description": "meta-shift-2 for 1st website",
+          "type": "basic",
+          "from": {
+            "key_code": "2",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "2",
+            "modifiers": ["left_command", "left_option", "control", "shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+        },
+
+        {
           "description": "meta-3 for 2nd app",
           "type": "basic",
           "from": {

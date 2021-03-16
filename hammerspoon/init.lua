@@ -56,7 +56,20 @@ hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
     app = hs.application.open("Safari")
   else
     app:activate()
-    app:selectMenuItem("New Tab")
+    local wnd = hs.window.frontmostWindow()
+    if wnd:tabCount() > 0 then
+      -- Open site in a new tab if something is already opened.
+      app:selectMenuItem("New Tab")
+    else
+      menuItem = app:findMenuItem("Save As...")
+      -- Last tab has some page open?
+      if menuItem.enabled then
+        app:selectMenuItem("New Tab")
+      else
+        -- Last tab is empty - open website in it.
+        hs.eventtap.keyStroke({"⌘"}, "l", delay, app)
+      end
+    end
   end
   hs.eventtap.keyStrokes("https://trello.com\n", app)
 end)

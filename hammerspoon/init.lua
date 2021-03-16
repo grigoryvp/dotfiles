@@ -15,6 +15,7 @@ icmpSendInterval = 0.2
 maxIcmpHistory = 20
 dock = hs.application("Dock")
 axapp = hs.axuielement.applicationElement(dock)
+bitlyToken = nil
 
 
 function clickDockItem(number)
@@ -280,13 +281,22 @@ end)
 
 
 menuItem:addSubmenuItem("Load passwords", function()
-  local masterPass = hs.dialog.textPrompt("Enter master password", "")
-  local cmd = "/opt/homebrew/bin/keepassxc-cli --help"
-  local stdout, status = hs.execute(cmd)
-  if not status then
-    return hs.alert.show("Error executing keepassxc")
+  local msg = "Enter master password"
+  local secureField = true
+  local _, masterPass = hs.dialog.textPrompt(msg, "", "", "", "", secureField)
+  local db = "/Users/user/dotfiles/passwords.kdbx"
+  local app = "/opt/homebrew/bin/keepassxc-cli"
+  local args = {"show", "-s", db, "bit.ly"}
+  local onTaskExit = function(exitCode, stdOut, _)
+    if exitCode ~= 0 then
+      return hs.alert.show("Error executing keepassxc")
+    end
+    bitlyToken = string.match(stdOut, "Notes: (.+)\n")
+    hs.alert.show("Loaded")
   end
+  local task = hs.task.new(app, onTaskExit, args)
+  task:setInput(masterPass)
   -- Do not trust GC
   masterPass = ""
-  hs.alert.show("Not implemented yet")
+  task:start()
 end)

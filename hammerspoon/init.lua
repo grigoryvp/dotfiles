@@ -61,7 +61,7 @@ hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
       -- Open site in a new tab if something is already opened.
       app:selectMenuItem("New Tab")
     else
-      menuItem = app:findMenuItem("Save As...")
+      local menuItem = app:findMenuItem("Save As...")
       -- Last tab has some page open?
       if menuItem.enabled then
         app:selectMenuItem("New Tab")

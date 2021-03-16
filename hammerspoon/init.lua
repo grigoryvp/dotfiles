@@ -68,6 +68,7 @@ hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
         app:selectMenuItem("New Tab")
       else
         -- Last tab is empty - open website in it.
+        local delay = 50000
         hs.eventtap.keyStroke({"⌘"}, "l", delay, app)
       end
     end

@@ -1,0 +1,14 @@
+{
+  // Todo: https://github.com/Hammerspoon/hammerspoon/pull/2530
+  // cd ~
+  // git clone https://github.com/folke/hammerspoon.git
+  // cd hammerspoon
+  // make build/stubs
+  "Lua.workspace.library": [
+    "/Users/user/hammerspoon/build/stubs"
+  ],
+  "Lua.workspace.preloadFileSize": 256,
+  "Lua.diagnostics.disable": [
+    "lowercase-global"
+  ]
+}

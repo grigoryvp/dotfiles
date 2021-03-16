@@ -117,3 +117,9 @@ function menuitem:addSubmenuItem(title, fn)
   table.insert(self._submenu, {title = title, fn = fn})
   self._item:setMenu(self._submenu)
 end
+
+
+function menuitem:addSubmenuSeparator()
+  table.insert(self._submenu, {title = "-"})
+  self._item:setMenu(self._submenu)
+end

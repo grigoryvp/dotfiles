@@ -210,7 +210,7 @@ function onTimer()
     if counter % 10 == 0 then
       menuItem:addText(table.concat(notifications, " "))
     else
-      menuItem:addText(string.rep(" ", #notifications * 2 - 1))
+      menuItem:addText((" "):rep(#notifications * 2 - 1))
     end
     menuItem:addSpacer(10)
   end
@@ -225,7 +225,7 @@ function onTimer()
   menuItem:addSpacer(4)
   menuItem:addText("bat")
   menuItem:addSpacer(4)
-  menuItem:addText(string.format("%.0f", hs.battery.percentage()))
+  menuItem:addText(("%.0f"):format(hs.battery.percentage()))
   menuItem:update()
 end
 
@@ -284,6 +284,9 @@ menuItem:addSubmenuItem("Load passwords", function()
   local msg = "Enter master password"
   local secureField = true
   local _, masterPass = hs.dialog.textPrompt(msg, "", "", "", "", secureField)
+  if masterPass == "" then
+    return
+  end
   local db = "/Users/user/dotfiles/passwords.kdbx"
   local app = "/opt/homebrew/bin/keepassxc-cli"
   local args = {"show", "-s", db, "bit.ly"}
@@ -291,7 +294,7 @@ menuItem:addSubmenuItem("Load passwords", function()
     if exitCode ~= 0 then
       return hs.alert.show("Error executing keepassxc")
     end
-    bitlyToken = string.match(stdOut, "Notes: (.+)\n")
+    bitlyToken = stdOut:match("Notes: (.+)\n")
     hs.alert.show("Loaded")
   end
   local task = hs.task.new(app, onTaskExit, args)
@@ -299,4 +302,36 @@ menuItem:addSubmenuItem("Load passwords", function()
   -- Do not trust GC
   masterPass = ""
   task:start()
+end)
+menuItem:addSubmenuSeparator()
+
+
+menuItem:addSubmenuItem("Shorten URL", function()
+  if not bitlyToken then
+    return hs.alert.show("Passwords not loaded")
+  end
+
+  local clipboard = hs.pasteboard.getContents()
+  if not clipboard:match("^https?://") then
+    return hs.alert.show("No URL in clipboard")
+  end
+
+  -- Remove query string before shortening.
+  local queryPos = clipboard:find("?")
+  if queryPos then
+    clipboard = clipboard:sub(1, queryPos - 1)
+  end
+
+  local url = "" ..
+    "https://api-ssl.bitly.com/v3/shorten" ..
+    "?access_token=" .. bitlyToken ..
+    "&longUrl=" .. hs.http.encodeForQuery(clipboard)
+  local res = hs.http.asyncGet(url, {}, function(status, response, _)
+    if status ~= 200 then
+      return hs.alert.show("Failed")
+    end
+      local response = hs.json.decode(response)
+      hs.pasteboard.setContents(response.data.url)
+      return hs.alert.show("Success")
+  end)
 end)

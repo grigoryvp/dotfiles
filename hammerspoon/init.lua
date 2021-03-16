@@ -277,3 +277,7 @@ hs.hotkey.bind("⌃", "w", function()
 
   wnd:close()
 end)
+
+
+menuItem:addSubmenuItem("Load passwords", function()
+end)

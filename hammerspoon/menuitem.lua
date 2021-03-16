@@ -12,6 +12,7 @@ local fontTopOffset = 3
 function menuitem:new()
   local inst = {
     _widgets = {},
+    _submenu = {},
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
     _item = hs.menubar.new()
   }
@@ -109,4 +110,10 @@ end
 
 function menuitem:addSpacer(width)
   table.insert(self._widgets, {type = "spacer", width = width})
+end
+
+
+function menuitem:addSubmenuItem(title, fn)
+  table.insert(self._submenu, {title = title, fn = fn})
+  self._item:setMenu(self._submenu)
 end

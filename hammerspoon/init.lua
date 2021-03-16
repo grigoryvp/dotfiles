@@ -280,4 +280,13 @@ end)
 
 
 menuItem:addSubmenuItem("Load passwords", function()
+  local masterPass = hs.dialog.textPrompt("Enter master password", "")
+  local cmd = "/opt/homebrew/bin/keepassxc-cli --help"
+  local stdout, status = hs.execute(cmd)
+  if not status then
+    return hs.alert.show("Error executing keepassxc")
+  end
+  -- Do not trust GC
+  masterPass = ""
+  hs.alert.show("Not implemented yet")
 end)

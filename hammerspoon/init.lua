@@ -291,6 +291,21 @@ hs.hotkey.bind("⌃⇧", "v", function()
 end)
 
 
+hs.hotkey.bind("⌘⇧", "space", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x
+  frame.y = screenFrame.y
+  frame.w = screenFrame.w
+  frame.h = screenFrame.h
+  local duration = 0
+  wnd:setFrame(screenFrame, duration)
+end)
+
+
 menuItem:addSubmenuItem("Load passwords", function()
   local msg = "Enter master password"
   local secureField = true

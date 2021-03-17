@@ -281,6 +281,16 @@ hs.hotkey.bind("⌃", "w", function()
 end)
 
 
+hs.hotkey.bind("⌃⇧", "v", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local app = wnd:application()
+
+  hs.pasteboard.setContents(hs.pasteboard.readString())
+  app:selectMenuItem("Paste")
+end)
+
+
 menuItem:addSubmenuItem("Load passwords", function()
   local msg = "Enter master password"
   local secureField = true
@@ -312,7 +322,7 @@ menuItem:addSubmenuItem("Shorten URL", function()
     return hs.alert.show("Passwords not loaded")
   end
 
-  local clipboard = hs.pasteboard.getContents()
+  local clipboard = hs.pasteboard.readString()
   if not clipboard:match("^https?://") then
     return hs.alert.show("No URL in clipboard")
   end

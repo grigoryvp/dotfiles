@@ -11,8 +11,18 @@ cpuLoadHistory = {}
 maxCpuLoadHistory = 20
 icmpHistory = {}
 -- Interval, in seconds, to send pings, check cpu load etc.
-heartbeat = 0.2
+heartbeatInterval = 0.2
+heartbeatsPerSec = 5
+heartbeatCounter = 0
+heartbeatTime = hs.timer.absoluteTime() / 1000000000;
 maxIcmpHistory = 20
+lastBattery = nil
+secondsSinceBatteryDec = 0
+-- Keys are the charge amount the decrease is from, values are number of
+-- seconds it took for battery to discharge from that value. Ex, if key 90
+-- contains value of 1000 that means that it took 1000 seconds for a battery
+-- to discharge from 90 to 89 percents.
+batteryDecHistory = {}
 dock = hs.application("Dock")
 axapp = hs.axuielement.applicationElement(dock)
 bitlyToken = nil
@@ -108,10 +118,9 @@ end)
 pingSrv:start()
 
 
-counter = 0
 function onHeartbeat()
 
-  counter = counter + 1
+  heartbeatCounter = heartbeatCounter + 1
   pingSrv:sendPayload()
 
   local curCpuUsage = hs.host.cpuUsageTicks()
@@ -125,9 +134,19 @@ function onHeartbeat()
   end
 
   -- Updating too often yields high CPU usage
-  if counter % 5 ~= 0 then
+  if heartbeatCounter % heartbeatsPerSec ~= 0 then
     return
   end
+
+  local curTime = hs.timer.absoluteTime() / 1000000000;
+  local tooEarly = heartbeatTime + (heartbeatsPerSec - 1) * heartbeatInterval
+  local tooLate = heartbeatTime + (heartbeatsPerSec + 1) * heartbeatInterval
+  local isOneSecondPassed = false
+  -- Around one second passed? (no sleep)
+  if curTime >= tooEarly and curTime <= tooLate then
+    isOneSecondPassed = true
+  end
+  heartbeatTime = curTime
 
   local netGraph = {}
   for i = #icmpHistory, 1, -1 do
@@ -158,7 +177,7 @@ function onHeartbeat()
       -- If no reply is received or reply took more than 2 seconds draw gray
       -- columns of different height for visual "in progress" feedback
       local grey = {red = 0.5, green = 0.5, blue = 0.5}
-      if (counter + i) % 2 == 0 then
+      if (heartbeatCounter + i) % 2 == 0 then
         table.insert(netGraph, {val = 0.2, color = grey})
       else
         table.insert(netGraph, {val = 0.4, color = grey})
@@ -208,13 +227,67 @@ function onHeartbeat()
 
   if #notifications > 0 then
     -- Flash notification icons
-    if counter % 10 == 0 then
+    if heartbeatCounter % 10 == 0 then
       menuItem:addText(table.concat(notifications, " "))
     else
       menuItem:addText((" "):rep(#notifications * 2 - 1))
     end
     menuItem:addSpacer(10)
   end
+
+  local battery = hs.battery.percentage()
+  if not lastBattery then lastBattery = battery end
+
+  -- 100 => 99 discharge takes too much time
+  if lastBattery < 100 then
+    if battery > lastBattery then
+      -- Charge detected, clear history
+      batteryDecHistory = {}
+      secondsSinceBatteryDec = 0
+    elseif battery == lastBattery then
+      if isOneSecondPassed then
+        secondsSinceBatteryDec = secondsSinceBatteryDec + 1
+      end
+    else
+      -- Not a discharge jump: overnight stay etc?
+      if battery == lastBattery - 1 then
+        batteryDecHistory[lastBattery] = secondsSinceBatteryDec
+      end
+      secondsSinceBatteryDec = 0
+      lastBattery = battery
+    end
+  else
+    -- Fully charged
+    batteryDecHistory = {}
+  end
+
+  local recordCount = 0
+  local totalTime = 0
+  for _, seconds in pairs(batteryDecHistory) do
+    recordCount = recordCount + 1
+    totalTime = totalTime + seconds
+  end
+  local hrLeft = 0
+  local minLeft = 0
+  if recordCount > 0 then
+    local secPerPercent = totalTime / recordCount
+    local secRemaining = battery * secPerPercent
+    hrLeft = math.floor(secRemaining / 3600)
+    minLeft = math.floor((secPerPercent - hrLeft * 3600) / 60)
+  end
+
+  local timeLeft = "("
+  if recordCount > 0 then
+    if hrLeft > 0 then
+      timeLeft = timeLeft .. hrLeft .. "h"
+    end
+    if minLeft > 0 then
+      timeLeft = timeLeft .. " " .. minLeft .. "m"
+    end
+  else
+    timeLeft = timeLeft .. "?"
+  end
+  timeLeft = timeLeft .. ")"
 
   menuItem:addText("net")
   menuItem:addSpacer(4)
@@ -226,12 +299,12 @@ function onHeartbeat()
   menuItem:addSpacer(4)
   menuItem:addText("bat")
   menuItem:addSpacer(4)
-  menuItem:addText(("%.0f"):format(hs.battery.percentage()))
+  menuItem:addText(("%.0f"):format(battery) .. " " .. timeLeft)
   menuItem:update()
 end
 
 
-timer = hs.timer.doEvery(heartbeat, function()
+timer = hs.timer.doEvery(heartbeatInterval, function()
   onHeartbeat()
 end)
 
@@ -377,12 +450,12 @@ menuItem:addSubmenuItem("Shorten URL", function()
     "https://api-ssl.bitly.com/v3/shorten" ..
     "?access_token=" .. bitlyToken ..
     "&longUrl=" .. hs.http.encodeForQuery(clipboard)
-  local res = hs.http.asyncGet(url, {}, function(status, response, _)
+  hs.http.asyncGet(url, {}, function(status, response, _)
     if status ~= 200 then
       return hs.alert.show("Failed")
     end
-      local response = hs.json.decode(response)
-      hs.pasteboard.setContents(response.data.url)
-      return hs.alert.show("Success")
+    local response = hs.json.decode(response)
+    hs.pasteboard.setContents(response.data.url)
+    return hs.alert.show("Success")
   end)
 end)

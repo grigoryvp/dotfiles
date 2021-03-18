@@ -10,8 +10,8 @@ lastCpuUsage = hs.host.cpuUsageTicks()
 cpuLoadHistory = {}
 maxCpuLoadHistory = 20
 icmpHistory = {}
--- Five pings per seconf for near-realtime network monitoring
-icmpSendInterval = 0.2
+-- Interval, in seconds, to send pings, check cpu load etc.
+heartbeat = 0.2
 maxIcmpHistory = 20
 dock = hs.application("Dock")
 axapp = hs.axuielement.applicationElement(dock)
@@ -109,7 +109,7 @@ pingSrv:start()
 
 
 counter = 0
-function onTimer()
+function onHeartbeat()
 
   counter = counter + 1
   pingSrv:sendPayload()
@@ -231,11 +231,8 @@ function onTimer()
 end
 
 
-timer = hs.timer.doEvery(icmpSendInterval, function()
-  local isOk, err = pcall(onTimer)
-  if not isOk then
-    print(err)
-  end
+timer = hs.timer.doEvery(heartbeat, function()
+  onHeartbeat()
 end)
 
 

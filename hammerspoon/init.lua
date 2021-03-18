@@ -272,12 +272,12 @@ function onHeartbeat()
         batteryDecHistory[lastBattery] = secondsSinceBatteryDec
       end
       secondsSinceBatteryDec = 0
-      lastBattery = battery
     end
   else
     -- Fully charged
     batteryDecHistory = {}
   end
+  lastBattery = battery
 
   local recordCount = 0
   local totalTime = 0

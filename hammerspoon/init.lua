@@ -295,6 +295,7 @@ hs.hotkey.bind("⌘⇧", "space", function()
   local wnd = hs.window.frontmostWindow()
   if not wnd then return end
   local frame = wnd:frame()
+  ---@type table
   local screenFrame = wnd:screen():frame()
 
   frame.x = screenFrame.x

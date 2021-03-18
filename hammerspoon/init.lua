@@ -405,6 +405,102 @@ hs.hotkey.bind("⌘⇧", "m", function()
 end)
 
 
+hs.hotkey.bind("⌘⇧", ",", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x
+  frame.y = screenFrame.y
+  frame.w = screenFrame.w
+  frame.h = screenFrame.h / 2
+  local duration = 0
+  wnd:setFrame(frame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", ".", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x
+  frame.y = screenFrame.y + screenFrame.h / 2
+  frame.w = screenFrame.w
+  frame.h = screenFrame.h / 2
+  local duration = 0
+  wnd:setFrame(frame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", "y", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x
+  frame.y = screenFrame.y
+  frame.w = screenFrame.w / 2
+  frame.h = screenFrame.h / 2
+  local duration = 0
+  wnd:setFrame(frame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", "u", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x + screenFrame.w / 2
+  frame.y = screenFrame.y
+  frame.w = screenFrame.w / 2
+  frame.h = screenFrame.h / 2
+  local duration = 0
+  wnd:setFrame(frame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", "i", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x
+  frame.y = screenFrame.y + screenFrame.h / 2
+  frame.w = screenFrame.w / 2
+  frame.h = screenFrame.h / 2
+  local duration = 0
+  wnd:setFrame(frame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", "o", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x + screenFrame.w / 2
+  frame.y = screenFrame.y + screenFrame.h / 2
+  frame.w = screenFrame.w / 2
+  frame.h = screenFrame.h / 2
+  local duration = 0
+  wnd:setFrame(frame, duration)
+end)
+
+
 menuItem:addSubmenuItem("Load passwords", function()
   local msg = "Enter master password"
   local secureField = true

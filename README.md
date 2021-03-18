@@ -40,7 +40,7 @@ brew tap homebrew/cask-fonts
 brew install readline openssl
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
-brew install mas keepassxc rectangle karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd
 # Amphetamine, Xcode
 mas install 937984704 497799835
 git clone https://github.com/grigoryvp/dotfile.git ~/dotfiles
@@ -106,10 +106,9 @@ nodenv global 15.8.0
 # * "Grab scroll without moving cursor" to button 6.
 # * Enable "Scroll without moving cursor".
 # * Disable "Inertia".
-# Configure "Rectangle" hotkeys.
 # Configure Amphetamine autostart and auto session on start and wake.
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
-# Menu: rectangle, wifi, bt, clock, short menu, battery monitor, menumeters
+# Menu: hammerspoon, amphetamine, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram lite
 # Set max key repeat and min delay in "Preferences/Keyboard"

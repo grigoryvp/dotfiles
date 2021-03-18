@@ -273,7 +273,7 @@ function onHeartbeat()
     local secPerPercent = totalTime / recordCount
     local secRemaining = battery * secPerPercent
     hrLeft = math.floor(secRemaining / 3600)
-    minLeft = math.floor((secPerPercent - hrLeft * 3600) / 60)
+    minLeft = math.floor((secRemaining - hrLeft * 3600) / 60)
   end
 
   local timeLeft = "("

@@ -24,14 +24,17 @@ secondsSinceBatteryDec = 0
 -- to discharge from 90 to 89 percents.
 batteryDecHistory = {}
 dock = hs.application("Dock")
-axapp = hs.axuielement.applicationElement(dock)
+dockItems = hs.axuielement.applicationElement(dock)[1]
+telegramDockItem = nil
+mailDockItem = nil
+slackDockItem = nil
 bitlyToken = nil
 
 
 function clickDockItem(number)
   local currentNumber = 1
   local isSeparatorFound = false
-  for _, item in ipairs(axapp[1]) do
+  for _, item in ipairs(dockItems) do
     if item.AXRoleDescription == "application dock item" then
       -- Hotkeys affect items to the right of user-placed separator
       -- (system preferences for now). To the left are items that are
@@ -121,8 +124,10 @@ pingSrv:start()
 function onHeartbeat()
 
   heartbeatCounter = heartbeatCounter + 1
+  -- 0.5% CPU
   pingSrv:sendPayload()
 
+  -- 0.1% CPU
   local curCpuUsage = hs.host.cpuUsageTicks()
   local activeDiff = curCpuUsage.overall.active - lastCpuUsage.overall.active
   local idleDiff = curCpuUsage.overall.idle - lastCpuUsage.overall.idle
@@ -208,19 +213,32 @@ function onHeartbeat()
     end
   end
 
-  local notifications = {}
-  for _, item in ipairs(axapp[1]) do
-    if item.AXRoleDescription == "application dock item" then
-      if item.AXTitle == "Telegram" and item.AXStatusLabel then
-        table.insert(notifications, "T")
-      end
-      if item.AXTitle == "Mail" and item.AXStatusLabel then
-        table.insert(notifications, "E")
-      end
-      if item.AXTitle == "Slack" and item.AXStatusLabel then
-        table.insert(notifications, "S")
+  if not telegramDockItem or not mailDockItem or not slackDockItem then
+    -- Do not check too often, CPU expensive
+    if heartbeatCounter == 0 or heartbeatCounter % 100 == 0 then
+      for _, item in ipairs(dockItems) do
+        if item.AXTitle == "Telegram" then
+          telegramDockItem = item
+        end
+        if item.AXTitle == "Mail" then
+          mailDockItem = item
+        end
+        if item.AXTitle == "Slack" then
+          slackDockItem = item
+        end
       end
     end
+  end
+
+  local notifications = {}
+  if telegramDockItem and telegramDockItem.AXStatusLabel then
+      table.insert(notifications, "T")
+  end
+  if mailDockItem and mailDockItem.AXStatusLabel then
+      table.insert(notifications, "E")
+  end
+  if slackDockItem and slackDockItem.AXStatusLabel then
+      table.insert(notifications, "S")
   end
 
   menuItem:clear()

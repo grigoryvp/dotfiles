@@ -297,13 +297,40 @@ hs.hotkey.bind("⌘⇧", "space", function()
   local frame = wnd:frame()
   ---@type table
   local screenFrame = wnd:screen():frame()
+  local duration = 0
+  wnd:setFrame(screenFrame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", "n", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
 
   frame.x = screenFrame.x
   frame.y = screenFrame.y
-  frame.w = screenFrame.w
+  frame.w = screenFrame.w / 2
   frame.h = screenFrame.h
   local duration = 0
-  wnd:setFrame(screenFrame, duration)
+  wnd:setFrame(frame, duration)
+end)
+
+
+hs.hotkey.bind("⌘⇧", "m", function()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local frame = wnd:frame()
+  ---@type table
+  local screenFrame = wnd:screen():frame()
+
+  frame.x = screenFrame.x + screenFrame.w / 2
+  frame.y = screenFrame.y
+  frame.w = screenFrame.w / 2
+  frame.h = screenFrame.h
+  local duration = 0
+  wnd:setFrame(frame, duration)
 end)
 
 

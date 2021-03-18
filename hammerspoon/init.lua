@@ -282,7 +282,8 @@ function onHeartbeat()
       timeLeft = timeLeft .. hrLeft .. "h"
     end
     if minLeft > 0 then
-      timeLeft = timeLeft .. " " .. minLeft .. "m"
+      if hrLeft > 0 then timeLeft = timeLeft .. " " end
+      timeLeft = timeLeft .. minLeft .. "m"
     end
   else
     timeLeft = timeLeft .. "?"

@@ -145,5 +145,7 @@
   "vsicons.presets.foldersAllDefaultIcon": true,
   "vsicons.dontShowNewVersionMessage": true,
   "keyboard.dispatch": "keyCode",
-  "python.languageServer": "Pylance"
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.showStartPage": false
 }

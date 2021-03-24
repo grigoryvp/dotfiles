@@ -96,6 +96,9 @@
   "[rust]": {
     "editor.tabSize": 4
   },
+  "[xi]": {
+    "editor.fontLigatures": false
+  },
   "editor.lineNumbers": "off",
   "editor.links": true,
   "editor.minimap.enabled": false,
@@ -147,5 +150,11 @@
   "keyboard.dispatch": "keyCode",
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
-  "python.showStartPage": false
+  "python.showStartPage": false,
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
+    }
+  ]
 }

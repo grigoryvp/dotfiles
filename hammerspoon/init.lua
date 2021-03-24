@@ -328,12 +328,16 @@ hs.hotkey.bind("⌃", "w", function()
   if app:bundleID() == "com.apple.Safari" then
     if wnd:tabCount() > 0 then
       -- Close active tab
-      hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
+      app:selectMenuItem("Close Tab")
     else
-      -- Safari can't close last tab, so create empty and close first
-      app:selectMenuItem("New Tab")
-      wnd:focusTab(1)
-      hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
+      local menuItem = app:findMenuItem("Save As...")
+      -- Current tab has some page open?
+      if menuItem.enabled then
+        -- Safari can't close last tab
+        app:selectMenuItem("New Tab")
+        wnd:focusTab(1)
+        app:selectMenuItem("Close Tab")
+      end
     end
     return
   end

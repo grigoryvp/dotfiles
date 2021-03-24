@@ -65,11 +65,11 @@ end
 
 -- meta-shift-2 opens Trello
 hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
-  local app = hs.application.find("com.apple.Safari")
-  if not app then
-    app = hs.application.open("Safari")
-  end
-  app:activate()
+  local reasonableNumOfSeconds = 5
+  local waitApp = reasonableNumOfSeconds
+  local waitWindow = true
+  local app = hs.application.open("com.apple.Safari", waitApp, waitWindow)
+  if not app then return end
   local menuItem = app:findMenuItem("Save As...")
   -- Current tab has some page open?
   if menuItem.enabled then

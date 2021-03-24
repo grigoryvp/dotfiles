@@ -75,8 +75,6 @@ hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
   if menuItem.enabled then
     app:selectMenuItem("New Tab")
   end
-  local delay = 50000
-  hs.eventtap.keyStroke({"⌘"}, "l", delay, app)
   hs.eventtap.keyStrokes("https://trello.com\n", app)
 end)
 

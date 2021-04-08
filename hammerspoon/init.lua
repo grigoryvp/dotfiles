@@ -9,7 +9,8 @@ menuItem = menuitem:new()
 lastCpuUsage = hs.host.cpuUsageTicks()
 cpuLoadHistory = {}
 maxCpuLoadHistory = 20
-icmpHistory = {}
+routerIcmpHistory = {}
+inetIcmpHistory = {}
 -- Interval, in seconds, to send pings, check cpu load etc.
 heartbeatInterval = 0.2
 heartbeatsPerSec = 5
@@ -85,8 +86,7 @@ hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
 end)
 
 
-pingSrv = hs.network.ping.echoRequest("1.1.1.1")
-pingSrv:setCallback(function(self, msg, ...)
+function icmpPingToHistory(history, msg, ...)
   if msg == "didStart" then
     local address = ...
   elseif msg == "didFail" then
@@ -95,13 +95,13 @@ pingSrv:setCallback(function(self, msg, ...)
   elseif msg == "sendPacket" or msg == "sendPacketFailed" then
     local icmp, seq = ...
     timeSec = hs.timer.absoluteTime() / 1000000000;
-    table.insert(icmpHistory, {seq = seq, timeSend = timeSec})
-    if #icmpHistory > maxIcmpHistory then
-      table.remove(icmpHistory, 1)
+    table.insert(history, {seq = seq, timeSend = timeSec})
+    if #history > maxIcmpHistory then
+      table.remove(history, 1)
     end
   elseif msg == "receivedPacket" then
     local icmp, seq = ...
-    for _, item in ipairs(icmpHistory) do
+    for _, item in ipairs(history) do
       if item.seq == seq then
         timeSec = hs.timer.absoluteTime() / 1000000000;
         item.timeRecv = timeSec
@@ -112,15 +112,28 @@ pingSrv:setCallback(function(self, msg, ...)
     local icmp = ...
     print("received unexpected icmp ")
   end
+end
+
+
+inetPingSrv = hs.network.ping.echoRequest("1.1.1.1")
+inetPingSrv:setCallback(function(self, msg, ...)
+  icmpPingToHistory(inetIcmpHistory, msg, ...)
 end)
-pingSrv:start()
+inetPingSrv:start()
+
+
+routerPingSrv = hs.network.ping.echoRequest("192.168.0.0")
+routerPingSrv:setCallback(function(self, msg, ...)
+  icmpPingToHistory(routerIcmpHistory, msg, ...)
+end)
+routerPingSrv:start()
 
 
 function onHeartbeat()
 
   heartbeatCounter = heartbeatCounter + 1
   -- 0.5% CPU
-  pingSrv:sendPayload()
+  inetPingSrv:sendPayload()
 
   -- 0.1% CPU
   local curCpuUsage = hs.host.cpuUsageTicks()
@@ -149,8 +162,8 @@ function onHeartbeat()
   heartbeatTime = curTime
 
   local netGraph = {}
-  for i = #icmpHistory, 1, -1 do
-    local item = icmpHistory[i]
+  for i = #inetIcmpHistory, 1, -1 do
+    local item = inetIcmpHistory[i]
     local graphItem = nil
     if item.timeRecv then
       local ping = item.timeRecv - item.timeSend

@@ -35,7 +35,7 @@ bitlyToken = nil
 ipv4IfaceName = hs.network.primaryInterfaces()[1]
 lastIp = nil
 lastMask = nil
-routerIp = nil
+routerIp = "192.168.0.0"
 
 
 function clickDockItem(number)
@@ -122,11 +122,16 @@ end)
 inetPingSrv:start()
 
 
-routerPingSrv = hs.network.ping.echoRequest("192.168.0.0")
-routerPingSrv:setCallback(function(self, msg, ...)
-  icmpPingToHistory(routerIcmpHistory, msg, ...)
-end)
-routerPingSrv:start()
+routerPingSrv = hs.network.ping.echoRequest(routerIp)
+function restartRouterPing(toIp)
+  routerPingSrv:stop()
+  routerPingSrv:setCallback(nil)
+  routerPingSrv = hs.network.ping.echoRequest(toIp)
+  routerPingSrv:setCallback(function(self, msg, ...)
+    icmpPingToHistory(routerIcmpHistory, msg, ...)
+  end)
+  routerPingSrv:start()
+end
 
 
 function netGraphFromIcmpHistory(history)
@@ -202,6 +207,9 @@ function onHeartbeat()
   heartbeatCounter = heartbeatCounter + 1
   -- 0.5% CPU
   inetPingSrv:sendPayload()
+  if routerPingSrv:isRunning() then
+    routerPingSrv:sendPayload()
+  end
 
   -- 0.1% CPU
   local curCpuUsage = hs.host.cpuUsageTicks()
@@ -229,6 +237,7 @@ function onHeartbeat()
   end
   heartbeatTime = curTime
 
+  local routerGraph = netGraphFromIcmpHistory(routerIcmpHistory)
   local inetGraph = netGraphFromIcmpHistory(inetIcmpHistory)
   local cpuGraph = cpuGraphFromLoadHistory(cpuLoadHistory)
 
@@ -258,9 +267,12 @@ function onHeartbeat()
   local ipv4IfaceDetails = hs.network.interfaceDetails(ipv4IfaceName).IPv4
   local curIp = ipv4IfaceDetails.Addresses[1]
   local curMask = ipv4IfaceDetails.SubnetMasks[1]
-  if lastIp ~= curIp or not routerIp then
+  if lastIp ~= curIp then
     lastIp = curIp
     lastMask = curMask
+    -- TODO: calculate
+    routerIp = "192.168.0.1"
+    restartRouterPing(routerIp)
   end
 
   local notifications = {}
@@ -347,7 +359,11 @@ function onHeartbeat()
   end
   timeLeft = timeLeft .. ")"
 
-  menuItem:addText("net")
+  menuItem:addText("wifi")
+  menuItem:addSpacer(4)
+  menuItem:addGraph(routerGraph)
+  menuItem:addSpacer(4)
+  menuItem:addText("inet")
   menuItem:addSpacer(4)
   menuItem:addGraph(inetGraph)
   menuItem:addSpacer(4)

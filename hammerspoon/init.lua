@@ -129,6 +129,74 @@ end)
 routerPingSrv:start()
 
 
+function netGraphFromIcmpHistory(history)
+  local graph = {}
+  for i = #history, 1, -1 do
+    local item = history[i]
+    local graphItem = nil
+    if item.timeRecv then
+      local ping = item.timeRecv - item.timeSend
+      if ping < 0.05 then
+        local green = {green = 1}
+        local val = (ping / 0.05) * 0.25
+        graphItem = {val = val, color = green}
+      elseif ping < 0.2 then
+        local yellow = {red = 1, green = 1}
+        local val = ((ping - 0.05) / (0.20 - 0.05)) * 0.25 + 0.25
+        graphItem = {val = val, color = yellow}
+      elseif ping < 0.5 then
+        local orange = {red = 1, green = 0.5}
+        local val = ((ping - 0.20) / (0.50 - 0.20)) * 0.25 + 0.50
+        graphItem = {val = val, color = orange}
+      elseif ping < 2.0 then
+        local red = {red = 1}
+        local val = ((ping - 0.50) / (2.00 - 0.50)) * 0.25 + 0.75
+        graphItem = {val = val, color = red}
+      end
+      -- Pings more than 2 seconds are as bad as having no internet
+    end
+    if not graphItem then
+      -- If no reply is received or reply took more than 2 seconds draw gray
+      -- columns of different height for visual "in progress" feedback
+      local grey = {red = 0.5, green = 0.5, blue = 0.5}
+      if (heartbeatCounter + i) % 2 == 0 then
+        table.insert(graph, {val = 0.2, color = grey})
+      else
+        table.insert(graph, {val = 0.4, color = grey})
+      end
+    end
+    table.insert(graph, graphItem)
+  end
+  return graph
+end
+
+
+function cpuGraphFromLoadHistory(history)
+  local graph = {}
+  for i = #history, 1, -1 do
+    local load = history[i]
+    if load < 0.10 then
+      local green = {green = 1}
+      local val = (load / 0.10) * 0.25
+      table.insert(graph, {val = val, color = green})
+    elseif load < 0.20 then
+      local yellow = {red = 1, green = 1}
+      local val = ((load - 0.10) / (0.20 - 0.10)) * 0.25 + 0.25
+      table.insert(graph, {val = val, color = yellow})
+    elseif load < 0.50 then
+      local orange = {red = 1, green = 0.5}
+      local val = ((load - 0.20) / (0.50 - 0.20)) * 0.25 + 0.50
+      table.insert(graph, {val = val, color = orange})
+    else
+      local red = {red = 1}
+      local val = ((load - 0.50) / (1.00 - 0.50)) * 0.25 + 0.75
+      table.insert(graph, {val = val, color = red})
+    end
+  end
+  return graph
+end
+
+
 function onHeartbeat()
 
   heartbeatCounter = heartbeatCounter + 1
@@ -161,65 +229,8 @@ function onHeartbeat()
   end
   heartbeatTime = curTime
 
-  local netGraph = {}
-  for i = #inetIcmpHistory, 1, -1 do
-    local item = inetIcmpHistory[i]
-    local graphItem = nil
-    if item.timeRecv then
-      local ping = item.timeRecv - item.timeSend
-      if ping < 0.05 then
-        local green = {green = 1}
-        local val = (ping / 0.05) * 0.25
-        graphItem = {val = val, color = green}
-      elseif ping < 0.2 then
-        local yellow = {red = 1, green = 1}
-        local val = ((ping - 0.05) / (0.20 - 0.05)) * 0.25 + 0.25
-        graphItem = {val = val, color = yellow}
-      elseif ping < 0.5 then
-        local orange = {red = 1, green = 0.5}
-        local val = ((ping - 0.20) / (0.50 - 0.20)) * 0.25 + 0.50
-        graphItem = {val = val, color = orange}
-      elseif ping < 2.0 then
-        local red = {red = 1}
-        local val = ((ping - 0.50) / (2.00 - 0.50)) * 0.25 + 0.75
-        graphItem = {val = val, color = red}
-      end
-      -- Pings more than 2 seconds are as bad as having no internet
-    end
-    if not graphItem then
-      -- If no reply is received or reply took more than 2 seconds draw gray
-      -- columns of different height for visual "in progress" feedback
-      local grey = {red = 0.5, green = 0.5, blue = 0.5}
-      if (heartbeatCounter + i) % 2 == 0 then
-        table.insert(netGraph, {val = 0.2, color = grey})
-      else
-        table.insert(netGraph, {val = 0.4, color = grey})
-      end
-    end
-    table.insert(netGraph, graphItem)
-  end
-
-  local cpuGraph = {}
-  for i = #cpuLoadHistory, 1, -1 do
-    local load = cpuLoadHistory[i]
-    if load < 0.10 then
-      local green = {green = 1}
-      local val = (load / 0.10) * 0.25
-      table.insert(cpuGraph, {val = val, color = green})
-    elseif load < 0.20 then
-      local yellow = {red = 1, green = 1}
-      local val = ((load - 0.10) / (0.20 - 0.10)) * 0.25 + 0.25
-      table.insert(cpuGraph, {val = val, color = yellow})
-    elseif load < 0.50 then
-      local orange = {red = 1, green = 0.5}
-      local val = ((load - 0.20) / (0.50 - 0.20)) * 0.25 + 0.50
-      table.insert(cpuGraph, {val = val, color = orange})
-    else
-      local red = {red = 1}
-      local val = ((load - 0.50) / (1.00 - 0.50)) * 0.25 + 0.75
-      table.insert(cpuGraph, {val = val, color = red})
-    end
-  end
+  local inetGraph = netGraphFromIcmpHistory(inetIcmpHistory)
+  local cpuGraph = cpuGraphFromLoadHistory(cpuLoadHistory)
 
   if not telegramDockItem
      or not mailDockItem
@@ -338,7 +349,7 @@ function onHeartbeat()
 
   menuItem:addText("net")
   menuItem:addSpacer(4)
-  menuItem:addGraph(netGraph)
+  menuItem:addGraph(inetGraph)
   menuItem:addSpacer(4)
   menuItem:addText("cpu")
   menuItem:addSpacer(4)

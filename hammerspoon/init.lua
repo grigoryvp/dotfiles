@@ -31,6 +31,10 @@ mailDockItem = nil
 slackDockItem = nil
 discordDockItem = nil
 bitlyToken = nil
+ipv4IfaceName = hs.network.primaryInterfaces()[1]
+lastIp = nil
+lastMask = nil
+routerIp = nil
 
 
 function clickDockItem(number)
@@ -225,6 +229,14 @@ function onHeartbeat()
         end
       end
     end
+  end
+
+  local ipv4IfaceDetails = hs.network.interfaceDetails(ipv4IfaceName).IPv4
+  local curIp = ipv4IfaceDetails.Addresses[1]
+  local curMask = ipv4IfaceDetails.SubnetMasks[1]
+  if lastIp ~= curIp or not routerIp then
+    lastIp = curIp
+    lastMask = curMask
   end
 
   local notifications = {}

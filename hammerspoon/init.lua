@@ -13,7 +13,8 @@ icmpHistory = {}
 -- Interval, in seconds, to send pings, check cpu load etc.
 heartbeatInterval = 0.2
 heartbeatsPerSec = 5
-heartbeatCounter = 0
+-- Increased on first loop, start with 0 to kick off all % checks
+heartbeatCounter = -1
 heartbeatTime = hs.timer.absoluteTime() / 1000000000;
 maxIcmpHistory = 20
 lastBattery = nil
@@ -28,6 +29,7 @@ dockItems = hs.axuielement.applicationElement(dock)[1]
 telegramDockItem = nil
 mailDockItem = nil
 slackDockItem = nil
+discordDockItem = nil
 bitlyToken = nil
 
 
@@ -202,7 +204,10 @@ function onHeartbeat()
     end
   end
 
-  if not telegramDockItem or not mailDockItem or not slackDockItem then
+  if not telegramDockItem
+     or not mailDockItem
+     or not slackDockItem
+     or not discordDockItem then
     -- Do not check too often, CPU expensive
     if heartbeatCounter == 0 or heartbeatCounter % 100 == 0 then
       for _, item in ipairs(dockItems) do
@@ -215,19 +220,28 @@ function onHeartbeat()
         if item.AXTitle == "Slack" then
           slackDockItem = item
         end
+        if item.AXTitle == "Discord" then
+          discordDockItem = item
+        end
       end
     end
   end
 
   local notifications = {}
   if telegramDockItem and telegramDockItem.AXStatusLabel then
-      table.insert(notifications, "T")
+    table.insert(notifications, "T")
   end
   if mailDockItem and mailDockItem.AXStatusLabel then
-      table.insert(notifications, "E")
+    table.insert(notifications, "E")
   end
   if slackDockItem and slackDockItem.AXStatusLabel then
-      table.insert(notifications, "S")
+    table.insert(notifications, "S")
+  end
+  if discordDockItem and discordDockItem.AXStatusLabel then
+    -- "•" indicates channel messages, counter indicates privats and mentions
+    if discordDockItem.AXStatusLabel ~= "•" then
+      table.insert(notifications, "D")
+    end
   end
 
   menuItem:clear()

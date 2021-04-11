@@ -39,6 +39,15 @@ lastMask = nil
 routerIp = "192.168.0.0"
 
 
+function ipStrToList(ip)
+  local items = {}
+  for v in (ip):gmatch("[^.]+") do
+    table.insert(items, tonumber(v))
+  end
+  return items
+end
+
+
 function clickDockItem(number)
   local currentNumber = 1
   local isSeparatorFound = false
@@ -281,8 +290,18 @@ function onHeartbeat()
       if lastIp ~= curIp then
         lastIp = curIp
         lastMask = curMask
-        -- TODO: calculate
-        routerIp = "192.168.0.1"
+        ipList = ipStrToList(curIp)
+        maskList = ipStrToList(curMask)
+
+        -- Naive router calculation ip & mask | 0.0.0.1 - this will not work
+        -- in some rare cases where router is set to something like
+        -- 192.168.0.254, but will do for most cases.
+        routerList = {}
+        for i = 1, 3 do
+          routerList[i] = ipList[i] & maskList[i]
+        end
+        routerList[4] = 1
+        routerIp = table.concat(routerList, ".")
         restartRouterPing(routerIp)
       end
     end

@@ -285,24 +285,26 @@ function onHeartbeat()
     local details = hs.network.interfaceDetails(ipv4IfaceName)
     if details then
       local ipv4IfaceDetails = details.IPv4
-      local curIp = ipv4IfaceDetails.Addresses[1]
-      local curMask = ipv4IfaceDetails.SubnetMasks[1]
-      if lastIp ~= curIp then
-        lastIp = curIp
-        lastMask = curMask
-        ipList = ipStrToList(curIp)
-        maskList = ipStrToList(curMask)
+      if ipv4IfaceDetails then
+        local curIp = ipv4IfaceDetails.Addresses[1]
+        local curMask = ipv4IfaceDetails.SubnetMasks[1]
+        if lastIp ~= curIp then
+          lastIp = curIp
+          lastMask = curMask
+          ipList = ipStrToList(curIp)
+          maskList = ipStrToList(curMask)
 
-        -- Naive router calculation ip & mask | 0.0.0.1 - this will not work
-        -- in some rare cases where router is set to something like
-        -- 192.168.0.254, but will do for most cases.
-        routerList = {}
-        for i = 1, 3 do
-          routerList[i] = ipList[i] & maskList[i]
+          -- Naive router calculation ip & mask | 0.0.0.1 - this will not work
+          -- in some rare cases where router is set to something like
+          -- 192.168.0.254, but will do for most cases.
+          routerList = {}
+          for i = 1, 3 do
+            routerList[i] = ipList[i] & maskList[i]
+          end
+          routerList[4] = 1
+          routerIp = table.concat(routerList, ".")
+          restartRouterPing(routerIp)
         end
-        routerList[4] = 1
-        routerIp = table.concat(routerList, ".")
-        restartRouterPing(routerIp)
       end
     end
   end

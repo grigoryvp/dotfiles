@@ -32,7 +32,8 @@ mailDockItem = nil
 slackDockItem = nil
 discordDockItem = nil
 bitlyToken = nil
-ipv4IfaceName = hs.network.primaryInterfaces()[1]
+-- Can't get if not connected to the network.
+ipv4IfaceName = nil
 lastIp = nil
 lastMask = nil
 routerIp = "192.168.0.0"
@@ -264,15 +265,27 @@ function onHeartbeat()
     end
   end
 
-  local ipv4IfaceDetails = hs.network.interfaceDetails(ipv4IfaceName).IPv4
-  local curIp = ipv4IfaceDetails.Addresses[1]
-  local curMask = ipv4IfaceDetails.SubnetMasks[1]
-  if lastIp ~= curIp then
-    lastIp = curIp
-    lastMask = curMask
-    -- TODO: calculate
-    routerIp = "192.168.0.1"
-    restartRouterPing(routerIp)
+  if not ipv4IfaceName then
+    local interfaces = hs.network.primaryInterfaces()
+    if interfaces[1] then
+      ipv4IfaceName = interfaces[1]
+    end
+  end
+
+  if ipv4IfaceName then
+    local details = hs.network.interfaceDetails(ipv4IfaceName)
+    if details then
+      local ipv4IfaceDetails = details.IPv4
+      local curIp = ipv4IfaceDetails.Addresses[1]
+      local curMask = ipv4IfaceDetails.SubnetMasks[1]
+      if lastIp ~= curIp then
+        lastIp = curIp
+        lastMask = curMask
+        -- TODO: calculate
+        routerIp = "192.168.0.1"
+        restartRouterPing(routerIp)
+      end
+    end
   end
 
   local notifications = {}

@@ -266,9 +266,9 @@ function onHeartbeat()
   end
 
   if not ipv4IfaceName then
-    local interfaces = hs.network.primaryInterfaces()
-    if interfaces[1] then
-      ipv4IfaceName = interfaces[1]
+    local ipv4, _ = hs.network.primaryInterfaces()
+    if ipv4 then
+      ipv4IfaceName = ipv4
     end
   end
 

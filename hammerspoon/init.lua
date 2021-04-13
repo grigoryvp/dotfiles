@@ -440,6 +440,16 @@ hs.hotkey.bind("⌃", "w", function()
     return
   end
 
+  -- Sometimes "Close Editor" menu item is disabled while there are available
+  -- tabs, incorrectly closing VSCode instead of closing tab. Also,
+  -- triggering "Close Editor" stops working if VSCode is moved between
+  -- desktops.
+  if app:bundleID() == "com.microsoft.VSCode" then
+    -- ctrl-w to close editor
+    hs.eventtap.keyStroke({"⌃"}, "w", delay, app)
+    return
+  end
+
   -- Speed optimization to close tabs fast if they are exposed like in
   -- Safari or iTerm2 (searching for app menu items takes some time)
   if wnd:tabCount() > 0 then

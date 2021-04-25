@@ -32,7 +32,10 @@ git clone https://github.com/michaeldfallen/git-radar ~/.git-radar
 ## OSX
 
 ```ps1
-softwareupdate --install-rosetta --agre-to-license
+# For Apple Silicon
+softwareupdate --install-rosetta --agree-to-license
+# XCode command-line tools
+xcode-select --install
 arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts

@@ -4,7 +4,7 @@
 
 ```bat
 rem Allow PowerShell packages to be installed
-powershell.exe -c Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 rem Install scoop
 powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
 set PATH=%PATH%;%USERPROFILE%\scoop\shims

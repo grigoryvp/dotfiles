@@ -341,8 +341,12 @@ function onHeartbeat()
   local battery = hs.battery.percentage()
   if not lastBattery then lastBattery = battery end
 
-  -- 100 => 99 discharge takes too much time
-  if lastBattery < 100 then
+  -- 100 => 99 discharge takes too much time, assume "fully charged".
+  if lastBattery == 100 then
+    batteryDecHistory = {}
+  -- "Battery care" stops charing on 80 percent, ignore 80 => 79 "discharge".
+  elseif lastBattery == 80 then
+  else
     if battery > lastBattery then
       -- Charge detected, clear history
       batteryDecHistory = {}
@@ -358,9 +362,6 @@ function onHeartbeat()
       end
       secondsSinceBatteryDec = 0
     end
-  else
-    -- Fully charged
-    batteryDecHistory = {}
   end
   lastBattery = battery
 
@@ -379,7 +380,7 @@ function onHeartbeat()
     minLeft = math.floor((secRemaining - hrLeft * 3600) / 60)
   end
 
-  local timeLeft = "("
+  local timeLeft = " ("
   if recordCount > 0 then
     if hrLeft > 0 then
       timeLeft = timeLeft .. hrLeft .. "h"
@@ -388,10 +389,10 @@ function onHeartbeat()
       if hrLeft > 0 then timeLeft = timeLeft .. " " end
       timeLeft = timeLeft .. minLeft .. "m"
     end
+    timeLeft = timeLeft .. ")"
   else
-    timeLeft = timeLeft .. "?"
+    timeLeft = ""
   end
-  timeLeft = timeLeft .. ")"
 
   menuItem:addText("wifi")
   menuItem:addSpacer(4)
@@ -407,7 +408,7 @@ function onHeartbeat()
   menuItem:addSpacer(4)
   menuItem:addText("bat")
   menuItem:addSpacer(4)
-  menuItem:addText(("%.0f"):format(battery) .. " " .. timeLeft)
+  menuItem:addText(("%.0f"):format(battery) .. timeLeft)
   menuItem:update()
 end
 

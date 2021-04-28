@@ -88,11 +88,13 @@ defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-git clone https://github.com/rbenv/ruby-build.git $(rbenv root)/plugins/ruby-build
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-build
+git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
+git clone https://github.com/phpenv/phpenv.git ~/.phpenv
+git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
 # Reload shell
 pyenv install 3.9.4
 pyenv global 3.9.4
@@ -101,6 +103,8 @@ rbenv install 3.0.1
 rbenv global 3.0.1
 nodenv install 16.0.0
 nodenv global 16.0.0
+# phpenv install 8.0.3 # https://github.com/phpenv/phpenv/issues/90
+# phpenv global 8.0.3 # https://github.com/phpenv/phpenv/issues/90
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://macos.telegram.org/

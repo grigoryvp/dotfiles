@@ -94,13 +94,13 @@ git clone https://github.com/rbenv/ruby-build.git $(rbenv root)/plugins/ruby-bui
 git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git $(nodenv root)/plugins/node-build
 # Reload shell
-pyenv install 3.9.1
-pyenv global 3.9.1
+pyenv install 3.9.4
+pyenv global 3.9.4
 pip install --upgrade pip
-rbenv install 3.0.0
-rbenv global 3.0.0
-nodenv install 15.8.0
-nodenv global 15.8.0
+rbenv install 3.0.1
+rbenv global 3.0.1
+nodenv install 16.0.0
+nodenv global 16.0.0
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # Install https://www.marcmoini.com/sx_en.html
 # Install https://macos.telegram.org/

@@ -1,3 +1,5 @@
+-- See ./.vscode/settings.json for linter configuration
+
 -- Load dependencies from git-controlled dotfiles dir
 package.path = package.path .. ";/Users/user/dotfiles/hammerspoon/?.lua"
 

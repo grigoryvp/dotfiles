@@ -140,7 +140,6 @@
   "html.autoClosingTags": false,
   "files.eol": "\n",
   "telemetry.enableTelemetry": false,
-  "workbench.colorTheme": "grigoryvp memory theme",
   "debug.node.autoAttach": "disabled",
   "terminal.integrated.shell.windows": "pwsh.exe",
   "workbench.iconTheme": "vs-seti",
@@ -157,5 +156,6 @@
       "filenamePattern": "*.ipynb"
     }
   ],
-  "Lua.telemetry.enable": false
+  "Lua.telemetry.enable": false,
+  "workbench.colorTheme": "grigoryvp memory theme"
 }

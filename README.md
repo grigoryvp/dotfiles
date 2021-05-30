@@ -74,7 +74,7 @@ ln -fs ~/dotfiles/vscode_settings.json ~/Library/Application\ Support/Code/User/
 # Create config dir.
 mpv --help
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
-# Disable spotlight for better battery life:
+# Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
 # Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".

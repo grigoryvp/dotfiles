@@ -150,12 +150,11 @@
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
   "python.showStartPage": false,
-  "workbench.editorAssociations": [
-    {
-      "viewType": "jupyter.notebook.ipynb",
-      "filenamePattern": "*.ipynb"
-    }
-  ],
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
   "Lua.telemetry.enable": false,
-  "workbench.colorTheme": "grigoryvp memory theme"
+"workbench.colorTheme": "grigoryvp memory theme",
+"editor.cursorStyle": "line",
+"editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-"
 }

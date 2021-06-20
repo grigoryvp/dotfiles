@@ -407,3 +407,8 @@ if [ -d $HOME/.phpenv ]; then
   export PATH="$HOME/.phpenv/bin:$PATH"
   eval "$(phpenv init -)"
 fi
+
+##  Load opam, if installed
+if [ -d $HOME/.opam ]; then
+  eval "$(opam env)"
+fi

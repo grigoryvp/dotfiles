@@ -28,6 +28,9 @@
 ;;  working (UAC, lock screen, "Grim Dawn" etc).
 ;;. '/' is much better fit for middle mouse button since triple-mode 'enter'
 ;;  is overkill.
+;;. One-finger scroll is used too often for meta-]: too much load for pinkey,
+;;  so it's better to move it to something that is easier to hold, ex
+;;  meta-.
 
 codepage := 65001 ; utf-8
 appLastLangHotkey := ""
@@ -188,9 +191,9 @@ $^lctrl up:: send ^{tab}
 *$[::remap("down", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 *$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 
-;;  'meta-close-bracket' for mouse button 4
-*$]::remap("down", "vkdd", "", "xbutton1", "", "vkdd", "", "vkdd")
-*$] up::remap("up", "vkdd", "", "xbutton1", "", "vkdd", "", "vkdd")
+;;  'meta-period' for mouse button 4 (scroll)
+*$]::remap("down", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
+*$] up::remap("up", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
 
 ;;  'meta-shift-plus' for closing apps
 *$=::remap("down", "vkbb", "", "vkbb", "none", "", "", "vkbb")

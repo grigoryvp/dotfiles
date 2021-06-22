@@ -221,11 +221,10 @@
         },
 
         {
-          "description": "meta-close-bracket for 6th mouse button",
+          "description": "meta-period for 6th mouse button (scroll)",
           "type": "basic",
           "from": {
-            "key_code": "close_bracket",
-            "modifiers": {"optional": ["any"]}
+            "key_code": "period"
           },
           "to": [{
             "pointing_button": "button6"

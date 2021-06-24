@@ -631,10 +631,8 @@ mouseDragServer = hs.eventtap.new(event, function(e)
   local propDy = hs.eventtap.event.properties['mouseEventDeltaY']
   local dx = e:getProperty(propDx)
   local dy = e:getProperty(propDy)
-  --mousePos.x = mousePos.x - dx
-  --mousePos.y = mousePos.y - dy
   -- Prevent mouse move
-  hs.mouse.setAbsolutePosition(hs.mouse.getAbsolutePosition())
+  hs.mouse.absolutePosition(hs.mouse.absolutePosition())
   local event = {dx, dy}
   local scrollEvent = hs.eventtap.event.newScrollEvent(event, {}, "pixel")
   return true, {scrollEvent}
@@ -645,7 +643,6 @@ local event = {hs.eventtap.event.types.otherMouseDown}
 otherMouseDownServer = hs.eventtap.new(event, function(e)
   local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
   local btn = e:getProperty(prop)
-  print(btn)
   local mouseButton6 = 5
   if btn ~= mouseButton6 then return end
   mouseDragServer:start()

@@ -106,13 +106,7 @@ nodenv global 16.0.0
 # phpenv install 8.0.3 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.3 # https://github.com/phpenv/phpenv/issues/90
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
-# Install https://www.marcmoini.com/sx_en.html
 # Install https://macos.telegram.org/
-# Configure "Smart Scroll":
-# * Disable "Hover Scroll".
-# * "Grab scroll without moving cursor" to button 6.
-# * Enable "Scroll without moving cursor".
-# * Disable "Inertia".
 # Configure Amphetamine autostart and auto session on start and wake.
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: hammerspoon, amphetamine, command center, time

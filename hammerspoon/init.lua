@@ -625,6 +625,45 @@ hs.hotkey.bind("⌘⇧", "o", function()
 end)
 
 
+local event = {hs.eventtap.event.types.otherMouseDragged}
+mouseDragServer = hs.eventtap.new(event, function(e)
+  local propDx = hs.eventtap.event.properties['mouseEventDeltaX']
+  local propDy = hs.eventtap.event.properties['mouseEventDeltaY']
+  local dx = e:getProperty(propDx)
+  local dy = e:getProperty(propDy)
+  --mousePos.x = mousePos.x - dx
+  --mousePos.y = mousePos.y - dy
+  -- Prevent mouse move
+  hs.mouse.setAbsolutePosition(hs.mouse.getAbsolutePosition())
+  local event = {dx, dy}
+  local scrollEvent = hs.eventtap.event.newScrollEvent(event, {}, "pixel")
+  return true, {scrollEvent}
+end)
+
+
+local event = {hs.eventtap.event.types.otherMouseDown}
+otherMouseDownServer = hs.eventtap.new(event, function(e)
+  local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
+  local btn = e:getProperty(prop)
+  print(btn)
+  local mouseButton6 = 5
+  if btn ~= mouseButton6 then return end
+  mouseDragServer:start()
+end)
+otherMouseDownServer:start()
+
+
+local event = {hs.eventtap.event.types.otherMouseUp}
+otherMouseUpServer = hs.eventtap.new(event, function(e)
+  local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
+  local btn = e:getProperty(prop)
+  local mouseButton6 = 5
+  if btn ~= mouseButton6 then return end
+  mouseDragServer:stop()
+end)
+otherMouseUpServer:start()
+
+
 menuItem:addSubmenuItem("Load passwords", function()
   local msg = "Enter master password"
   local secureField = true

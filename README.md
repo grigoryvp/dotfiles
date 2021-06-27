@@ -22,7 +22,8 @@ Follow instructions for post-configuration.
 sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
 sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
 # Restart
-explorer https://aka.ms/wsl2kernel
+curl -LOSs https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+msiexec /i wsl_update_x64.msi
 wsl --set-default-version 2
 # Install distribution
 explorer https://aka.ms/wslstore

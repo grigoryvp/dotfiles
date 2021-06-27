@@ -38,6 +38,12 @@ mkdir -p ~/.config/lsd/
 cp /mnt/c/Users/user/dotfiles/.gitattributes ~/.gitattributes
 cp /mnt/c/Users/user/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
 git clone https://github.com/michaeldfallen/git-radar ~/.git-radar
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+# Reload shell
+pyenv install 3.9.5
+pyenv global 3.9.5
+pip install --upgrade pip
 ```
 
 ## OSX
@@ -107,8 +113,8 @@ git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
 git clone https://github.com/phpenv/phpenv.git ~/.phpenv
 git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
 # Reload shell
-pyenv install 3.9.4
-pyenv global 3.9.4
+pyenv install 3.9.5
+pyenv global 3.9.5
 pip install --upgrade pip
 rbenv install 3.0.1
 rbenv global 3.0.1

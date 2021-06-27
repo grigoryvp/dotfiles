@@ -9,7 +9,7 @@ rem Install scoop
 powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
 set PATH=%PATH%;%USERPROFILE%\scoop\shims
 rem Install Powershell Core
-scoop install 7zip git pwsh
+scoop install 7zip git pwsh sudo
 rem Configure this box
 pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/dotfile/master/configure.ps1 | iex"
 ```
@@ -20,9 +20,9 @@ Follow instructions for post-configuration.
 
 ```ps1
 # Requires (and offers) restart
-sudo Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
 # Requires (and offers) restart
-sudo Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
 explorer https://aka.ms/wsl2kernel
 wsl --set-default-version 2
 # Install distribution

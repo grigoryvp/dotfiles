@@ -101,8 +101,6 @@ class App {
       }
     }
 
-    # Used by '_mapCapsToF24'.
-    $this._installApp("sudo");
     # Used for cmd.exe color scheme configuration
     $this._installApp("colortool");
     $this._installPowershellModule("posh-git");

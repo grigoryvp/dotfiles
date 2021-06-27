@@ -380,9 +380,6 @@ pp() {
   ping -i 0.2 1.1.1.1
 }
 
-##  For ~/.install_... to detect if file already sourced.
-export BASHRC_LOADED=1
-
 ##  Load rbenv, if installed
 if [ -d $HOME/.rbenv ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"

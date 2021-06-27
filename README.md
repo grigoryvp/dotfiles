@@ -19,12 +19,23 @@ Follow instructions for post-configuration.
 
 ## WSL
 
+```ps1
+# Requires (and offers) restart
+sudo Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+# Requires (and offers) restart
+sudo Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+explorer https://aka.ms/wsl2kernel
+wsl --set-default-version 2
+# Install distribution
+explorer https://aka.ms/wslstore
+```
+
 ```sh
 printf '/mnt/c/Users/user/dotfiles/shell-cfg.sh\n' >> ~/.bashrc
 printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/shell-cfg\n' > ~/.zshrc
 printf '[include]\npath = /mnt/c/Users/user/dotfiles/git-cfg.toml\n' > ~/.gitconfig
-cp /mnt/c/Users/user/dotfiles/.gitattributes ~/.gitattributes
 mkdir -p ~/.config/lsd/
+cp /mnt/c/Users/user/dotfiles/.gitattributes ~/.gitattributes
 cp /mnt/c/Users/user/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
 git clone https://github.com/michaeldfallen/git-radar ~/.git-radar
 ```
@@ -57,12 +68,12 @@ git clone git@github.com:grigoryvp/xi.git ~/.xi
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
+printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
 ln -fs ~/dotfiles/hammerspoon/init.lua ~/.hammerspoon/init.lua
 ln -fs ~/dotfiles/.screenrc ~/.screenrc
 ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
-mkdir -p ~/.config/lsd/
+mkdir -p ~/.config/lsd
 ln -fs ~/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
-printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
 mkdir -p ~/.config/powershell
 ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi

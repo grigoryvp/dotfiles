@@ -30,7 +30,7 @@ explorer https://aka.ms/wslstore
 ```
 
 ```sh
-printf '/mnt/c/Users/user/dotfiles/shell-cfg.sh\n' >> ~/.bashrc
+printf '. /mnt/c/Users/user/dotfiles/shell-cfg.sh\n' >> ~/.bashrc
 printf '#!/bin/sh\n. /mnt/c/Users/user/dotfiles/shell-cfg\n' > ~/.zshrc
 printf '[include]\npath = /mnt/c/Users/user/dotfiles/git-cfg.toml\n' > ~/.gitconfig
 mkdir -p ~/.config/lsd/

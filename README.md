@@ -19,10 +19,9 @@ Follow instructions for post-configuration.
 ## WSL
 
 ```ps1
-# Requires (and offers) restart
 sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-# Requires (and offers) restart
 sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+# Restart
 explorer https://aka.ms/wsl2kernel
 wsl --set-default-version 2
 # Install distribution

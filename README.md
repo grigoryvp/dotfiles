@@ -9,8 +9,7 @@ rem Install scoop
 powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
 set PATH=%PATH%;%USERPROFILE%\scoop\shims
 rem Install Powershell Core
-scoop install https://raw.githubusercontent.com/grigoryvp/scoop-grigoryvp/master/7zip.json
-scoop install git pwsh
+scoop install 7zip git pwsh
 rem Configure this box
 pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/dotfile/master/configure.ps1 | iex"
 ```

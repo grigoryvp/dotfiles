@@ -11,7 +11,7 @@ set PATH=%PATH%;%USERPROFILE%\scoop\shims
 rem Install Powershell Core
 scoop install 7zip git pwsh sudo
 git config --global core.autocrlf input
-rem Configure this box
+rem Configure this box; inspect $error if Invoke-Expression fails.
 pwsh.exe -c "Invoke-WebRequest -useb https://raw.githubusercontent.com/grigoryvp/dotfiles/master/configure.ps1 | Invoke-Expression"
 ```
 

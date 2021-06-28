@@ -192,8 +192,8 @@ $^lctrl up:: send ^{tab}
 *$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 
 ;;  'meta-period' for mouse button 4 (scroll)
-*$]::remap("down", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
-*$] up::remap("up", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
+*$.::remap("down", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
+*$. up::remap("up", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
 
 ;;  'meta-shift-plus' for closing apps
 *$=::remap("down", "vkbb", "", "vkbb", "none", "", "", "vkbb")

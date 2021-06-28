@@ -478,20 +478,14 @@ class App {
     $db = $this._path(@($this._cfgDir, "passwords.kdbx"));
     # -s to show protected attribute (password) as clear text.
     $ret = & Write-Output $this._pass | keepassxc-cli show -s $db github;
-    # Insert password to unlock ...:
     # Title: ...
     # UserName: ...
     # Password: ...
     # URL: ...
     # Notes: ...
-    try {
-      $this._github.user = $ret[2].Replace("UserName: ", "");
-      $this._github.pass = $ret[3].Replace("Password: ", "");
-      $this._github.token = $ret[5].Replace("Notes: ", "");
-    }
-    catch {
-      throw "Failed $($_.Exception) $ret";
-    }
+    $this._github.user = $ret[2].Replace("UserName: ", "");
+    $this._github.pass = $ret[3].Replace("Password: ", "");
+    $this._github.token = $ret[5].Replace("Notes: ", "");
   }
 
 

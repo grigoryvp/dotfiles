@@ -483,9 +483,9 @@ class App {
     # Password: ...
     # URL: ...
     # Notes: ...
-    $this._github.user = $ret[2].Replace("UserName: ", "");
-    $this._github.pass = $ret[3].Replace("Password: ", "");
-    $this._github.token = $ret[5].Replace("Notes: ", "");
+    $this._github.user = $ret[1].Replace("UserName: ", "");
+    $this._github.pass = $ret[2].Replace("Password: ", "");
+    $this._github.token = $ret[4].Replace("Notes: ", "");
   }
 
 

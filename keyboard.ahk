@@ -191,9 +191,10 @@ $^lctrl up:: send ^{tab}
 *$[::remap("down", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 *$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 
-;;  'meta-period' for mouse button 4 (scroll)
-*$.::remap("down", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
-*$. up::remap("up", "vkbe", "", "xbutton1", "", "vkbe", "", "vkbe")
+;;  'meta-.' for mouse button 4 (scroll)
+;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
+*$.::remap("down", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
+*$. up::remap("up", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
 
 ;;  'meta-shift-plus' for closing apps
 *$=::remap("down", "vkbb", "", "vkbb", "none", "", "", "vkbb")
@@ -460,10 +461,6 @@ $^lctrl up:: send ^{tab}
 ;;  'meta-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
 *$,::remap("down", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
 *$, up::remap("up", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
-
-;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
-*$.::remap("down", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
-*$. up::remap("up", "vkbe", "", "vkbe", "", "f20", "", "vkbe")
 
 ;;  'meta-shift-space' => maximize
 *$space::remap("down", "vk20", "", "f21", "none", "", "", "vk20")

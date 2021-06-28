@@ -12,7 +12,7 @@ rem Install Powershell Core
 scoop install 7zip git pwsh sudo
 git config --global core.autocrlf input
 rem Configure this box
-pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/dotfile/master/configure.ps1 | iex"
+pwsh.exe -c "iwr -useb https://raw.githubusercontent.com/grigoryvp/dotfiles/master/configure.ps1 | iex"
 ```
 
 Follow instructions for post-configuration.

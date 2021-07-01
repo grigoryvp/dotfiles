@@ -646,6 +646,7 @@ otherMouseDownServer = hs.eventtap.new(event, function(e)
   local mouseButton6 = 5
   if btn ~= mouseButton6 then return end
   mouseDragServer:start()
+  return true --supress mouse click
 end)
 otherMouseDownServer:start()
 
@@ -657,6 +658,7 @@ otherMouseUpServer = hs.eventtap.new(event, function(e)
   local mouseButton6 = 5
   if btn ~= mouseButton6 then return end
   mouseDragServer:stop()
+  return true --supress mouse click
 end)
 otherMouseUpServer:start()
 

@@ -44,7 +44,7 @@ class App {
       - Disable autostart in Task Manager
       - Disable autostart in Task Scheduler
       - Disable snap assist
-      - Disable touchpad click
+      - Disable touchpad click and set maximum speed
       - Add perfgraph toolbar
       - Pin pwsh, vscode, web, files, keepass, telegram, mail, cal, slack
       - Uninstall 'OneDrive' and other software

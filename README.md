@@ -104,6 +104,9 @@ ln -f ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 # Enable keyboard repeat, need to restart after that
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g NSAutomaticCapitalizationEnabled -bool false
+# Max touchpad speed that can be set via GUI, cli can go beyound than.
+defaults write -g com.apple.trackpad.scaling 3
+# Switch off typing disable while trackpad is in use.
 defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh

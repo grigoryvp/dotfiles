@@ -37,7 +37,11 @@ class App {
       - Reboot
       - Make --full configuration
       - "colortool.exe Dracula-ColorTool.itermcolors" and confirm cmd.exe cfg
-      - Map Mouse4 => 'movement to scroll' via X-Mouse; inverse vertical
+      - Configure X-Mouse Button Control:
+        * Disable 'Settings/Pointer/Change cursor when move to scroll'
+        * Map Mouse4 => 'movement to scroll' with setings:
+          * Sensitivity 1
+          * Invert vertical axis
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings

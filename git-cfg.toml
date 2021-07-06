@@ -8,6 +8,8 @@ autocrlf = "input"
 safecrlf = false
 # Hunk header descriptions https://github.com/git/git/blob/master/userdiff.c
 attributesfile = "~/.gitattributes"
+# Better dif
+pager = "diff-so-fancy | less"
 
 [format]
 pretty = "oneline"

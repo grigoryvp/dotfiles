@@ -63,7 +63,7 @@ brew tap homebrew/cask-fonts
 brew install readline openssl
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
 # Amphetamine, Xcode
 mas install 937984704 497799835
 git clone https://github.com/grigoryvp/dotfile.git ~/dotfiles

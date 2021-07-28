@@ -3,9 +3,12 @@
     "editor.wordWrap": "off"
   },
 
-  "[powershell]": {
-    "#": "Disable 'n references' atop of functions",
-    "editor.codeLens": false
+  "[dart]": {
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false
   },
 
   "emmet.includeLanguages": {
@@ -99,6 +102,8 @@
   "[xi]": {
     "editor.fontLigatures": false
   },
+  // Disable 'n references' atop of functions
+  "editor.codeLens": false,
   "editor.lineNumbers": "off",
   "editor.links": true,
   "editor.minimap.enabled": false,
@@ -117,7 +122,6 @@
   "terminal.integrated.fontSize": 16,
   "editor.fontLigatures": true,
   "window.menuBarVisibility": "toggle",
-  "window.zoomLevel": 0,
   "window.openFilesInNewWindow": "off",
   "window.openFoldersInNewWindow": "off",
   "window.newWindowDimensions": "maximized",
@@ -134,14 +138,12 @@
   "workbench.editor.labelFormat": "short",
   "workbench.activityBar.visible": true,
   "workbench.editor.highlightModifiedTabs": true,
-  "npm.enableScriptExplorer": true,
   "breadcrumbs.enabled": true,
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
   "files.eol": "\n",
   "telemetry.enableTelemetry": false,
   "debug.node.autoAttach": "disabled",
-  "terminal.integrated.shell.windows": "pwsh.exe",
   "workbench.iconTheme": "vs-seti",
   "scm.diffDecorations": "none",
   "vsicons.presets.foldersAllDefaultIcon": true,
@@ -151,10 +153,14 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.showStartPage": false,
   "workbench.editorAssociations": {
-    "*.ipynb": "jupyter.notebook.ipynb"
+    "*.ipynb": "jupyter-notebook"
   },
   "Lua.telemetry.enable": false,
-"workbench.colorTheme": "grigoryvp memory theme",
-"editor.cursorStyle": "line",
-"editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-"
+  "workbench.colorTheme": "grigoryvp memory theme",
+  "editor.cursorStyle": "line",
+  "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  }
 }

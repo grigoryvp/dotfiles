@@ -134,8 +134,8 @@ if [ "$(uname)" = "Darwin" ]; then
 
   ##  Will write to stderr if Java is not installed
   export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
-  ##  brew install android-sdk
-  export ANDROID_HOME=/usr/local/opt/android-sdk
+  ##  brew install android-commandlinetools
+  export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
   ##  Installed here by 'brew install michaeldfallen/formula/git-radar'
   if [ "$SHELL" = "/bin/zsh" ]; then
     export RADAR_CMD='$(git-radar --zsh --fetch)'

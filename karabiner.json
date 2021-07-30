@@ -551,6 +551,19 @@
         },
 
         {
+          "description": "meta-plus for 11th app",
+          "type": "basic",
+          "from": {
+            "key_code": "equal_sign"
+          },
+          "to": [{
+            "key_code": "equal_sign",
+            "modifiers": ["left_command", "left_option", "control"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+        },
+
+        {
           "description": "meta-| for launchpad",
           "type": "basic",
           "from": {

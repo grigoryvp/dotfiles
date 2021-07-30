@@ -31,6 +31,9 @@
 ;;. One-finger scroll is used too often for meta-]: too much load for pinkey,
 ;;  so it's better to move it to something that is easier to hold, ex
 ;;  meta-.
+;;. Unlike MacOS where hammerspoon can click any dock item, Windows
+;;  can switch only between 10 taskbar apps by itself, so mapping meta-plus
+;;  for 11-th app is not easy.
 
 codepage := 65001 ; utf-8
 appLastLangHotkey := ""
@@ -196,9 +199,10 @@ $^lctrl up:: send ^{tab}
 *$.::remap("down", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
 *$. up::remap("up", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
 
+;;  'meta-plus' for 11th app (not implemented yet).
 ;;  'meta-shift-plus' for closing apps
-*$=::remap("down", "vkbb", "", "vkbb", "none", "", "", "vkbb")
-*$= up::remap("up", "vkbb", "", "vkbb", "winclose", "", "", "vkbb")
+*$=::remap("down", "vkbb", "#^", "-", "none", "", "", "vkbb")
+*$= up::remap("up", "vkbb", "#^", "-", "winclose", "", "", "vkbb")
 
 ;;  'meta-p' for backspace
 ;;  'meta-shift-p' for deleting things.

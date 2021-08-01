@@ -222,7 +222,7 @@ nodenv global 16.0.0
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: hammerspoon, amphetamine, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
-# Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram lite
+# Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
 # Set "⇧⌘\" to "Notification Center" in "Preferences/Keyboard/Shortcuts".
 # In "Preferences/Keyboard/Shortcuts/App Shortcuts":
 # * Remove "⇧⌘/"

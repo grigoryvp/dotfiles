@@ -162,5 +162,6 @@
   "notebook.cellToolbarLocation": {
     "default": "right",
     "jupyter-notebook": "left"
-  }
+  },
+  "dart.warnWhenEditingFilesOutsideWorkspace": false
 }

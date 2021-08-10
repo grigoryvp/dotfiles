@@ -289,7 +289,10 @@ function onHeartbeat()
       local ipv4IfaceDetails = details.IPv4
       if ipv4IfaceDetails then
         local curIp = ipv4IfaceDetails.Addresses[1]
-        local curMask = ipv4IfaceDetails.SubnetMasks[1]
+        local curMask = 0xFFFFFF00
+        if ipv4IfaceDetails.SubnetMasks then
+          curMask = ipv4IfaceDetails.SubnetMasks[1]
+        end
         if lastIp ~= curIp then
           lastIp = curIp
           lastMask = curMask

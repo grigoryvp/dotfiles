@@ -117,10 +117,14 @@
   "editor.autoClosingQuotes": "never",
   "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "editor.semanticHighlighting.enabled": true,
-  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "editor.fontSize": 16,
-  "terminal.integrated.fontSize": 16,
   "editor.fontLigatures": true,
+  "editor.renderControlCharacters": false,
+  "editor.cursorStyle": "line",
+  "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+  "editor.bracketPairColorization.enabled": false,
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
+  "terminal.integrated.fontSize": 16,
   "window.menuBarVisibility": "toggle",
   "window.openFilesInNewWindow": "off",
   "window.openFoldersInNewWindow": "off",
@@ -132,7 +136,6 @@
   "git.confirmSync": false,
   "java.errors.incompleteClasspath.severity": "ignore",
   "extensions.ignoreRecommendations": false,
-  "editor.renderControlCharacters": false,
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
   "workbench.editor.labelFormat": "short",
@@ -157,11 +160,10 @@
   },
   "Lua.telemetry.enable": false,
   "workbench.colorTheme": "grigoryvp memory theme",
-  "editor.cursorStyle": "line",
-  "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
   "notebook.cellToolbarLocation": {
     "default": "right",
     "jupyter-notebook": "left"
   },
-  "dart.warnWhenEditingFilesOutsideWorkspace": false
+  "dart.warnWhenEditingFilesOutsideWorkspace": false,
+  "security.workspace.trust.untrustedFiles": "open"
 }

@@ -430,7 +430,9 @@ hs.hotkey.bind("⌃", "w", function()
   local app = wnd:application()
 
   if app:bundleID() == "com.apple.Safari" then
-    if wnd:tabCount() > 0 then
+    local menuItem = app:findMenuItem("Close Tab")
+    -- Not the last tab?
+    if menuItem.enabled then
       -- Close active tab
       app:selectMenuItem("Close Tab")
     else
@@ -439,7 +441,7 @@ hs.hotkey.bind("⌃", "w", function()
       if menuItem.enabled then
         -- Safari can't close last tab
         app:selectMenuItem("New Tab")
-        wnd:focusTab(1)
+        app:selectMenuItem("Show Previous Tab")
         app:selectMenuItem("Close Tab")
       end
     end

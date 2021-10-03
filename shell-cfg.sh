@@ -206,7 +206,7 @@ alias cdc="cd ${HHOME}/dotfiles"
 alias cdhh="cd ${HHOME}"
 
 ##  Python virtual environment; built-in 'venv' instals old bundled 'pip'.
-alias vec="python -m virtualenv .venv"
+alias vec="python3 -m virtualenv .venv"
 alias vea=". .venv/bin/activate"
 alias ved="deactivate"
 alias ver="rm -rf .venv"
@@ -215,8 +215,8 @@ alias pon="poetry init --no-interaction"
 alias poi="poetry install"
 alias poa="poetry add"
 alias por="poetry run"
-alias pop="poetry run python"
-alias pom="poetry run python manage.py"
+alias pop="poetry run python3"
+alias pom="poetry run python3 manage.py"
 
 ##  docker aliases
 dmg() {
@@ -334,25 +334,6 @@ psgiton() {
 psgitoff() {
   export PS_GIT_ON=
   psupdate
-}
-
-venv2() {
-  if ! [ -d ./.env ]; then
-    virtualenv --no-site-packages ./.env
-  fi
-  source ./.env/bin/activate
-}
-
-venv() {
-  if ! [ -d ./.env ]; then
-    if [ _"$1" != _"" ]; then
-      echo "using $1"
-      $1 -m venv ./.env
-    else
-      python3 -m venv ./.env
-    fi
-  fi
-  source ./.env/bin/activate
 }
 
 freqdown() {

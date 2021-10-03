@@ -37,8 +37,8 @@ bitlyToken = nil
 -- Can't get if not connected to the network.
 ipv4IfaceName = nil
 lastIp = nil
-lastMask = nil
-routerIp = "192.168.0.0"
+routerIp = nil
+routerIpTask = nil
 
 
 function ipStrToList(ip)
@@ -134,8 +134,9 @@ end)
 inetPingSrv:start()
 
 
-routerPingSrv = hs.network.ping.echoRequest(routerIp)
+routerPingSrv = hs.network.ping.echoRequest("192.168.0.1")
 function restartRouterPing(toIp)
+  routerIp = toIp
   routerPingSrv:stop()
   routerPingSrv:setCallback(nil)
   routerPingSrv = hs.network.ping.echoRequest(toIp)
@@ -289,26 +290,24 @@ function onHeartbeat()
       local ipv4IfaceDetails = details.IPv4
       if ipv4IfaceDetails then
         local curIp = ipv4IfaceDetails.Addresses[1]
-        local curMask = "255.255.255.0"
-        if ipv4IfaceDetails.SubnetMasks then
-          curMask = ipv4IfaceDetails.SubnetMasks[1]
-        end
         if lastIp ~= curIp then
           lastIp = curIp
-          lastMask = curMask
-          ipList = ipStrToList(curIp)
-          maskList = ipStrToList(curMask)
 
-          -- Naive router calculation ip & mask | 0.0.0.1 - this will not work
-          -- in some rare cases where router is set to something like
-          -- 192.168.0.254, but will do for most cases.
-          routerList = {}
-          for i = 1, 3 do
-            routerList[i] = ipList[i] & maskList[i]
+          function onRouteToolExit(exitCode, stdOut, _)
+            if exitCode ~= 0 or not stdOut then
+              return restartRouterPing("192.168.0.1")
+            end
+            local pattern = "gateway: (%d+%.%d+%.%d+%.%d+)"
+            local routerIp = stdOut:match(pattern)
+            if not routerIp then
+              return restartRouterPing("192.168.0.1")
+            end
+            return restartRouterPing(routerIp)
           end
-          routerList[4] = 1
-          routerIp = table.concat(routerList, ".")
-          restartRouterPing(routerIp)
+
+          local args = {"get", "default"}
+          routerIpTask = hs.task.new("/sbin/route", onRouteToolExit, args)
+          routerIpTask:start()
         end
       end
     end

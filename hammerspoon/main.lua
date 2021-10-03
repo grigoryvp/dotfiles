@@ -129,16 +129,20 @@ end)
 inetPingSrv:start()
 
 
-routerPingSrv = hs.network.ping.echoRequest("192.168.0.1")
-function restartRouterPing(toIp)
-  routerIp = toIp
-  routerPingSrv:stop()
-  routerPingSrv:setCallback(nil)
-  routerPingSrv = hs.network.ping.echoRequest(toIp)
-  routerPingSrv:setCallback(function(self, msg, ...)
-    icmpPingToHistory(routerIcmpHistory, msg, ...)
-  end)
-  routerPingSrv:start()
+routerPingSrv = nil
+function restartRouterPing()
+  if routerPingSrv then
+    routerPingSrv:stop()
+    routerPingSrv:setCallback(nil)
+    routerPingSrv = nil
+  end
+  if routerIp then
+    routerPingSrv = hs.network.ping.echoRequest(routerIp)
+    routerPingSrv:setCallback(function(self, msg, ...)
+      icmpPingToHistory(routerIcmpHistory, msg, ...)
+    end)
+    routerPingSrv:start()
+  end
 end
 
 
@@ -215,7 +219,7 @@ function onHeartbeat()
   heartbeatCounter = heartbeatCounter + 1
   -- 0.5% CPU
   inetPingSrv:sendPayload()
-  if routerPingSrv:isRunning() then
+  if routerPingSrv and routerPingSrv:isRunning() then
     routerPingSrv:sendPayload()
   end
 
@@ -287,25 +291,44 @@ function onHeartbeat()
         local curIp = ipv4IfaceDetails.Addresses[1]
         if lastIp ~= curIp then
           lastIp = curIp
-
-          function onRouteToolExit(exitCode, stdOut, _)
-            if exitCode ~= 0 or not stdOut then
-              return restartRouterPing("192.168.0.1")
-            end
-            local pattern = "gateway: (%d+%.%d+%.%d+%.%d+)"
-            local routerIp = stdOut:match(pattern)
-            if not routerIp then
-              return restartRouterPing("192.168.0.1")
-            end
-            return restartRouterPing(routerIp)
-          end
-
-          local args = {"get", "default"}
-          routerIpTask = hs.task.new("/sbin/route", onRouteToolExit, args)
-          routerIpTask:start()
+          -- Mark for recalculation
+          routerIp = nil
         end
+      else
+        lastIp = nil
       end
+    else
+      lastIp = nil
     end
+  else
+    lastIp = nil
+  end
+
+  if not lastIp and routerIp then
+    routerIp = nil
+    routerIcmpHistory = {}
+    restartRouterPing()
+  end
+
+  if lastIp and not routerIp then
+    function onRouteToolExit(exitCode, stdOut, _)
+      if exitCode ~= 0 or not stdOut then
+        routerIp = nil
+        routerIcmpHistory = {}
+        return restartRouterPing()
+      end
+      local pattern = "gateway: (%d+%.%d+%.%d+%.%d+)"
+      routerIp = stdOut:match(pattern)
+      if not routerIp then
+        routerIcmpHistory = {}
+        return restartRouterPing()
+      end
+      return restartRouterPing()
+    end
+
+    local args = {"get", "default"}
+    routerIpTask = hs.task.new("/sbin/route", onRouteToolExit, args)
+    routerIpTask:start()
   end
 
   local notifications = {}

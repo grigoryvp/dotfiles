@@ -317,7 +317,7 @@ function onHeartbeat()
         routerIcmpHistory = {}
         return restartRouterPing()
       end
-      local pattern = "gateway: (%d+%.%d+%.%d+%.%d+)"
+      local pattern = "gateway: ([^%s]+)"
       routerIp = stdOut:match(pattern)
       if not routerIp then
         routerIcmpHistory = {}

@@ -123,6 +123,7 @@
   "editor.cursorStyle": "line",
   "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
   "editor.bracketPairColorization.enabled": false,
+  "editor.guides.bracketPairs": true,
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "terminal.integrated.fontSize": 16,
   "window.menuBarVisibility": "toggle",

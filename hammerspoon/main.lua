@@ -11,6 +11,7 @@ inetIcmpHistory = {}
 -- Interval, in seconds, to send pings, check cpu load etc.
 heartbeatInterval = 0.2
 heartbeatsPerSec = 5
+heartbeats_in_big_timeout = heartbeatsPerSec * 10
 -- Increased on first loop, start with 0 to kick off all % checks
 heartbeatCounter = -1
 heartbeatTime = hs.timer.absoluteTime() / 1000000000;
@@ -217,6 +218,7 @@ end
 function onHeartbeat()
 
   heartbeatCounter = heartbeatCounter + 1
+
   -- 0.5% CPU
   inetPingSrv:sendPayload()
   if routerPingSrv and routerPingSrv:isRunning() then
@@ -239,6 +241,8 @@ function onHeartbeat()
     return
   end
 
+  local is_big_timeout = heartbeatCounter % heartbeats_in_big_timeout == 0
+  is_big_timeout = heartbeatCounter == 0 or is_big_timeout
   local curTime = hs.timer.absoluteTime() / 1000000000;
   local tooEarly = heartbeatTime + (heartbeatsPerSec - 1) * heartbeatInterval
   local tooLate = heartbeatTime + (heartbeatsPerSec + 1) * heartbeatInterval
@@ -258,7 +262,7 @@ function onHeartbeat()
      or not slackDockItem
      or not discordDockItem then
     -- Do not check too often, CPU expensive
-    if heartbeatCounter == 0 or heartbeatCounter % 100 == 0 then
+    if is_big_timeout then
       for _, item in ipairs(dockItems) do
         if item.AXTitle == "Telegram" then
           telegramDockItem = item

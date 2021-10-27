@@ -315,7 +315,8 @@ function onHeartbeat()
   end
 
   local needNewRouterIp = lastIp and not routerIp
-  if needNewRouterIp then
+  -- Router Ip can change without local IP being chenged on VPN connect
+  if needNewRouterIp or is_big_timeout then
     function onRouteToolExit(exitCode, stdOut, _)
       if exitCode ~= 0 or not stdOut then
         routerIp = nil

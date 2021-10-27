@@ -310,7 +310,8 @@ function onHeartbeat()
     restartRouterPing()
   end
 
-  if lastIp and not routerIp then
+  local needNewRouterIp = lastIp and not routerIp
+  if needNewRouterIp then
     function onRouteToolExit(exitCode, stdOut, _)
       if exitCode ~= 0 or not stdOut then
         routerIp = nil

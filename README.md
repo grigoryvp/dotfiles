@@ -210,10 +210,10 @@ git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
 pyenv install 3.9.5
 pyenv global 3.9.5
 pip install --upgrade pip
-rbenv install 3.0.1
-rbenv global 3.0.1
-nodenv install 16.0.0
-nodenv global 16.0.0
+rbenv install 3.0.2
+rbenv global 3.0.2
+nodenv install 17.0.1
+nodenv global 17.0.1
 # phpenv install 8.0.3 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.3 # https://github.com/phpenv/phpenv/issues/90
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".

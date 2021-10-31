@@ -56,7 +56,7 @@ pip install --upgrade pip
 softwareupdate --install-rosetta --agree-to-license
 # XCode command-line tools
 xcode-select --install
-arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.9.1 on Apple Silicon
@@ -206,10 +206,13 @@ git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
 git clone https://github.com/phpenv/phpenv.git ~/.phpenv
 git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
-# Reload shell
-pyenv install 3.9.5
-pyenv global 3.9.5
-pip install --upgrade pip
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+pyenv install 3.9.6
+pyenv global 3.9.6
+python3 -m pip install --upgrade pip virtualenv
 rbenv install 3.0.2
 rbenv global 3.0.2
 nodenv install 17.0.1

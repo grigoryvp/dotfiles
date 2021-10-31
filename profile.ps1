@@ -73,20 +73,41 @@ function ahk() {
     -Verb RunAs;
 }
 
+# ============================================================================
 # Windows-OSX-Linux consistency
+# ============================================================================
+
 function rmf($dst) {
   Remove-Item $dst -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-# Windows-OSX-Linux consistency
 function ll($dst) {
   Get-ChildItem $dst
 }
 
-# Windows-OSX-Linux consistency
 function grep() {
   Select-String -Path $Args[1] -Pattern $Args[0]
 }
+
+function vec() {
+  python3 -m virtualenv .venv
+}
+
+function vea() {
+  .\.venv\Scripts\activate.ps1
+}
+
+function ved() {
+  deactivate
+}
+
+function ver() {
+  Remove-Item .venv -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+# ============================================================================
+# Tools
+# ============================================================================
 
 function Update-VscodeExt() {
   $cfgFileName = "package.json";

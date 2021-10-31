@@ -50,6 +50,7 @@ class App {
       - Disable snap assist
       - Disable touchpad click and set maximum speed
       - Add perfgraph toolbar
+      - Add "gmail", "google calendar", "trello" as edge apps and pin
       - Pin pwsh, vscode, web, files, keepass, telegram, mail, cal, slack
       - Uninstall 'OneDrive' and other software
       - Login and sync browser

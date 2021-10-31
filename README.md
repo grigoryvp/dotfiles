@@ -63,7 +63,7 @@ brew tap homebrew/cask-fonts
 brew install readline openssl
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font microsoft-edge qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
 # Amphetamine, Xcode
 mas install 937984704 497799835
 git clone https://github.com/grigoryvp/dotfile.git ~/dotfiles
@@ -222,6 +222,7 @@ nodenv global 17.0.1
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: hammerspoon, amphetamine, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
+# Add "gmail", "google calendar", "trello" as edge apps.
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
 # Set "⇧⌘\" to "Notification Center" in "Preferences/Keyboard/Shortcuts".
 # In "Preferences/Keyboard/Shortcuts/App Shortcuts":

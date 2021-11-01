@@ -2,6 +2,8 @@
 softwareupdate --install-rosetta --agree-to-license
 # XCode command-line tools
 xcode-select --install
+echo "Wait for the xcode-select GUI installer and press enter"
+read -s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew update --verbose
 brew tap homebrew/cask-fonts

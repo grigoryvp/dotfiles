@@ -23,27 +23,42 @@ brew install --build-from-source libgpg-error
 brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font microsoft-edge qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
 # Amphetamine, Xcode
 mas install 937984704 497799835
-git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
-echo "Press enter to confirm KeePassXC and view GitHub password"
-read -s
-open /Applications/KeePassXC.app ~/dotfiles/passwords.kdbx
-keepassxc-cli show -s ~/dotfiles/passwords.kdbx github
-cat ~/.ssh/id_rsa.pub
-echo "Add ssh to GitHub and press enter"
-read -s
-rm -rf ~/dotfiles
-git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
-git clone git@github.com:grigoryvp/xi.git ~/.xi
+if [ -e ~/dotfiles ]; then
+  echo "Dotfiles already cloned"
+else
+  git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
+  echo "Press enter to confirm KeePassXC and view GitHub password"
+  read -s
+  open /Applications/KeePassXC.app ~/dotfiles/passwords.kdbx
+  keepassxc-cli show -s ~/dotfiles/passwords.kdbx github
+  cat ~/.ssh/id_rsa.pub
+  echo "Add ssh to GitHub and press enter"
+  read -s
+  rm -rf ~/dotfiles
+  git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
+fi
+if [ -e ~/xi ]; then
+  echo "Knowledge base already cloned"
+else
+  git clone git@github.com:grigoryvp/xi.git ~/.xi
+fi
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
+if ! [ -e ~/.hammerspoon ]; then
+  mkdir ~/.hammerspoon
+fi
 ln -fs ~/dotfiles/hammerspoon/init.lua ~/.hammerspoon/init.lua
 ln -fs ~/dotfiles/.screenrc ~/.screenrc
 ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
-mkdir -p ~/.config/lsd
+if ! [ -e ~/.config/lsd ]; then
+  mkdir -p ~/.config/lsd
+fi
 ln -fs ~/dotfiles/lsd.config.yaml ~/.config/lsd/config.yaml
-mkdir -p ~/.config/powershell
+if ! [ -e ~/.config/powershell ]; then
+  mkdir -p ~/.config/powershell
+fi
 ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
@@ -51,8 +66,9 @@ code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
 ln -fs ~/dotfiles/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln -fs ~/dotfiles/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
-# Create config dir.
-mpv --help
+if ! [ ~/.config/mpv ]; then
+  mkdir -p ~/.config/mpv
+fi
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off

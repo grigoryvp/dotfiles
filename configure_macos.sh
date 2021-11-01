@@ -186,8 +186,8 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
-pyenv install 3.9.6
-pyenv global 3.9.6
+pyenv install 3.10.0
+pyenv global 3.10.0
 python3 -m pip install --upgrade pip virtualenv
 rbenv install 3.0.2
 rbenv global 3.0.2

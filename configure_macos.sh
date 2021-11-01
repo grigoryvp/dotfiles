@@ -4,7 +4,11 @@ softwareupdate --install-rosetta --agree-to-license
 xcode-select --install
 echo "Wait for the xcode-select GUI installer and press enter"
 read -s
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [ -e /opt/homebrew/bin/brew ]; then
+  echo "Homebrew already installed"
+else
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 # Add homebrew to path for the rest of the script
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew update --verbose

@@ -59,6 +59,7 @@ pip install --upgrade pip
 # Install https://macos.telegram.org/
 # Configure Amphetamine autostart and auto session on start and wake.
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
+# Menu: command-drag out "spotlight".
 # Menu: hammerspoon, amphetamine, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
 # Add "gmail", "google calendar", "trello" as edge apps.

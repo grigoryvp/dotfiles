@@ -64,22 +64,21 @@ pip install --upgrade pip
 # Drop "/System/Library/CoreServices/Finder.app" into dock.
 # Add "gmail", "google calendar", "trello" as edge apps.
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
-# Set "⇧⌘\" to "Notification Center" in "Preferences/Keyboard/Shortcuts".
+# In "Preferences/Keyboard/Shortcuts/Mission Control":
+# * Add "⇧⌘\" to "Notification Center"
 # In "Preferences/Keyboard/Shortcuts/App Shortcuts":
 # * Remove "⇧⌘/"
 # * Add "⌘W" to "Close Tab" for "Safari".
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram".
 # In "Preferenes/Dock & Menu Bar" remove all icons except 24h clock.
-# Disable corrections in "Preferences/Keyboard/Text".
 # Disable sleep in "Preferences/Energy Saver".
 # Enable password lock in "Preferences/Security/General/Require password".
-# For old macOS versions:
-# Add 'karabiner_grabber', 'karabiner_observer',
-#   'karabiner_console_user_server' into "Accessibility".
-# Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
-# Install https://getbitbar.com/plugins/Network/ping.10s.sh
 # Disable welcome screen guest user in "Preferences/Users & Groups".
-# "iTunes/Preferences/Devices/Prevent from syncing automatically"
+# For old macOS versions:
+# * Add 'karabiner_grabber', 'karabiner_observer',
+#   'karabiner_console_user_server' into "Accessibility".
+# * Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
+# * iTunes/Preferences/Devices/Prevent from syncing automatically
 ```
 
 ## Todo

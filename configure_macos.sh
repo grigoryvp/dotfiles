@@ -5,6 +5,8 @@ xcode-select --install
 echo "Wait for the xcode-select GUI installer and press enter"
 read -s
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Add homebrew to path for the rest of the script
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.9.1 on Apple Silicon

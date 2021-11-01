@@ -21,8 +21,6 @@ brew install readline openssl
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
 brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font microsoft-edge qbittorrent obs mpv iterm2 gimp tor-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
-# Amphetamine, Xcode
-mas install 937984704 497799835
 if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else

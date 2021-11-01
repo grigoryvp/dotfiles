@@ -57,7 +57,10 @@ pip install --upgrade pip
 # phpenv global 8.0.3 # https://github.com/phpenv/phpenv/issues/90
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # Install https://macos.telegram.org/
-# Configure Amphetamine autostart and auto session on start and wake.
+# Intall Xcode:
+# mas install 497799835
+# Install and config Amphetamine autostart and auto session on start and wake.
+# mas install 937984704
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
 # Menu: command-drag out "spotlight".
 # Menu: hammerspoon, amphetamine, command center, time

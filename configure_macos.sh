@@ -57,8 +57,8 @@ echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
-# Confirm 'karabiner_grabber', 'karabiner_observer' for "Input Monitoring".
-# From '/Library/Application Support/org.pqrs/Karabiner-Elements/bin'
+echo "Confirm 'karabiner_grabber', 'karabiner_observer' for 'Input Monitoring' and press Enter"
+read -s
 # Karabiner can't detect config file change if linked via symlink.
 ln -f ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 # Close any preferences so settings are not overwritten.
@@ -166,8 +166,8 @@ git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
 git clone https://github.com/phpenv/phpenv.git ~/.phpenv
 git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
-export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
 pyenv install 3.9.6

@@ -361,17 +361,17 @@ pp() {
   ping -i 0.2 1.1.1.1
 }
 
-##  Load rbenv, if installed
-if [ -d $HOME/.rbenv ]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
-fi
-
 ##  Load pyenv, if installed
 if [ -d $HOME/.pyenv ]; then
   export PATH="$HOME/.pyenv/bin:$PATH"
   eval "$(pyenv init --path)"
   eval "$(pyenv virtualenv-init -)"
+fi
+
+##  Load rbenv, if installed
+if [ -d $HOME/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
 fi
 
 ##  Load nodenv, if installed

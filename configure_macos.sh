@@ -21,10 +21,12 @@ brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code fon
 # Amphetamine, Xcode
 mas install 937984704 497799835
 git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
-# Confirm execution of downloaded app.
+echo "Press enter to confirm KeePassXC and view GitHub password"
+read -s
 open /Applications/KeePassXC.app ~/dotfiles/passwords.kdbx
 keepassxc-cli show -s ~/dotfiles/passwords.kdbx github
-# Add ssh to github
+echo "Add ssh to GitHub and press enter"
+read -s
 rm -rf ~/dotfiles
 git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
 git clone git@github.com:grigoryvp/xi.git ~/.xi

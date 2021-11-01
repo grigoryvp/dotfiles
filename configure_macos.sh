@@ -1,3 +1,6 @@
+if ! [ -e ~/.ssh/id_rsa.pub ]; then
+  ssh-keygen
+fi
 # For Apple Silicon
 softwareupdate --install-rosetta --agree-to-license
 # XCode command-line tools
@@ -25,6 +28,7 @@ echo "Press enter to confirm KeePassXC and view GitHub password"
 read -s
 open /Applications/KeePassXC.app ~/dotfiles/passwords.kdbx
 keepassxc-cli show -s ~/dotfiles/passwords.kdbx github
+cat ~/.ssh/id_rsa.pub
 echo "Add ssh to GitHub and press enter"
 read -s
 rm -rf ~/dotfiles

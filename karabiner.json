@@ -1318,6 +1318,59 @@
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         }
         ]
+      }, {
+        "description": "Path of Exile",
+        "manipulators": [
+
+        {
+          "description": "Make 'command' remappable",
+          "type": "basic",
+          "from": {
+            "key_code": "left_command"
+          },
+          "to": [{
+            "key_code": "f1"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
+          "description": "Not possible to rebind the 'highlight' hotkey",
+          "type": "basic",
+          "from": {
+            "key_code": "left_shift"
+          },
+          "to": [{
+            "key_code": "left_alt"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
+          "description": "Not possible to rebind the 'split stack' hotkey",
+          "type": "basic",
+          "from": {
+            "key_code": "right_shift"
+          },
+          "to": [{
+            "key_code": "left_shift"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        }
+        ]
       }]
     }
   }]

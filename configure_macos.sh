@@ -1,5 +1,5 @@
 if ! [ -e ~/.ssh/id_rsa.pub ]; then
-  ssh-keygen
+  ssh-keygen -t rsa -f "$HOME/.ssh/id_rsa" -N ""
 fi
 # For Apple Silicon
 softwareupdate --install-rosetta --agree-to-license

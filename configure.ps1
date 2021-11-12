@@ -130,6 +130,7 @@ class App {
     $this._configureVscode();
     $this._installApp("tray-monitor");
     $this._installApp("battery-info-view");
+    $this._installApp("flameshot");
     $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
     $this._registerAutohotkeyStartup();
     $this._registerBatteryInfoViewStartup();

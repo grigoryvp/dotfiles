@@ -130,7 +130,6 @@ class App {
     $this._configureVscode();
     $this._installApp("tray-monitor");
     $this._installApp("battery-info-view");
-    $this._installApp("flameshot");
     $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
     $this._registerAutohotkeyStartup();
     $this._registerBatteryInfoViewStartup();
@@ -204,6 +203,8 @@ class App {
       $this._installApp("grigoryvp/telegram");
       # PDF view.
       $this._installApp("foxit-reader");
+      # Better screenshot tool.
+      $this._installApp("flameshot");
       # 'psexec' (required to start non-elevated apps), 'procexp' etc
       $this._installApp("sysinternals");
       # Desktop recording.

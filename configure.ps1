@@ -622,7 +622,11 @@ class App {
     $dstDir = $this._path(@("~", ".xi"));
     if (Test-Path -Path "$dstDir") { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
-    # Todo: clone into WSL ~/.xi
+    # Todo: clone into WSL ~/.xi and symlinc:
+    # $srcDir = "\\wsl.localhost\Ubuntu\home\user\.xi"
+    # $dstDir = Get-Item "~";
+    # sudo New-Item -ItemType SymbolicLink -Force -Path $dstDir -Name ".xi" -Value $srcDir;
+    #
     # & git clone $uri $dstDir;
     # if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }

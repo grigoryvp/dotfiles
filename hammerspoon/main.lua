@@ -655,8 +655,8 @@ end)
 
 local event = {hs.eventtap.event.types.otherMouseDragged}
 mouseDragServer = hs.eventtap.new(event, function(e)
-  local propDx = hs.eventtap.event.properties['mouseEventDeltaX']
-  local propDy = hs.eventtap.event.properties['mouseEventDeltaY']
+  local propDx = hs.eventtap.event.properties["mouseEventDeltaX"]
+  local propDy = hs.eventtap.event.properties["mouseEventDeltaY"]
   local dx = e:getProperty(propDx)
   local dy = e:getProperty(propDy)
   -- Prevent mouse move

@@ -46,6 +46,34 @@ function HsEventtap:start()
 end
 
 
+HsAppSubelement = {}
+function HsAppSubelement:new(attributes)
+  local object = {}
+  for k, v in pairs(attributes) do
+    object[k] = v
+  end
+  return setmetatable(object, {__index = self})
+end
+
+
+function HsAppSubelement:doAXPress()
+end
+
+
+HsAppElement = {}
+function HsAppElement:new()
+  return setmetatable({
+    [1] = HsAppSubelement:new({
+      AXRoleDescription = "application dock item",
+      AXTitle = "System Preferences",
+    }),
+    [2] = HsAppSubelement:new({
+      AXRoleDescription = "application dock item",
+    }),
+  }, {__index = self})
+end
+
+
 Hs = {}
 function Hs:new()
   return setmetatable({
@@ -66,7 +94,9 @@ function Hs:new()
       doEvery = function(interval, handler) end,
     },
     axuielement = {
-      applicationElement = function(app) return {nil} end,
+      applicationElement = function(app) return {
+        HsAppElement:new(),
+      } end,
     },
     hotkey = {
       bind = function(modifiers, hotkey, handler) end,
@@ -104,3 +134,5 @@ require "main"
 assert(
   table.concat(app:ipStrToList("192.168.0.1")) ==
   table.concat({192, 168, 0, 1}))
+
+app:clickDockItem(1)

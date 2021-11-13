@@ -27,7 +27,7 @@ function HsEchoRequest:new()
 end
 
 
-function HsEchoRequest:setCallback()
+function HsEchoRequest:setCallback(handler)
 end
 
 
@@ -66,7 +66,7 @@ function Hs:new()
       doEvery = function(interval, handler) end,
     },
     axuielement = {
-      applicationElement = function() return {nil} end,
+      applicationElement = function(app) return {nil} end,
     },
     hotkey = {
       bind = function(modifiers, hotkey, handler) end,

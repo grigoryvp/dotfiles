@@ -2,42 +2,49 @@ require "helpers"
 require "menuitem"
 
 
-menuItem = menuitem:new()
-lastCpuUsage = hs.host.cpuUsageTicks()
-cpuLoadHistory = {}
-maxCpuLoadHistory = 20
-routerIcmpHistory = {}
-inetIcmpHistory = {}
--- Interval, in seconds, to send pings, check cpu load etc.
-heartbeatInterval = 0.2
-heartbeatsPerSec = 5
-heartbeats_in_big_timeout = heartbeatsPerSec * 10
--- Increased on first loop, start with 0 to kick off all % checks
-heartbeatCounter = -1
-heartbeatTime = hs.timer.absoluteTime() / 1000000000;
-maxIcmpHistory = 20
-lastBattery = nil
-secondsSinceBatteryDec = 0
--- Keys are the charge amount the decrease is from, values are number of
--- seconds it took for battery to discharge from that value. Ex, if key 90
--- contains value of 1000 that means that it took 1000 seconds for a battery
--- to discharge from 90 to 89 percents.
-batteryDecHistory = {}
-dock = hs.application("Dock")
-dockItems = hs.axuielement.applicationElement(dock)[1]
-telegramDockItem = nil
-mailDockItem = nil
-slackDockItem = nil
-discordDockItem = nil
-bitlyToken = nil
--- Can't get if not connected to the network.
-ipv4IfaceName = nil
-lastIp = nil
-routerIp = nil
-routerIpTask = nil
+App = {}
+function App:new()
+  local inst = setmetatable({
+  }, {__index = self})
+  inst.menuItem = menuitem:new()
+  inst.lastCpuUsage = hs.host.cpuUsageTicks()
+  inst.cpuLoadHistory = {}
+  inst.maxCpuLoadHistory = 20
+  inst.routerIcmpHistory = {}
+  inst.inetIcmpHistory = {}
+  -- Interval, in seconds, to send pings, check cpu load etc.
+  inst.heartbeatInterval = 0.2
+  inst.heartbeatsPerSec = 5
+  inst.heartbeatsInBigTimeout = inst.heartbeatsPerSec * 10
+  -- Increased on first loop, start with 0 to kick off all % checks
+  inst.heartbeatCounter = -1
+  inst.heartbeatTime = hs.timer.absoluteTime() / 1000000000
+  inst.maxIcmpHistory = 20
+  inst.lastBattery = nil
+  inst.secondsSinceBatteryDec = 0
+  -- Keys are the charge amount the decrease is from, values are number
+  -- of seconds it took for battery to discharge from that value. Ex, if
+  -- key 90 contains value of 1000 that means that it took 1000 seconds for
+  -- a battery to discharge from 90 to 89 percents.
+  inst.batteryDecHistory = {}
+  inst.dock = hs.application("Dock")
+  inst.dockItems = hs.axuielement.applicationElement(inst.dock)[1]
+  inst.telegramDockItem = nil
+  inst.mailDockItem = nil
+  inst.slackDockItem = nil
+  inst.discordDockItem = nil
+  inst.bitlyToken = nil
+  -- Can't get if not connected to the network.
+  inst.ipv4IfaceName = nil
+  inst.lastIp = nil
+  inst.routerIp = nil
+  inst.routerIpTask = nil
+  inst.routerPingSrv = nil
+  return inst
+end
 
 
-function ipStrToList(ip)
+function App:ipStrToList(ip)
   local items = {}
   for v in (ip):gmatch("[^.]+") do
     table.insert(items, tonumber(v))
@@ -46,10 +53,10 @@ function ipStrToList(ip)
 end
 
 
-function clickDockItem(number)
+function App:clickDockItem(number)
   local currentNumber = 1
   local isSeparatorFound = false
-  for _, item in ipairs(dockItems) do
+  for _, item in ipairs(self.dockItems) do
     if item.AXRoleDescription == "application dock item" then
       -- Hotkeys affect items to the right of user-placed separator
       -- (system preferences for now). To the left are items that are
@@ -70,31 +77,251 @@ function clickDockItem(number)
 end
 
 
-local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="}
-for i, hotkey in ipairs(hotkeys) do
-  hs.hotkey.bind({"⌘", "⌃", "⌥"}, hotkey, function()
-    clickDockItem(i)
+function App:registerHotkeys()
+  local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="}
+  for i, hotkey in ipairs(hotkeys) do
+    hs.hotkey.bind({"⌘", "⌃", "⌥"}, hotkey, function()
+      self:clickDockItem(i)
+    end)
+  end
+
+  hs.hotkey.bind("⌃", "w", function()
+    local delay = 50000
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local app = wnd:application()
+
+    if app:bundleID() == "com.apple.Safari" then
+      local menuItem = app:findMenuItem("Close Tab")
+      -- Not the last tab?
+      if menuItem.enabled then
+        -- Close active tab
+        app:selectMenuItem("Close Tab")
+      else
+        local menuItem = app:findMenuItem("Save As...")
+        -- Current tab has some page open?
+        if menuItem.enabled then
+          -- Safari can't close last tab
+          app:selectMenuItem("New Tab")
+          app:selectMenuItem("Show Previous Tab")
+          app:selectMenuItem("Close Tab")
+        end
+      end
+      return
+    end
+
+    -- Sometimes "Close Editor" menu item is disabled while there are available
+    -- tabs, incorrectly closing VSCode instead of closing tab. Also,
+    -- triggering "Close Editor" stops working if VSCode is moved between
+    -- desktops.
+    if app:bundleID() == "com.microsoft.VSCode" then
+      -- ctrl-w to close editor
+      hs.eventtap.keyStroke({"⌃"}, "w", delay, app)
+      return
+    end
+
+    -- Speed optimization to close tabs fast if they are exposed like in
+    -- Safari or iTerm2 (searching for app menu items takes some time)
+    if wnd:tabCount() > 0 then
+      hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
+      return
+    end
+
+    local menu = app:findMenuItem("Close Editor")
+    if menu and menu.enabled then
+      app:selectMenuItem("Close Editor")
+      return
+    end
+
+    local menu = app:findMenuItem("Close Tab")
+    if menu and menu.enabled then
+      app:selectMenuItem("Close Tab")
+      return
+    end
+
+    wnd:close()
+  end)
+
+  hs.hotkey.bind("⌃⇧", "v", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local app = wnd:application()
+
+    hs.pasteboard.setContents(hs.pasteboard.readString())
+    app:selectMenuItem("Paste")
+  end)
+
+  hs.hotkey.bind("⌘⇧", "space", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "n", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "m", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", ",", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", ".", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x
+    frame.y = screenFrame.y + screenFrame.h / 2
+    frame.w = screenFrame.w
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "y", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "u", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "i", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x
+    frame.y = screenFrame.y + screenFrame.h / 2
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "o", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
+    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.y = screenFrame.y + screenFrame.h / 2
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
   end)
 end
 
 
--- meta-shift-2 opens Trello
-hs.hotkey.bind({"⌘", "⌃", "⌥", "⇧"}, "2", function()
-  local reasonableNumOfSeconds = 5
-  local waitApp = reasonableNumOfSeconds
-  local waitWindow = true
-  local app = hs.application.open("com.apple.Safari", waitApp, waitWindow)
-  if not app then return end
-  local menuItem = app:findMenuItem("Save As...")
-  -- Current tab has some page open?
-  if menuItem.enabled then
-    app:selectMenuItem("New Tab")
-  end
-  hs.eventtap.keyStrokes("https://trello.com\n", app)
-end)
+function App:registerMouse()
+  local event = {hs.eventtap.event.types.otherMouseDragged}
+  self.mouseDragServer = hs.eventtap.new(event, function(e)
+    local propDx = hs.eventtap.event.properties["mouseEventDeltaX"]
+    local propDy = hs.eventtap.event.properties["mouseEventDeltaY"]
+    local dx = e:getProperty(propDx)
+    local dy = e:getProperty(propDy)
+    -- Prevent mouse move
+    hs.mouse.absolutePosition(hs.mouse.absolutePosition())
+    local event = {dx, dy}
+    local scrollEvent = hs.eventtap.event.newScrollEvent(event, {}, "pixel")
+    return true, {scrollEvent}
+  end)
+
+  local event = {hs.eventtap.event.types.otherMouseDown}
+  self.otherMouseDownServer = hs.eventtap.new(event, function(e)
+    local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
+    local btn = e:getProperty(prop)
+    local mouseButton6 = 5
+    if btn ~= mouseButton6 then return end
+    self.mouseDragServer:start()
+    return true --supress mouse click
+  end)
+  self.otherMouseDownServer:start()
+
+  local event = {hs.eventtap.event.types.otherMouseUp}
+  self.otherMouseUpServer = hs.eventtap.new(event, function(e)
+    local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
+    local btn = e:getProperty(prop)
+    local mouseButton6 = 5
+    if btn ~= mouseButton6 then return end
+    self.mouseDragServer:stop()
+    return true --supress mouse click
+  end)
+  self.otherMouseUpServer:start()
+end
 
 
-function icmpPingToHistory(history, msg, ...)
+function App:icmpPingToHistory(history, msg, ...)
   if msg == "didStart" then
     local address = ...
   elseif msg == "didFail" then
@@ -104,7 +331,7 @@ function icmpPingToHistory(history, msg, ...)
     local icmp, seq = ...
     timeSec = hs.timer.absoluteTime() / 1000000000;
     table.insert(history, {seq = seq, timeSend = timeSec})
-    if #history > maxIcmpHistory then
+    if #history > self.maxIcmpHistory then
       table.remove(history, 1)
     end
   elseif msg == "receivedPacket" then
@@ -123,31 +350,32 @@ function icmpPingToHistory(history, msg, ...)
 end
 
 
-inetPingSrv = hs.network.ping.echoRequest("1.1.1.1")
-inetPingSrv:setCallback(function(self, msg, ...)
-  icmpPingToHistory(inetIcmpHistory, msg, ...)
-end)
-inetPingSrv:start()
+function App:startInetPing()
+  self.inetPingSrv = hs.network.ping.echoRequest("1.1.1.1")
+  self.inetPingSrv:setCallback(function(self, msg, ...)
+    self:icmpPingToHistory(self.inetIcmpHistory, msg, ...)
+  end)
+  self.inetPingSrv:start()
+end
 
 
-routerPingSrv = nil
-function restartRouterPing()
-  if routerPingSrv then
-    routerPingSrv:stop()
-    routerPingSrv:setCallback(nil)
-    routerPingSrv = nil
+function App:restartRouterPing()
+  if self.routerPingSrv then
+    self.routerPingSrv:stop()
+    self.routerPingSrv:setCallback(nil)
+    self.routerPingSrv = nil
   end
-  if routerIp then
-    routerPingSrv = hs.network.ping.echoRequest(routerIp)
-    routerPingSrv:setCallback(function(self, msg, ...)
-      icmpPingToHistory(routerIcmpHistory, msg, ...)
+  if self.routerIp then
+    self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
+    self.routerPingSrv:setCallback(function(self, msg, ...)
+      self.icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
-    routerPingSrv:start()
+    self.routerPingSrv:start()
   end
 end
 
 
-function netGraphFromIcmpHistory(history)
+function App:netGraphFromIcmpHistory(history)
   local graph = {}
   for i = #history, 1, -1 do
     local item = history[i]
@@ -189,7 +417,7 @@ function netGraphFromIcmpHistory(history)
 end
 
 
-function cpuGraphFromLoadHistory(history)
+function App:cpuGraphFromLoadHistory(history)
   local graph = {}
   for i = #history, 1, -1 do
     local load = history[i]
@@ -215,187 +443,197 @@ function cpuGraphFromLoadHistory(history)
 end
 
 
-function onHeartbeat()
+function App:onHeartbeat()
 
-  heartbeatCounter = heartbeatCounter + 1
+  self.heartbeatCounter = self.heartbeatCounter + 1
 
   -- 0.5% CPU
-  inetPingSrv:sendPayload()
-  if routerPingSrv and routerPingSrv:isRunning() then
-    routerPingSrv:sendPayload()
+  if self.inetPingSrv and self.inetPingSrv:isRunning() then
+    self.inetPingSrv:sendPayload()
+  end
+  if self.routerPingSrv and self.routerPingSrv:isRunning() then
+    self.routerPingSrv:sendPayload()
   end
 
+  ----------------------------------------------------------------------------
   -- 0.1% CPU
+  -- variable.language.self.lua
   local curCpuUsage = hs.host.cpuUsageTicks()
-  local activeDiff = curCpuUsage.overall.active - lastCpuUsage.overall.active
-  local idleDiff = curCpuUsage.overall.idle - lastCpuUsage.overall.idle
-  lastCpuUsage = curCpuUsage
+  local lastCpuActive = self.lastCpuUsage.overall.active
+  local activeDiff = curCpuUsage.overall.active - lastCpuActive
+  local lastCpuIdle = self.lastCpuUsage.overall.idle
+  local idleDiff = curCpuUsage.overall.idle - lastCpuIdle
+  self.lastCpuUsage = curCpuUsage
   local cpuLoad = activeDiff / (activeDiff + idleDiff)
-  table.insert(cpuLoadHistory, cpuLoad)
-  if #cpuLoadHistory > maxCpuLoadHistory then
-    table.remove(cpuLoadHistory, 1)
+  table.insert(self.cpuLoadHistory, cpuLoad)
+  if #self.cpuLoadHistory > self.maxCpuLoadHistory then
+    table.remove(self.cpuLoadHistory, 1)
   end
 
   -- Updating too often yields high CPU usage
-  if heartbeatCounter % heartbeatsPerSec ~= 0 then
+  if self.heartbeatCounter % self.heartbeatsPerSec ~= 0 then
     return
   end
 
-  local is_big_timeout = heartbeatCounter % heartbeats_in_big_timeout == 0
-  is_big_timeout = heartbeatCounter == 0 or is_big_timeout
+  local heartbeatsToWait = self.heartbeatsInBigTimeout
+  local isBigTimeout = self.heartbeatCounter % heartbeatsToWait == 0
+  isBigTimeout = self.heartbeatCounter == 0 or isBigTimeout
   local curTime = hs.timer.absoluteTime() / 1000000000;
-  local tooEarly = heartbeatTime + (heartbeatsPerSec - 1) * heartbeatInterval
-  local tooLate = heartbeatTime + (heartbeatsPerSec + 1) * heartbeatInterval
+  local oneLess = (self.heartbeatsPerSec - 1) * self.heartbeatInterval
+  local oneMore = (self.heartbeatsPerSec + 1) * self.heartbeatInterval
+  local tooEarly = self.heartbeatTime + oneLess
+  local tooLate = self.heartbeatTime + oneMore
   local isOneSecondPassed = false
   -- Around one second passed? (no sleep)
   if curTime >= tooEarly and curTime <= tooLate then
     isOneSecondPassed = true
   end
-  heartbeatTime = curTime
+  self.heartbeatTime = curTime
 
-  local routerGraph = netGraphFromIcmpHistory(routerIcmpHistory)
-  local inetGraph = netGraphFromIcmpHistory(inetIcmpHistory)
-  local cpuGraph = cpuGraphFromLoadHistory(cpuLoadHistory)
+  local routerGraph = self:netGraphFromIcmpHistory(self.routerIcmpHistory)
+  local inetGraph = self:netGraphFromIcmpHistory(self.inetIcmpHistory)
+  local cpuGraph = self:cpuGraphFromLoadHistory(self.cpuLoadHistory)
 
-  if not telegramDockItem
-     or not mailDockItem
-     or not slackDockItem
-     or not discordDockItem then
+  if not self.telegramDockItem
+     or not self.mailDockItem
+     or not self.slackDockItem
+     or not self.discordDockItem then
     -- Do not check too often, CPU expensive
-    if is_big_timeout then
-      for _, item in ipairs(dockItems) do
+    if isBigTimeout then
+      for _, item in ipairs(self.dockItems) do
         if item.AXTitle == "Telegram" then
-          telegramDockItem = item
+          self.telegramDockItem = item
         end
         if item.AXTitle == "Mail" then
-          mailDockItem = item
+          self.mailDockItem = item
         end
         if item.AXTitle == "Slack" then
-          slackDockItem = item
+          self.slackDockItem = item
         end
         if item.AXTitle == "Discord" then
-          discordDockItem = item
+          self.discordDockItem = item
         end
       end
     end
   end
 
-  if not ipv4IfaceName then
+  if not self.ipv4IfaceName then
     local ipv4, _ = hs.network.primaryInterfaces()
     if ipv4 then
-      ipv4IfaceName = ipv4
+      self.ipv4IfaceName = ipv4
     end
   end
 
-  if ipv4IfaceName then
-    local details = hs.network.interfaceDetails(ipv4IfaceName)
+  if self.ipv4IfaceName then
+    local details = hs.network.interfaceDetails(self.ipv4IfaceName)
     if details then
       local ipv4IfaceDetails = details.IPv4
       if ipv4IfaceDetails then
         local curIp = ipv4IfaceDetails.Addresses[1]
-        if lastIp ~= curIp then
-          lastIp = curIp
+        if self.lastIp ~= curIp then
+          self.lastIp = curIp
           -- Mark for recalculation
-          routerIp = nil
+          self.routerIp = nil
         end
       else
-        lastIp = nil
+        self.lastIp = nil
       end
     else
-      lastIp = nil
+      self.lastIp = nil
     end
   else
-    lastIp = nil
+    self.lastIp = nil
   end
 
-  if not lastIp and routerIp then
-    routerIp = nil
-    routerIcmpHistory = {}
-    restartRouterPing()
+  if not self.lastIp and self.routerIp then
+    self.routerIp = nil
+    self.routerIcmpHistory = {}
+    self:restartRouterPing()
   end
 
-  local needNewRouterIp = lastIp and not routerIp
+  local needNewRouterIp = self.lastIp and not self.routerIp
   -- Router Ip can change without local IP being chenged on VPN connect
-  if needNewRouterIp or is_big_timeout then
+  if needNewRouterIp or isBigTimeout then
     function onRouteToolExit(exitCode, stdOut, _)
       if exitCode ~= 0 or not stdOut then
-        routerIp = nil
-        routerIcmpHistory = {}
-        return restartRouterPing()
+        self.routerIp = nil
+        self.routerIcmpHistory = {}
+        return self:restartRouterPing()
       end
       local pattern = "gateway: ([^%s]+)"
-      routerIp = stdOut:match(pattern)
-      if not routerIp then
-        routerIcmpHistory = {}
-        return restartRouterPing()
+      self.routerIp = stdOut:match(pattern)
+      if not self.routerIp then
+        self.routerIcmpHistory = {}
+        return self:restartRouterPing()
       end
-      return restartRouterPing()
+      return self:restartRouterPing()
     end
 
     local args = {"get", "default"}
-    routerIpTask = hs.task.new("/sbin/route", onRouteToolExit, args)
-    routerIpTask:start()
+    self.routerIpTask = hs.task.new("/sbin/route", onRouteToolExit, args)
+    self.routerIpTask:start()
   end
 
   local notifications = {}
-  if telegramDockItem and telegramDockItem.AXStatusLabel then
+  if self.telegramDockItem and self.telegramDockItem.AXStatusLabel then
     table.insert(notifications, "T")
   end
-  if mailDockItem and mailDockItem.AXStatusLabel then
+  if self.mailDockItem and self.mailDockItem.AXStatusLabel then
     table.insert(notifications, "E")
   end
-  if slackDockItem and slackDockItem.AXStatusLabel then
+  if self.slackDockItem and self.slackDockItem.AXStatusLabel then
     table.insert(notifications, "S")
   end
-  if discordDockItem and discordDockItem.AXStatusLabel then
+  if self.discordDockItem and self.discordDockItem.AXStatusLabel then
     -- "•" indicates channel messages, counter indicates privats and mentions
-    if discordDockItem.AXStatusLabel ~= "•" then
+    if self.discordDockItem.AXStatusLabel ~= "•" then
       table.insert(notifications, "D")
     end
   end
 
-  menuItem:clear()
+  self.menuItem:clear()
 
   if #notifications > 0 then
     -- Flash notification icons
-    if heartbeatCounter % 10 == 0 then
-      menuItem:addText(table.concat(notifications, " "))
+    if self.heartbeatCounter % 10 == 0 then
+      self.menuItem:addText(table.concat(notifications, " "))
     else
-      menuItem:addText((" "):rep(#notifications * 2 - 1))
+      self.menuItem:addText((" "):rep(#notifications * 2 - 1))
     end
-    menuItem:addSpacer(10)
+    self.menuItem:addSpacer(10)
   end
 
   local battery = hs.battery.percentage()
-  if not lastBattery then lastBattery = battery end
+  if not self.lastBattery then self.lastBattery = battery end
 
   -- 100 => 99 discharge takes too much time, assume "fully charged".
-  if lastBattery == 100 then
-    batteryDecHistory = {}
+  if self.lastBattery == 100 then
+    self.batteryDecHistory = {}
   -- "Battery care" stops charing on 80 percent, ignore 80 => 79 "discharge".
-  elseif lastBattery == 80 then
+  elseif self.lastBattery == 80 then
+    -- Do nothing
   else
-    if battery > lastBattery then
+    if battery > self.lastBattery then
       -- Charge detected, clear history
-      batteryDecHistory = {}
-      secondsSinceBatteryDec = 0
-    elseif battery == lastBattery then
+      self.batteryDecHistory = {}
+      self.secondsSinceBatteryDec = 0
+    elseif battery == self.lastBattery then
       if isOneSecondPassed then
-        secondsSinceBatteryDec = secondsSinceBatteryDec + 1
+        self.secondsSinceBatteryDec = self.secondsSinceBatteryDec + 1
       end
     else
       -- Not a discharge jump: overnight stay etc?
-      if battery == lastBattery - 1 then
-        batteryDecHistory[lastBattery] = secondsSinceBatteryDec
+      if battery == self.lastBattery - 1 then
+        self.batteryDecHistory[lastBattery] = self.secondsSinceBatteryDec
       end
-      secondsSinceBatteryDec = 0
+      self.secondsSinceBatteryDec = 0
     end
   end
-  lastBattery = battery
+  self.lastBattery = battery
 
   local recordCount = 0
   local totalTime = 0
-  for _, seconds in pairs(batteryDecHistory) do
+  for _, seconds in pairs(self.batteryDecHistory) do
     recordCount = recordCount + 1
     totalTime = totalTime + seconds
   end
@@ -422,327 +660,95 @@ function onHeartbeat()
     timeLeft = ""
   end
 
-  menuItem:addText("wifi")
-  menuItem:addSpacer(4)
-  menuItem:addGraph(routerGraph, maxIcmpHistory)
-  menuItem:addSpacer(4)
-  menuItem:addText("inet")
-  menuItem:addSpacer(4)
-  menuItem:addGraph(inetGraph, maxIcmpHistory)
-  menuItem:addSpacer(4)
-  menuItem:addText("cpu")
-  menuItem:addSpacer(4)
-  menuItem:addGraph(cpuGraph, maxCpuLoadHistory)
-  menuItem:addSpacer(4)
-  menuItem:addText("bat")
-  menuItem:addSpacer(4)
-  menuItem:addText(("%.0f"):format(battery) .. timeLeft)
-  menuItem:update()
+  self.menuItem:addText("wifi")
+  self.menuItem:addSpacer(4)
+  self.menuItem:addGraph(routerGraph, self.maxIcmpHistory)
+  self.menuItem:addSpacer(4)
+  self.menuItem:addText("inet")
+  self.menuItem:addSpacer(4)
+  self.menuItem:addGraph(inetGraph, self.maxIcmpHistory)
+  self.menuItem:addSpacer(4)
+  self.menuItem:addText("cpu")
+  self.menuItem:addSpacer(4)
+  self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
+  self.menuItem:addSpacer(4)
+  self.menuItem:addText("bat")
+  self.menuItem:addSpacer(4)
+  self.menuItem:addText(("%.0f"):format(battery) .. timeLeft)
+  self.menuItem:update()
 end
 
 
-timer = hs.timer.doEvery(heartbeatInterval, function()
-  onHeartbeat()
-end)
-
-
-hs.hotkey.bind("⌃", "w", function()
-  local delay = 50000
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local app = wnd:application()
-
-  if app:bundleID() == "com.apple.Safari" then
-    local menuItem = app:findMenuItem("Close Tab")
-    -- Not the last tab?
-    if menuItem.enabled then
-      -- Close active tab
-      app:selectMenuItem("Close Tab")
-    else
-      local menuItem = app:findMenuItem("Save As...")
-      -- Current tab has some page open?
-      if menuItem.enabled then
-        -- Safari can't close last tab
-        app:selectMenuItem("New Tab")
-        app:selectMenuItem("Show Previous Tab")
-        app:selectMenuItem("Close Tab")
-      end
-    end
-    return
-  end
-
-  -- Sometimes "Close Editor" menu item is disabled while there are available
-  -- tabs, incorrectly closing VSCode instead of closing tab. Also,
-  -- triggering "Close Editor" stops working if VSCode is moved between
-  -- desktops.
-  if app:bundleID() == "com.microsoft.VSCode" then
-    -- ctrl-w to close editor
-    hs.eventtap.keyStroke({"⌃"}, "w", delay, app)
-    return
-  end
-
-  -- Speed optimization to close tabs fast if they are exposed like in
-  -- Safari or iTerm2 (searching for app menu items takes some time)
-  if wnd:tabCount() > 0 then
-    hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
-    return
-  end
-
-  local menu = app:findMenuItem("Close Editor")
-  if menu and menu.enabled then
-    app:selectMenuItem("Close Editor")
-    return
-  end
-
-  local menu = app:findMenuItem("Close Tab")
-  if menu and menu.enabled then
-    app:selectMenuItem("Close Tab")
-    return
-  end
-
-  wnd:close()
-end)
-
-
-hs.hotkey.bind("⌃⇧", "v", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local app = wnd:application()
-
-  hs.pasteboard.setContents(hs.pasteboard.readString())
-  app:selectMenuItem("Paste")
-end)
-
-
-hs.hotkey.bind("⌘⇧", "space", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-  local duration = 0
-  wnd:setFrame(screenFrame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", "n", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x
-  frame.y = screenFrame.y
-  frame.w = screenFrame.w / 2
-  frame.h = screenFrame.h
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", "m", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x + screenFrame.w / 2
-  frame.y = screenFrame.y
-  frame.w = screenFrame.w / 2
-  frame.h = screenFrame.h
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", ",", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x
-  frame.y = screenFrame.y
-  frame.w = screenFrame.w
-  frame.h = screenFrame.h / 2
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", ".", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x
-  frame.y = screenFrame.y + screenFrame.h / 2
-  frame.w = screenFrame.w
-  frame.h = screenFrame.h / 2
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", "y", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x
-  frame.y = screenFrame.y
-  frame.w = screenFrame.w / 2
-  frame.h = screenFrame.h / 2
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", "u", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x + screenFrame.w / 2
-  frame.y = screenFrame.y
-  frame.w = screenFrame.w / 2
-  frame.h = screenFrame.h / 2
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", "i", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x
-  frame.y = screenFrame.y + screenFrame.h / 2
-  frame.w = screenFrame.w / 2
-  frame.h = screenFrame.h / 2
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-hs.hotkey.bind("⌘⇧", "o", function()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local frame = wnd:frame()
-  ---@type table
-  local screenFrame = wnd:screen():frame()
-
-  frame.x = screenFrame.x + screenFrame.w / 2
-  frame.y = screenFrame.y + screenFrame.h / 2
-  frame.w = screenFrame.w / 2
-  frame.h = screenFrame.h / 2
-  local duration = 0
-  wnd:setFrame(frame, duration)
-end)
-
-
-local event = {hs.eventtap.event.types.otherMouseDragged}
-mouseDragServer = hs.eventtap.new(event, function(e)
-  local propDx = hs.eventtap.event.properties["mouseEventDeltaX"]
-  local propDy = hs.eventtap.event.properties["mouseEventDeltaY"]
-  local dx = e:getProperty(propDx)
-  local dy = e:getProperty(propDy)
-  -- Prevent mouse move
-  hs.mouse.absolutePosition(hs.mouse.absolutePosition())
-  local event = {dx, dy}
-  local scrollEvent = hs.eventtap.event.newScrollEvent(event, {}, "pixel")
-  return true, {scrollEvent}
-end)
-
-
-local event = {hs.eventtap.event.types.otherMouseDown}
-otherMouseDownServer = hs.eventtap.new(event, function(e)
-  local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
-  local btn = e:getProperty(prop)
-  local mouseButton6 = 5
-  if btn ~= mouseButton6 then return end
-  mouseDragServer:start()
-  return true --supress mouse click
-end)
-otherMouseDownServer:start()
-
-
-local event = {hs.eventtap.event.types.otherMouseUp}
-otherMouseUpServer = hs.eventtap.new(event, function(e)
-  local prop = hs.eventtap.event.properties['mouseEventButtonNumber']
-  local btn = e:getProperty(prop)
-  local mouseButton6 = 5
-  if btn ~= mouseButton6 then return end
-  mouseDragServer:stop()
-  return true --supress mouse click
-end)
-otherMouseUpServer:start()
-
-
-menuItem:addSubmenuItem("Load passwords", function()
-  local msg = "Enter master password"
-  local secureField = true
-  local _, masterPass = hs.dialog.textPrompt(msg, "", "", "", "", secureField)
-  if masterPass == "" then
-    return
-  end
-  local db = "/Users/user/dotfiles/passwords.kdbx"
-  local app = "/opt/homebrew/bin/keepassxc-cli"
-  local args = {"show", "-s", db, "bit.ly"}
-  local onTaskExit = function(exitCode, stdOut, _)
-    if exitCode ~= 0 then
-      return hs.alert.show("Error executing keepassxc")
-    end
-    bitlyToken = stdOut:match("Notes: (.+)\n")
-    hs.alert.show("Loaded")
-  end
-  local task = hs.task.new(app, onTaskExit, args)
-  task:setInput(masterPass)
-  -- Do not trust GC
-  masterPass = ""
-  task:start()
-end)
-menuItem:addSubmenuSeparator()
-
-
-menuItem:addSubmenuItem("Shorten URL", function()
-  if not bitlyToken then
-    return hs.alert.show("Passwords not loaded")
-  end
-
-  local clipboard = hs.pasteboard.readString()
-  if not clipboard:match("^https?://") then
-    return hs.alert.show("No URL in clipboard")
-  end
-
-  -- Remove query string before shortening.
-  local queryPos = clipboard:find("?")
-  if queryPos then
-    clipboard = clipboard:sub(1, queryPos - 1)
-  end
-
-  local url = "" ..
-    "https://api-ssl.bitly.com/v3/shorten" ..
-    "?access_token=" .. bitlyToken ..
-    "&longUrl=" .. hs.http.encodeForQuery(clipboard)
-  hs.http.asyncGet(url, {}, function(status, response, _)
-    if status ~= 200 then
-      return hs.alert.show("Failed")
-    end
-    local response = hs.json.decode(response)
-    hs.pasteboard.setContents(response.data.url)
-    return hs.alert.show("Success")
+function App:startHeartbeat()
+  self.heartbeatTimer = hs.timer.doEvery(self.heartbeatInterval, function()
+    self:onHeartbeat()
   end)
-end)
+end
+
+
+function App:createMenu()
+  self.menuItem:addSubmenuItem("Load passwords", function()
+    local msg = "Enter master password"
+    local secure = true
+    local _, masterPass = hs.dialog.textPrompt(msg, "", "", "", "", secure)
+    if masterPass == "" then
+      return
+    end
+    -- TODO: correctly get home dir
+    local db = "/Users/user/dotfiles/passwords.kdbx"
+    local app = "/opt/homebrew/bin/keepassxc-cli"
+    local args = {"show", "-s", db, "bit.ly"}
+    local onTaskExit = function(exitCode, stdOut, _)
+      if exitCode ~= 0 then
+        return hs.alert.show("Error executing keepassxc")
+      end
+      bitlyToken = stdOut:match("Notes: (.+)\n")
+      hs.alert.show("Loaded")
+    end
+    local task = hs.task.new(app, onTaskExit, args)
+    task:setInput(masterPass)
+    -- Do not trust GC
+    masterPass = ""
+    task:start()
+  end)
+  self.menuItem:addSubmenuSeparator()
+
+
+  self.menuItem:addSubmenuItem("Shorten URL", function()
+    if not bitlyToken then
+      return hs.alert.show("Passwords not loaded")
+    end
+
+    local clipboard = hs.pasteboard.readString()
+    if not clipboard:match("^https?://") then
+      return hs.alert.show("No URL in clipboard")
+    end
+
+    -- Remove query string before shortening.
+    local queryPos = clipboard:find("?")
+    if queryPos then
+      clipboard = clipboard:sub(1, queryPos - 1)
+    end
+
+    local url = "" ..
+      "https://api-ssl.bitly.com/v3/shorten" ..
+      "?access_token=" .. bitlyToken ..
+      "&longUrl=" .. hs.http.encodeForQuery(clipboard)
+    hs.http.asyncGet(url, {}, function(status, response, _)
+      if status ~= 200 then
+        return hs.alert.show("Failed")
+      end
+      local response = hs.json.decode(response)
+      hs.pasteboard.setContents(response.data.url)
+      return hs.alert.show("Success")
+    end)
+  end)
+end
+
+
+app = App:new()
+app:registerHotkeys()
+app:registerMouse()
+app:createMenu()
+app:startInetPing()
+app:startHeartbeat()

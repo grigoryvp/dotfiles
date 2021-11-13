@@ -100,3 +100,7 @@ end
 curDirToModuleSearchPath()
 hs = Hs:new()
 require "main"
+
+assert(
+  table.concat(app:ipStrToList("192.168.0.1")) ==
+  table.concat({192, 168, 0, 1}))

@@ -41,6 +41,8 @@ function App:new()
   inst.routerIp = nil
   inst.routerIpTask = nil
   inst.routerPingSrv = nil
+  self.pingInet = false
+  self.pingRouter = false
   return inst
 end
 
@@ -352,6 +354,7 @@ end
 
 
 function App:restartInetPing()
+  if not self.pingInet then return end
   if self.inetPingSrv then
     self.inetPingSrv:stop()
     self.inetPingSrv:setCallback(nil)
@@ -368,6 +371,7 @@ end
 
 
 function App:restartRouterPing()
+  if not self.pingRouter then return end
   if self.routerPingSrv then
     self.routerPingSrv:stop()
     self.routerPingSrv:setCallback(nil)

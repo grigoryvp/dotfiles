@@ -126,3 +126,16 @@ function menuitem:addSubmenuSeparator()
   table.insert(self._submenu, {title = "-"})
   self._item:setMenu(self._submenu)
 end
+
+
+function menuitem:addSubmenuCheckbox(title, checked, handler)
+  table.insert(self._submenu, {
+    title = title,
+    checked=checked,
+    fn = function(modifiers, item)
+      item.checked = not item.checked
+      handler(item.checked)
+    end,
+  })
+  self._item:setMenu(self._submenu)
+end

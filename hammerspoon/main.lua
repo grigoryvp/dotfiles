@@ -42,8 +42,8 @@ function App:new()
   inst.routerIp = nil
   inst.routerIpTask = nil
   inst.routerPingSrv = nil
-  self.pingInet = false
   self.pingRouter = false
+  self.pingInet = false
   return inst
 end
 
@@ -700,6 +700,7 @@ end
 
 
 function App:createMenu()
+
   self.menuItem:addSubmenuItem("Load passwords", function()
     local msg = "Enter master password"
     local secure = true
@@ -724,6 +725,17 @@ function App:createMenu()
     masterPass = ""
     task:start()
   end)
+
+  self.menuItem:addSubmenuCheckbox("Ping router", function(checked)
+    self.pingRouter = checked
+    self:restartRouterPing()
+  end)
+
+  self.menuItem:addSubmenuCheckbox("Ping internet", function(checked)
+    self.pingInet = checked
+    self:restartRouterPing()
+  end)
+
   self.menuItem:addSubmenuSeparator()
 
 

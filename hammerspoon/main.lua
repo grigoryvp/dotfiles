@@ -37,6 +37,7 @@ function App:new()
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
   inst.lastIp = nil
+  inst.inteIp = "1.1.1.1"
   inst.routerIp = nil
   inst.routerIpTask = nil
   inst.routerPingSrv = nil
@@ -350,12 +351,19 @@ function App:icmpPingToHistory(history, msg, ...)
 end
 
 
-function App:startInetPing()
-  self.inetPingSrv = hs.network.ping.echoRequest("1.1.1.1")
-  self.inetPingSrv:setCallback(function(self, msg, ...)
-    self:icmpPingToHistory(self.inetIcmpHistory, msg, ...)
-  end)
-  self.inetPingSrv:start()
+function App:restartInetPing()
+  if self.inetPingSrv then
+    self.inetPingSrv:stop()
+    self.inetPingSrv:setCallback(nil)
+    self.inetPingSrv = nil
+  end
+  if self.inteIp then
+    self.inetPingSrv = hs.network.ping.echoRequest(self.inteIp)
+    self.inetPingSrv:setCallback(function(echoRequestObject, msg, ...)
+      self:icmpPingToHistory(self.inetIcmpHistory, msg, ...)
+    end)
+    self.inetPingSrv:start()
+  end
 end
 
 
@@ -367,7 +375,7 @@ function App:restartRouterPing()
   end
   if self.routerIp then
     self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
-    self.routerPingSrv:setCallback(function(self, msg, ...)
+    self.routerPingSrv:setCallback(function(echoRequestObject, msg, ...)
       self.icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
     self.routerPingSrv:start()
@@ -405,7 +413,7 @@ function App:netGraphFromIcmpHistory(history)
       -- If no reply is received or reply took more than 2 seconds draw gray
       -- columns of different height for visual "in progress" feedback
       local grey = {red = 0.5, green = 0.5, blue = 0.5}
-      if (heartbeatCounter + i) % 2 == 0 then
+      if (self.heartbeatCounter + i) % 2 == 0 then
         table.insert(graph, {val = 0.2, color = grey})
       else
         table.insert(graph, {val = 0.4, color = grey})
@@ -624,7 +632,7 @@ function App:onHeartbeat()
     else
       -- Not a discharge jump: overnight stay etc?
       if battery == self.lastBattery - 1 then
-        self.batteryDecHistory[lastBattery] = self.secondsSinceBatteryDec
+        self.batteryDecHistory[self.lastBattery] = self.secondsSinceBatteryDec
       end
       self.secondsSinceBatteryDec = 0
     end
@@ -750,5 +758,5 @@ app = App:new()
 app:registerHotkeys()
 app:registerMouse()
 app:createMenu()
-app:startInetPing()
+app:restartInetPing()
 app:startHeartbeat()

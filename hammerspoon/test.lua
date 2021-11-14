@@ -21,8 +21,9 @@ end
 
 
 HsEchoRequest = {}
-function HsEchoRequest:new()
+function HsEchoRequest:new(addr)
   return setmetatable({
+    addr = addr,
   }, {__index = self})
 end
 
@@ -74,8 +75,68 @@ function HsAppElement:new()
 end
 
 
+HsApplication = {}
+function HsApplication:new()
+  return setmetatable({
+  }, {__index = self})
+end
+
+
+function HsApplication:bundleID()
+  return "com.apple.Safari"
+end
+
+
+function HsApplication:findMenuItem()
+  return {}
+end
+
+
+function HsApplication:selectMenuItem(name)
+end
+
+
+HsWindow = {}
+function HsWindow:new(screen)
+  return setmetatable({
+    _screen = screen
+  }, {__index = self})
+end
+
+
+function HsWindow:frame()
+  return {x = 0, y = 0, w = 100, h = 100}
+end
+
+
+function HsWindow:setFrame(frame, duration) end
+
+
+function HsWindow:application()
+  return HsApplication:new()
+end
+
+
+function HsWindow:screen()
+  return self._screen
+end
+
+
+HsScreen = {}
+function HsScreen:new()
+  return setmetatable({
+  }, {__index = self})
+end
+
+
+function HsScreen:frame()
+  return {x = 0, y = 0, w = 100, h = 100}
+end
+
+
 Hs = {}
 function Hs:new()
+  local screen = HsScreen:new()
   return setmetatable({
     console = {
       clearConsole = function() end,
@@ -84,13 +145,19 @@ function Hs:new()
       new = function() end,
     },
     menubar = {
-      new = function() return HsMenubar:new() end,
+      new = function()
+        return HsMenubar:new()
+      end,
     },
     host = {
-      cpuUsageTicks = function() return 0 end,
+      cpuUsageTicks = function()
+        return 0
+      end,
     },
     timer = {
-      absoluteTime = function() return 0 end,
+      absoluteTime = function()
+        return 0
+      end,
       doEvery = function(interval, handler) end,
     },
     axuielement = {
@@ -99,11 +166,15 @@ function Hs:new()
       } end,
     },
     hotkey = {
-      bind = function(modifiers, hotkey, handler) end,
+      bind = function(modifiers, hotkey, handler)
+        handler()
+      end,
     },
     network = {
       ping = {
-        echoRequest = function(addr) return HsEchoRequest:new(addr) end,
+        echoRequest = function(addr)
+          return HsEchoRequest:new(addr)
+        end,
       },
     },
     eventtap = {
@@ -116,8 +187,21 @@ function Hs:new()
           mouseEventDeltaY = 0,
         },
       },
-      new = function(event, handler) return HsEventtap:new(event, handler) end
-    }
+      new = function(event, handler)
+        return HsEventtap:new(event, handler)
+      end,
+    },
+    window = {
+      frontmostWindow = function()
+        return HsWindow:new(screen)
+      end,
+    },
+    pasteboard = {
+      readString = function()
+        return ""
+      end,
+      setContents = function(content) end,
+    },
   }, {__index = self})
 end
 
@@ -136,3 +220,4 @@ assert(
   table.concat({192, 168, 0, 1}))
 
 app:clickDockItem(1)
+app:registerHotkeys()

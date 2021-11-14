@@ -28,7 +28,8 @@ function App:new()
   -- a battery to discharge from 90 to 89 percents.
   inst.batteryDecHistory = {}
   inst.dock = hs.application("Dock")
-  inst.dockItems = hs.axuielement.applicationElement(inst.dock)[1]
+  local dockElement = hs.axuielement.applicationElement(inst.dock)
+  inst.dockItems = dockElement.AXChildren[1].AXChildren
   inst.telegramDockItem = nil
   inst.mailDockItem = nil
   inst.slackDockItem = nil

@@ -108,13 +108,17 @@ end
 HsAppElement = {}
 function HsAppElement:new()
   return setmetatable({
-    [1] = HsAppSubelement:new({
-      AXRoleDescription = "application dock item",
-      AXTitle = "System Preferences",
-    }),
-    [2] = HsAppSubelement:new({
-      AXRoleDescription = "application dock item",
-    }),
+    AXChildren = {{
+      AXChildren = {
+        HsAppSubelement:new({
+          AXRoleDescription = "application dock item",
+          AXTitle = "System Preferences",
+        }),
+        HsAppSubelement:new({
+          AXRoleDescription = "application dock item",
+        }),
+      }
+    }},
   }, {__index = self})
 end
 
@@ -248,9 +252,9 @@ function Hs:new()
       doEvery = function(interval, handler) end,
     },
     axuielement = {
-      applicationElement = function(app) return {
-        HsAppElement:new(),
-      } end,
+      applicationElement = function(app)
+        return HsAppElement:new()
+      end,
     },
     hotkey = {
       bind = function(modifiers, hotkey, handler)

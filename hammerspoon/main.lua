@@ -42,9 +42,15 @@ function App:new()
   inst.routerIp = nil
   inst.routerIpTask = nil
   inst.routerPingSrv = nil
-  self.pingRouter = false
-  self.pingInet = false
+  inst.pingRouter = false
+  inst.pingInet = false
   return inst
+end
+
+
+function App:loadSettings()
+  self.pingRouter = hs.settings.get("pingRouter")
+  self.pingInet = hs.settings.get("pingInet")
 end
 
 
@@ -726,15 +732,25 @@ function App:createMenu()
     task:start()
   end)
 
-  self.menuItem:addSubmenuCheckbox("Ping router", function(checked)
-    self.pingRouter = checked
-    self:restartRouterPing()
-  end)
+  self.menuItem:addSubmenuCheckbox(
+    "Ping router",
+    self.pingRouter,
+    function(checked)
+      self.pingRouter = checked
+      hs.settings.set("pingRouter", self.pingRouter)
+      self:restartRouterPing()
+    end
+  )
 
-  self.menuItem:addSubmenuCheckbox("Ping internet", function(checked)
-    self.pingInet = checked
-    self:restartRouterPing()
-  end)
+  self.menuItem:addSubmenuCheckbox(
+    "Ping internet",
+    self.pingInet,
+    function(checked)
+      self.pingInet = checked
+      hs.settings.set("pingInet", self.pingInet)
+      self:restartRouterPing()
+    end
+  )
 
   self.menuItem:addSubmenuSeparator()
 
@@ -774,6 +790,7 @@ end
 app = App:new()
 app:registerHotkeys()
 app:registerMouse()
+app:loadSettings()
 app:createMenu()
 app:restartInetPing()
 app:startHeartbeat()

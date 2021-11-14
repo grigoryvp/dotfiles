@@ -314,6 +314,10 @@ function Hs:new()
     styledtext = {
       new = function(text, props) end
     },
+    settings = {
+      get = function(name) end,
+      set = function(name, val) end,
+    }
   }, {__index = self})
 end
 

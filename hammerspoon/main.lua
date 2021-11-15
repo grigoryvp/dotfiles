@@ -332,6 +332,7 @@ end
 
 
 function App:icmpPingToHistory(history, msg, ...)
+  print(msg)
   if msg == "didStart" then
     local address = ...
   elseif msg == "didFail" then
@@ -385,7 +386,6 @@ function App:restartRouterPing()
   if self.pingRouter and self.routerIp then
     self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
     self.routerPingSrv:setCallback(function(echoRequestObject, msg, ...)
-      print("router ping callback")
       self.icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
     self.routerPingSrv:start()
@@ -736,7 +736,6 @@ function App:createMenu()
     self.pingRouter,
     function(checked)
       self.pingRouter = checked
-      print(self.pingRouter)
       hs.settings.set("pingRouter", self.pingRouter)
       self:restartRouterPing()
     end

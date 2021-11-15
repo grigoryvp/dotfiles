@@ -134,6 +134,7 @@ function menuitem:addSubmenuCheckbox(title, checked, handler)
     checked=checked,
     fn = function(modifiers, item)
       item.checked = not item.checked
+      self._item:setMenu(self._submenu)
       handler(item.checked)
     end,
   })

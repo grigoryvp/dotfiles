@@ -387,6 +387,7 @@ function App:restartRouterPing()
   if self.routerIp then
     self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
     self.routerPingSrv:setCallback(function(echoRequestObject, msg, ...)
+      print("router ping callback")
       self.icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
     self.routerPingSrv:start()

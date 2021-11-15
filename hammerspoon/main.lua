@@ -332,7 +332,6 @@ end
 
 
 function App:icmpPingToHistory(history, msg, ...)
-  print(msg)
   if msg == "didStart" then
     local address = ...
   elseif msg == "didFail" then
@@ -386,7 +385,7 @@ function App:restartRouterPing()
   if self.pingRouter and self.routerIp then
     self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
     self.routerPingSrv:setCallback(function(echoRequestObject, msg, ...)
-      self.icmpPingToHistory(self.routerIcmpHistory, msg, ...)
+      self:icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
     self.routerPingSrv:start()
   end

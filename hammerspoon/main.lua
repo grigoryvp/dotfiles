@@ -361,13 +361,12 @@ end
 
 
 function App:restartInetPing()
-  if not self.pingInet then return end
   if self.inetPingSrv then
     self.inetPingSrv:stop()
     self.inetPingSrv:setCallback(nil)
     self.inetPingSrv = nil
   end
-  if self.inteIp then
+  if self.pingInet and self.inteIp then
     self.inetPingSrv = hs.network.ping.echoRequest(self.inteIp)
     self.inetPingSrv:setCallback(function(echoRequestObject, msg, ...)
       self:icmpPingToHistory(self.inetIcmpHistory, msg, ...)
@@ -378,13 +377,12 @@ end
 
 
 function App:restartRouterPing()
-  if not self.pingRouter then return end
   if self.routerPingSrv then
     self.routerPingSrv:stop()
     self.routerPingSrv:setCallback(nil)
     self.routerPingSrv = nil
   end
-  if self.routerIp then
+  if self.pingRouter and self.routerIp then
     self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
     self.routerPingSrv:setCallback(function(echoRequestObject, msg, ...)
       print("router ping callback")

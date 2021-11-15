@@ -738,6 +738,7 @@ function App:createMenu()
     self.pingRouter,
     function(checked)
       self.pingRouter = checked
+      print(self.pingRouter)
       hs.settings.set("pingRouter", self.pingRouter)
       self:restartRouterPing()
     end
@@ -749,7 +750,7 @@ function App:createMenu()
     function(checked)
       self.pingInet = checked
       hs.settings.set("pingInet", self.pingInet)
-      self:restartRouterPing()
+      self:restartInetPing()
     end
   )
 

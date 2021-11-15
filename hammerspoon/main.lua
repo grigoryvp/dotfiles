@@ -735,6 +735,7 @@ function App:createMenu()
     self.pingRouter,
     function(checked)
       self.pingRouter = checked
+      self.routerIcmpHistory = {}
       hs.settings.set("pingRouter", self.pingRouter)
       self:restartRouterPing()
     end
@@ -745,6 +746,7 @@ function App:createMenu()
     self.pingInet,
     function(checked)
       self.pingInet = checked
+      self.inetIcmpHistory = {}
       hs.settings.set("pingInet", self.pingInet)
       self:restartInetPing()
     end

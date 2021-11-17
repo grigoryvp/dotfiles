@@ -27,9 +27,6 @@ function App:new()
   -- key 90 contains value of 1000 that means that it took 1000 seconds for
   -- a battery to discharge from 90 to 89 percents.
   inst.batteryDecHistory = {}
-  inst.dock = hs.application("Dock")
-  local dockElement = hs.axuielement.applicationElement(inst.dock)
-  inst.dockItems = dockElement.AXChildren[1].AXChildren
   inst.telegramDockItem = nil
   inst.mailDockItem = nil
   inst.slackDockItem = nil
@@ -493,7 +490,7 @@ function App:onHeartbeat()
   end
 
   local heartbeatsToWait = self.heartbeatsInBigTimeout
-  local isBigTimeout = self.heartbeatCounter % heartbeatsToWait == 0
+  local isBigTimeout = (self.heartbeatCounter % heartbeatsToWait) == 0
   isBigTimeout = self.heartbeatCounter == 0 or isBigTimeout
   local curTime = hs.timer.absoluteTime() / 1000000000;
   local oneLess = (self.heartbeatsPerSec - 1) * self.heartbeatInterval
@@ -510,6 +507,13 @@ function App:onHeartbeat()
   local routerGraph = self:netGraphFromIcmpHistory(self.routerIcmpHistory)
   local inetGraph = self:netGraphFromIcmpHistory(self.inetIcmpHistory)
   local cpuGraph = self:cpuGraphFromLoadHistory(self.cpuLoadHistory)
+
+  if isBigTimeout then
+    self.dock = hs.application("Dock")
+    local dockElement = hs.axuielement.applicationElement(self.dock)
+    -- Re-read dock items for clicking them
+    self.dockItems = dockElement.AXChildren[1].AXChildren
+  end
 
   if not self.telegramDockItem
      or not self.mailDockItem

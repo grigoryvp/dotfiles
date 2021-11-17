@@ -38,16 +38,15 @@ function App:new()
   inst.inteIp = "1.1.1.1"
   inst.routerIp = nil
   inst.routerIpTask = nil
-  inst.routerPingSrv = nil
-  inst.pingRouter = false
-  inst.pingInet = false
+  inst.pingRouterInt = false
+  inst.pingInetInt = false
   return inst
 end
 
 
 function App:loadSettings()
-  self.pingRouter = hs.settings.get("pingRouter")
-  self.pingInet = hs.settings.get("pingInet")
+  self.pingRouterInt = hs.settings.get("pingRouterInt")
+  self.pingInetInt = hs.settings.get("pingInetInt")
 end
 
 
@@ -357,34 +356,34 @@ function App:icmpPingToHistory(history, msg, ...)
 end
 
 
-function App:restartInetPing()
-  if self.inetPingSrv then
-    self.inetPingSrv:stop()
-    self.inetPingSrv:setCallback(nil)
-    self.inetPingSrv = nil
+function App:restartInetPingInt()
+  if self.inetPingIntSrv then
+    self.inetPingIntSrv:stop()
+    self.inetPingIntSrv:setCallback(nil)
+    self.inetPingIntSrv = nil
   end
-  if self.pingInet and self.inteIp then
-    self.inetPingSrv = hs.network.ping.echoRequest(self.inteIp)
-    self.inetPingSrv:setCallback(function(echoRequestObject, msg, ...)
+  if self.pingInetInt and self.inteIp then
+    self.inetPingIntSrv = hs.network.ping.echoRequest(self.inteIp)
+    self.inetPingIntSrv:setCallback(function(echoRequestObject, msg, ...)
       self:icmpPingToHistory(self.inetIcmpHistory, msg, ...)
     end)
-    self.inetPingSrv:start()
+    self.inetPingIntSrv:start()
   end
 end
 
 
-function App:restartRouterPing()
-  if self.routerPingSrv then
-    self.routerPingSrv:stop()
-    self.routerPingSrv:setCallback(nil)
-    self.routerPingSrv = nil
+function App:restartRouterPingInt()
+  if self.routerPingIntSrv then
+    self.routerPingIntSrv:stop()
+    self.routerPingIntSrv:setCallback(nil)
+    self.routerPingIntSrv = nil
   end
-  if self.pingRouter and self.routerIp then
-    self.routerPingSrv = hs.network.ping.echoRequest(self.routerIp)
-    self.routerPingSrv:setCallback(function(echoRequestObject, msg, ...)
+  if self.pingRouterInt and self.routerIp then
+    self.routerPingIntSrv = hs.network.ping.echoRequest(self.routerIp)
+    self.routerPingIntSrv:setCallback(function(echoRequestObject, msg, ...)
       self:icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
-    self.routerPingSrv:start()
+    self.routerPingIntSrv:start()
   end
 end
 
@@ -457,16 +456,28 @@ function App:cpuGraphFromLoadHistory(history)
 end
 
 
+function App:getDockItems()
+  self.dock = hs.application("Dock")
+  local dockElement = hs.axuielement.applicationElement(self.dock)
+  -- Re-read dock items for clicking them
+  self.dockItems = dockElement.AXChildren[1].AXChildren
+end
+
+
 function App:onHeartbeat()
 
   self.heartbeatCounter = self.heartbeatCounter + 1
 
   -- 0.5% CPU
-  if self.inetPingSrv and self.inetPingSrv:isRunning() then
-    self.inetPingSrv:sendPayload()
+  if self.pingInetInt then
+    if self.inetPingIntSrv and self.inetPingIntSrv:isRunning() then
+      self.inetPingIntSrv:sendPayload()
+    end
   end
-  if self.routerPingSrv and self.routerPingSrv:isRunning() then
-    self.routerPingSrv:sendPayload()
+  if self.pingRouterInt then
+    if self.routerPingIntSrv and self.routerPingIntSrv:isRunning() then
+      self.routerPingIntSrv:sendPayload()
+    end
   end
 
   ----------------------------------------------------------------------------
@@ -509,10 +520,7 @@ function App:onHeartbeat()
   local cpuGraph = self:cpuGraphFromLoadHistory(self.cpuLoadHistory)
 
   if isBigTimeout then
-    self.dock = hs.application("Dock")
-    local dockElement = hs.axuielement.applicationElement(self.dock)
-    -- Re-read dock items for clicking them
-    self.dockItems = dockElement.AXChildren[1].AXChildren
+    self:getDockItems()
   end
 
   if not self.telegramDockItem
@@ -569,7 +577,7 @@ function App:onHeartbeat()
   if not self.lastIp and self.routerIp then
     self.routerIp = nil
     self.routerIcmpHistory = {}
-    self:restartRouterPing()
+    self:restartRouterPingInt()
   end
 
   local needNewRouterIp = self.lastIp and not self.routerIp
@@ -579,15 +587,15 @@ function App:onHeartbeat()
       if exitCode ~= 0 or not stdOut then
         self.routerIp = nil
         self.routerIcmpHistory = {}
-        return self:restartRouterPing()
+        return self:restartRouterPingInt()
       end
       local pattern = "gateway: ([^%s]+)"
       self.routerIp = stdOut:match(pattern)
       if not self.routerIp then
         self.routerIcmpHistory = {}
-        return self:restartRouterPing()
+        return self:restartRouterPingInt()
       end
-      return self:restartRouterPing()
+      return self:restartRouterPingInt()
     end
 
     local args = {"get", "default"}
@@ -735,24 +743,24 @@ function App:createMenu()
   end)
 
   self.menuItem:addSubmenuCheckbox(
-    "Ping router",
-    self.pingRouter,
+    "Ping router (internal)",
+    self.pingRouterInt,
     function(checked)
-      self.pingRouter = checked
+      self.pingRouterInt = checked
       self.routerIcmpHistory = {}
-      hs.settings.set("pingRouter", self.pingRouter)
-      self:restartRouterPing()
+      hs.settings.set("pingRouterInt", self.pingRouterInt)
+      self:restartRouterPingInt()
     end
   )
 
   self.menuItem:addSubmenuCheckbox(
-    "Ping internet",
-    self.pingInet,
+    "Ping internet (internal)",
+    self.pingInetInt,
     function(checked)
-      self.pingInet = checked
+      self.pingInetInt = checked
       self.inetIcmpHistory = {}
-      hs.settings.set("pingInet", self.pingInet)
-      self:restartInetPing()
+      hs.settings.set("pingInetInt", self.pingInetInt)
+      self:restartInetPingInt()
     end
   )
 
@@ -789,12 +797,3 @@ function App:createMenu()
     end)
   end)
 end
-
-
-app = App:new()
-app:registerHotkeys()
-app:registerMouse()
-app:loadSettings()
-app:createMenu()
-app:restartInetPing()
-app:startHeartbeat()

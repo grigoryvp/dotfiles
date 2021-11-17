@@ -331,10 +331,11 @@ curDirToModuleSearchPath()
 hs = Hs:new()
 require "main"
 
+app = App:new()
 assert(
   table.concat(app:ipStrToList("192.168.0.1")) ==
   table.concat({192, 168, 0, 1}))
-
+app:getDockItems()
 app:clickDockItem(1)
 app:registerHotkeys()
 app:registerMouse()
@@ -345,8 +346,8 @@ app:icmpPingToHistory(history, "sendPacket", nil, 1)
 assert(#history == 1)
 app:icmpPingToHistory(history, "receivedPacket", nil, 1)
 app:icmpPingToHistory(history, "receivedUnexpectedPacket", nil)
-app:restartInetPing()
-app:restartRouterPing()
+app:restartInetPingInt()
+app:restartRouterPingInt()
 app:netGraphFromIcmpHistory(history)
 app:cpuGraphFromLoadHistory({1, 2, 3})
 app:onHeartbeat()

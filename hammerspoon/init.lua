@@ -8,6 +8,14 @@ function onReadlinkExit(exitCode, stdOut, _)
   -- init.lua is linked, rest of the files are in the original dir
   package.path = package.path .. ";" .. srcDir .. "?.lua"
   require "main"
+
+  app = App:new()
+  app:registerHotkeys()
+  app:registerMouse()
+  app:loadSettings()
+  app:createMenu()
+  app:restartInetPingInt()
+  app:startHeartbeat()
 end
 
 srcFile = debug.getinfo(1).source:match("@?(.*)")

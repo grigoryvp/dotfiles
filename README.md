@@ -77,6 +77,7 @@ pip install --upgrade pip
 # * Remove all icons except 24h clock.
 # * Disable menubar auto-hide.
 # Disable sleep in "Preferences/Energy Saver".
+# Disable sound effects in "Preferences/Sound/Effects".
 # Enable password lock in "Preferences/Security/General/Require password".
 # For old macOS versions:
 # * Disable welcome screen guest user in "Preferences/Users & Groups".

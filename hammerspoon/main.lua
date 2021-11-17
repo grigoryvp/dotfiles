@@ -361,30 +361,30 @@ end
 
 
 function App:stdOutPingToHistory(history, stdOut)
-  -- Request timeout for icmp_seq 460
-  local pattern = "Request timeout"
-  if stdOut:match(pattern) then
-    timeRecvSec = hs.timer.absoluteTime() / 1000000000
-    historyItem = {timeRecv = timeRecvSec, timeSend = timeRecvSec - 10}
-    table.insert(history, historyItem)
+
+  local timeRecvSec = hs.timer.absoluteTime() / 1000000000
+  local addToHistory = function(item)
+    table.insert(history, item)
     if #history > self.maxIcmpHistory then
       table.remove(history, 1)
     end
-    return
+  end
+
+  -- Request timeout for icmp_seq 460
+  local pattern = "Request timeout"
+  if stdOut:match(pattern) then
+    return addToHistory({error = true})
   end
 
   -- 64 bytes from 1.1.1.1: icmp_seq=11029 ttl=52 time=34.453 ms
   local pattern = "time=([0-9\\.]+) ms"
   delayStr = stdOut:match(pattern)
-  if not delayStr then return end
-
-  timeRecvSec = hs.timer.absoluteTime() / 1000000000
-  timeSendSec = timeRecvSec - tonumber(delayStr) / 1000
-  historyItem = {timeRecv = timeRecvSec, timeSend = timeSendSec}
-  table.insert(history, historyItem)
-  if #history > self.maxIcmpHistory then
-    table.remove(history, 1)
+  if not delayStr then
+    return addToHistory({error = true})
   end
+
+  local timeSendSec = timeRecvSec - tonumber(delayStr) / 1000
+  addToHistory({timeRecv = timeRecvSec, timeSend = timeSendSec})
 end
 
 

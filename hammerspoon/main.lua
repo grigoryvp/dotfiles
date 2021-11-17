@@ -35,18 +35,22 @@ function App:new()
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
   inst.lastIp = nil
-  inst.inteIp = "1.1.1.1"
+  inst.inetIp = "1.1.1.1"
   inst.routerIp = nil
   inst.routerIpTask = nil
   inst.pingRouterInt = false
+  inst.pingRouterExt = false
   inst.pingInetInt = false
+  inst.pingInetExt = false
   return inst
 end
 
 
 function App:loadSettings()
   self.pingRouterInt = hs.settings.get("pingRouterInt")
+  self.pingRouterExt = hs.settings.get("pingRouterExt")
   self.pingInetInt = hs.settings.get("pingInetInt")
+  self.pingInetExt = hs.settings.get("pingInetExt")
 end
 
 
@@ -335,7 +339,7 @@ function App:icmpPingToHistory(history, msg, ...)
     print("ping server failed with " .. error)
   elseif msg == "sendPacket" or msg == "sendPacketFailed" then
     local icmp, seq = ...
-    timeSec = hs.timer.absoluteTime() / 1000000000;
+    timeSec = hs.timer.absoluteTime() / 1000000000
     table.insert(history, {seq = seq, timeSend = timeSec})
     if #history > self.maxIcmpHistory then
       table.remove(history, 1)
@@ -344,7 +348,7 @@ function App:icmpPingToHistory(history, msg, ...)
     local icmp, seq = ...
     for _, item in ipairs(history) do
       if item.seq == seq then
-        timeSec = hs.timer.absoluteTime() / 1000000000;
+        timeSec = hs.timer.absoluteTime() / 1000000000
         item.timeRecv = timeSec
         break
       end
@@ -356,18 +360,53 @@ function App:icmpPingToHistory(history, msg, ...)
 end
 
 
+function App:stdOutPingToHistory(history, stdOut)
+  -- 64 bytes from 1.1.1.1: icmp_seq=11029 ttl=52 time=34.453 ms
+  local pattern = "time=([0-9\\.]+) ms"
+  delayStr = stdOut:match(pattern)
+  if not delayStr then return end
+
+  timeRecvSec = hs.timer.absoluteTime() / 1000000000
+  timeSendSec = timeRecvSec - tonumber(delayStr) / 1000
+  historyItem = {timeRecv = timeRecvSec, timeSend = timeSendSec}
+  table.insert(history, historyItem)
+  if #history > self.maxIcmpHistory then
+    table.remove(history, 1)
+  end
+end
+
+
 function App:restartInetPingInt()
   if self.inetPingIntSrv then
     self.inetPingIntSrv:stop()
     self.inetPingIntSrv:setCallback(nil)
     self.inetPingIntSrv = nil
   end
-  if self.pingInetInt and self.inteIp then
-    self.inetPingIntSrv = hs.network.ping.echoRequest(self.inteIp)
+  if self.pingInetInt and self.inetIp then
+    self.inetPingIntSrv = hs.network.ping.echoRequest(self.inetIp)
     self.inetPingIntSrv:setCallback(function(echoRequestObject, msg, ...)
       self:icmpPingToHistory(self.inetIcmpHistory, msg, ...)
     end)
     self.inetPingIntSrv:start()
+  end
+end
+
+
+function App:restartInetPingExt()
+  if self.inetPingExtSrv then
+    self.inetPingExtSrv:terminate()
+    self.inetPingExtSrv:setStreamingCallback(nil)
+    self.inetPingExtSrv = nil
+  end
+  if self.pingInetExt and self.inetIp then
+    local app = "/sbin/ping"
+    local args = {"-i", "0.2", self.inetIp}
+    local streamingCallback = function(task, stdOut, stdErr)
+      self:stdOutPingToHistory(self.inetIcmpHistory, stdOut)
+      return true
+    end
+    self.inetPingExtSrv = hs.task.new(app, nil, streamingCallback, args)
+    self.inetPingExtSrv:start()
   end
 end
 
@@ -384,6 +423,25 @@ function App:restartRouterPingInt()
       self:icmpPingToHistory(self.routerIcmpHistory, msg, ...)
     end)
     self.routerPingIntSrv:start()
+  end
+end
+
+
+function App:restartRouterPingExt()
+  if self.routerPingExtSrv then
+    self.routerPingExtSrv:terminate()
+    self.routerPingExtSrv:setStreamingCallback(nil)
+    self.routerPingExtSrv = nil
+  end
+  if self.pingRouterExt and self.routerIp then
+    local app = "/sbin/ping"
+    local args = {"-i", "0.2", self.routerIp}
+    local streamingCallback = function(task, stdOut, stdErr)
+      self:stdOutPingToHistory(self.routerIcmpHistory, stdOut)
+      return true
+    end
+    self.routerPingExtSrv = hs.task.new(app, nil, streamingCallback, args)
+    self.routerPingExtSrv:start()
   end
 end
 
@@ -578,6 +636,7 @@ function App:onHeartbeat()
     self.routerIp = nil
     self.routerIcmpHistory = {}
     self:restartRouterPingInt()
+    self:restartRouterPingExt()
   end
 
   local needNewRouterIp = self.lastIp and not self.routerIp
@@ -587,15 +646,21 @@ function App:onHeartbeat()
       if exitCode ~= 0 or not stdOut then
         self.routerIp = nil
         self.routerIcmpHistory = {}
-        return self:restartRouterPingInt()
+        self:restartRouterPingInt()
+        self:restartRouterPingExt()
+        return
       end
       local pattern = "gateway: ([^%s]+)"
       self.routerIp = stdOut:match(pattern)
       if not self.routerIp then
         self.routerIcmpHistory = {}
-        return self:restartRouterPingInt()
+        self:restartRouterPingInt()
+        self:restartRouterPingExt()
+        return
       end
-      return self:restartRouterPingInt()
+      self:restartRouterPingInt()
+      self:restartRouterPingExt()
+      return
     end
 
     local args = {"get", "default"}
@@ -754,6 +819,17 @@ function App:createMenu()
   )
 
   self.menuItem:addSubmenuCheckbox(
+    "Ping router (external)",
+    self.pingRouterExt,
+    function(checked)
+      self.pingRouterExt = checked
+      self.routerIcmpHistory = {}
+      hs.settings.set("pingRouterExt", self.pingRouterExt)
+      self:restartRouterPingExt()
+    end
+  )
+
+  self.menuItem:addSubmenuCheckbox(
     "Ping internet (internal)",
     self.pingInetInt,
     function(checked)
@@ -761,6 +837,17 @@ function App:createMenu()
       self.inetIcmpHistory = {}
       hs.settings.set("pingInetInt", self.pingInetInt)
       self:restartInetPingInt()
+    end
+  )
+
+  self.menuItem:addSubmenuCheckbox(
+    "Ping internet (external)",
+    self.pingInetExt,
+    function(checked)
+      self.pingInetExt = checked
+      self.inetIcmpHistory = {}
+      hs.settings.set("pingInetExt", self.pingInetExt)
+      self:restartInetPingExt()
     end
   )
 

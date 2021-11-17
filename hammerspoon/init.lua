@@ -15,6 +15,7 @@ function onReadlinkExit(exitCode, stdOut, _)
   app:loadSettings()
   app:createMenu()
   app:restartInetPingInt()
+  app:restartInetPingExt()
   app:startHeartbeat()
 end
 

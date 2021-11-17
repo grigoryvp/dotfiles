@@ -73,11 +73,13 @@ pip install --upgrade pip
 # * Remove "⇧⌘/"
 # * Add "⌘W" to "Close Tab" for "Safari".
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram".
-# In "Preferenes/Dock & Menu Bar" remove all icons except 24h clock.
+# In "Preferenes/Dock & Menu Bar":
+# * Remove all icons except 24h clock.
+# * Disable menubar auto-hide.
 # Disable sleep in "Preferences/Energy Saver".
 # Enable password lock in "Preferences/Security/General/Require password".
-# Disable welcome screen guest user in "Preferences/Users & Groups".
 # For old macOS versions:
+# * Disable welcome screen guest user in "Preferences/Users & Groups".
 # * Add 'karabiner_grabber', 'karabiner_observer',
 #   'karabiner_console_user_server' into "Accessibility".
 # * Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg

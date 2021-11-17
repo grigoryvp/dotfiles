@@ -20,7 +20,7 @@ fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew update --verbose
 brew tap homebrew/cask-fonts
-# For Python 3.9.1 on Apple Silicon
+# For Python 3.10.0 on Apple Silicon
 brew install readline openssl
 # For keepassxc-cli
 brew install --build-from-source libgpg-error

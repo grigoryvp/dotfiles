@@ -53,11 +53,11 @@ pip install --upgrade pip
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
-# phpenv install 8.0.3 # https://github.com/phpenv/phpenv/issues/90
-# phpenv global 8.0.3 # https://github.com/phpenv/phpenv/issues/90
+# phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
+# phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
 # Install https://macos.telegram.org/
-# Intall Xcode:
+# Intall Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
 # Install and config Amphetamine autostart and auto session on start and wake.
 # mas install 937984704

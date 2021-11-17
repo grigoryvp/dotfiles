@@ -1,6 +1,10 @@
 if ! [ -e ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -f "$HOME/.ssh/id_rsa" -N ""
 fi
+if ! [ -e ~/.ssh/known_hosts ]; then
+  # Allows git clone without fingerprint confirmation
+  ssh-keyscan github.com >> ~/.ssh/known_hosts
+fi
 # For Apple Silicon
 softwareupdate --install-rosetta --agree-to-license
 # XCode command-line tools
@@ -189,5 +193,5 @@ pyenv global 3.10.0
 python3 -m pip install --upgrade pip virtualenv
 rbenv install 3.0.2
 rbenv global 3.0.2
-nodenv install 17.0.1
-nodenv global 17.0.1
+nodenv install 17.1.0
+nodenv global 17.1.0

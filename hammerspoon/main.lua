@@ -590,7 +590,10 @@ function App:onHeartbeat()
   local cpuGraph = self:cpuGraphFromLoadHistory(self.cpuLoadHistory)
 
   if isBigTimeout then
+    -- Get new dock items to click on them with meta-N hotkeys
     self:getDockItems()
+    -- Prevent auto-brightness
+    hs.brightness.set(50)
   end
 
   if not self.telegramDockItem

@@ -24,7 +24,9 @@ brew tap homebrew/cask-fonts
 brew install readline openssl
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font microsoft-edge qbittorrent obs mpv iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
+# Install into applications, not as a cli
+brew install mpv --cask
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font microsoft-edge qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
 if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else

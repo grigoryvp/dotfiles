@@ -82,10 +82,6 @@ export LESS="-R -F -X"
 ##  Don't display lein root warning while using in docker
 export LEIN_ROOT=true
 
-##  No more requred.
-# export GOPATH=~/go
-# export PATH=$GOPATH/bin:$PATH
-
 ##  For docker containers where they are not set
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US:en"
@@ -360,6 +356,11 @@ srv() {
 pp() {
   ping -i 0.2 1.1.1.1
 }
+
+##  For tools installed via "go get" to be on path
+if which go > /dev/null; then
+  export PATH=$PATH:$(go env GOPATH)/bin
+fi
 
 ##  Load pyenv, if installed
 if [ -d $HOME/.pyenv ]; then

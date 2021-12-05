@@ -26,7 +26,7 @@ brew install readline openssl
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install mpv --cask
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font microsoft-edge qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
 if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else

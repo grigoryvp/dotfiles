@@ -50,7 +50,7 @@ class App {
       - Disable snap assist
       - Disable touchpad click and set maximum speed
       - Add perfgraph toolbar
-      - Add "gmail", "google calendar", "trello" as edge apps and pin
+      - Add "gmail", "google calendar", "trello" as chrome apps and pin
       - Pin pwsh, vscode, web, files, keepass, telegram, mail, cal, slack
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
@@ -200,7 +200,9 @@ class App {
     # Optional installs
     if ($this._isFull) {
       # General-purpose messaging.
-      $this._installApp("grigoryvp/telegram");
+      $this._installApp("telegram");
+      # "Offline" google apps support and no telemetry delays line in "Edge".
+      $this._installApp("google-chrome");
       # PDF view.
       $this._installApp("foxit-reader");
       # Better screenshot tool.

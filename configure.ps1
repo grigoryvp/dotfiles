@@ -202,7 +202,7 @@ class App {
       # General-purpose messaging.
       $this._installApp("telegram");
       # "Offline" google apps support and no telemetry delays line in "Edge".
-      $this._installApp("google-chrome");
+      $this._installApp("googlechrome");
       # PDF view.
       $this._installApp("foxit-reader");
       # Better screenshot tool.

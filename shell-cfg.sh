@@ -214,6 +214,10 @@ alias por="poetry run"
 alias pop="poetry run python3"
 alias pom="poetry run python3 manage.py"
 
+##  Rails virtual environment
+alias be="bundle exec"
+alias ber="bundle exec rails"
+
 ##  docker aliases
 dmg() {
   if [ -z "$1" ]; then

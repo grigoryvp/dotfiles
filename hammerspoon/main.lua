@@ -87,6 +87,33 @@ function App:clickDockItem(number)
 end
 
 
+function App:startHttpServer()
+  self.httpServer = hs.httpserver.new()
+  self.httpServer:setInterface("localhost")
+  self.httpServer:setPort("2020")
+  self.httpServer:setCallback(function(request, path, headers, body)
+    if body == "" then
+      return "json body not found", 400, {}
+    end
+    local json = hs.json.decode(body)
+    if json.command == "switch_app" then
+      local appIndex = tonumber(json.app_index)
+      if not appIndex then
+        return "switch_app without app_index", 400, {}
+      end
+      if appIndex < 0 or appIndex > 9 then
+        return "switch_app.app_index not in 0..9 range", 400, {}
+      end
+      self:clickDockItem(appIndex + 1)
+      return "", 200, {}
+    else
+      return "unknown command", 400, {}
+    end
+  end)
+  self.httpServer:start()
+end
+
+
 function App:registerHotkeys()
   local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="}
   for i, hotkey in ipairs(hotkeys) do

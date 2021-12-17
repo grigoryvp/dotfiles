@@ -398,22 +398,7 @@
             "key_code": "2"
           },
           "to": [{
-            "key_code": "2",
-            "modifiers": ["left_command", "left_option", "control"]
-          }],
-          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
-        },
-
-        {
-          "description": "meta-shift-2 for 1st website",
-          "type": "basic",
-          "from": {
-            "key_code": "2",
-            "modifiers": {"mandatory": ["shift"]}
-          },
-          "to": [{
-            "key_code": "2",
-            "modifiers": ["left_command", "left_option", "control", "shift"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 0}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -425,8 +410,7 @@
             "key_code": "3"
           },
           "to": [{
-            "key_code": "3",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 1}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -438,8 +422,7 @@
             "key_code": "4"
           },
           "to": [{
-            "key_code": "4",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 2}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -451,8 +434,7 @@
             "key_code": "5"
           },
           "to": [{
-            "key_code": "5",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 3}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -464,8 +446,7 @@
             "key_code": "6"
           },
           "to": [{
-            "key_code": "6",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 4}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -477,8 +458,7 @@
             "key_code": "7"
           },
           "to": [{
-            "key_code": "7",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 5}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -490,8 +470,7 @@
             "key_code": "8"
           },
           "to": [{
-            "key_code": "8",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 6}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -503,8 +482,7 @@
             "key_code": "9"
           },
           "to": [{
-            "key_code": "9",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 7}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -516,8 +494,7 @@
             "key_code": "0"
           },
           "to": [{
-            "key_code": "0",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 8}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
@@ -529,8 +506,7 @@
             "key_code": "hyphen"
           },
           "to": [{
-            "key_code": "hyphen",
-            "modifiers": ["left_command", "left_option", "control"]
+            "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 9}'"
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },

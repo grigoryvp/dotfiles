@@ -357,6 +357,11 @@ pp() {
   ping -i 0.2 1.1.1.1
 }
 
+mdcd() {
+  mkdir "$1"
+  cd "$1"
+}
+
 ##  For tools installed via "go get" to be on path
 if which go > /dev/null; then
   export PATH=$PATH:$(go env GOPATH)/bin

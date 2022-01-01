@@ -554,7 +554,7 @@ end
 
 
 function App:getDockItems()
-  self.dock = hs.application("Dock")
+  self.dock = hs.application.get("Dock")
   local dockElement = hs.axuielement.applicationElement(self.dock)
   -- Re-read dock items for clicking them
   self.dockItems = dockElement.AXChildren[1].AXChildren

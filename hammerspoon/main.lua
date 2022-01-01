@@ -22,6 +22,7 @@ function App:new()
   inst.maxIcmpHistory = 20
   inst.lastBattery = nil
   inst.secondsSinceBatteryDec = 0
+  inst.keepBrightness = false
   -- Keys are the charge amount the decrease is from, values are number
   -- of seconds it took for battery to discharge from that value. Ex, if
   -- key 90 contains value of 1000 that means that it took 1000 seconds for
@@ -51,6 +52,7 @@ function App:loadSettings()
   self.pingRouterExt = hs.settings.get("pingRouterExt")
   self.pingInetInt = hs.settings.get("pingInetInt")
   self.pingInetExt = hs.settings.get("pingInetExt")
+  self.keepBrightness = hs.settings.get("keepBrightness")
 end
 
 
@@ -619,8 +621,10 @@ function App:onHeartbeat()
   if isBigTimeout then
     -- Get new dock items to click on them with meta-N hotkeys
     self:getDockItems()
-    -- Prevent auto-brightness
-    hs.brightness.set(50)
+    if self.keepBrightness then
+      -- Prevent auto-brightness
+      hs.brightness.set(50)
+    end
   end
 
   if not self.telegramDockItem
@@ -890,6 +894,15 @@ function App:createMenu()
       self.inetIcmpHistory = {}
       hs.settings.set("pingInetExt", self.pingInetExt)
       self:restartInetPingExt()
+    end
+  )
+
+  self.menuItem:addSubmenuCheckbox(
+    "Keep brightness",
+    self.keepBrightness,
+    function(checked)
+      self.keepBrightness = checked
+      hs.settings.set("keepBrightness", self.keepBrightness)
     end
   )
 

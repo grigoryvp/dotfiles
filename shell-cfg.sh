@@ -1,10 +1,29 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # coding:utf-8 vi:et:ts=2
 
-#  Non-interactive shell?
-if ! [ -t 0 ]; then
-  return
-fi
+# Some tools like VSCode tend to spawn subshells like "zsh -c -l". On macOS
+# zsh will source /etc/zprofile which runs /usr/libexec/path_helper and
+# REORDERS $PATH, moving "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# in the beginning. For pyenv/rbenv/etc to work correctly they should be
+# in $PATH before default path, so we need to also reorder for each
+# invokation of zsh and each execution of this script.
+start_path_with() {
+  if ! [ -e $1 ]; then
+    return
+  fi
+  NEW_PATH=""
+  for PATH_LINE in $(echo $PATH | tr ":" "\n"); do
+    if [ "$PATH_LINE" != "$1" ]; then
+      if [ -n "$NEW_PATH" ]; then
+        NEW_PATH=$PATH_LINE:$NEW_PATH
+      else
+        NEW_PATH=$PATH_LINE
+      fi
+    fi
+  done
+  PATH=$1:$NEW_PATH
+  unset NEW_PATH
+}
 
 ##  bash/zsh portable way to encode "Escape" character.
 PS_ESC=$(printf '\033')
@@ -49,18 +68,11 @@ fi
 stty -ixon
 ##  Don't create |.pyc| files while executing python code from console.
 export PYTHONDONTWRITEBYTECODE=1
-##! Add npm global bin to path before local node_modules so tools that
-##  require both global and local installation like react-native can work.
-NPM_BIN=$(echo ~/.local/node-*/bin | tail -n1)
-if [ -e $NPM_BIN ]; then
-  export PATH=$PATH:$NPM_BIN
-fi
-##* Usefull for npm tools that are not installed globally
-export PATH=$PATH:./node_modules/.bin
+
 ##  Rust 'install' places binaries here
-export PATH=$PATH:~/.cargo/bin
+start_path_with ~/.cargo/bin
 ##  For custom nodejs build (ubuntu have old one in repository)
-export PATH=$PATH:~/.local/nodejs/bin
+start_path_with ~/.local/nodejs/bin
 ##  git can clone from repos without certificates.
 export GIT_SSL_NO_VERIFY=true
 ##  256-colors in terminal for apps that knows how to use it.
@@ -109,14 +121,14 @@ if [ "$(uname)" = "Darwin" ]; then
   ##  64-bit that is not compatible with wxWidgets.
   # alias python="arch -i386 /usr/bin/python2.7 -B"
 
-  ##  custom svn installed?
-  if [ -e /opt/subversion/bin ]; then
-    export PATH=/opt/subversion/bin:$PATH
-  fi
+  ##  custom svn
+  start_path_with /opt/subversion/bin
 
   ##  MacOS Apple Silicon homebrew installed?
   if [ -e /opt/homebrew/bin/brew ]; then
     eval $(/opt/homebrew/bin/brew shellenv)
+    start_path_with "/opt/homebrew/bin"
+    start_path_with "/opt/homebrew/sbin"
   fi
 
   ##  custom mongo installed?
@@ -139,10 +151,7 @@ if [ "$(uname)" = "Darwin" ]; then
     export RADAR_CMD='$(git-radar --bash --fetch)'
   fi
 
-  ##  Swift version manager
-  if which swiftenv > /dev/null; then
-    eval "$(swiftenv init -)"
-  fi
+
 else
   ##  Remap caps lock to backspace.
   # gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace']"
@@ -155,10 +164,8 @@ else
   CHROME_BIN=/opt/google/chrome/chrome
   alias chrome='GTK_IM_MODULE="" $CHROME_BIN --disk-cache-size=10000000'
 
-  ##  android studio installed?
-  if [ -e ~/.local/android-studio/bin ]; then
-    export PATH=~/.local/android-studio/bin:$PATH
-  fi
+  ##  android studio
+  start_path_with ~/.local/android-studio/bin
 
   if [ -e /usr/java/latest ]; then
     ##  Official SDK symlinks this to lates install.
@@ -171,8 +178,6 @@ fi
 if [ -e ~/.rvm/scripts/rvm ]; then
   source ~/.rvm/scripts/rvm
 fi
-
-export PATH=$PATH:~/.rvm/bin # Add RVM to PATH for scripting
 
 ##  git aliases
 alias g=git
@@ -215,7 +220,9 @@ alias pop="poetry run python3"
 alias pom="poetry run python3 manage.py"
 
 ##  Rails virtual environment
+alias ba="bundle add"
 alias be="bundle exec"
+alias br="bundle exec ruby"
 alias ber="bundle exec rails"
 
 ##  docker aliases
@@ -368,32 +375,37 @@ mdcd() {
 
 ##  For tools installed via "go get" to be on path
 if which go > /dev/null; then
-  export PATH=$PATH:$(go env GOPATH)/bin
+  start_path_with $(go env GOPATH)/bin
 fi
 
 ##  Load pyenv, if installed
 if [ -d $HOME/.pyenv ]; then
-  export PATH="$HOME/.pyenv/bin:$PATH"
-  eval "$(pyenv init --path)"
-  eval "$(pyenv virtualenv-init -)"
+  start_path_with "$HOME/.pyenv/bin"
+  start_path_with "$HOME/.pyenv/shims"
+  start_path_with "$HOME/.pyenv/plugins/pyenv-virtualenv/shims";
 fi
 
 ##  Load rbenv, if installed
 if [ -d $HOME/.rbenv ]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
+  start_path_with "$HOME/.rbenv/bin"
+  start_path_with "$HOME/.rbenv/shims"
 fi
 
 ##  Load nodenv, if installed
 if [ -d $HOME/.nodenv ]; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
-  eval "$(nodenv init -)"
+  start_path_with "$HOME/.nodenv/bin"
+  start_path_with "$HOME/.nodenv/shims"
 fi
 
 ##  Load phpenv, if installed
 if [ -d $HOME/.phpenv ]; then
-  export PATH="$HOME/.phpenv/bin:$PATH"
-  eval "$(phpenv init -)"
+  start_path_with "$HOME/.phpenv/bin"
+  start_path_with "$HOME/.phpenv/shims"
+fi
+
+##  Load swiftenv, if installed
+if [ -d $HOME/.swiftenv ]; then
+  start_path_with "$HOME/.swiftenv/bin"
 fi
 
 ##  Load opam, if installed

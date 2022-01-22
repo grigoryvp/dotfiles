@@ -47,6 +47,7 @@ else
   git clone git@github.com:grigoryvp/xi.git ~/.xi
 fi
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
+printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zprofile
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
@@ -180,20 +181,26 @@ defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+git clone https://github.com/pyenv/pyenv-update.git ~/.pyenv/plugins/pyenv-update
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
 git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
+git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
 git clone https://github.com/phpenv/phpenv.git ~/.phpenv
 git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
+git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
+git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
-pyenv install 3.10.0
-pyenv global 3.10.0
+export PATH="$HOME/.swiftenv/bin:$PATH"
+pyenv install 3.10.1
+pyenv global 3.10.1
 python3 -m pip install --upgrade pip virtualenv
-rbenv install 3.0.2
-rbenv global 3.0.2
-nodenv install 17.1.0
-nodenv global 17.1.0
+rbenv install 3.1.0
+rbenv global 3.1.0
+nodenv install 17.3.0
+nodenv global 17.3.0

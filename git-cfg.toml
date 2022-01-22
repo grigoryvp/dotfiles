@@ -11,6 +11,9 @@ attributesfile = "~/.gitattributes"
 # Better dif
 pager = "diff-so-fancy | less"
 
+[init]
+defaultBranch = main
+
 [format]
 pretty = "oneline"
 

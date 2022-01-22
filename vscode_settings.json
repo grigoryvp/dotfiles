@@ -168,5 +168,6 @@
     "jupyter-notebook": "left"
   },
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
+  "solargraph.useBundler": true,
   "security.workspace.trust.untrustedFiles": "open"
 }

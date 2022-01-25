@@ -220,6 +220,7 @@ alias pop="poetry run python3"
 alias pom="poetry run python3 manage.py"
 
 ##  Rails virtual environment
+alias bi="bundle init"
 alias ba="bundle add"
 alias be="bundle exec"
 alias br="bundle exec ruby"

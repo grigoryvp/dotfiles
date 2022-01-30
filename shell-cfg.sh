@@ -15,7 +15,7 @@ start_path_with() {
   for PATH_LINE in $(echo $PATH | tr ":" "\n"); do
     if [ "$PATH_LINE" != "$1" ]; then
       if [ -n "$NEW_PATH" ]; then
-        NEW_PATH=$PATH_LINE:$NEW_PATH
+        NEW_PATH=$NEW_PATH:$PATH_LINE
       else
         NEW_PATH=$PATH_LINE
       fi

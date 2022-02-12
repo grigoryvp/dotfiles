@@ -83,13 +83,6 @@
     }]
   }],
 
-  "ruby.useLanguageServer": true,
-  "ruby.lint": {
-    "rubocop": {
-      "lint": true
-    }
-  },
-
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
@@ -168,6 +161,5 @@
     "jupyter-notebook": "left"
   },
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
-  "solargraph.useBundler": true,
   "security.workspace.trust.untrustedFiles": "open"
 }

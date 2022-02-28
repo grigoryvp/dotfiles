@@ -78,6 +78,8 @@ pip install --upgrade pip
 # Enable password lock in "Preferences/Security/General/Require password"
 # Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
+# Configure hammerspoon for autostart
+# Disable keyboard backlight in the control center
 # Intall Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
 # For old macOS versions:

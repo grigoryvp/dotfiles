@@ -55,6 +55,7 @@ pip install --upgrade pip
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
+# Install https://macos.telegram.org/
 # Install and config Amphetamine autostart and auto session on start and wake.
 # mas install 937984704
 # Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Sources"
@@ -75,8 +76,8 @@ pip install --upgrade pip
 # Disable sleep in "Preferences/Energy Saver"
 # Disable sound effects in "Preferences/Sound/Effects"
 # Enable password lock in "Preferences/Security/General/Require password"
+# Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
-# Install https://macos.telegram.org/
 # Intall Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
 # For old macOS versions:

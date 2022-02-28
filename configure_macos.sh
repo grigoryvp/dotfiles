@@ -78,7 +78,10 @@ echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
-echo "Confirm 'karabiner_grabber', 'karabiner_observer' for 'Input Monitoring' and press Enter"
+echo "1) Add 'karabiner_grabber', 'karabiner_observer' for 'Input Monitoring'"
+echo "2) Allow '.Karabiner-...Manager.app' in 'Security & Privacy'"
+echo "3) Complete the 'Keyboard Setup Assistant'"
+echo "4) Press enter"
 read -s
 # Karabiner can't detect config file change if linked via symlink.
 ln -f ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json

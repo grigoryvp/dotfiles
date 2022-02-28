@@ -55,34 +55,34 @@ pip install --upgrade pip
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
-# Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Process".
-# Install https://macos.telegram.org/
-# Intall Xcode (this may take HOURS, better to do with App Store):
-# mas install 497799835
 # Install and config Amphetamine autostart and auto session on start and wake.
 # mas install 937984704
-# Configure iTerm2 theme, set "JetBrainsMono Nerd Font".
-# Menu: command-drag out "spotlight".
+# Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Sources"
+# Menu: command-drag out "spotlight", "wifi"
 # Menu: hammerspoon, amphetamine, command center, time
-# Drop "/System/Library/CoreServices/Finder.app" into dock.
-# Add "gmail", "google calendar", "trello" as chrome apps.
+# Drop "/System/Library/CoreServices/Finder.app" into dock
+# Add "gmail" (or use "mimestream"), "google cal", "trello" as chrome apps
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
 # In "Preferences/Keyboard/Shortcuts/Mission Control":
 # * Add "⇧⌘\" to "Notification Center"
 # In "Preferences/Keyboard/Shortcuts/App Shortcuts":
 # * Remove "⇧⌘/"
 # * Add "⌘W" to "Close Tab" for "Safari".
-# * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram".
+# * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram"
 # In "Preferenes/Dock & Menu Bar":
-# * Remove all icons except 24h clock.
-# * Disable menubar auto-hide.
-# Disable sleep in "Preferences/Energy Saver".
-# Disable sound effects in "Preferences/Sound/Effects".
-# Enable password lock in "Preferences/Security/General/Require password".
+# * Remove all icons except 24h clock
+# * Disable menubar auto-hide
+# Disable sleep in "Preferences/Energy Saver"
+# Disable sound effects in "Preferences/Sound/Effects"
+# Enable password lock in "Preferences/Security/General/Require password"
+# Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
+# Install https://macos.telegram.org/
+# Intall Xcode (this may take HOURS, better to do with App Store):
+# mas install 497799835
 # For old macOS versions:
-# * Disable welcome screen guest user in "Preferences/Users & Groups".
+# * Disable welcome screen guest user in "Preferences/Users & Groups"
 # * Add 'karabiner_grabber', 'karabiner_observer',
-#   'karabiner_console_user_server' into "Accessibility".
+#   'karabiner_console_user_server' into "Accessibility"
 # * Install https://d11yldzmag5yn.cloudfront.net/prod/4.4.53909.0617/Zoom.pkg
 # * iTunes/Preferences/Devices/Prevent from syncing automatically
 ```

@@ -637,7 +637,7 @@ function App:onHeartbeat()
         if item.AXTitle == "Telegram" then
           self.telegramDockItem = item
         end
-        if item.AXTitle == "Mail" then
+        if item.AXTitle == "Mimestream" then
           self.mailDockItem = item
         end
         if item.AXTitle == "Slack" then

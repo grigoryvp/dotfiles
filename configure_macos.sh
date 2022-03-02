@@ -71,9 +71,7 @@ code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
 ln -fs ~/dotfiles/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 ln -fs ~/dotfiles/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
-if ! [ ~/.config/mpv ]; then
-  mkdir -p ~/.config/mpv
-fi
+mkdir -p ~/.config/mpv
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off

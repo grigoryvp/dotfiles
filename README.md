@@ -72,13 +72,14 @@ pip install --upgrade pip
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram"
 # In "Preferenes/Dock & Menu Bar":
 # * Remove all icons except 24h clock
-# * Disable menubar auto-hide
+# * Enable dock auto-hide
 # Disable sleep in "Preferences/Energy Saver"
 # Disable sound effects in "Preferences/Sound/Effects"
 # Enable password lock in "Preferences/Security/General/Require password"
 # Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
 # Configure hammerspoon for autostart
+# Configure KeePass
 # Disable keyboard backlight in the control center
 # Intall Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835

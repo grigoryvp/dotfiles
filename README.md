@@ -70,9 +70,11 @@ pip install --upgrade pip
 # * Remove "⇧⌘/"
 # * Add "⌘W" to "Close Tab" for "Safari".
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram"
-# In "Preferenes/Dock & Menu Bar":
+# In "Preferences/Dock & Menu Bar":
 # * Remove all icons except 24h clock
 # * Enable dock auto-hide
+# In "Preferences/Mission Control/Hot Corners" disable quick notes
+# Remove all widgets and add notes as widget
 # Disable sleep in "Preferences/Energy Saver"
 # Disable sound effects in "Preferences/Sound/Effects"
 # Enable password lock in "Preferences/Security/General/Require password"

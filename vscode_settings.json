@@ -1,8 +1,4 @@
 {
-  "[markdown]": {
-    "editor.wordWrap": "off"
-  },
-
   "[dart]": {
     "editor.formatOnSave": false,
     "editor.formatOnType": false,
@@ -102,11 +98,13 @@
   "editor.minimap.enabled": false,
   "editor.autoClosingBrackets": "never",
   "editor.acceptSuggestionOnEnter": "off",
-  "editor.renderIndentGuides": false,
+  "editor.guides.indentation": false,
+  "editor.guides.bracketPairs": true,
   "editor.renderLineHighlight": "line",
   "editor.rulers": [78],
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
+  "diffEditor.wordWrap": "off",
   "editor.autoClosingQuotes": "never",
   "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "editor.semanticHighlighting.enabled": true,
@@ -116,7 +114,6 @@
   "editor.cursorStyle": "line",
   "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
   "editor.bracketPairColorization.enabled": false,
-  "editor.guides.bracketPairs": true,
   // Do not highlight cyrillic letters
   "editor.unicodeHighlight.ambiguousCharacters": false,
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
@@ -132,18 +129,12 @@
   "git.confirmSync": false,
   "java.errors.incompleteClasspath.severity": "ignore",
   "extensions.ignoreRecommendations": false,
-  "workbench.startupEditor": "none",
-  "workbench.tips.enabled": false,
-  "workbench.editor.labelFormat": "short",
-  "workbench.activityBar.visible": true,
-  "workbench.editor.highlightModifiedTabs": true,
   "breadcrumbs.enabled": true,
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
   "files.eol": "\n",
   "telemetry.enableTelemetry": false,
   "debug.node.autoAttach": "disabled",
-  "workbench.iconTheme": "vs-seti",
   "scm.diffDecorations": "none",
   "vsicons.presets.foldersAllDefaultIcon": true,
   "vsicons.dontShowNewVersionMessage": true,
@@ -151,15 +142,24 @@
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
   "python.showStartPage": false,
-  "workbench.editorAssociations": {
-    "*.ipynb": "jupyter-notebook"
-  },
   "Lua.telemetry.enable": false,
-  "workbench.colorTheme": "grigoryvp memory theme",
   "notebook.cellToolbarLocation": {
     "default": "right",
     "jupyter-notebook": "left"
   },
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
-  "security.workspace.trust.untrustedFiles": "open"
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.editor.labelFormat": "short",
+  "workbench.activityBar.visible": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "workbench.colorTheme": "grigoryvp memory theme",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.colorCustomizations": {
+  },
+  "workbench.editor.untitled.hint": "hidden"
 }

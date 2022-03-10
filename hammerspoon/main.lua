@@ -200,6 +200,26 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
+  hs.hotkey.bind("⌘⇧", "v", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = hs.screen.primaryScreen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "space", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
+  end)
+
   hs.hotkey.bind("⌘⇧", "n", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end

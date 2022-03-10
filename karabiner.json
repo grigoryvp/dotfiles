@@ -1292,6 +1292,20 @@
             "modifiers": ["left_command", "left_shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
+        },
+
+        {
+          "description": "meta-shift-v => maximize on the primary screen",
+          "type": "basic",
+          "from": {
+            "key_code": "v",
+            "modifiers": {"mandatory": ["shift"]}
+          },
+          "to": [{
+            "key_code": "v",
+            "modifiers": ["left_command", "left_shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         }
         ]
       }, {

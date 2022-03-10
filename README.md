@@ -73,6 +73,8 @@ pip install --upgrade pip
 # In "Preferences/Dock & Menu Bar":
 # * Remove all icons except 24h clock
 # * Enable dock auto-hide
+# In "Mission Control":
+# * Disable the "Displays have separate Spaces"
 # In "Preferences/Mission Control/Hot Corners" disable quick notes
 # Remove all widgets and add notes as widget
 # Disable sleep in "Preferences/Energy Saver"

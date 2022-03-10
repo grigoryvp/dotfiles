@@ -210,6 +210,23 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
+  hs.hotkey.bind("⌘⇧", "c", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local primaryScreen = hs.screen.primaryScreen()
+    local nonprimaryScreen = primaryScreen
+    for _, curScreen in ipairs(hs.screen.allScreens()) do
+      if curScreen ~= primaryScreen then
+        nonprimaryScreen = curScreen
+        break
+      end
+    end
+    local duration = 0
+    wnd:setFrame(nonprimaryScreen:frame(), duration)
+  end)
+
   hs.hotkey.bind("⌘⇧", "space", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end

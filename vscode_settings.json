@@ -132,7 +132,6 @@
   "breadcrumbs.enabled": true,
   "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
-  "files.eol": "\n",
   "telemetry.enableTelemetry": false,
   "debug.node.autoAttach": "disabled",
   "scm.diffDecorations": "none",
@@ -161,5 +160,13 @@
   "workbench.iconTheme": "vs-seti",
   "workbench.colorCustomizations": {
   },
-  "workbench.editor.untitled.hint": "hidden"
+  "workbench.editor.untitled.hint": "hidden",
+  "files": {
+    "eol": "\n",
+    "associations": {
+      "*.js": "typescriptreact",
+      "*.ts": "typescriptreact",
+      "*.tsx": "typescriptreact"
+    }
+  }
 }

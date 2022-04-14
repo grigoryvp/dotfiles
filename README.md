@@ -58,23 +58,23 @@ pip install --upgrade pip
 # Install https://macos.telegram.org/
 # Install and config Amphetamine autostart and auto session on start and wake.
 # mas install 937984704
-# Add "Russian-PC", "Japanese-Romaji" in "Preferences/Keyboard/Input Sources"
 # Menu: command-drag out "spotlight", "wifi"
 # Menu: hammerspoon, amphetamine, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock
 # Add "gmail" (or use "mimestream"), "google cal", "trello" as chrome apps
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
+# In "Preferences/Keyboard/Input Sources":
+# * Add "Russian-PC", "Japanese-Romaji"
+# In "Preferences/Keyboard/Shortcuts":
+# * Remove "input sources" ^-space shortcuts
+# * Remove "⇧⌘/" app shortcut
+# * Add "⌘W" to "Close Tab" for "Safari" app shortcut
+# * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
 # In "Preferences/Keyboard/Shortcuts/Mission Control":
 # * Add "⇧⌘\" to "Notification Center"
-# In "Preferences/Keyboard/Shortcuts/App Shortcuts":
-# * Remove "⇧⌘/"
-# * Add "⌘W" to "Close Tab" for "Safari".
-# * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram"
 # In "Preferences/Dock & Menu Bar":
 # * Remove all icons except 24h clock
 # * Enable dock auto-hide
-# In "Mission Control":
-# * Disable the "Displays have separate Spaces"
 # In "Preferences/Mission Control/Hot Corners" disable quick notes
 # Remove all widgets and add notes as widget
 # Disable sleep in "Preferences/Energy Saver"

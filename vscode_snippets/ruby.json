@@ -1,0 +1,13 @@
+{
+  "rails.application.generators": {
+    "prefix": "r_app_gen",
+    "body": [
+      "config.generators do",
+      "  _1.template_engine nil",
+      "  _1.test_framework nil",
+      "  _1.helper false",
+      "  _1.skip_routes true",
+      "end"
+    ]
+  }
+}

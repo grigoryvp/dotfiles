@@ -1,0 +1,8 @@
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/StringLiterals:
+  # Do not force single quotes
+  Enabled: false
+Style/Documentation:
+  # Do not require comments for all classes
+  Enabled: false

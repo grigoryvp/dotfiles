@@ -57,6 +57,7 @@ fi
 ln -fs ~/dotfiles/hammerspoon/init.lua ~/.hammerspoon/init.lua
 ln -fs ~/dotfiles/.screenrc ~/.screenrc
 ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
+ln -fs ~/dotfiles/.rubocop.yml ~/.rubocop.yml
 if ! [ -e ~/.config/lsd ]; then
   mkdir -p ~/.config/lsd
 fi
@@ -69,8 +70,11 @@ code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
-ln -fs ~/dotfiles/vscode_keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
-ln -fs ~/dotfiles/vscode_settings.json ~/Library/Application\ Support/Code/User/settings.json
+code --install-extension emmanuelbeziat.vscode-great-icons
+VSCODE_DIR=~/Library/Application\ Support/Code/User
+ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json
+ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json
+ln -fs ~/dotfiles/vscode_snippets $VSCODE_DIR/snippets
 mkdir -p ~/.config/mpv
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery and SSD life:
@@ -82,7 +86,7 @@ echo "3) Complete the 'Keyboard Setup Assistant'"
 echo "4) Press enter"
 read -s
 # Karabiner can't detect config file change if linked via symlink.
-ln -f ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
+ln -fs ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.
@@ -201,7 +205,7 @@ export PATH="$HOME/.swiftenv/bin:$PATH"
 pyenv install 3.10.1
 pyenv global 3.10.1
 python3 -m pip install --upgrade pip virtualenv
-rbenv install 3.1.0
-rbenv global 3.1.0
-nodenv install 17.3.0
-nodenv global 17.3.0
+rbenv install 3.1.1
+rbenv global 3.1.1
+nodenv install 17.6.0
+nodenv global 17.6.0

@@ -1343,13 +1343,13 @@
           }]
         },
         {
-          "description": "Not possible to rebind the 'highlight' hotkey",
+          "description": "Make remappable as 'highlight' hotkey",
           "type": "basic",
           "from": {
             "key_code": "left_shift"
           },
           "to": [{
-            "key_code": "left_alt"
+            "key_code": "f2"
           }],
           "conditions": [{
             "type": "frontmost_application_if",

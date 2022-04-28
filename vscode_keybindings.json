@@ -1,5 +1,5 @@
 [{
-  "key": "ctrl+k ctrl+h",
+  "key": "f2",
   "command": "workbench.action.toggleSidebarVisibility"
 }, {
   "key": "ctrl+k o",

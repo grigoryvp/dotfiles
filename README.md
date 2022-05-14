@@ -84,6 +84,7 @@ pip install --upgrade pip
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
 # Configure hammerspoon for autostart
 # Configure KeePass
+# Configure default email reader in the "Apple Mail" app settings.
 # Disable keyboard backlight in the control center
 # Intall Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835

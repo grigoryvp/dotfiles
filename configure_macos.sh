@@ -26,7 +26,7 @@ brew install readline openssl
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install mpv --cask
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy fig
 if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else
@@ -91,6 +91,8 @@ ln -fs ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.
 chflags nohidden ~/Library
+# Opt out fig telemetry
+fig settings app.disableTelemetry true
 defaults write com.apple.finder AppleShowAllFiles YES
 defaults write -g AppleShowAllExtensions -bool true
 # Keep folders on top while sorting by name in Finder.

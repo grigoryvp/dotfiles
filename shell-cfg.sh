@@ -71,6 +71,8 @@ export PYTHONDONTWRITEBYTECODE=1
 
 ##  Rust 'install' places binaries here
 start_path_with ~/.cargo/bin
+##  pipx installs binaries here
+start_path_with ~/.local/bin
 ##  For custom nodejs build (ubuntu have old one in repository)
 start_path_with ~/.local/nodejs/bin
 ##  git can clone from repos without certificates.

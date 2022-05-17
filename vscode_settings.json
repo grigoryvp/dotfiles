@@ -116,6 +116,7 @@
   "editor.bracketPairColorization.enabled": false,
   // Do not highlight cyrillic letters
   "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.guides.bracketPairsHorizontal": true,
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "terminal.integrated.fontSize": 16,
   "window.menuBarVisibility": "toggle",
@@ -157,7 +158,7 @@
     "*.ipynb": "jupyter-notebook"
   },
   "workbench.colorTheme": "grigoryvp memory theme",
-  "workbench.iconTheme": "vs-seti",
+  "workbench.iconTheme": "vscode-great-icons",
   "workbench.colorCustomizations": {
   },
   "workbench.editor.untitled.hint": "hidden",
@@ -168,5 +169,9 @@
       "*.ts": "typescriptreact",
       "*.tsx": "typescriptreact"
     }
-  }
+  },
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "editor.accessibilitySupport": "off"
 }

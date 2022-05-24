@@ -184,6 +184,8 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
 # Disable inline attachments in Mail
 defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
+# Tends to hang with 100% cpu load
+launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv

@@ -94,54 +94,54 @@ chflags nohidden ~/Library
 # Opt out fig telemetry
 fig settings app.disableTelemetry true
 defaults write com.apple.finder AppleShowAllFiles YES
-defaults write -g AppleShowAllExtensions -bool true
+defaults write -g AppleShowAllExtensions true
 # Keep folders on top while sorting by name in Finder.
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.finder _FXSortFoldersFirst true
 # Change extension without a warning.
-defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+defaults write com.apple.finder FXEnableExtensionChangeWarning false
 # Do not create .DS_Store on removable media and network.
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+defaults write com.apple.desktopservices DSDontWriteUSBStores true
 # Do not verify disk images
-defaults write com.apple.frameworks.diskimages skip-verify -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
+defaults write com.apple.frameworks.diskimages skip-verify true
+defaults write com.apple.frameworks.diskimages skip-verify-locked true
+defaults write com.apple.frameworks.diskimages skip-verify-remote true
 # Show Finder path and status bars.
-defaults write com.apple.finder ShowPathbar -bool true
-defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder ShowPathbar true
+defaults write com.apple.finder ShowStatusBar true
 # List view for all Finder windows by default
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 # Disable empty trash warning
-defaults write com.apple.finder WarnOnEmptyTrash -bool false
+defaults write com.apple.finder WarnOnEmptyTrash false
 # Enable keyboard repeat, need to restart after that.
-defaults write -g ApplePressAndHoldEnabled -bool false
+defaults write -g ApplePressAndHoldEnabled false
 defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 # Prevent OS from changing text being entered.
-defaults write -g NSAutomaticCapitalizationEnabled -bool false
-defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
-defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
-defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
-defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write -g NSAutomaticCapitalizationEnabled false
+defaults write -g NSAutomaticDashSubstitutionEnabled false
+defaults write -g NSAutomaticPeriodSubstitutionEnabled false
+defaults write -g NSAutomaticQuoteSubstitutionEnabled false
+defaults write -g NSAutomaticSpellingCorrectionEnabled false
 # Max touchpad speed that can be set via GUI, cli can go beyound than.
 defaults write -g com.apple.trackpad.scaling 3
 # Switch off typing disable while trackpad is in use.
 defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 # Save to disk instead of iCloud by default.
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud false
 # Disable the app open confirmation.
-defaults write com.apple.LaunchServices LSQuarantine -bool false
+defaults write com.apple.LaunchServices LSQuarantine false
 # Input langauges and locale
 defaults write -g AppleLanguages -array "en" "ru" "ja"
 defaults write -g AppleLocale -string "en_RU"
 # Minimize windows into apps
-defaults write com.apple.dock minimize-to-application -bool true
+defaults write com.apple.dock minimize-to-application true
 # Instant dock auto hiding
-defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide true
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0
 # No recent apps in dock
-defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock show-recents false
 # Time zone from "sudo systemsetup -listtimezones"
 sudo systemsetup -settimezone "Europe/Moscow" > /dev/null
 # Wake on lid open
@@ -155,35 +155,35 @@ sudo pmset -a sleep 0
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 # Don't send search queries to Apple
-defaults write com.apple.Safari UniversalSearchEnabled -bool false
-defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+defaults write com.apple.Safari UniversalSearchEnabled false
+defaults write com.apple.Safari SuppressSearchSuggestions true
 # Show full URL in Safari address bar
-defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+defaults write com.apple.Safari ShowFullURLInSmartSearchField true
 # Safari home page
 defaults write com.apple.Safari HomePage -string "about:blank"
 # Do not open files after downloading in Safari
-defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+defaults write com.apple.Safari AutoOpenSafeDownloads false
 # Hide Safari bookmarks bar
-defaults write com.apple.Safari ShowFavoritesBar -bool false
+defaults write com.apple.Safari ShowFavoritesBar false
 # Enable Safari debug and develop menus.
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari IncludeInternalDebugMenu true
+defaults write com.apple.Safari IncludeDevelopMenu true
 # Safari search on page with "contains"
-defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly false
 # Disable Safari auto correct
-defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled -bool false
+defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled false
 # Disable Safari auto fill
-defaults write com.apple.Safari AutoFillFromAddressBook -bool false
-defaults write com.apple.Safari AutoFillPasswords -bool false
-defaults write com.apple.Safari AutoFillCreditCardData -bool false
-defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+defaults write com.apple.Safari AutoFillFromAddressBook false
+defaults write com.apple.Safari AutoFillPasswords false
+defaults write com.apple.Safari AutoFillCreditCardData false
+defaults write com.apple.Safari AutoFillMiscellaneousForms false
 # Block pop-ups in Safari
-defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically -bool false
+defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically false
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically false
 # Copy email without name in Mail
-defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
+defaults write com.apple.mail AddressesIncludeNameOnPasteboard false
 # Disable inline attachments in Mail
-defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
+defaults write com.apple.mail DisableInlineAttachmentViewing true
 # Tends to hang with 100% cpu load
 launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
 # Input method name lookup for debug purpose

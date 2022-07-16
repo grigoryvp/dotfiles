@@ -1375,6 +1375,26 @@
           }]
         }
         ]
+      }, {
+        "description": "Diablo 3 v4",
+        "manipulators": [
+        {
+          "description": "Make 'command' remappable",
+          "type": "basic",
+          "from": {
+            "key_code": "left_command"
+          },
+          "to": [{
+            "key_code": "f1"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.blizzard\\.diablo3$"
+            ]
+          }]
+        }
+        ]
       }]
     }
   }]

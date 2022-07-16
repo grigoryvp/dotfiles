@@ -1,12 +1,4 @@
 {
-  "[dart]": {
-    "editor.formatOnSave": false,
-    "editor.formatOnType": false,
-    "editor.suggestSelection": "first",
-    "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": false
-  },
-
   "emmet.includeLanguages": {
     "vue-html": "html",
     "vue": "html"
@@ -82,15 +74,6 @@
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "[python]": {
-    "editor.tabSize": 4
-  },
-  "[rust]": {
-    "editor.tabSize": 4
-  },
-  "[xi]": {
-    "editor.fontLigatures": false
-  },
   // Disable 'n references' atop of functions
   "editor.codeLens": false,
   "editor.lineNumbers": "off",
@@ -104,7 +87,6 @@
   "editor.rulers": [78],
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
-  "diffEditor.wordWrap": "off",
   "editor.autoClosingQuotes": "never",
   "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "editor.semanticHighlighting.enabled": true,
@@ -117,21 +99,22 @@
   // Do not highlight cyrillic letters
   "editor.unicodeHighlight.ambiguousCharacters": false,
   "editor.guides.bracketPairsHorizontal": true,
+  "diffEditor.wordWrap": "off",
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "terminal.integrated.fontSize": 16,
   "window.menuBarVisibility": "toggle",
   "window.openFilesInNewWindow": "off",
   "window.openFoldersInNewWindow": "off",
   "window.newWindowDimensions": "maximized",
+  "window.commandCenter": true,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.autoReveal": false,
   "explorer.openEditors.visible": 0,
+  "explorer.excludeGitIgnore": true,
   "git.confirmSync": false,
-  "java.errors.incompleteClasspath.severity": "ignore",
   "extensions.ignoreRecommendations": false,
   "breadcrumbs.enabled": true,
-  "powershell.integratedConsole.showOnStartup": false,
   "html.autoClosingTags": false,
   "telemetry.enableTelemetry": false,
   "debug.node.autoAttach": "disabled",
@@ -139,15 +122,10 @@
   "vsicons.presets.foldersAllDefaultIcon": true,
   "vsicons.dontShowNewVersionMessage": true,
   "keyboard.dispatch": "keyCode",
-  "python.languageServer": "Pylance",
-  "python.analysis.typeCheckingMode": "basic",
-  "python.showStartPage": false,
-  "Lua.telemetry.enable": false,
   "notebook.cellToolbarLocation": {
     "default": "right",
     "jupyter-notebook": "left"
   },
-  "dart.warnWhenEditingFilesOutsideWorkspace": false,
   "security.workspace.trust.untrustedFiles": "open",
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
@@ -157,7 +135,6 @@
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },
-  "workbench.colorTheme": "grigoryvp memory theme",
   "workbench.iconTheme": "vscode-great-icons",
   "workbench.colorCustomizations": {
   },
@@ -173,5 +150,44 @@
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1"
   },
-  "editor.accessibilitySupport": "off"
+  "editor.accessibilitySupport": "off",
+  "workbench.colorTheme": "grigoryvp memory theme",
+
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.showStartPage": false,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "javascript.inlayHints.parameterNames.enabled": "all",
+  "javascript.inlayHints.variableTypes.enabled": true,
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "java.errors.incompleteClasspath.severity": "ignore",
+  "Lua.telemetry.enable": false,
+  "dart.warnWhenEditingFilesOutsideWorkspace": false,
+  "powershell.integratedConsole.showOnStartup": false,
+
+  "[xi]": {
+    "editor.fontLigatures": false
+  },
+  "[python]": {
+    "editor.tabSize": 4
+  },
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp"
+  },
+  "[javascript]": {
+  },
+  "[rust]": {
+    "editor.tabSize": 4
+  },
+  "[dart]": {
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false
+  }
 }

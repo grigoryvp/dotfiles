@@ -2,6 +2,12 @@
   "key": "f2",
   "command": "workbench.action.toggleSidebarVisibility"
 }, {
+  "key": "f3",
+  "command": "workbench.action.terminal.toggleTerminal"
+}, {
+  "key": "f4",
+  "command": "workbench.action.toggleAuxiliaryBar"
+}, {
   "key": "ctrl+k o",
   "command": "workbench.action.addRootFolder"
 }, {
@@ -16,70 +22,52 @@
 }, {
   "key": "ctrl+w",
   "command": "workbench.action.closeActiveEditor"
-},
-{
+}, {
   "key": "ctrl+k b",
   "command": "bookmarks.toggle",
   "when": "editorTextFocus"
-},
-{
+}, {
   "key": "ctrl+;",
   "command": "workbench.action.debug.stepOver",
   "when": "inDebugMode"
-},
-{
+}, {
   "key": "ctrl+'",
   "command": "workbench.action.debug.stepInto",
   "when": "inDebugMode"
-},
-{
+}, {
   "key": "ctrl+shift+;",
   "command": "workbench.action.debug.stepOut",
   "when": "inDebugMode"
-},
-{
+}, {
   "key": "ctrl+\\",
   "command": "workbench.action.debug.continue",
   "when": "inDebugMode"
-},
-{
+}, {
   "key": "ctrl+k f",
   "command": "workbench.action.findInFiles"
-},
-{
+}, {
   "key": "ctrl+k ctrl+k",
   "command": "extension.xi.lookup"
-},
-{
+}, {
   "key": "cmd-f",
   "command": "extension.vim_ctrl+f",
   "when": "editorTextFocus && vim.active"
-},
-{
+}, {
   "key": "ctrl+]",
   "command": "editor.action.openLink"
-},
-{
+}, {
   "key": "ctrl+[",
-  "command": "extension.xi.goBack"
-},
-{
+  "command": "extension.goto-link-provider.back"
+}, {
   "key": "ctrl+7",
   "command": "workbench.action.terminal.focus"
-},
-{
+}, {
   "key": "ctrl+8",
   "command": "workbench.action.focusActiveEditorGroup"
-},
-{
+}, {
   "key": "ctrl+9",
   "command": "workbench.action.toggleMaximizedPanel"
-},
-{
-  "key": "ctrl+0",
-  "command": "workbench.action.terminal.toggleTerminal"
-},
-{
+}, {
   "key": "ctrl+k ctrl+o",
   "command": "workbench.action.files.openFile"
 }

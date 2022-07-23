@@ -47,7 +47,6 @@ else
   git clone git@github.com:grigoryvp/xi.git ~/.xi
 fi
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
-printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zprofile
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
 printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig

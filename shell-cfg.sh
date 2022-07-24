@@ -47,6 +47,8 @@ if [ -n "$ZSH_VERSION" ]; then
   setopt promptsubst
   ##  Do not display "no matches found" error for blobs
   setopt +o nomatch
+  ##  Always complete files, even if app-specific completion don't says so
+  zstyle ':completion:*' completer _complete _ignored _files
 elif [ -n "$BASH_VERSION" ]; then
   ##  Colors should be escaped for correct length calculation.
   PS_K="\\[${PS_ESC}[30;47m\\]"

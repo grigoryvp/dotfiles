@@ -1327,7 +1327,7 @@
         "manipulators": [
 
         {
-          "description": "Make 'command' remappable",
+          "description": "Make remappable as 'hide ui' hotkey",
           "type": "basic",
           "from": {
             "key_code": "left_command"
@@ -1336,6 +1336,8 @@
             "key_code": "f1"
           }],
           "conditions": [{
+            "type": "variable_if", "name": "_m", "value": 0
+          }, {
             "type": "frontmost_application_if",
             "bundle_identifiers": [
               "^com\\.GGG\\.PathOfExile$"
@@ -1362,7 +1364,7 @@
           "description": "Not possible to rebind the 'split stack' hotkey",
           "type": "basic",
           "from": {
-            "key_code": "right_shift"
+            "key_code": "left_option"
           },
           "to": [{
             "key_code": "left_shift"

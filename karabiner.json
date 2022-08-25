@@ -129,9 +129,15 @@
           "from": {
             "key_code": "g"
           },
-          "to": [{
-            "key_code": "s"
-          }],
+          "to": [
+            {"key_code": "return_or_enter"},
+            {"key_code": "slash"},
+            {"key_code": "e"},
+            {"key_code": "x"},
+            {"key_code": "i"},
+            {"key_code": "t"},
+            {"key_code": "return_or_enter"}
+          ],
           "conditions": [{
             "type": "variable_if",
             "name": "_m",

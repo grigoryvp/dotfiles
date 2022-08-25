@@ -26,9 +26,9 @@
         "basic.to_if_held_down_threshold_milliseconds": 500
       },
       "rules": [{
-        "description": "general keyboard mods",
+        "description": "caps lock as meta",
         "manipulators": [
-        
+         
         {
           "description": "Use caps lock as 'meta' key to trigger things",
           "type": "basic",
@@ -68,8 +68,105 @@
               "value": 0
             }
           }]
-        },
+        }]
+      }, {
+        "description": "Path of Exile",
+        "manipulators": [
 
+        {
+          "description": "Make remappable as 'hide ui' hotkey",
+          "type": "basic",
+          "from": {
+            "key_code": "left_command"
+          },
+          "to": [{
+            "key_code": "f1"
+          }],
+          "conditions": [{
+            "type": "variable_if", "name": "_m", "value": 0
+          }, {
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
+          "description": "Make remappable as 'highlight' hotkey",
+          "type": "basic",
+          "from": {
+            "key_code": "left_shift"
+          },
+          "to": [{
+            "key_code": "f2"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
+          "description": "Not possible to rebind the 'split stack' hotkey",
+          "type": "basic",
+          "from": {
+            "key_code": "left_option"
+          },
+          "to": [{
+            "key_code": "left_shift"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
+          "description": "meta-g/F4 for fast logout",
+          "type": "basic",
+          "from": {
+            "key_code": "g"
+          },
+          "to": [{
+            "key_code": "s"
+          }],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }, {
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        }
+        ]
+      }, {
+        "description": "Diablo 3 v4",
+        "manipulators": [
+        {
+          "description": "Make 'command' remappable",
+          "type": "basic",
+          "from": {
+            "key_code": "left_command"
+          },
+          "to": [{
+            "key_code": "f1"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.blizzard\\.diablo3$"
+            ]
+          }]
+        }
+        ]
+      }, {
+        "description": "general keyboard mods (after games)",
+        "manipulators": [
         {
           "description": "Use backspace as right alt",
           "type": "basic",
@@ -1320,81 +1417,6 @@
             "modifiers": ["left_command", "left_shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
-        }
-        ]
-      }, {
-        "description": "Path of Exile",
-        "manipulators": [
-
-        {
-          "description": "Make remappable as 'hide ui' hotkey",
-          "type": "basic",
-          "from": {
-            "key_code": "left_command"
-          },
-          "to": [{
-            "key_code": "f1"
-          }],
-          "conditions": [{
-            "type": "variable_if", "name": "_m", "value": 0
-          }, {
-            "type": "frontmost_application_if",
-            "bundle_identifiers": [
-              "^com\\.GGG\\.PathOfExile$"
-            ]
-          }]
-        },
-        {
-          "description": "Make remappable as 'highlight' hotkey",
-          "type": "basic",
-          "from": {
-            "key_code": "left_shift"
-          },
-          "to": [{
-            "key_code": "f2"
-          }],
-          "conditions": [{
-            "type": "frontmost_application_if",
-            "bundle_identifiers": [
-              "^com\\.GGG\\.PathOfExile$"
-            ]
-          }]
-        },
-        {
-          "description": "Not possible to rebind the 'split stack' hotkey",
-          "type": "basic",
-          "from": {
-            "key_code": "left_option"
-          },
-          "to": [{
-            "key_code": "left_shift"
-          }],
-          "conditions": [{
-            "type": "frontmost_application_if",
-            "bundle_identifiers": [
-              "^com\\.GGG\\.PathOfExile$"
-            ]
-          }]
-        }
-        ]
-      }, {
-        "description": "Diablo 3 v4",
-        "manipulators": [
-        {
-          "description": "Make 'command' remappable",
-          "type": "basic",
-          "from": {
-            "key_code": "left_command"
-          },
-          "to": [{
-            "key_code": "f1"
-          }],
-          "conditions": [{
-            "type": "frontmost_application_if",
-            "bundle_identifiers": [
-              "^com\\.blizzard\\.diablo3$"
-            ]
-          }]
         }
         ]
       }]

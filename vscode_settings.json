@@ -99,6 +99,7 @@
   // Do not highlight cyrillic letters
   "editor.unicodeHighlight.ambiguousCharacters": false,
   "editor.guides.bracketPairsHorizontal": true,
+  "editor.experimental.stickyScroll.enabled": true,
   "diffEditor.wordWrap": "off",
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "terminal.integrated.fontSize": 16,

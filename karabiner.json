@@ -124,7 +124,7 @@
           }]
         },
         {
-          "description": "meta-g/F4 for fast logout",
+          "description": "meta-g for fast logout",
           "type": "basic",
           "from": {
             "key_code": "g"
@@ -135,6 +135,35 @@
             {"key_code": "e"},
             {"key_code": "x"},
             {"key_code": "i"},
+            {"key_code": "t"},
+            {"key_code": "return_or_enter"}
+          ],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_m",
+            "value": 1
+          }, {
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
+          "description": "meta-b for hideout",
+          "type": "basic",
+          "from": {
+            "key_code": "b"
+          },
+          "to": [
+            {"key_code": "return_or_enter"},
+            {"key_code": "slash"},
+            {"key_code": "h"},
+            {"key_code": "i"},
+            {"key_code": "d"},
+            {"key_code": "e"},
+            {"key_code": "o"},
+            {"key_code": "u"},
             {"key_code": "t"},
             {"key_code": "return_or_enter"}
           ],

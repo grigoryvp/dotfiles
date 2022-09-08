@@ -99,7 +99,6 @@
   // Do not highlight cyrillic letters
   "editor.unicodeHighlight.ambiguousCharacters": false,
   "editor.guides.bracketPairsHorizontal": true,
-  "editor.experimental.stickyScroll.enabled": true,
   "diffEditor.wordWrap": "off",
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "terminal.integrated.fontSize": 16,
@@ -157,14 +156,14 @@
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
   "python.showStartPage": false,
-  "python.analysis.inlayHints.functionReturnTypes": true,
-  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.inlayHints.functionReturnTypes": false,
+  "python.analysis.inlayHints.variableTypes": false,
   "javascript.inlayHints.parameterNames.enabled": "all",
-  "javascript.inlayHints.variableTypes.enabled": true,
-  "javascript.inlayHints.parameterTypes.enabled": true,
+  "javascript.inlayHints.variableTypes.enabled": false,
+  "javascript.inlayHints.parameterTypes.enabled": false,
   "typescript.inlayHints.parameterNames.enabled": "all",
-  "typescript.inlayHints.variableTypes.enabled": true,
-  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": false,
+  "typescript.inlayHints.parameterTypes.enabled": false,
   "java.errors.incompleteClasspath.severity": "ignore",
   "Lua.telemetry.enable": false,
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
@@ -190,5 +189,7 @@
     "editor.suggestSelection": "first",
     "editor.tabCompletion": "onlySnippets",
     "editor.wordBasedSuggestions": false
-  }
+  },
+  "editor.suggest.matchOnWordStartOnly": false,
+  "editor.stickyScroll.enabled": true
 }

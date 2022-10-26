@@ -80,11 +80,16 @@ function App:clickDockItem(number)
         end
         currentNumber = currentNumber + 1
       else
-        if item.AXTitle == "System Preferences" then
+        local title = item.AXTitle
+        -- Renamed in macOS 13
+        if title == "System Preferences" or title == "System Settings" then
           isSeparatorFound = true
         end
       end
     end
+  end
+  if not isSeparatorFound then
+    print("Separator (settings app) not found in the dock")
   end
 end
 

@@ -224,11 +224,11 @@ alias pop="poetry run python3"
 alias pom="poetry run python3 manage.py"
 
 ##  Rails virtual environment
-alias bi="bundle init"
-alias ba="bundle add"
-alias be="bundle exec"
-alias br="bundle exec ruby"
-alias ber="bundle exec rails"
+alias bui="bundle init"
+alias bua="bundle add"
+alias bue="bundle exec"
+alias bur="bundle exec ruby"
+alias bus="bundle exec rails"
 
 ##  docker aliases
 dmg() {

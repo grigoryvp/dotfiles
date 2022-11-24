@@ -667,6 +667,10 @@ class App {
       & code --install-extension EditorConfig.EditorConfig;
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
+    if (-not $extList.Contains("esbenp.prettier-vscode")) {
+      & code --install-extension EditorConfig.EditorConfig;
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {

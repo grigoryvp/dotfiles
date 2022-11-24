@@ -191,5 +191,8 @@
     "editor.wordBasedSuggestions": false
   },
   "editor.suggest.matchOnWordStartOnly": false,
-  "editor.stickyScroll.enabled": true
+  "editor.stickyScroll.enabled": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

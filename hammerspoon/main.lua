@@ -213,6 +213,11 @@ function App:registerHotkeys()
     local screenFrame = hs.screen.primaryScreen():frame()
     local duration = 0
     wnd:setFrame(screenFrame, duration)
+    -- hs.screen.primaryScreen() returns smaller frame
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
   end)
 
   hs.hotkey.bind("⌘⇧", "c", function()

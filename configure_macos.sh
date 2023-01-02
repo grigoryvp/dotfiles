@@ -22,6 +22,8 @@ brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.10.0 on Apple Silicon
 brew install readline openssl
+# For Ruby 3.2
+brew install libyaml
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
@@ -206,10 +208,10 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
-pyenv install 3.10.1
-pyenv global 3.10.1
+pyenv install 3.11.1
+pyenv global 3.11.1
 python3 -m pip install --upgrade pip virtualenv
-rbenv install 3.1.1
-rbenv global 3.1.1
+rbenv install 3.2.0
+rbenv global 3.2.0
 nodenv install 17.6.0
 nodenv global 17.6.0

@@ -388,18 +388,21 @@ if [ -d $HOME/.pyenv ]; then
   start_path_with "$HOME/.pyenv/bin"
   start_path_with "$HOME/.pyenv/shims"
   start_path_with "$HOME/.pyenv/plugins/pyenv-virtualenv/shims";
+  eval "$(pyenv init -)"
 fi
 
 ##  Load rbenv, if installed
 if [ -d $HOME/.rbenv ]; then
   start_path_with "$HOME/.rbenv/bin"
   start_path_with "$HOME/.rbenv/shims"
+  eval "$(rbenv init -)"
 fi
 
 ##  Load nodenv, if installed
 if [ -d $HOME/.nodenv ]; then
   start_path_with "$HOME/.nodenv/bin"
   start_path_with "$HOME/.nodenv/shims"
+  eval "$(nodenv init -)"
 fi
 
 ##  Load phpenv, if installed

@@ -9,7 +9,12 @@
   "command": "workbench.action.focusSideBar"
 }, {
   "key": "f3",
+  "when": "!terminalViewShowing",
   "command": "workbench.action.terminal.toggleTerminal"
+}, {
+  "key": "f3",
+  "when": "terminalViewShowing",
+  "command": "workbench.action.terminal.kill"
 }, {
   "key": "shift+f3",
   "command": "workbench.action.terminal.focus"
@@ -70,9 +75,6 @@
 }, {
   "key": "ctrl+[",
   "command": "extension.goto-link-provider.back"
-}, {
-  "key": "ctrl+7",
-  "command": "workbench.action.terminal.focus"
 }, {
   "key": "ctrl+8",
   "command": "workbench.action.focusActiveEditorGroup"

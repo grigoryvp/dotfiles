@@ -82,5 +82,9 @@
 }, {
   "key": "ctrl+k ctrl+o",
   "command": "workbench.action.files.openFile"
+}, {
+  "key": "ctrl+n",
+  "command": "explorer.newFile",
+  "when": "explorerViewletFocus"
 }
 ]

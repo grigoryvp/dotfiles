@@ -100,8 +100,17 @@
   "editor.unicodeHighlight.ambiguousCharacters": false,
   "editor.guides.bracketPairsHorizontal": true,
   "diffEditor.wordWrap": "off",
-  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
-  "terminal.integrated.fontSize": 16,
+  "terminal.integrated": {
+    "fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
+    "fontSize": 16,
+    "commandsToSkipShell": [
+      "workbench.action.toggleSidebarVisibility",
+      "workbench.action.toggleAuxiliaryBar"
+    ],
+    "env.osx": {
+      "FIG_NEW_SESSION": "1"
+    }
+  },
   "window.menuBarVisibility": "toggle",
   "window.openFilesInNewWindow": "off",
   "window.openFoldersInNewWindow": "off",
@@ -146,9 +155,6 @@
       "*.ts": "typescriptreact",
       "*.tsx": "typescriptreact"
     }
-  },
-  "terminal.integrated.env.osx": {
-    "FIG_NEW_SESSION": "1"
   },
   "editor.accessibilitySupport": "off",
   "workbench.colorTheme": "grigoryvp memory theme",

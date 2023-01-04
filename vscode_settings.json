@@ -105,7 +105,10 @@
     "fontSize": 16,
     "commandsToSkipShell": [
       "workbench.action.toggleSidebarVisibility",
-      "workbench.action.toggleAuxiliaryBar"
+      "workbench.action.focusSideBar",
+      "workbench.action.toggleAuxiliaryBar",
+      "workbench.action.focusAuxiliaryBar",
+      "workbench.action.focusActiveEditorGroup"
     ],
     "env.osx": {
       "FIG_NEW_SESSION": "1"

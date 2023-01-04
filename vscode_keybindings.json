@@ -1,12 +1,24 @@
 [{
+  "key": "shift+f1",
+  "command": "workbench.action.focusActiveEditorGroup"
+}, {
   "key": "f2",
   "command": "workbench.action.toggleSidebarVisibility"
+}, {
+  "key": "shift+f2",
+  "command": "workbench.action.focusSideBar"
 }, {
   "key": "f3",
   "command": "workbench.action.terminal.toggleTerminal"
 }, {
+  "key": "shift+f3",
+  "command": "workbench.action.terminal.focus"
+}, {
   "key": "f4",
   "command": "workbench.action.toggleAuxiliaryBar"
+}, {
+  "key": "shift+f4",
+  "command": "workbench.action.focusAuxiliaryBar"
 }, {
   "key": "ctrl+k o",
   "command": "workbench.action.addRootFolder"

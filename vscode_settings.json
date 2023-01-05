@@ -167,6 +167,7 @@
   "python.showStartPage": false,
   "python.analysis.inlayHints.functionReturnTypes": false,
   "python.analysis.inlayHints.variableTypes": false,
+  "python.terminal.activateEnvironment": false,
   "javascript.inlayHints.parameterNames.enabled": "all",
   "javascript.inlayHints.variableTypes.enabled": false,
   "javascript.inlayHints.parameterTypes.enabled": false,

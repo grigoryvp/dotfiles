@@ -76,6 +76,7 @@ code --install-extension esbenp.prettier-vscode
 VSCODE_DIR=~/Library/Application\ Support/Code/User
 ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json
 ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json
+ln -fs ~/dotfiles/vscode_tasks.json $VSCODE_DIR/tasks.json
 ln -fs ~/dotfiles/vscode_snippets $VSCODE_DIR/snippets
 mkdir -p ~/.config/mpv
 echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf

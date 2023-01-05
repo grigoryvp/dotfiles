@@ -14,7 +14,8 @@
 }, {
   "key": "f3",
   "when": "terminalViewShowing",
-  "command": "workbench.action.terminal.kill"
+  "command": "workbench.action.tasks.runTask",
+  "args": "task-close-terminal"
 }, {
   "key": "shift+f3",
   "command": "workbench.action.terminal.focus"

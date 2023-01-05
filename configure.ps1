@@ -650,6 +650,14 @@ class App {
     $dstPath = $this._path(@($dstDir, "keybindings.json"));
     Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
 
+    $srcPath = $this._path(@($this._cfgDir, "vscode_tasks.json"));
+    $dstPath = $this._path(@($dstDir, "tasks.json"));
+    Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
+
+    $srcPath = $this._path(@($this._cfgDir, "vscode_snippets/"));
+    $dstPath = $this._path(@($dstDir, "vscode_snippets/"));
+    Copy-Item -Path "$srcPath" -Destination $dstPath -Recurse -Force;
+
     $extList = @(& code --list-extensions);
     if (-not $extList.Contains("grigoryvp.language-xi")) {
       & code --install-extension grigoryvp.language-xi;

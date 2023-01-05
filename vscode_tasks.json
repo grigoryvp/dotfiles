@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+  "tasks": [{
+		"label": "task-focus-terminal",
+		"command": "${command:workbench.action.terminal.focus}"
+	}, {
+		"label": "task-toggle-terminal",
+		"command": "${command:workbench.action.terminal.toggleTerminal}"
+	}, {
+		"label": "task-close-terminal",
+		"dependsOrder": "sequence",
+		"dependsOn": [
+			"task-focus-terminal",
+			"task-toggle-terminal"
+		]
+	}]
+}

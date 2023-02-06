@@ -229,6 +229,13 @@ alias bua="bundle add"
 alias bue="bundle exec"
 alias bur="bundle exec ruby"
 alias bus="bundle exec rails"
+buss() {
+  if [ -e ./bin/dev ]; then
+    ./bin/dev
+  else
+    bundle exec rails server
+  fi
+}
 
 ##  docker aliases
 dmg() {

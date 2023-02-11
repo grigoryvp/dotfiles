@@ -99,6 +99,9 @@
   // Do not highlight cyrillic letters
   "editor.unicodeHighlight.ambiguousCharacters": false,
   "editor.guides.bracketPairsHorizontal": true,
+  "editor.suggest.matchOnWordStartOnly": false,
+  "editor.stickyScroll.enabled": true,
+  "editor.accessibilitySupport": "off",
   "diffEditor.wordWrap": "off",
   "terminal.integrated": {
     "fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
@@ -127,7 +130,6 @@
   "git.confirmSync": false,
   "extensions.ignoreRecommendations": false,
   "breadcrumbs.enabled": true,
-  "html.autoClosingTags": false,
   "telemetry.enableTelemetry": false,
   "debug.node.autoAttach": "disabled",
   "scm.diffDecorations": "none",
@@ -159,9 +161,7 @@
       "*.tsx": "typescriptreact"
     }
   },
-  "editor.accessibilitySupport": "off",
   "workbench.colorTheme": "grigoryvp memory theme",
-
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
   "python.showStartPage": false,
@@ -200,13 +200,20 @@
     "editor.tabCompletion": "onlySnippets",
     "editor.wordBasedSuggestions": false
   },
-  "editor.suggest.matchOnWordStartOnly": false,
-  "editor.stickyScroll.enabled": true,
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "auto-close-tag.activationOnLanguage": [
+    "xml",
+    "php",
+    "javascriptreact",
+    "typescriptreact",
+    "vue",
+    "erb",
+    "html"
+  ]
 }

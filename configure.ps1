@@ -660,23 +660,27 @@ class App {
 
     $extList = @(& code --list-extensions);
     if (-not $extList.Contains("grigoryvp.language-xi")) {
-      & code --install-extension grigoryvp.language-xi;
+      & code --install-extension "grigoryvp.language-xi";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (-not $extList.Contains("grigoryvp.memory-theme")) {
-      & code --install-extension grigoryvp.memory-theme;
+      & code --install-extension "grigoryvp.memory-theme";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (-not $extList.Contains("vscodevim.vim")) {
-      & code --install-extension vscodevim.vim;
+      & code --install-extension "vscodevim.vim";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (-not $extList.Contains("EditorConfig.EditorConfig")) {
-      & code --install-extension EditorConfig.EditorConfig;
+      & code --install-extension "editorConfig.editorConfig";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
     if (-not $extList.Contains("esbenp.prettier-vscode")) {
-      & code --install-extension EditorConfig.EditorConfig;
+      & code --install-extension "esbenp.prettier-vscode";
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
+    if (-not $extList.Contains("formulahendry.auto-close-tag")) {
+      & code --install-extension "formulahendry.auto-close-tag";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
 

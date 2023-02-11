@@ -73,6 +73,7 @@ code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
 code --install-extension emmanuelbeziat.vscode-great-icons
 code --install-extension esbenp.prettier-vscode
+code --install-extension formulahendry.auto-close-tag
 VSCODE_DIR=~/Library/Application\ Support/Code/User
 ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json
 ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json

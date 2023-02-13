@@ -102,6 +102,7 @@
   "editor.suggest.matchOnWordStartOnly": false,
   "editor.stickyScroll.enabled": true,
   "editor.accessibilitySupport": "off",
+  "editor.formatOnSave": false,
   "diffEditor.wordWrap": "off",
   "terminal.integrated": {
     "fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
@@ -186,6 +187,7 @@
     "editor.tabSize": 4
   },
   "[ruby]": {
+    "editor.formatOnSave": false,
     "editor.defaultFormatter": "Shopify.ruby-lsp"
   },
   "[javascript]": {

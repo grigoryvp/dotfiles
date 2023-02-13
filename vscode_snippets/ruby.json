@@ -1,6 +1,6 @@
 {
   "rails.application.generators": {
-    "prefix": "r_app_gen",
+    "prefix": "_app_gen",
     "body": [
       "config.generators do",
       "  _1.template_engine nil",

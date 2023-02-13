@@ -1,0 +1,10 @@
+{
+  "erb.evaluate": {
+    "prefix": "_%",
+    "body": ["<% $0 %>"]
+  },
+  "erb.replace": {
+    "prefix": "_=",
+    "body": ["<%= $0 %>"]
+  }
+}

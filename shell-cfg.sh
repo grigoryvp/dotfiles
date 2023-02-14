@@ -227,8 +227,13 @@ alias pom="poetry run python3 manage.py"
 alias bui="bundle init"
 alias bua="bundle add"
 alias bue="bundle exec"
-alias bur="bundle exec ruby"
-alias bus="bundle exec rails"
+alias bur="bue ruby"
+alias bus="bue rails"
+busg() {
+  bus generate $@ --no-helper --no-test-framework
+}
+alias busgc="busg controller"
+
 buss() {
   if [ -e ./bin/dev ]; then
     ./bin/dev

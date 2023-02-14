@@ -230,9 +230,10 @@ alias bue="bundle exec"
 alias bur="bue ruby"
 alias bus="bue rails"
 busg() {
-  bus generate $@ --no-helper --no-test-framework
+  bus generate $@ --no-helper --no-test-framework --no-template-engine
 }
 alias busgc="busg controller"
+alias busgm="busg model"
 
 buss() {
   if [ -e ./bin/dev ]; then

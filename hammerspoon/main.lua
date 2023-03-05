@@ -972,16 +972,21 @@ function App:createMenu()
       clipboard = clipboard:sub(1, queryPos - 1)
     end
 
-    local url = "" ..
-      "https://api-ssl.bitly.com/v3/shorten" ..
-      "?access_token=" .. bitlyToken ..
-      "&longUrl=" .. hs.http.encodeForQuery(clipboard)
-    hs.http.asyncGet(url, {}, function(status, response, _)
-      if status ~= 200 then
+    local url = "https://api-ssl.bitly.com/v4/shorten"
+    local encodedUrl = hs.http.encodeForQuery(clipboard)
+    local data = hs.json.encode({
+      long_url = clipboard
+    })
+    local headers = {
+      Authorization = "Bearer " .. bitlyToken,
+      ["Content-Type"] = "application/json"
+    }
+    hs.http.asyncPost(url, data, headers, function(status, response, _)
+      if status ~= 200 and status ~= 201 then
         return hs.alert.show("Failed")
       end
       local response = hs.json.decode(response)
-      hs.pasteboard.setContents(response.data.url)
+      hs.pasteboard.setContents(response.link)
       return hs.alert.show("Success")
     end)
   end)

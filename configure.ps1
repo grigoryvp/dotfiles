@@ -62,7 +62,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 6";
+    Write-Host "Debug 7";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -107,7 +107,7 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installApp("Git.Git", $this._pathPF86(@("Git", "cmd")));
-    throw "Debug 6";
+    throw "Debug 7";
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
@@ -240,7 +240,7 @@ class App {
     if ($this._isTest) { return $false; }
     $res = & winget list
     if ($LASTEXITCODE -ne 0) { return $false; }
-    return (-not ($res | Out-String).Contains($appName));
+    return ($res | Out-String).Contains($appName);
   }
 
 
@@ -264,6 +264,7 @@ class App {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
       Write-Host "$appName is already installed";
+      return;
     }
     Write-Host "Installing $appName"
     winget install --silent $appName;

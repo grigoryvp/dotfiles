@@ -96,8 +96,8 @@ class App {
 
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
-    throw "Debug";
     $this._generateSshKey();
+    throw "Debug";
     $this._setPowerOptions();
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
@@ -351,11 +351,16 @@ class App {
 
   _generateSshKey() {
     if ($this._isTest) { return; }
-    if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) { return; }
+    if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) {
+      Write-Host "SSH key already generated";
+      return;
+    }
     $sshDir = $this._path(@("~", ".ssh"));
     if (-not (Test-Path -Path "$sshDir" )) {
+      Write-Host "Creating ~/.ssh";
       New-Dir -Path "$sshDir";
     }
+    Write-Host "Generating SSH key";
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
 

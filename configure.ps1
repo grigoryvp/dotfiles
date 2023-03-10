@@ -34,8 +34,10 @@ class App {
     $this._cfgDirLinux = "~/dotfiles";
     $this._cfgDir = $this._path(@("~", "dotfiles"));
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
+    Write-Host "DEBUG 1";
     $this._PF = ${env:ProgramFiles}
     $this._PF86 = ${env:ProgramFiles(x86)}
+    Write-Host "DEBUG 2";
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Reboot

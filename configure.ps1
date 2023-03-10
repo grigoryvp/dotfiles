@@ -34,10 +34,8 @@ class App {
     $this._cfgDirLinux = "~/dotfiles";
     $this._cfgDir = $this._path(@("~", "dotfiles"));
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
-    Write-Host "DEBUG 1";
     $this._PF = ${env:ProgramFiles}
     $this._PF86 = ${env:ProgramFiles(x86)}
-    Write-Host "DEBUG 2";
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Reboot
@@ -107,7 +105,7 @@ class App {
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
-    $this._installApp("Git.Git", $this._path86(@("Git", "cmd")));
+    $this._installApp("Git.Git", $this._pathPF86(@("Git", "cmd")));
     throw "Debug 5";
     $this._addScoopBuckets();
     # Clone without keys via HTTPS

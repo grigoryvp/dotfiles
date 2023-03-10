@@ -98,12 +98,10 @@ class App {
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
     $this._setPowerOptions();
-    throw "Debug 2";
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
-    # Installed manually before running this script so scoop can manage pwsh
-    # $this._installScoop();
+    throw "Debug 3";
     $this._installGit();
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
@@ -367,6 +365,7 @@ class App {
 
   _setPowerOptions() {
     if ($this._isTest) { return; }
+    Write-Host "Setting power policy";
     powercfg -change -monitor-timeout-ac 120;
     powercfg -change -monitor-timeout-dc 120;
     powercfg -change -disk-timeout-ac 0;
@@ -385,6 +384,7 @@ class App {
 
   _setDebounceOptions() {
     if ($this._isTest) { return; }
+    Write-Host "Setting touchpad debounce options";
 
     $args = @{
       Path = "HKCU:\Control Panel\Accessibility\Keyboard Response"
@@ -465,20 +465,22 @@ class App {
 
   _setInputMethodOptions() {
     if ($this._isTest) { return; }
-    $current = & powershell.exe -Command Get-WinUserLanguageList | Out-String;
+    $current = & pwsh -Command Get-WinUserLanguageList | Out-String;
     if (-not $current.Contains("LanguageTag     : ru")) {
+      Write-Host "Adding Russian language";
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
         '$list.Add("ru");' +
         'Set-WinUserLanguageList -Force $list;';
-      & powershell.exe -Command $cmd;
+      & pwsh -Command $cmd;
     }
     if (-not $current.Contains("LanguageTag     : ja")) {
+      Write-Host "Adding Japanese language";
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
         '$list.Add("ja");' +
         'Set-WinUserLanguageList -Force $list;';
-      & powershell.exe -Command $cmd;
+      & pwsh -Command $cmd;
     }
   }
 

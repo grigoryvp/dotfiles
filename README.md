@@ -3,16 +3,14 @@
 ## Windows install via cmd.exe
 
 ```bat
-rem Allow PowerShell packages to be installed
-powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
-rem Install scoop
-powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
-set PATH=%PATH%;%USERPROFILE%\scoop\shims
-rem Install Powershell Core
-scoop install 7zip git pwsh sudo
-git config --global core.autocrlf input
-rem Configure this box; inspect $error if Invoke-Expression fails.
-pwsh.exe -c "Invoke-WebRequest -useb https://raw.githubusercontent.com/grigoryvp/dotfiles/master/configure.ps1 | Invoke-Expression"
+winget install --silent gerardog.gsudo
+set PATH=%PATH%;%ProgramFiles(x86)%\gsudo
+winget install --silent Microsoft.PowerShell
+set PATH=%PATH%;%ProgramFiles%\PowerShell\7
+rem inspect $error if Invoke-Expression fails.
+set REPO_URL="https://raw.githubusercontent.com/grigoryvp/dotfiles"
+set URL="%REPO_URL%/master/configure.ps1"
+sudo pwsh -c "Invoke-WebRequest -useb %URL% | Invoke-Expression"
 ```
 
 Follow instructions for post-configuration.

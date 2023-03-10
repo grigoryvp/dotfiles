@@ -59,17 +59,6 @@ class App {
 
 
   configure() {
-
-    # Required by Posh-Git, sudo etc.
-    if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
-      # scoop shims like sudo are executed via powershell.exe and it seems
-      # that pwsh.exe and powershell.exe have separated execution policy
-      # config
-      & powershell.exe `
-        -Command Set-ExecutionPolicy Unrestricted `
-        -Scope CurrentUser;
-    }
-
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -105,6 +94,8 @@ class App {
         Write-Host "$($this._psDir) already exists";
       }
     }
+
+    throw "Debug";
 
     # Used for cmd.exe color scheme configuration
     $this._installApp("colortool");
@@ -222,6 +213,19 @@ class App {
     }
     else {
       Write-Host $this._POST_INSTALL_MSG;
+    }
+  }
+
+
+  setExecutionPolicy() {
+    # Required by Posh-Git, sudo etc.
+    if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
+      # scoop shims like sudo are executed via powershell.exe and it seems
+      # that pwsh.exe and powershell.exe have separated execution policy
+      # config
+      & powershell.exe `
+        -Command Set-ExecutionPolicy Unrestricted `
+        -Scope CurrentUser;
     }
   }
 
@@ -781,3 +785,11 @@ $ErrorActionPreference = "Stop";
 $pathIntrinsics = $ExecutionContext.SessionState.Path;
 $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
+
+# TODO
+# powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
+# powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
+# set PATH=%PATH%;%USERPROFILE%\scoop\shims
+# sudo winget install --silent Git.Git
+# set PATH=%PATH%;%ProgramFiles%\Git\cmd
+# git config --global core.autocrlf input

@@ -62,7 +62,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 7";
+    Write-Host "Debug 8";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -107,10 +107,9 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installApp("Git.Git", $this._pathPF86(@("Git", "cmd")));
-    throw "Debug 7";
-    $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
+    throw "Debug 8";
     $this._installApp("autohotkey");
     $this._installApp("xmousebuttoncontrol");
     $this._installApp("keepassxc");
@@ -313,7 +312,10 @@ class App {
     if (Test-Path -Path "$gitCfgFile") {
       $gitCfg = Get-Content "$gitCfgFile" | Out-String;
       # Already cloned with SSH?
-      if ($gitCfg.Contains("git@github.com")) { return; }
+      if ($gitCfg.Contains("git@github.com")) {
+        Write-Host "dotfiles already cloned via ssh";
+        return;
+      }
     }
 
     # Have keys to clone with SSH?
@@ -323,7 +325,10 @@ class App {
     }
     else {
       # Already cloned without keys?
-      if (Test-Path -Path "$gitCfgFile") { return; }
+      if (Test-Path -Path "$gitCfgFile") {
+        Write-Host "dotfiles already cloned via https";
+        return;
+      }
       # Clone with HTTPS
       $uri = "https://github.com/grigoryvp/dotfiles.git";
     }
@@ -350,7 +355,7 @@ class App {
   _generateSshKey() {
     if ($this._isTest) { return; }
     if (Test-Path -Path $this._path(@("~", ".ssh", "id_rsa"))) {
-      Write-Host "SSH key already generated";
+      Write-Host "ssh key already generated";
       return;
     }
     $sshDir = $this._path(@("~", ".ssh"));
@@ -358,7 +363,7 @@ class App {
       Write-Host "Creating ~/.ssh";
       New-Dir -Path "$sshDir";
     }
-    Write-Host "Generating SSH key";
+    Write-Host "Generating ssh key";
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
   }
 
@@ -515,27 +520,6 @@ class App {
   }
 
 
-  _addScoopBuckets() {
-    if ($this._isTest) { return; }
-    # Required to install autohotkey
-    if (-not @(scoop bucket list).Contains("extras")) {
-      scoop bucket add extras;
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    # Required to install fonts.
-    if (-not @(scoop bucket list).Contains("nerd-fonts")) {
-      scoop bucket add nerd-fonts;
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    # Required to install kpscript
-    if (-not @(scoop bucket list).Contains("grigoryvp")) {
-      $uri = "https://github.com/grigoryvp/scoop-grigoryvp";
-      scoop bucket add grigoryvp $uri;
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-  }
-
-
   _uploadSshKey() {
     $marker = ".uploaded_to_github";
     if (Test-Path -Path $this._path(@("~", ".ssh", "$marker"))) { return; }
@@ -555,7 +539,7 @@ class App {
       }
       catch {
         if ($_.Exception.Response.StatusCode -eq 422) {
-          Write-Host "SSH key already added to GitHub";
+          Write-Host "ssh key already added to GitHub";
           New-File -Path .ssh -Name $marker;
         }
         elseif ($_.Exception.Response.StatusCode -eq 401) {

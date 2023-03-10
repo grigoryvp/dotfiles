@@ -466,7 +466,7 @@ class App {
   _setInputMethodOptions() {
     if ($this._isTest) { return; }
     $current = & pwsh -Command Get-WinUserLanguageList | Out-String;
-    if (-not $current.Contains("LanguageTag     : ru")) {
+    if (-not $current.Contains("Russian")) {
       Write-Host "Adding Russian language";
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +
@@ -474,7 +474,7 @@ class App {
         'Set-WinUserLanguageList -Force $list;';
       & pwsh -Command $cmd;
     }
-    if (-not $current.Contains("LanguageTag     : ja")) {
+    if (-not $current.Contains("Japanese")) {
       Write-Host "Adding Japanese language";
       $cmd = '' +
         '$list = Get-WinUserLanguageList;' +

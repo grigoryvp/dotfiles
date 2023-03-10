@@ -36,7 +36,6 @@ class App {
       Config complete. Manual things to do
       - Reboot
       - Make --full configuration
-      - "colortool.exe Dracula-ColorTool.itermcolors" and confirm cmd.exe cfg
       - Configure X-Mouse Button Control:
         * Disable 'Settings/Pointer/Change cursor when move to scroll'
         * Map Mouse4 => 'movement to scroll' with setings:
@@ -95,12 +94,9 @@ class App {
       }
     }
 
-    throw "Debug";
-
-    # Used for cmd.exe color scheme configuration
-    $this._installApp("colortool");
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
+    throw "Debug";
     $this._generateSshKey();
     $this._setPowerOptions();
     $this._setDebounceOptions();
@@ -281,6 +277,7 @@ class App {
 
 
   _installPowershellModule($moduleName) {
+    Write-Host "Installing $moduleName";
     if ($this._isTest) { return; }
     if (Get-InstalledModule | Where-Object Name -eq $moduleName) { return; }
     Install-Module $moduleName -Scope CurrentUser;
@@ -793,3 +790,5 @@ $app.configure();
 # sudo winget install --silent Git.Git
 # set PATH=%PATH%;%ProgramFiles%\Git\cmd
 # git config --global core.autocrlf input
+
+# replace colortool.exe Dracula-ColorTool.itermcolors with https://draculatheme.com/windows-terminal

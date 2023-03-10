@@ -62,6 +62,7 @@ class App {
 
 
   configure() {
+    Write-Host "Debug 5";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 

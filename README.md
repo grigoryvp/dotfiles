@@ -8,8 +8,8 @@ set PATH=%PATH%;%ProgramFiles(x86)%\gsudo
 winget install --silent Microsoft.PowerShell
 set PATH=%PATH%;%ProgramFiles%\PowerShell\7
 rem inspect $error if Invoke-Expression fails.
-set REPO_URL="https://raw.githubusercontent.com/grigoryvp/dotfiles"
-set URL="%REPO_URL%/master/configure.ps1"
+set REPO_URL=https://raw.githubusercontent.com/grigoryvp/dotfiles
+set URL=%REPO_URL%/master/configure.ps1
 sudo pwsh -c "Invoke-WebRequest -useb %URL% | Invoke-Expression"
 ```
 

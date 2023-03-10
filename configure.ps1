@@ -97,7 +97,7 @@ class App {
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
-    throw "Debug";
+    throw "Debug 1";
     $this._setPowerOptions();
     $this._setDebounceOptions();
     $this._setTouchpadOptions();

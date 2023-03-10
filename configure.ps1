@@ -13,6 +13,8 @@ class App {
   $_cfgDirLinux = $null;
   $_cfgDir = $null;
   $_psDir = $null;
+  $_PF = $null;
+  $_PF86 = $null;
   $_pathIntrinsics = $null;
   $_github = @{
     user = "foo";
@@ -104,7 +106,7 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installApp("Git.Git", $this._path86(@("Git", "cmd")));
-    throw "Debug 4";
+    throw "Debug 5";
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();

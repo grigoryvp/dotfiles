@@ -62,7 +62,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 5";
+    Write-Host "Debug 6";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -107,7 +107,7 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installApp("Git.Git", $this._pathPF86(@("Git", "cmd")));
-    throw "Debug 5";
+    throw "Debug 6";
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
@@ -251,12 +251,12 @@ class App {
 
 
   [String] _pathPF([array] $pathList) {
-    return this._path(@($this._PF) + $pathList);
+    return $this._path(@($this._PF) + $pathList);
   }
 
 
   [String] _pathPF86([array] $pathList) {
-    return this._path(@($this._PF86) + $pathList);
+    return $this._path(@($this._PF86) + $pathList);
   }
 
 

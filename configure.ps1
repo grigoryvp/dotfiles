@@ -32,6 +32,8 @@ class App {
     $this._cfgDirLinux = "~/dotfiles";
     $this._cfgDir = $this._path(@("~", "dotfiles"));
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
+    $this._PF = ${env:ProgramFiles}
+    $this._PF86 = ${env:ProgramFiles(x86)}
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Reboot
@@ -101,8 +103,8 @@ class App {
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
-    throw "Debug 3";
-    $this._installGit();
+    $this._installApp("Git.Git", $this._path86(@("Git", "cmd")));
+    throw "Debug 4";
     $this._addScoopBuckets();
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
@@ -233,25 +235,9 @@ class App {
 
   [Boolean] _isAppStatusInstalled($appName) {
     if ($this._isTest) { return $false; }
-    $res = & scoop info $appName;
+    $res = & winget list
     if ($LASTEXITCODE -ne 0) { return $false; }
-    return (-not ($res | Out-String).Contains("Installed: No"));
-  }
-
-  [Boolean] _hasApp($appName) {
-    if ($this._isTest) { return $false; }
-    if (-not $this._isAppStatusInstalled($appName)) { return $false; }
-    $res = @(& scoop info $appName);
-    $installMarkIdx = $res.IndexOf("Installed:");
-    if ($installMarkIdx -eq -1) { return $false; }
-    $installDir = $res[$installMarkIdx + 1];
-    if (-not $installDir) { return $false; }
-    $installDir = $installDir.Trim();
-    # if install fails, scoop will treat app as installed, but install dir
-    # is not created.
-    if (-not (Test-Path -Path "$installDir")) { return $false; }
-    $content = Get-ChildItem "$installDir";
-    return ($content.Length -gt 0);
+    return (-not ($res | Out-String).Contains($appName));
   }
 
 
@@ -261,16 +247,26 @@ class App {
   }
 
 
-  _installApp($appName) {
+  [String] _pathPF([array] $pathList) {
+    return this._path(@($this._PF) + $pathList);
+  }
+
+
+  [String] _pathPF86([array] $pathList) {
+    return this._path(@($this._PF86) + $pathList);
+  }
+
+
+  _installApp($appName, $binPath) {
     if ($this._isTest) { return; }
-    if ($this._hasApp($appName)) { return; }
     if ($this._isAppStatusInstalled($appName)) {
-      # if install fails, scoop will treat app as installed.
-      $this._prompt("'$appName' corrupted, press any key to reinstall");
-      scoop uninstall $appName;
+      Write-Host "$appName is already installed";
     }
-    scoop install $appName;
+    Write-Host "Installing $appName"
+    winget install --silent $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    # Added by installer but requires shell restart to be applied.
+    $env:PATH = $env:PATH + ";" + $binPath;
   }
 
 
@@ -512,18 +508,6 @@ class App {
     $web = New-Object Net.WebClient;
     Invoke-Expression $web.DownloadString('https://get.scoop.sh');
     if (-not $?) { throw "Failed"; }
-  }
-
-
-  _installGit() {
-    if ($this._isTest) { return; }
-    if ($this._hasCli("git")) { return; }
-    # Required for buckets
-    scoop uninstall git;
-    # Auto-installed with git
-    scoop uninstall 7zip;
-    scoop install git;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
 
 

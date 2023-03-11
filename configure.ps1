@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 11";
+    Write-Host "Debug 12";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -122,7 +122,7 @@ class App {
     #$this._registerCpuIconStartup();
     #$this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
-    throw "Debug 11";
+    throw "Debug 12";
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -241,16 +241,12 @@ class App {
 
 
   [String] _path([array] $pathList) {
-    $path = $this._pathIntrinsics.GetUnresolvedProviderPathFromPSPath(
+    return $this._pathIntrinsics.GetUnresolvedProviderPathFromPSPath(
       [io.path]::combine([string[]]$pathList));
-    if (-not $path.EndsWith("\")) {
-      # For simple join
-      $path = $path + "\";
-    }
-    return $path
   }
 
 
+  _installApp($appName) {
   _installApp($appName) {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
@@ -289,7 +285,8 @@ class App {
     winget install --silent --location $location $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
     # Added by installer but requires shell restart to be applied.
-    $env:PATH = "${env:PATH};$location$binSubpath";
+    $binPath = $this._path(@($location, $binSubpath));
+    $env:PATH = "${env:PATH};$binPath";
   }
 
 

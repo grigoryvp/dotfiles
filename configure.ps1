@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 15";
+    Write-Host "Debug 16";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -134,7 +134,6 @@ class App {
       New-Hardlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
     }
 
-    throw "Debug 15";
     # Create git config with link to the git-cfg.toml
     if (-not $this._isTest) {
       $src = $this._path(@($this._cfgDir, ".gitconfig"));
@@ -147,7 +146,9 @@ class App {
     }
     
     # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
+    # TODO: Dracula color theme
 
+    throw "Debug 16";
     # Interactive.
     $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
     if (-not (Test-Path -Path "$markerPath")) {

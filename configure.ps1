@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 13";
+    Write-Host "Debug 14";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -108,7 +108,7 @@ class App {
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     $this._installApp("Highresolution.X-MouseButtonControl");
-    $this._installApp("KeepassXCTeam.KeePassXC");
+    $this._installApp("KeePassXCTeam.KeePassXC");
     $this._installBinApp("Microsoft.VisualStudioCode", $this._path(
       @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));
     $this._configureVscode();
@@ -122,7 +122,7 @@ class App {
     #$this._registerCpuIconStartup();
     #$this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
-    throw "Debug 13";
+    throw "Debug 14";
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -254,7 +254,7 @@ class App {
     }
     Write-Host "Installing $appName"
     winget install --silent $appName;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
   }
 
 

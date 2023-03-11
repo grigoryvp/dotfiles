@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 12";
+    Write-Host "Debug 13";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -122,7 +122,7 @@ class App {
     #$this._registerCpuIconStartup();
     #$this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
-    throw "Debug 12";
+    throw "Debug 13";
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -246,7 +246,6 @@ class App {
   }
 
 
-  _installApp($appName) {
   _installApp($appName) {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {

@@ -10,7 +10,7 @@ set PATH=%PATH%;%ProgramFiles%\PowerShell\7
 rem inspect $error if Invoke-Expression fails.
 set REPO_URL=https://raw.githubusercontent.com/grigoryvp/dotfiles
 set URL=%REPO_URL%/master/configure.ps1
-sudo pwsh -c "iwr -He @{'Cache-Control'='no-cache'} %URL% | iex"
+sudo pwsh -c "iwr -He @{'Cache-Control'='no-cache'} %URL% | Invoke-Expression"
 ```
 
 Follow instructions for post-configuration.

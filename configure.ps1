@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 17";
+    Write-Host "Debug 18";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -108,7 +108,8 @@ class App {
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     $this._installApp("Highresolution.X-MouseButtonControl");
-    $this._installApp("KeePassXCTeam.KeePassXC");
+    $this._installBinApp("KeePassXCTeam.KeePassXC", , $this._path(
+      @($env:ProgramFiles, "KeePassXC")));
     $this._installBinApp("Microsoft.VisualStudioCode", $this._path(
       @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));
     $this._configureVscode();
@@ -164,7 +165,7 @@ class App {
       $this._prompt("Press any key to begin elevation prompts...");
     }
 
-    throw "Debug 17";
+    throw "Debug 18";
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
@@ -780,6 +781,7 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO
+# remove all references to scoop
 # powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 # powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
 # set PATH=%PATH%;%USERPROFILE%\scoop\shims

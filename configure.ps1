@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 14";
+    Write-Host "Debug 15";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -122,7 +122,6 @@ class App {
     #$this._registerCpuIconStartup();
     #$this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
-    throw "Debug 14";
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -135,6 +134,7 @@ class App {
       New-Hardlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
     }
 
+    throw "Debug 15";
     # Create git config with link to the git-cfg.toml
     if (-not $this._isTest) {
       $src = $this._path(@($this._cfgDir, ".gitconfig"));

@@ -62,7 +62,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 8";
+    Write-Host "Debug 10";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -109,8 +109,8 @@ class App {
     $this._installApp("Git.Git", $this._pathPF86(@("Git", "cmd")));
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
-    throw "Debug 8";
-    $this._installApp("autohotkey");
+    $this._installLocationApp("AutoHotkey.AutoHotkey", "");
+    throw "Debug 10";
     $this._installApp("xmousebuttoncontrol");
     $this._installApp("keepassxc");
     # TODO: Replace with "winget install Microsoft.VisualStudioCode-User-x64" for shim
@@ -269,7 +269,23 @@ class App {
     winget install --silent $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
     # Added by installer but requires shell restart to be applied.
-    $env:PATH = $env:PATH + ";" + $binPath;
+    $env:PATH = "${env:PATH};$binPath";
+  }
+
+
+  # For installers that require install location to be specified
+  _installLocationApp($appName, $binSubpath) {
+    if ($this._isTest) { return; }
+    if ($this._isAppStatusInstalled($appName)) {
+      Write-Host "$appName is already installed";
+      return;
+    }
+    $location = $this._path(@($env:USERPROFILE, "apps", $appName));
+    Write-Host "Installing $appName into $location"
+    winget install --silent --location $location $appName;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    # Added by installer but requires shell restart to be applied.
+    $env:PATH = "${env:PATH};$location$binSubpath";
   }
 
 
@@ -339,7 +355,7 @@ class App {
       Remove-Item "$tmpDirName" -Recurse -Force;
     }
     Write-Host "Cloning into temp dir $tmpDirName"
-    & git clone "$uri" "$tmpDirName";
+    & git clone --quiet "$uri" "$tmpDirName";
     # Replace HTTP git config with SSH one, if any.
     Write-Host "Removing current dir $($this._cfgDir)"
     Remove-Item "$($this._cfgDir)" -Recurse -Force;

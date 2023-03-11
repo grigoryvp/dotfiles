@@ -13,8 +13,6 @@ class App {
   $_cfgDirLinux = $null;
   $_cfgDir = $null;
   $_psDir = $null;
-  $_PF = $null;
-  $_PF86 = $null;
   $_pathIntrinsics = $null;
   $_github = @{
     user = "foo";
@@ -34,8 +32,6 @@ class App {
     $this._cfgDirLinux = "~/dotfiles";
     $this._cfgDir = $this._path(@("~", "dotfiles"));
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
-    $this._PF = ${env:ProgramFiles}
-    $this._PF86 = ${env:ProgramFiles(x86)}
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
       - Reboot
@@ -62,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 10";
+    Write-Host "Debug 11";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -106,26 +102,27 @@ class App {
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
-    $this._installApp("Git.Git", $this._pathPF86(@("Git", "cmd")));
+    $this._installBinApp("Git.Git", $this._path(
+      @(${env:ProgramFiles(x86)}, "Git", "cmd")));
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
-    throw "Debug 10";
-    $this._installApp("xmousebuttoncontrol");
-    $this._installApp("keepassxc");
-    # TODO: Replace with "winget install Microsoft.VisualStudioCode-User-x64" for shim
-    # $this._installApp("vscode");
-    $this._installApp("lsd");
+    $this._installApp("Highresolution.X-MouseButtonControl");
+    $this._installApp("KeepassXCTeam.KeePassXC");
+    $this._installBinApp("Microsoft.VisualStudioCode", $this._path(
+      @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));
     $this._configureVscode();
-    $this._installApp("tray-monitor");
-    $this._installApp("battery-info-view");
-    $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
+    # TODO: https://github.com/Peltoche/lsd
+    # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/tray-monitor.json
+    # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/battery-info-view.json
+    # $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
     $this._registerAutohotkeyStartup();
-    $this._registerBatteryInfoViewStartup();
-    $this._registerBatteryIconStartup();
-    $this._registerCpuIconStartup();
-    $this._registerRamIconStartup();
+    #$this._registerBatteryInfoViewStartup();
+    #$this._registerBatteryIconStartup();
+    #$this._registerCpuIconStartup();
+    #$this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
+    throw "Debug 11";
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -244,28 +241,35 @@ class App {
 
 
   [String] _path([array] $pathList) {
-    $joined = [io.path]::combine([string[]]$pathList)
-    return $this._pathIntrinsics.GetUnresolvedProviderPathFromPSPath($joined);
+    $path = $this._pathIntrinsics.GetUnresolvedProviderPathFromPSPath(
+      [io.path]::combine([string[]]$pathList));
+    if (-not $path.EndsWith("\")) {
+      # For simple join
+      $path = $path + "\";
+    }
+    return $path
   }
 
 
-  [String] _pathPF([array] $pathList) {
-    return $this._path(@($this._PF) + $pathList);
-  }
-
-
-  [String] _pathPF86([array] $pathList) {
-    return $this._path(@($this._PF86) + $pathList);
-  }
-
-
-  _installApp($appName, $binPath) {
+  _installApp($appName) {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
       Write-Host "$appName is already installed";
       return;
     }
     Write-Host "Installing $appName"
+    winget install --silent $appName;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
+  }
+
+
+  _installBinApp($appName, $binPath) {
+    if ($this._isTest) { return; }
+    if ($this._isAppStatusInstalled($appName)) {
+      Write-Host "$appName is already installed";
+      return;
+    }
+    Write-Host "Installing $appName with binary in path"
     winget install --silent $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed" }
     # Added by installer but requires shell restart to be applied.

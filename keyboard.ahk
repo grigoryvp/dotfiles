@@ -81,6 +81,7 @@ perform(cmd, arg, direction) {
   }
   ;;  Default remap is 'send' with modifier and direction.
   else {
+    TrayTip "DEBUG", %cmd% . "{" . %arg% . " " . %direction% . "}", 2.0
     send %cmd% . "{" . %arg% . " " . %direction% . "}"
   }
 }

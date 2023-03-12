@@ -59,10 +59,10 @@ backspace::ralt
 
 perform(cmd, arg, direction) {
   if (cmd = "winclose") {
-    winclose A
+    winclose "A"
   }
   else if (cmd = "winmaximize") {
-    winmaximize A
+    winmaximize "A"
   }
   ;;  Delete things.
   else if (cmd = "delete") {

@@ -640,7 +640,7 @@ class App {
     & git clone --quiet "$uri" "$path";
     $fontName = "JetBrainsMono";
     Write-Host "Installing $fontName";
-    & $this._path(@($path, "install.ps1"));
+    & $this._path(@($path, "install.ps1")) $fontName;
   }
 
 

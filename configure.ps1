@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 21";
+    Write-Host "Debug 22";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -169,7 +169,7 @@ class App {
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
-    throw "Debug 21";
+    throw "Debug 22";
 
     # Interactive.
     $this._installFonts();
@@ -281,6 +281,7 @@ class App {
 
   # For installers that require install location to be specified
   _installLocationApp($appName, $binSubpath) {
+    $location = $this._path(@($env:USERPROFILE, "apps", $appName));
     $binPath = $this._path(@($location, $binSubpath));
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
@@ -290,7 +291,6 @@ class App {
       }
       return;
     }
-    $location = $this._path(@($env:USERPROFILE, "apps", $appName));
     Write-Host "Installing $appName into $location"
     winget install --silent --location $location $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }

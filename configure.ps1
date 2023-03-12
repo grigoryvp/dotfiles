@@ -5,7 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.2";
+  $_ver = "1.0.3";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -602,7 +602,9 @@ class App {
     if (Test-Path -Path "$startDir\autohotkey.bat") {
       Remove-Item "$startDir\autohotkey.bat";
     }
-    $content = "pwsh -Command Start-Process autohotkey.exe";
+    $content = "pwsh -Command Start-Process";
+    $content += " " + $this._path(@(
+      "~", "apps", "AutoHotkey.AutoHotkey", "v2", "autohotkey.exe"));
     $content += " -ArgumentList `"$($this._cfgDir)\keyboard.ahk`"";
     $content += " -WindowStyle Hidden -Verb RunAs";
     New-File -Path $startDir -Name "autohotkey.bat" -Value "$content";

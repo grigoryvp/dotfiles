@@ -110,15 +110,15 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
 
 ;;  Switch between normal and 'compatible' mode for apps/games that
 ;;  can't handle multi-key virtual combinations, like "Grim Dawn"
-!pgdn::
+!pgdn:: {
   home_path := EnvGet("USERPROFILE")
-  path := %home_path% . "\..\.box-cfg\keyboard_compat.ahk"
+  path := %home_path% . "\dotfiles\keyboard_compat.ahk"
   run autohotkey.exe %path%,, Hide
   Suspend
-  return
+}
 
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
-$vked::
+$vked:: {
   ;;  First press since release? (beware repetition)
   if (appLeaderUpTick >= appLeaderDownTick) {
     appLeaderDownTick = %A_TickCount%
@@ -147,40 +147,40 @@ $vked::
     }
     send {mbutton up}
   }
-  return
+}
 
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
-$vked up::
+$vked up:: {
   appLeaderUpTick = %A_TickCount%
-  return
+}
 
 ;;  Supress rshift+caps that produces char codes in chrome and erases
 ;;  cell content in spreadsheets while switching language via meta-s-f.
-$+vked::
+$+vked:: {
   if (appLeaderUpTick >= appLeaderDownTick) {
     appLeaderDownTick = %A_TickCount%
   }
-  return
-$+vked up::
+}
+$+vked up:: {
   appLeaderUpTick = %A_TickCount%
-  return
+}
 
 ;;  'Enter' up
-$rctrl up::
+$rctrl up:: {
   appReturnUpTick = %A_TickCount%
   send {rctrl up}
   if (A_PriorKey = "RControl") {
     send {enter}
   }
-  return
+}
 
 ;;  Single tab press = tab
-$lctrl up::
+$lctrl up:: {
   send {lctrl up}
   if (A_PriorKey = "LControl") {
     send {tab}
   }
-  return
+}
 
 $^rctrl up:: send ^{enter}
 $+rctrl up:: send +{enter}
@@ -317,7 +317,7 @@ $^lctrl up:: send ^{tab}
 
 ;;  meta-g for F4
 ;;  meta-shift-g for emoji selector
-*$g::
+*$g:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       send #{vkbe}
@@ -325,26 +325,28 @@ $^lctrl up:: send ^{tab}
     else {
       send {blind}{vk73 down}
     }
-    return
   }
-  send {blind}{vk47 down}
-  return
+  else {
+    send {blind}{vk47 down}
+  }
+}
 
-*$g up::
+*$g up:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
     }
     else {
       send {blind}{vk73 up}
     }
-    return
   }
-  send {blind}{vk47 up}
-  return
+  else {
+    send {blind}{vk47 up}
+  }
+}
 
 ;;  meta-f for F3
 ;;  meta-shift-f switch to 1st language
-*$f::
+*$f:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "4"
@@ -353,26 +355,28 @@ $^lctrl up:: send ^{tab}
     else {
       send {blind}{vk72 down}
     }
-    return
   }
-  send {blind}{vk46 down}
-  return
+  else {
+    send {blind}{vk46 down}
+  }
+}
 
-*$f up::
+*$f up:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
     }
     else {
       send {blind}{vk72 up}
     }
-    return
   }
-  send {blind}{vk46 up}
-  return
+  else {
+    send {blind}{vk46 up}
+  }
+}
 
 ;;  meta-d for F2
 ;;  meta-d switch to 2nd language
-*$d::
+*$d:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       appLastLangHotkey := "5"
@@ -381,26 +385,28 @@ $^lctrl up:: send ^{tab}
     else {
       send {blind}{vk71 down}
     }
-    return
   }
-  send {blind}{vk44 down}
-  return
+  else {
+    send {blind}{vk44 down}
+  }
+}
 
-*$d up::
+*$d up:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
     }
     else {
       send {blind}{vk71 up}
     }
-    return
   }
-  send {blind}{vk44 up}
-  return
+  else {
+    send {blind}{vk44 up}
+  }
+}
 
 ;;  meta-s for F1
 ;;  meta-s switch to 3nd language
-*$s::
+*$s:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       if (appLastLangHotkey = "6") {
@@ -415,22 +421,24 @@ $^lctrl up:: send ^{tab}
     else {
       send {blind}{vk70 down}
     }
-    return
   }
-  send {blind}{vk53 down}
-  return
+  else {
+    send {blind}{vk53 down}
+  }
+}
 
-*$s up::
+*$s up:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
     }
     else {
       send {blind}{vk70 up}
     }
-    return
   }
-  send {blind}{vk53 up}
-  return
+  else {
+    send {blind}{vk53 up}
+  }
+}
 
 ;; ===========================================================================
 ;; Multi-key combinations
@@ -475,7 +483,7 @@ $^lctrl up:: send ^{tab}
 ;; ===========================================================================
 
 ;;  'meta-semicolon' for left mouse button.
-*$`;::
+*$`;:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
       send ^+{lbutton down}
@@ -521,10 +529,10 @@ $^lctrl up:: send ^{tab}
   else {
     send {blind}{vkba}
   }
-  return
+}
 
 ;;  'meta-quote' for right mouse button.
-*$'::
+*$':: {
   if (GetKeyState("vked", "P")) {
     send {rbutton down}
     ;;  For games where holding mouse button moves something and caps can
@@ -537,10 +545,10 @@ $^lctrl up:: send ^{tab}
   else {
     send {blind}{vkde}
   }
-  return
+}
 
 ;;  'meta-slash' for middle mouse button.
-*$/::
+*$/:: {
   if (GetKeyState("vked", "P")) {
     send {mbutton down}
     ;;  For games where holding mouse button moves something and caps can
@@ -553,26 +561,26 @@ $^lctrl up:: send ^{tab}
   else {
     send {blind}{vkbf}
   }
-  return
+}
 
 ;; ===========================================================================
 ;; Misc
 ;; ===========================================================================
 
-::sigen::
+::sigen:: {
   ClipBoard := "Best regards,`nGrigory Petrov,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
   send ^v
-  return
+}
 
-::sigru::
+::sigru:: {
   ClipBoard := "С уважением,`nГригорий Петров,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
   send ^v
-  return
+}
 
 ;;  Some keyboards emulate "edge swipes" by sending these key combonations
-$#a::
-  return
-$#down::
-  return
-$#tab::
-  return
+$#a:: {
+}
+$#down:: {
+}
+$#tab:: {
+}

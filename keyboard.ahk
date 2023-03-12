@@ -171,7 +171,7 @@ $+vked up:: {
 }
 
 ;;  'Enter' up
-$rctrl up:: {
+$enter up:: {
   global appReturnUpTick
   appReturnUpTick := A_TickCount
   send "{rctrl up}"

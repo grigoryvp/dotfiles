@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 23";
+    Write-Host "Debug 24";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -165,11 +165,11 @@ class App {
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
-    throw "Debug 23";
 
     # Interactive.
     $this._installFonts();
 
+    throw "Debug 24";
     if (-not $this._isPublic) {
       # Re-clone with SSH keys
       $this._getFilesFromGit();
@@ -277,7 +277,7 @@ class App {
 
   # For installers that require install location to be specified
   _installLocationApp($appName, $binSubpath) {
-    $location = $this._path(@($env:USERPROFILE, "apps", $appName));
+    $location = $this._path(@("~", "apps", $appName));
     $binPath = $this._path(@($location, $binSubpath));
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
@@ -622,21 +622,25 @@ class App {
 
 
   [Boolean] _needInstallFonst() {
-    if ($this._isTest) { return $false; }
-    $name =
-      "JetBrains Mono Regular Nerd Font Complete Windows Compatible.ttf";
-    if (Test-Path -Path "$env:windir\Fonts\$name") { return $false; }
+    $path = $this._path(@("~", "apps", "nerd-fonts"));
+    if (Test-Path -Path $path) { return $false; }
     return $true;
   }
 
+
   _installFonts() {
-    if (-not $this._needInstallFonst()) { return; }
-    $appName = "JetBrainsMono-NF";
-    if ($this._isAppStatusInstalled($appName)) {
-      # if install fails, scoop will treat app as installed.
-      & scoop uninstall $appName;
+    if (-not $this._needInstallFonst()) {
+      Write-Host "Fonts are already installed";
+      return;
     }
-    & sudo scoop install "$appName";
+
+    $path = $this._path(@("~", "apps", "nerd-fonts"));
+    $uri = "https://github.com/ryanoasis/nerd-fonts.git";
+    Write-Host "Cloning nerd-fonts into $path"
+    & git clone --quiet "$uri" "$path";
+    $fontName = "JetBrainsMono";
+    Write-Host "Installing $fontName";
+    & $this._path(@($path, "install.ps1"));
   }
 
 

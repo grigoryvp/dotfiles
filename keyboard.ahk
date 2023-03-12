@@ -1,4 +1,5 @@
-﻿#SingleInstance force ;; Auto-reload
+﻿#Requires AutoHotkey v2
+#SingleInstance force ;; Auto-reload
 #Warn ;; Enable warnings, show message box.
 
 ;;. Using space as the dual mode key for alt does not work: writing

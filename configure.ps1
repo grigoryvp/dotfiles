@@ -5,7 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.1";
+  $_ver = "1.0.2";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -624,12 +624,14 @@ class App {
 
     $path = $this._path(@("~", "apps", "nerd-fonts"));
     $uri = "https://github.com/ryanoasis/nerd-fonts.git";
-    Write-Host "Cloning nerd-fonts into $path"
-    Write-Host "git clone --quiet --depth 1 $uri $path";
-    & git clone --quiet --depth 1 "$uri" "$path";
     $fontName = "JetBrainsMono";
+    Write-Host "Cloning nerd-fonts into $path";
+    & git clone --quiet --depth 1 --filter=blob:none --sparse $uri $path;
+    cd $path;
+    Write-Host "Checking out files for $fontName";
+    & git sparse-checkout add "patched-fonts/$fontName";
     Write-Host "Installing $fontName";
-    & $this._path(@($path, "install.ps1")) $fontName;
+    & "./install.ps1" $fontName;
   }
 
 

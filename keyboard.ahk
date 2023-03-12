@@ -81,7 +81,7 @@ perform(cmd, arg, direction) {
   }
   ;;  Default remap is 'send' with modifier and direction.
   else {
-    send "%cmd%{%arg% %direction%}"
+    send %cmd% . "{" . %arg% . " " . %direction% . "}"
   }
 }
 
@@ -104,7 +104,7 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
     }
   }
   else {
-    send "{blind}{%from% %direction%}"
+    send "{blind}{" . %from% . " " . %direction% . "}"
   }
 }
 
@@ -113,7 +113,7 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
 !pgdn:: {
   home_path := EnvGet("USERPROFILE")
   path := %home_path% . "\dotfiles\keyboard_compat.ahk"
-  run "autohotkey.exe" %path%,, "Hide"
+  run "autohotkey.exe " . %path%,, "Hide"
   Suspend
 }
 

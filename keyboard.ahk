@@ -44,7 +44,7 @@ appReturnUpTick := 0
 appReturnDownTick := 0
 
 if (!A_IsAdmin) {
-  Run *RunAs "%A_ScriptFullPath%"
+  Run "*RunAs" "%A_ScriptFullPath%"
   ExitApp
 }
 

@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 22";
+    Write-Host "Debug 23";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -162,14 +162,10 @@ class App {
       $this._uploadSshKey();
     }
 
-    if ($this._needMapCapsToF24() -or $this._needInstallFonst()) {
-      $this._prompt("Press any key to begin elevation prompts...");
-    }
-
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
-    throw "Debug 22";
+    throw "Debug 23";
 
     # Interactive.
     $this._installFonts();

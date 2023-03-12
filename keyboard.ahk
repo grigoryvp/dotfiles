@@ -111,7 +111,8 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
 ;;  Switch between normal and 'compatible' mode for apps/games that
 ;;  can't handle multi-key virtual combinations, like "Grim Dawn"
 !pgdn::
-  path := A_MyDocuments "\..\.box-cfg\keyboard_compat.ahk"
+  home_path := EnvGet("USERPROFILE")
+  path := %home_path% . "\..\.box-cfg\keyboard_compat.ahk"
   run autohotkey.exe %path%,, Hide
   Suspend
   return

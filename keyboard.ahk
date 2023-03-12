@@ -1,5 +1,4 @@
 ﻿#SingleInstance force ;; Auto-reload
-#NoEnv ;; Do not substitute env var value on unbound identifier access.
 #Warn ;; Enable warnings, show message box.
 
 ;;. Using space as the dual mode key for alt does not work: writing

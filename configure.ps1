@@ -637,7 +637,7 @@ class App {
     $path = $this._path(@("~", "apps", "nerd-fonts"));
     $uri = "https://github.com/ryanoasis/nerd-fonts.git";
     Write-Host "Cloning nerd-fonts into $path"
-    & git clone --quiet "$uri" "$path";
+    & git clone --quiet --depth 1 "$uri" "$path";
     $fontName = "JetBrainsMono";
     Write-Host "Installing $fontName";
     & $this._path(@($path, "install.ps1")) $fontName;

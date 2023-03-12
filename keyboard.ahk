@@ -70,10 +70,10 @@ perform(cmd, arg, direction) {
       ;;  Explorer monitors physical 'shift' key, so sending 'delete'
       ;;  will trigger whift-delete, which is "permanently delete", while
       ;;  ctrl-d key combination is just 'delte' in most apps.
-      send ^d
+      send "^d"
     }
     else {
-      send {delete}
+      send "{delete}"
     }
   }
   ;;  Do nothing (ex for remapping key up action)
@@ -81,7 +81,7 @@ perform(cmd, arg, direction) {
   }
   ;;  Default remap is 'send' with modifier and direction.
   else {
-    send %cmd%{%arg% %direction%}
+    send "%cmd%{%arg% %direction%}"
   }
 }
 
@@ -104,7 +104,7 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
     }
   }
   else {
-    send {blind}{%from% %direction%}
+    send "{blind}{%from% %direction%}"
   }
 }
 
@@ -128,25 +128,25 @@ $vked:: {
   ;;  sometimes caps lock is released while holding tick or semicolon.
   ;;  Holding caps lock again should return button hold.
   if (GetKeyState(";", "P")) {
-    send {lbutton down}
+    send "{lbutton down}"
     while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
       Sleep 10
     }
-    send {lbutton up}
+    send "{lbutton up}"
   }
   else if (GetKeyState("'", "P")) {
-    send {rbutton down}
+    send "{rbutton down}"
     while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }
-    send {rbutton up}
+    send "{rbutton up}"
   }
   else if (GetKeyState("/", "P")) {
-    send {mbutton down}
+    send "{mbutton down}"
     while (GetKeyState("vked", "P") && GetKeyState("/", "P")) {
       Sleep 10
     }
-    send {mbutton up}
+    send "{mbutton up}"
   }
 }
 
@@ -173,23 +173,23 @@ $+vked up:: {
 $rctrl up:: {
   global appReturnUpTick
   appReturnUpTick := %A_TickCount%
-  send {rctrl up}
+  send "{rctrl up}"
   if (A_PriorKey = "RControl") {
-    send {enter}
+    send "{enter}"
   }
 }
 
 ;;  Single tab press = tab
 $lctrl up:: {
-  send {lctrl up}
+  send "{lctrl up}"
   if (A_PriorKey = "LControl") {
-    send {tab}
+    send "{tab}"
   }
 }
 
-$^rctrl up:: send ^{enter}
-$+rctrl up:: send +{enter}
-$^lctrl up:: send ^{tab}
+$^rctrl up:: send "^{enter}"
+$+rctrl up:: send "+{enter}"
+$^lctrl up:: send "^{tab}"
 
 ;;  ==========================================================================
 ;;  Keys and combinations remap
@@ -325,14 +325,14 @@ $^lctrl up:: send ^{tab}
 *$g:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
-      send {vkbe}
+      send "{vkbe}"
     }
     else {
-      send {blind}{vk73 down}
+      send "{blind}{vk73 down}"
     }
   }
   else {
-    send {blind}{vk47 down}
+    send "{blind}{vk47 down}"
   }
 }
 
@@ -341,11 +341,11 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
     }
     else {
-      send {blind}{vk73 up}
+      send "{blind}{vk73 up}"
     }
   }
   else {
-    send {blind}{vk47 up}
+    send "{blind}{vk47 up}"
   }
 }
 
@@ -356,14 +356,14 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
       global appLastLangHotkey
       appLastLangHotkey := "4"
-      send ^+4
+      send "^+4"
     }
     else {
-      send {blind}{vk72 down}
+      send "{blind}{vk72 down}"
     }
   }
   else {
-    send {blind}{vk46 down}
+    send "{blind}{vk46 down}"
   }
 }
 
@@ -372,11 +372,11 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
     }
     else {
-      send {blind}{vk72 up}
+      send "{blind}{vk72 up}"
     }
   }
   else {
-    send {blind}{vk46 up}
+    send "{blind}{vk46 up}"
   }
 }
 
@@ -387,14 +387,14 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
       global appLastLangHotkey
       appLastLangHotkey := "5"
-      send ^+5
+      send "^+5"
     }
     else {
-      send {blind}{vk71 down}
+      send "{blind}{vk71 down}"
     }
   }
   else {
-    send {blind}{vk44 down}
+    send "{blind}{vk44 down}"
   }
 }
 
@@ -403,11 +403,11 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
     }
     else {
-      send {blind}{vk71 up}
+      send "{blind}{vk71 up}"
     }
   }
   else {
-    send {blind}{vk44 up}
+    send "{blind}{vk44 up}"
   }
 }
 
@@ -418,20 +418,20 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
       if (appLastLangHotkey = "6") {
         ;;  Switch between Hiragana and Latin input for Japanese keyboard
-        send !"``"
+        send "!``"
       }
       else {
         global appLastLangHotkey
         appLastLangHotkey := "6"
-        send ^+6
+        send "^+6"
       }
     }
     else {
-      send {blind}{vk70 down}
+      send "{blind}{vk70 down}"
     }
   }
   else {
-    send {blind}{vk53 down}
+    send "{blind}{vk53 down}"
   }
 }
 
@@ -440,11 +440,11 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
     }
     else {
-      send {blind}{vk70 up}
+      send "{blind}{vk70 up}"
     }
   }
   else {
-    send {blind}{vk53 up}
+    send "{blind}{vk53 up}"
   }
 }
 
@@ -494,19 +494,19 @@ $^lctrl up:: send ^{tab}
 *$`;:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
-      send ^+{lbutton down}
+      send "^+{lbutton down}"
     }
     else if (GetKeyState("tab", "P")) {
-      send ^{lbutton down}
+      send "^{lbutton down}"
     }
     else if (GetKeyState("shift", "P")) {
-      send +{lbutton down}
+      send "+{lbutton down}"
     }
     else if (GetKeyState("alt", "P")) {
-      send !{lbutton down}
+      send "!{lbutton down}"
     }
     else {
-      send {lbutton down}
+      send "{lbutton down}"
     }
 
     ;;  For games where holding mouse button moves something and caps can
@@ -519,55 +519,55 @@ $^lctrl up:: send ^{tab}
     ;;  mspaint to correctly detect shift+drag followed by release and
     ;;  for chrome to correctly detect shift-click
     if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
-      send ^+{lbutton up}
+      send "^+{lbutton up}"
     }
     if (GetKeyState("tab", "P")) {
-      send ^{lbutton up}
+      send "^{lbutton up}"
     }
     else if (GetKeyState("shift", "P")) {
-      send +{lbutton up}
+      send "+{lbutton up}"
     }
     else if (GetKeyState("alt", "P")) {
-      send !{lbutton up}
+      send "!{lbutton up}"
     }
     else {
-      send {lbutton up}
+      send "{lbutton up}"
     }
   }
   else {
-    send {blind}{vkba}
+    send "{blind}{vkba}"
   }
 }
 
 ;;  'meta-quote' for right mouse button.
 *$':: {
   if (GetKeyState("vked", "P")) {
-    send {rbutton down}
+    send "{rbutton down}"
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
     while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
       Sleep 10
     }
-    send {rbutton up}
+    send "{rbutton up}"
   }
   else {
-    send {blind}{vkde}
+    send "{blind}{vkde}"
   }
 }
 
 ;;  'meta-slash' for middle mouse button.
 *$/:: {
   if (GetKeyState("vked", "P")) {
-    send {mbutton down}
+    send "{mbutton down}"
     ;;  For games where holding mouse button moves something and caps can
     ;;  be released and pressed back while still holding key).
     while (GetKeyState("vked", "P") && GetKeyState("/", "P")) {
       Sleep 10
     }
-    send {mbutton up}
+    send "{mbutton up}"
   }
   else {
-    send {blind}{vkbf}
+    send "{blind}{vkbf}"
   }
 }
 
@@ -577,12 +577,12 @@ $^lctrl up:: send ^{tab}
 
 ::sigen:: {
   ClipBoard := "Best regards,`nGrigory Petrov,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
-  send ^v
+  send "^v"
 }
 
 ::sigru:: {
   ClipBoard := "С уважением,`nГригорий Петров,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
-  send ^v
+  send "^v"
 }
 
 ;;  Some keyboards emulate "edge swipes" by sending these key combonations

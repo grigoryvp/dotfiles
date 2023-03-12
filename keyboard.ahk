@@ -175,23 +175,22 @@ $enter up:: {
   global appReturnUpTick
   appReturnUpTick := A_TickCount
   send "{rctrl up}"
-  TrayTip A_PriorKey
-  if (A_PriorKey = "RControl") {
+  if (A_PriorKey = "Enter") {
     send "{enter}"
   }
 }
 
 ;;  Single tab press = tab
-$lctrl up:: {
+$tab up:: {
   send "{lctrl up}"
-  if (A_PriorKey = "LControl") {
+  if (A_PriorKey = "Tab") {
     send "{tab}"
   }
 }
 
-$^rctrl up:: send "^{enter}"
-$+rctrl up:: send "+{enter}"
-$^lctrl up:: send "^{tab}"
+$^enter up:: send "^{enter}"
+$+enter up:: send "+{enter}"
+$^tab up:: send "^{tab}"
 
 ;;  ==========================================================================
 ;;  Keys and combinations remap

@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 18";
+    Write-Host "Debug 19";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -165,10 +165,10 @@ class App {
       $this._prompt("Press any key to begin elevation prompts...");
     }
 
-    throw "Debug 18";
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
+    throw "Debug 19";
 
     # Interactive.
     $this._installFonts();
@@ -465,9 +465,27 @@ class App {
     return $true;
   }
 
+
   _mapCapsToF24() {
-    if (-not $this._needMapCapsToF24()) { return; }
-    & sudo pwsh $this._path(@($this._cfgDir, "map_caps_to_f24.ps1"));
+    if (-not $this._needMapCapsToF24()) {
+      Write-Host "caps already mapped to F24";
+      return;
+    }
+
+    Write-Host "mapping caps to F24";
+    $val = ([byte[]](
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x02, 0x00, 0x00, 0x00,
+        0x6F, 0x00, 0x3A, 0x00,
+        0x02, 0x00, 0x00, 0x00
+    ));
+    New-ItemProperty `
+      -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" `
+      -Name "Scancode Map" `
+      -PropertyType "Binary" `
+      -Value $val `
+      -Force
   }
 
 
@@ -781,6 +799,7 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO
+# require sudo (for installing, mapping caps via reg etc).
 # remove all references to scoop
 # powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 # powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"

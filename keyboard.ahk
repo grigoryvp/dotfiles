@@ -49,7 +49,7 @@ if (!A_IsAdmin) {
 }
 
 ;;  No warning if key is hold for 2 seconds (HotkeyInterval)
-#MaxHotkeysPerInterval 500
+A_MaxHotkeysPerInterval := 500
 
 #inputlevel 1
 tab::lctrl

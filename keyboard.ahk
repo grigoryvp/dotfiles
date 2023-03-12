@@ -121,6 +121,7 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
 $vked:: {
   ;;  First press since release? (beware repetition)
   if (appLeaderUpTick >= appLeaderDownTick) {
+    global appLeaderDownTick
     appLeaderDownTick := %A_TickCount%
   }
   ;;  For games like WoW right buttons hold are used for movement, so
@@ -151,22 +152,26 @@ $vked:: {
 
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
 $vked up:: {
+  global appLeaderUpTick
   appLeaderUpTick := %A_TickCount%
 }
 
 ;;  Supress rshift+caps that produces char codes in chrome and erases
 ;;  cell content in spreadsheets while switching language via meta-s-f.
 $+vked:: {
+  global appLeaderDownTick
   if (appLeaderUpTick >= appLeaderDownTick) {
     appLeaderDownTick := %A_TickCount%
   }
 }
 $+vked up:: {
+  global appLeaderUpTick
   appLeaderUpTick := %A_TickCount%
 }
 
 ;;  'Enter' up
 $rctrl up:: {
+  global appReturnUpTick
   appReturnUpTick := %A_TickCount%
   send {rctrl up}
   if (A_PriorKey = "RControl") {
@@ -349,6 +354,7 @@ $^lctrl up:: send ^{tab}
 *$f:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
+      global appLastLangHotkey
       appLastLangHotkey := "4"
       send ^+4
     }
@@ -379,6 +385,7 @@ $^lctrl up:: send ^{tab}
 *$d:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
+      global appLastLangHotkey
       appLastLangHotkey := "5"
       send ^+5
     }
@@ -414,6 +421,7 @@ $^lctrl up:: send ^{tab}
         send !"``"
       }
       else {
+        global appLastLangHotkey
         appLastLangHotkey := "6"
         send ^+6
       }

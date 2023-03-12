@@ -108,7 +108,7 @@ class App {
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     $this._installApp("Highresolution.X-MouseButtonControl");
-    $this._installBinApp("KeePassXCTeam.KeePassXC", , $this._path(
+    $this._installBinApp("KeePassXCTeam.KeePassXC", $this._path(
       @($env:ProgramFiles, "KeePassXC")));
     $this._installBinApp("Microsoft.VisualStudioCode", $this._path(
       @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));

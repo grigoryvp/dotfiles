@@ -175,7 +175,7 @@ $enter up:: {
   global appReturnUpTick
   appReturnUpTick := A_TickCount
   send "{rctrl up}"
-  TrayTip "DEBUG", A_PriorKey, 2.0
+  TrayTip A_PriorKey
   if (A_PriorKey = "RControl") {
     send "{enter}"
   }

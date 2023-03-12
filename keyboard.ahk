@@ -411,7 +411,7 @@ $^lctrl up:: send ^{tab}
     if (GetKeyState("shift", "P")) {
       if (appLastLangHotkey = "6") {
         ;;  Switch between Hiragana and Latin input for Japanese keyboard
-        send !``
+        send !"``"
       }
       else {
         appLastLangHotkey := "6"

@@ -44,7 +44,7 @@ appReturnUpTick := 0
 appReturnDownTick := 0
 
 if (!A_IsAdmin) {
-  Run "*RunAs" "%A_ScriptFullPath%"
+  Run "*RunAs" A_ScriptFullPath
   ExitApp
 }
 
@@ -122,7 +122,7 @@ $vked:: {
   ;;  First press since release? (beware repetition)
   if (appLeaderUpTick >= appLeaderDownTick) {
     global appLeaderDownTick
-    appLeaderDownTick := %A_TickCount%
+    appLeaderDownTick := A_TickCount
   }
   ;;  For games like WoW right buttons hold are used for movement, so
   ;;  sometimes caps lock is released while holding tick or semicolon.
@@ -153,7 +153,7 @@ $vked:: {
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
 $vked up:: {
   global appLeaderUpTick
-  appLeaderUpTick := %A_TickCount%
+  appLeaderUpTick := A_TickCount
 }
 
 ;;  Supress rshift+caps that produces char codes in chrome and erases
@@ -161,18 +161,18 @@ $vked up:: {
 $+vked:: {
   global appLeaderDownTick
   if (appLeaderUpTick >= appLeaderDownTick) {
-    appLeaderDownTick := %A_TickCount%
+    appLeaderDownTick := A_TickCount
   }
 }
 $+vked up:: {
   global appLeaderUpTick
-  appLeaderUpTick := %A_TickCount%
+  appLeaderUpTick := A_TickCount
 }
 
 ;;  'Enter' up
 $rctrl up:: {
   global appReturnUpTick
-  appReturnUpTick := %A_TickCount%
+  appReturnUpTick := A_TickCount
   send "{rctrl up}"
   if (A_PriorKey = "RControl") {
     send "{enter}"

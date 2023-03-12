@@ -320,7 +320,7 @@ $^lctrl up:: send ^{tab}
 *$g:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
-      send #{vkbe}
+      send {vkbe}
     }
     else {
       send {blind}{vk73 down}

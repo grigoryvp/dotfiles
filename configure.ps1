@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 19";
+    Write-Host "Debug 20";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -108,6 +108,7 @@ class App {
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     $this._installApp("Highresolution.X-MouseButtonControl");
+    $this._installApp("Microsoft.VCRedist.2015+.x64");
     $this._installBinApp("KeePassXCTeam.KeePassXC", $this._path(
       @($env:ProgramFiles, "KeePassXC")));
     $this._installBinApp("Microsoft.VisualStudioCode", $this._path(
@@ -168,7 +169,7 @@ class App {
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
-    throw "Debug 19";
+    throw "Debug 20";
 
     # Interactive.
     $this._installFonts();

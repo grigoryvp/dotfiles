@@ -58,7 +58,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 20";
+    Write-Host "Debug 21";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -169,7 +169,7 @@ class App {
     # After additional files are received
     # Interactive
     $this._mapCapsToF24();
-    throw "Debug 20";
+    throw "Debug 21";
 
     # Interactive.
     $this._installFonts();
@@ -265,30 +265,38 @@ class App {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
       Write-Host "$appName is already installed";
+      if (-not $env:PATH.Contains($binPath)) {
+        $env:PATH = "${env:PATH};$binPath";
+      }
       return;
     }
     Write-Host "Installing $appName with binary in path"
     winget install --silent $appName;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    # Added by installer but requires shell restart to be applied.
-    $env:PATH = "${env:PATH};$binPath";
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
+    if (-not $env:PATH.Contains($binPath)) {
+      $env:PATH = "${env:PATH};$binPath";
+    }
   }
 
 
   # For installers that require install location to be specified
   _installLocationApp($appName, $binSubpath) {
+    $binPath = $this._path(@($location, $binSubpath));
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
       Write-Host "$appName is already installed";
+      if (-not $env:PATH.Contains($binPath)) {
+        $env:PATH = "${env:PATH};$binPath";
+      }
       return;
     }
     $location = $this._path(@($env:USERPROFILE, "apps", $appName));
     Write-Host "Installing $appName into $location"
     winget install --silent --location $location $appName;
-    if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    # Added by installer but requires shell restart to be applied.
-    $binPath = $this._path(@($location, $binSubpath));
-    $env:PATH = "${env:PATH};$binPath";
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
+    if (-not $env:PATH.Contains($binPath)) {
+      $env:PATH = "${env:PATH};$binPath";
+    }
   }
 
 

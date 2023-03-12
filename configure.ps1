@@ -5,6 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
+  $_ver = "1.0.0";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -58,7 +59,7 @@ class App {
 
 
   configure() {
-    Write-Host "Debug 24";
+    Write-Host "Running configuration script v$($this._ver)";
     # For 'Install-Module'
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted;
 
@@ -147,9 +148,6 @@ class App {
       New-File -Path "~" -Name ".gitconfig" -Value "$content";
     }
     
-    # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
-    # TODO: Dracula color theme
-
     # Interactive.
     $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
     if (-not (Test-Path -Path "$markerPath")) {
@@ -169,7 +167,6 @@ class App {
     # Interactive.
     $this._installFonts();
 
-    throw "Debug 24";
     if (-not $this._isPublic) {
       # Re-clone with SSH keys
       $this._getFilesFromGit();
@@ -552,15 +549,6 @@ class App {
   }
 
 
-  _installScoop() {
-    if ($this._isTest) { return; }
-    if ($this._hasCli("scoop")) { return; }
-    $web = New-Object Net.WebClient;
-    Invoke-Expression $web.DownloadString('https://get.scoop.sh');
-    if (-not $?) { throw "Failed"; }
-  }
-
-
   _uploadSshKey() {
     $marker = ".uploaded_to_github";
     if (Test-Path -Path $this._path(@("~", ".ssh", "$marker"))) { return; }
@@ -816,5 +804,6 @@ $app.configure();
 # sudo winget install --silent Git.Git
 # set PATH=%PATH%;%ProgramFiles%\Git\cmd
 # git config --global core.autocrlf input
-
 # replace colortool.exe Dracula-ColorTool.itermcolors with https://draculatheme.com/windows-terminal
+# TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
+# TODO: Dracula color theme

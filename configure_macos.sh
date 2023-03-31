@@ -80,7 +80,8 @@ ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json
 ln -fs ~/dotfiles/vscode_tasks.json $VSCODE_DIR/tasks.json
 ln -fs ~/dotfiles/vscode_snippets $VSCODE_DIR/snippets
 mkdir -p ~/.config/mpv
-echo "save-position-on-quit" >> ~/.config/mpv/mpv.conf
+echo "save-position-on-quit" > ~/.config/mpv/mpv.conf
+echo "loop-file=inf" >> ~/.config/mpv/mpv.conf
 # Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app

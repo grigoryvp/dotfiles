@@ -5,7 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.6";
+  $_ver = "1.0.7";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;

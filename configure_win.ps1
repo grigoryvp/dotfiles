@@ -329,6 +329,11 @@ class App {
 
 
   _installWsl() {
+    & wsl --status;
+    if ($LASTEXITCODE -eq 0) {
+      Write-Host "WSL is already installed";
+      return;
+    }
     & wsl --install;
     Write-Host "Create a WSL user named 'user' with some simple password";
     & wsl

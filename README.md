@@ -4,7 +4,7 @@
 
 ```bat
 winget install --silent gerardog.gsudo
-set PATH=%PATH%;%ProgramFiles(x86)%\gsudo
+set PATH=%PATH%;%ProgramFiles%\gsudo
 winget install --silent Microsoft.PowerShell
 set PATH=%PATH%;%ProgramFiles%\PowerShell\7
 rem inspect $error if Invoke-Expression fails.

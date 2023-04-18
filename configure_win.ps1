@@ -334,6 +334,7 @@ class App {
       Write-Host "WSL is already installed";
       return;
     }
+    Write-Host "Installing WSL";
     & wsl --install;
     Write-Host "Create a WSL user named 'user' with some simple password";
     & wsl

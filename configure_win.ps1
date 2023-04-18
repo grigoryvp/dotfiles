@@ -334,11 +334,8 @@ class App {
       Write-Host "WSL is already installed";
       return;
     }
-    Write-Host "Installing WSL";
+    Write-Host "Installing WSL. Create a user named 'user' with a password";
     Start-Process wsl -ArgumentList '--install' -Wait;
-
-    Write-Host "Create a WSL user named 'user' with some simple password";
-    Start-Process wsl -Wait;
   }
 
 

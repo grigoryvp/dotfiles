@@ -96,6 +96,8 @@ class App {
       }
     }
 
+    $this._installWsl();
+    return;
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
@@ -326,6 +328,13 @@ class App {
   }
 
 
+  _installWsl() {
+    & wsl --install;
+    Write-Host "Create a WSL user named 'user' with some simple password";
+    & wsl
+  }
+
+
   _getFilesFromGit() {
     if ($this._isTest) { return; }
     $gitCfgFile = $this._path(@($this._cfgDir, ".git", "config"));
@@ -385,6 +394,18 @@ class App {
     }
     Write-Host "Generating ssh key";
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
+
+    $wslSshDir = "\\wsl$\Ubuntu\home\user\.ssh"
+    if (-not (Test-Path -Path "$wslSshDir" )) {
+      Write-Host "Creating wsl://~/.ssh";
+      New-Dir -Path "$wslSshDir";
+      Write-Host "Copying keys to wsl://~/.ssh";
+      $srcPath = $this._path(@("~", ".ssh", "id_rsa"))
+      Copy-Item -Path "$srcPath" -Destination "$wslSshDir" -Force;
+      $srcPath = $this._path(@("~", ".ssh", "id_rsa.pub"))
+      Copy-Item -Path "$srcPath" -Destination "$wslSshDir" -Force;
+      & wsl chmod 600 ~/.ssh/id_rsa
+    }
   }
 
 
@@ -643,10 +664,8 @@ class App {
     if (Test-Path -Path "$dstDir") { return; }
     $uri = "git@github.com:grigoryvp/xi.git";
     # Todo: clone into WSL ~/.xi and symlinc:
-    # $srcDir = "\\wsl.localhost\Ubuntu\home\user\.xi"
+    # $srcDir = "\\wsl$\Ubuntu\home\user\.xi"
     # $dstDir = Get-Item "~";
-    # sudo New-Item -ItemType SymbolicLink -Force -Path $dstDir -Name ".xi" -Value $srcDir;
-    #
     # & git clone $uri $dstDir;
     # if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }

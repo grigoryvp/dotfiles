@@ -1,4 +1,4 @@
-# My Win, WSL2, MacOS box auto config
+# My Win and MacOS box auto config
 
 ## Windows install via cmd.exe
 
@@ -9,24 +9,11 @@ winget install --silent Microsoft.PowerShell
 set PATH=%PATH%;%ProgramFiles%\PowerShell\7
 rem inspect $error if Invoke-Expression fails.
 set REPO_URL=https://raw.githubusercontent.com/grigoryvp/dotfiles
-set URL=%REPO_URL%/master/configure.ps1
+set URL=%REPO_URL%/master/configure_win.ps1
 sudo pwsh -c "iwr -He @{'Cache-Control'='no-cache'} %URL% | Invoke-Expression"
 ```
 
 Follow instructions for post-configuration.
-
-## WSL
-
-```ps1
-sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-sudo powershell.exe -c Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
-# Restart
-curl -LOSs https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
-msiexec /i wsl_update_x64.msi
-wsl --set-default-version 2
-# Install distribution
-explorer https://aka.ms/wslstore
-```
 
 ```sh
 sudo apt update

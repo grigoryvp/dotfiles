@@ -335,9 +335,10 @@ class App {
       return;
     }
     Write-Host "Installing WSL";
-    & wsl --install;
+    Start-Process wsl -ArgumentList '--install' -Wait;
+
     Write-Host "Create a WSL user named 'user' with some simple password";
-    & wsl
+    Start-Process wsl -Wait;
   }
 
 

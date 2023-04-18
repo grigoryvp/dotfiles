@@ -105,7 +105,7 @@ class App {
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
     $this._installBinApp("Git.Git", $this._path(
-      @(${env:ProgramFiles(x86)}, "Git", "cmd")));
+      @(${env:ProgramFiles}, "Git", "cmd")));
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");

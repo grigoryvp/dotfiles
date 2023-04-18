@@ -5,7 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.5";
+  $_ver = "1.0.6";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -100,7 +100,6 @@ class App {
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
-    return;
     $this._setPowerOptions();
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
@@ -664,14 +663,15 @@ class App {
 
   _getXi() {
     if ($this._isTest) { return; }
-    $dstDir = $this._path(@("~", ".xi"));
-    if (Test-Path -Path "$dstDir") { return; }
+    $dstDir = "\\wsl$\Ubuntu\home\user\.xi"
+    if (Test-Path -Path "$dstDir") {
+      Write-Host "xi already cloned";
+      return;
+    }
+    Write-Host "cloning xi into $dstDir";
     $uri = "git@github.com:grigoryvp/xi.git";
-    # Todo: clone into WSL ~/.xi and symlinc:
-    # $srcDir = "\\wsl$\Ubuntu\home\user\.xi"
-    # $dstDir = Get-Item "~";
-    # & git clone $uri $dstDir;
-    # if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    & wsl git clone $uri $dstDir;
+    if ($LASTEXITCODE -ne 0) { throw "Failed" }
   }
 
 
@@ -824,13 +824,10 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO
-# require sudo (for installing, mapping caps via reg etc).
 # remove all references to scoop
 # powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 # powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
 # set PATH=%PATH%;%USERPROFILE%\scoop\shims
-# sudo winget install --silent Git.Git
-# set PATH=%PATH%;%ProgramFiles%\Git\cmd
 # git config --global core.autocrlf input
 # replace colortool.exe Dracula-ColorTool.itermcolors with https://draculatheme.com/windows-terminal
 # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'

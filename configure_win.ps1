@@ -5,7 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.4";
+  $_ver = "1.0.5";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -97,10 +97,10 @@ class App {
     }
 
     $this._installWsl();
-    return;
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
     $this._generateSshKey();
+    return;
     $this._setPowerOptions();
     $this._setDebounceOptions();
     $this._setTouchpadOptions();

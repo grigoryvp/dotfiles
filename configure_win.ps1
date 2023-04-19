@@ -41,7 +41,7 @@ class App {
         * Disable 'Settings/Pointer/Change cursor when move to scroll'
         * Map Mouse4 => 'change movement to scroll' with setings:
           * Sensitivity 1
-          * Invert vertical axis
+          * Invert axis
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
@@ -54,6 +54,8 @@ class App {
       - Pin pwsh, vscode, web, files, keepass, telegram, mail, cal, slack
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
+      - Switch nVidia display mode to "optimus" and drag gpu activity icon
+      - Set Settings/Accounts/Sign-in/Sign-in to "Every time"
 "@;
   }
 
@@ -120,6 +122,7 @@ class App {
     # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/tray-monitor.json
     # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/battery-info-view.json
     # $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
+    # TODO: diff-so-fancy via npm (requires npm and StrawberryPerl).
     $this._registerAutohotkeyStartup();
     #$this._registerBatteryInfoViewStartup();
     #$this._registerBatteryIconStartup();

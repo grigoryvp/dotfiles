@@ -39,7 +39,7 @@ class App {
       - Make --full configuration
       - Configure X-Mouse Button Control:
         * Disable 'Settings/Pointer/Change cursor when move to scroll'
-        * Map Mouse4 => 'movement to scroll' with setings:
+        * Map Mouse4 => 'change movement to scroll' with setings:
           * Sensitivity 1
           * Invert vertical axis
       - Disable adaptive contrast for the built-in Intel GPU, if any
@@ -173,7 +173,7 @@ class App {
       $this._getFilesFromGit();
     }
 
-    $this._getXi();
+    $this._getXiWindows();
 
     if (-not (Test-Path -Path ".editorconfig")) {
         $src = $this._path(@($this._cfgDir, ".editorconfig"));
@@ -661,7 +661,14 @@ class App {
   }
 
 
-  _getXi() {
+  _getXiWindows() {
+    if ($this._isTest) { return; }
+    # TODO: clone to Windows part which is opened by extension.
+    return;
+  }
+
+
+  _getXiWSL() {
     if ($this._isTest) { return; }
     $dstDir = "\\wsl$\Ubuntu\home\user\.xi"
     if (Test-Path -Path "$dstDir") {

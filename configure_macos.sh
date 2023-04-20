@@ -69,6 +69,7 @@ fi
 ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
+code --install-extension grigoryvp.goto-link-provider
 code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
 code --install-extension emmanuelbeziat.vscode-great-icons

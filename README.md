@@ -10,6 +10,7 @@ set PATH=%PATH%;%ProgramFiles%\PowerShell\7
 rem inspect $error if Invoke-Expression fails.
 set REPO_URL=https://raw.githubusercontent.com/grigoryvp/dotfiles
 set URL=%REPO_URL%/master/configure_win.ps1
+:: 'Invoke-Expression' instead of 'iex' since 'iex' is removed by profile.ps1
 sudo pwsh -c "iwr -He @{'Cache-Control'='no-cache'} %URL% | Invoke-Expression"
 ```
 

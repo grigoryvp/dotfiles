@@ -5,7 +5,7 @@ function New-File() { New-Item -ItemType File -Force @Args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.7";
+  $_ver = "1.0.8";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -56,6 +56,8 @@ class App {
       - Login and sync browser
       - Switch nVidia display mode to "optimus" and drag gpu activity icon
       - Set Settings/Accounts/Sign-in/Sign-in to "Every time"
+      - Set Settings/System/Power/Saver/Auto to "Never"
+      - Disable ASUS "lightingservice", if any
 "@;
   }
 
@@ -152,16 +154,15 @@ class App {
       New-File -Path "~" -Name ".gitconfig" -Value "$content";
     }
     
-    # Interactive.
-    $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
-    if (-not (Test-Path -Path "$markerPath")) {
-      if (-not $this._isPublic) {
-        $this._askForGithubCredentials();
-      }
-    }
-
     if (-not $this._isPublic) {
-      $this._uploadSshKey();
+      $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+      # Interactive.
+      if (-not (Test-Path -Path "$markerPath")) {
+        $this._askForGithubCredentials();
+        $this._uploadSshKey();
+      }
+      # Re-clone with SSH keys
+      $this._getFilesFromGit();
     }
 
     # After additional files are received
@@ -170,11 +171,6 @@ class App {
 
     # Interactive.
     $this._installFonts();
-
-    if (-not $this._isPublic) {
-      # Re-clone with SSH keys
-      $this._getFilesFromGit();
-    }
 
     $this._getXiWindows();
 
@@ -186,7 +182,8 @@ class App {
     # Optional installs
     if ($this._isFull) {
       # General-purpose messaging.
-      $this._installApp("telegram");
+      # TODO: Beeper?
+      # $this._installApp("telegram");
       # "Offline" google apps support and no telemetry delays line in "Edge".
       $this._installApp("googlechrome");
       # PDF view.
@@ -200,7 +197,8 @@ class App {
       # TODO: configure to save position on exit
       $this._installApp("mpc-hc-fork");
       # TODO: unattended install for current user
-      $this._installApp("perfgraph");
+      # TODO: find a replacement
+      # $this._installApp("perfgraph");
     }
 
     if ($this._isTest) {
@@ -666,11 +664,19 @@ class App {
 
   _getXiWindows() {
     if ($this._isTest) { return; }
-    # TODO: clone to Windows part which is opened by extension.
+    $uri = "git@github.com:grigoryvp/xi.git";
+    $dstDir = $this._path(@("~", ".xi"));
+    if (Test-Path -Path "$dstDir") {
+      Write-Host "xi already cloned";
+      return;
+    }
+    Write-Host "cloning xi into $dstDir";
+    & git clone $uri $dstDir;
     return;
   }
 
 
+  # Not used since VSCode always opens host dir even if remoting WSL.
   _getXiWSL() {
     if ($this._isTest) { return; }
     $dstDir = "\\wsl$\Ubuntu\home\user\.xi"
@@ -718,6 +724,10 @@ class App {
       & code --install-extension "grigoryvp.memory-theme";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
+    if (-not $extList.Contains("grigoryvp.goto-link-provider")) {
+      & code --install-extension "grigoryvp.goto-link-provider";
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
     if (-not $extList.Contains("vscodevim.vim")) {
       & code --install-extension "vscodevim.vim";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -747,6 +757,8 @@ class App {
           "My Pictures/": true,
           "My Videos/": true,
           "My Games/": true,
+          "Sound Recordings/": true,
+          "Diablo IV/": true,
           "PowerShell": true,
           "WindowsPowerShell": true,
           "desktop.ini": true,

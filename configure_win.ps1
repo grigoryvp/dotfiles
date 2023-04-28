@@ -44,12 +44,11 @@ class App {
           * Invert axis
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
-      - Add C-S-4-5-6 as en-ru-js hotkeys and copy settings
+      - Add C-S-4-5-6 as en-ru-js hotkeys and copy via "Region/Administrative"
       - Disable autostart in Task Manager
       - Disable autostart in Task Scheduler
       - Disable snap assist
       - Disable touchpad click and set maximum speed
-      - Add perfgraph toolbar
       - Add "gmail", "google calendar", "trello" as chrome apps and pin
       - Pin pwsh, vscode, web, files, keepass, telegram, mail, cal, slack
       - Uninstall 'OneDrive' and other software
@@ -854,3 +853,4 @@ $app.configure();
 # replace colortool.exe Dracula-ColorTool.itermcolors with https://draculatheme.com/windows-terminal
 # TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
 # TODO: Dracula color theme
+# TODO: Microsoft.DotNet.DesktopRuntime.7 for https://github.com/seerge/g-helper

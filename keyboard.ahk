@@ -326,7 +326,7 @@ $^tab up:: send "^{tab}"
 *$g:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
-      send "{vkbe}"
+      send "#{vkbe}"
     }
     else {
       send "{blind}{vk73 down}"
@@ -593,3 +593,17 @@ $#down:: {
 }
 $#tab:: {
 }
+
+animation := 174
+OnTimer() {
+  global animation
+  TraySetIcon("Shell32.dll", animation, 1)
+  if (animation < 175) {
+    animation := animation + 1
+  }
+  else {
+    animation := 174
+  }
+}
+
+SetTimer(OnTimer, 500)

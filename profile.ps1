@@ -6,6 +6,13 @@ try {
 catch {
 }
 
+$_pathIntrinsics = $ExecutionContext.SessionState.Path;
+
+function _path([array] $pathList) {
+  return $_pathIntrinsics.GetUnresolvedProviderPathFromPSPath(
+    [io.path]::combine([string[]]$pathList));
+}
+
 # Used for Elixir repl.
 Remove-Alias -Force -Name iex
 
@@ -305,4 +312,9 @@ if ($IsMacOS) {
   $Env:PATH = "/usr/local/opt/ruby/bin:$Env:PATH";
   # Homebrew can --link Python, but modify path for consistancy with Ruby.
   $Env:PATH = "/usr/local/opt/python@3.8/bin:$Env:PATH";
+}
+if ($IsWindows) {
+  # Not added by winget installed to path
+  $path = _path(@("~", "apps", "AutoHotkey.AutoHotkey", "v2"));
+  $Env:PATH = "$Env:PATH;$path";
 }

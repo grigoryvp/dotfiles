@@ -845,6 +845,7 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO
+# change autohotkey to task scheduler so no elevation confirmation is required: https://windowsloop.com/how-to-run-a-program-as-administrator-without-prompt/
 # remove all references to scoop
 # powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 # powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"

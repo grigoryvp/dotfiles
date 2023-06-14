@@ -57,6 +57,9 @@ class App {
       - Set Settings/Accounts/Sign-in/Sign-in to "Every time"
       - Set Settings/System/Power/Saver/Auto to "Never"
       - Disable ASUS "lightingservice", if any
+      - Disable G-Sync in the nVidia settings
+      - Disable the "SSDP Discovery" service
+      - Disable Battle.net launcher "gpu acceleration"
 "@;
   }
 
@@ -845,7 +848,9 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO
-# change autohotkey to task scheduler so no elevation confirmation is required: https://windowsloop.com/how-to-run-a-program-as-administrator-without-prompt/
+# change autohotkey to task scheduler so no elevation confirmation is required, use powershell: https://windowsloop.com/how-to-run-a-program-as-administrator-without-prompt/
+# $exists = Get-ScheduledTask | where { $_.TaskName -eq "autohotkey" }
+# $task = Get-ScheduledTask -TaskName "autohotkey" -ErrorAction SilentlyContinue
 # remove all references to scoop
 # powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 # powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"

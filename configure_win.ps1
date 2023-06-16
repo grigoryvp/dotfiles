@@ -1,4 +1,5 @@
 function New-Hardlink() { New-Item -ItemType HardLink -Force @Args; }
+function New-Softlink() { New-Item -ItemType SymbolicLink -Force @Args; }
 function New-Dir() { New-Item -ItemType Directory -Force @Args; }
 function New-File() { New-Item -ItemType File -Force @Args; }
 
@@ -139,7 +140,7 @@ class App {
       $src = $this._path(@($this._cfgDir, "profile.ps1"));
       $dst = $this._path(@($this._psDir, "profile.ps1"));
       if (Test-Path -Path "$dst") {
-        Remove-Item "$dst";
+        Remove-Item "$dst" -Recurse -Force;
       }
       Write-Host "Creating hardlink $src => $dst";
       New-Hardlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
@@ -150,7 +151,7 @@ class App {
       $src = $this._path(@($this._cfgDir, ".gitconfig"));
       $dst = $this._path(@("~", ".gitconfig"));
       if (Test-Path -Path "$dst") {
-        Remove-Item "$dst";
+        Remove-Item "$dst" -Recurse -Force;
       }
       $content = "[include]`npath = `"$($this._cfgDirLinux)/git-cfg.toml`"`n";
       New-File -Path "~" -Name ".gitconfig" -Value "$content";
@@ -312,7 +313,7 @@ class App {
     $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
     $dstFilePath = $this._path(@($dstPath, $fileName));
     if (Test-Path -Path "$dstFilePath" ) {
-      Remove-Item "$dstFilePath";
+      Remove-Item "$dstFilePath" -Recurse -Force;
     }
     Copy-Item -Path "$srcFilePath" -Destination "$dstPath" -Force;
   }
@@ -324,7 +325,7 @@ class App {
     $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
     $dstFilePath = $this._path(@($dstPath, $fileName));
     if (Test-Path -Path "$dstFilePath" ) {
-      Remove-Item "$dstFilePath";
+      Remove-Item "$dstFilePath" -Recurse -Force;
     }
     New-Hardlink -Path "$dstPath" -Name "$fileName" -Value "$srcFilePath";
   }
@@ -638,7 +639,7 @@ class App {
 
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\autohotkey.bat") {
-      Remove-Item "$startDir\autohotkey.bat";
+      Remove-Item "$startDir\autohotkey.bat" -Recurse -Force;
     }
     $content = "pwsh -Command Start-Process";
     $content += " " + $this._path(@(
@@ -713,20 +714,20 @@ class App {
     }
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_settings.json"));
-    $dstPath = $this._path(@($dstDir, "settings.json"));
-    Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
+    New-Hardlink -Path "$dstDir" -Name "settings.json" -Value "$srcPath";
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_keybindings.json"));
-    $dstPath = $this._path(@($dstDir, "keybindings.json"));
-    Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
+    New-Hardlink -Path "$dstDir" -Name "keybindings.json" -Value "$srcPath";
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_tasks.json"));
-    $dstPath = $this._path(@($dstDir, "tasks.json"));
-    Copy-Item -Path "$srcPath" -Destination $dstPath -Force;
+    New-Hardlink -Path "$dstDir" -Name "tasks.json" -Value "$srcPath";
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_snippets/"));
     $dstPath = $this._path(@($dstDir, "vscode_snippets/"));
-    Copy-Item -Path "$srcPath" -Destination $dstPath -Recurse -Force;
+    if (Test-Path -Path "$dstPath") {
+        Remove-Item "$dstPath" -Recurse -Force;
+    }
+    New-Hardlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
 
     $extList = @(& code --list-extensions);
     if (-not $extList.Contains("grigoryvp.language-xi")) {
@@ -791,7 +792,7 @@ class App {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\battery-info-view.bat") {
-      Remove-Item "$startDir\battery-info-view.bat";
+      Remove-Item "$startDir\battery-info-view.bat" -Recurse -Force;
     }
     $content = "pwsh -Command Start-Process BatteryInfoView.exe";
     $content += " -WindowStyle Hidden";
@@ -804,7 +805,7 @@ class App {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\battery-icon.bat") {
-      Remove-Item "$startDir\battery-icon.bat";
+      Remove-Item "$startDir\battery-icon.bat" -Recurse -Force;
     }
     $content = "pwsh -Command Start-Process BatteryIcon.exe";
     $content += " -WindowStyle Hidden";
@@ -817,7 +818,7 @@ class App {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\cpu-icon.bat") {
-      Remove-Item "$startDir\cpu-icon.bat";
+      Remove-Item "$startDir\cpu-icon.bat" -Recurse -Force;
     }
     $content = "pwsh -Command Start-Process CpuIcon.exe";
     $content += " -WindowStyle Hidden";
@@ -830,7 +831,7 @@ class App {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\ram-icon.bat") {
-      Remove-Item "$startDir\ram-icon.bat";
+      Remove-Item "$startDir\ram-icon.bat" -Recurse -Force;
     }
     $content = "pwsh -Command Start-Process RamIcon.exe";
     $content += " -WindowStyle Hidden";
@@ -843,7 +844,7 @@ class App {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\x-mouse-button-control.bat") {
-      Remove-Item "$startDir\x-mouse-button-control.bat";
+      Remove-Item "$startDir\x-mouse-button-control.bat" -Recurse -Force;
     }
     $content = "pwsh -Command Start-Process XMouseButtonControl.exe";
     $content += " -WindowStyle Hidden";

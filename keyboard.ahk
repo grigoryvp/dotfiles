@@ -56,6 +56,8 @@ A_MaxHotkeysPerInterval := 500
 tab::lctrl
 enter::rctrl
 backspace::ralt
+;;  Escape is hard to reach with a pinkey
+lalt::escape
 #inputlevel 0
 
 perform(cmd, arg, direction) {

@@ -625,6 +625,17 @@ class App {
 
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
+    $name = "autohotkey";
+    $task = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue;
+    if (-not $task) {
+      $task = New-ScheduledTask -TaskName $name;
+    }
+    if ($task.Actions.Length -ne 1) {
+      $task.Actions = @(New-CimInstance
+      );
+    }
+    return;
+
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
     if (Test-Path -Path "$startDir\autohotkey.bat") {
       Remove-Item "$startDir\autohotkey.bat";

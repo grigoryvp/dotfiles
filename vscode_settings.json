@@ -209,6 +209,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "git.openRepositoryInParentFolders": "never",
+  "AutoHotkey2": {
+    "InterpreterPath": "C:\\Users\\user\\apps\\AutoHotkey.AutoHotkey\\v2\\AutoHotkey.exe"
+  },
   "auto-close-tag.activationOnLanguage": [
     "xml",
     "php",

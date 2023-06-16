@@ -596,6 +596,8 @@ $#down:: {
 $#tab:: {
 }
 
+;;  TODO: add network ping here. Maybe by calling "ping"?
+;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
 animation := 174
 OnTimer() {
   global animation
@@ -609,3 +611,5 @@ OnTimer() {
 }
 
 SetTimer(OnTimer, 500)
+
+;; TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath

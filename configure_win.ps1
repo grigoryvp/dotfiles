@@ -1,7 +1,7 @@
-function New-Hardlink() { New-Item -ItemType HardLink -Force @Args; }
-function New-Softlink() { New-Item -ItemType SymbolicLink -Force @Args; }
-function New-Dir() { New-Item -ItemType Directory -Force @Args; }
-function New-File() { New-Item -ItemType File -Force @Args; }
+function New-Hardlink() { New-Item -ItemType HardLink -Force @args; }
+function New-Softlink() { New-Item -ItemType SymbolicLink -Force @args; }
+function New-Dir() { New-Item -ItemType Directory -Force @args; }
+function New-File() { New-Item -ItemType File -Force @args; }
 
 class App {
 
@@ -57,6 +57,7 @@ class App {
       - Switch nVidia display mode to "optimus" and drag gpu activity icon
       - Set Settings/Accounts/Sign-in/Sign-in to "Every time"
       - Set Settings/System/Power/Saver/Auto to "Never"
+      - Uncheck "Sniping tool" in Settings/Accessibility/Keyboard
       - Disable ASUS "lightingservice", if any
       - Disable G-Sync in the nVidia settings
       - Disable the "SSDP Discovery" service
@@ -185,23 +186,21 @@ class App {
     # Optional installs
     if ($this._isFull) {
       # General-purpose messaging.
-      # TODO: Beeper?
-      # $this._installApp("telegram");
+      $this._installApp("Telegram.TelegramDesktop");
       # "Offline" google apps support and no telemetry delays line in "Edge".
       $this._installApp("googlechrome");
       # PDF view.
       $this._installApp("foxit-reader");
-      # Better screenshot tool.
-      $this._installApp("flameshot");
       # 'psexec' (required to start non-elevated apps), 'procexp' etc
       $this._installApp("sysinternals");
       # Desktop recording.
       $this._installApp("obs-studio");
       # TODO: configure to save position on exit
-      $this._installApp("mpc-hc-fork");
-      # TODO: unattended install for current user
-      # TODO: find a replacement
-      # $this._installApp("perfgraph");
+      $this._installApp("clsid2.mpc-hc");
+      # ag command, "the silver searcher"
+      $this._installApp("JFLarvoire.Ag");
+      # screenshot tool, "sniping tool" corrupts colors
+      $this._installApp("Flameshot.Flameshot");
     }
 
     if ($this._isTest) {
@@ -439,33 +438,33 @@ class App {
     if ($this._isTest) { return; }
     Write-Host "Setting touchpad debounce options";
 
-    $args = @{
+    $argmap = @{
       Path = "HKCU:\Control Panel\Accessibility\Keyboard Response"
       PropertyType = "String"
       Force = $true
     }
 
     # Ms before key is repeated
-    $args.Name = 'AutoRepeatDelay';
-    $args.Value = '400';
-    New-ItemProperty @args;
+    $argmap.Name = 'AutoRepeatDelay';
+    $argmap.Value = '400';
+    New-ItemProperty @argmap;
 
     # Less is faster
-    $args.Name = 'AutoRepeatRate';
-    $args.Value = '30';
-    New-ItemProperty @args;
+    $argmap.Name = 'AutoRepeatRate';
+    $argmap.Value = '30';
+    New-ItemProperty @argmap;
 
     #  Milliseconds to supres bounce (with 30ms it RARELY bounces).
     #! On some laptops like Dell 5490 setting this value will result in fast
     #  double presses not handled.
-    $args.Name = 'BounceTime';
-    $args.Value = '35';
-    New-ItemProperty @args;
+    $argmap.Name = 'BounceTime';
+    $argmap.Value = '35';
+    New-ItemProperty @argmap;
 
     # Milliseconds to wait before accepting a keystroke
-    $args.Name = 'DelayBeforeAcceptance';
-    $args.Value = '0';
-    New-ItemProperty @args;
+    $argmap.Name = 'DelayBeforeAcceptance';
+    $argmap.Value = '0';
+    New-ItemProperty @argmap;
 
     # Bit Flags:
     # 00000001 On
@@ -475,9 +474,9 @@ class App {
     # 00010000 Activation sound
     # 00100000 Show status
     # 01000000 Key click
-    $args.Name = 'Flags';
-    $args.Value = '1';
-    New-ItemProperty @args;
+    $argmap.Name = 'Flags';
+    $argmap.Value = '1';
+    New-ItemProperty @argmap;
   }
 
 
@@ -626,27 +625,23 @@ class App {
 
   _registerAutohotkeyStartup() {
     if ($this._isTest) { return; }
+
     $name = "autohotkey";
     $task = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue;
     if (-not $task) {
       $task = New-ScheduledTask -TaskName $name;
     }
-    if ($task.Actions.Length -ne 1) {
-      $task.Actions = @(New-CimInstance
-      );
-    }
-    return;
 
-    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\autohotkey.bat") {
-      Remove-Item "$startDir\autohotkey.bat" -Recurse -Force;
+    $argmap = @{
+      Execute = $this._path(@(
+        "~", "apps", "AutoHotkey.AutoHotkey", "v2", "autohotkey.exe"))
+      Argument = $this._path(@($this._cfgDir, "keyboard.ahk"))
     }
-    $content = "pwsh -Command Start-Process";
-    $content += " " + $this._path(@(
-      "~", "apps", "AutoHotkey.AutoHotkey", "v2", "autohotkey.exe"));
-    $content += " -ArgumentList `"$($this._cfgDir)\keyboard.ahk`"";
-    $content += " -WindowStyle Hidden -Verb RunAs";
-    New-File -Path $startDir -Name "autohotkey.bat" -Value "$content";
+    $action = New-ScheduledTaskAction @argmap;
+    Set-ScheduledTask -TaskName $name -Action $action;
+
+    $trigger = New-ScheduledTaskTrigger -AtLogOn;
+    Set-ScheduledTask -TaskName $name -Trigger $trigger;
   }
 
 
@@ -860,9 +855,6 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO
-# change autohotkey to task scheduler so no elevation confirmation is required, use powershell: https://windowsloop.com/how-to-run-a-program-as-administrator-without-prompt/
-# $exists = Get-ScheduledTask | where { $_.TaskName -eq "autohotkey" }
-# $task = Get-ScheduledTask -TaskName "autohotkey" -ErrorAction SilentlyContinue
 # remove all references to scoop
 # powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
 # powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"

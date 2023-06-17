@@ -613,3 +613,4 @@ OnTimer() {
 SetTimer(OnTimer, 500)
 
 ;; TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
+;; TODO: url shortener on context menu

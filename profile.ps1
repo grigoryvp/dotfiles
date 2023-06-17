@@ -89,14 +89,7 @@ function rmf($dst) {
 }
 
 function ll($dst) {
-  $exclude = @(
-    "My Games",
-    "PowerShell",
-    "Steelrising",
-    "Diablo *",
-    "Sound Recordings"
-  );
-  Get-ChildItem $dst -Exclude $exclude;
+  lsd -l $dst
 }
 
 function grep() {

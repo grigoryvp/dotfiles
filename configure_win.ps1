@@ -116,6 +116,9 @@ class App {
       @(${env:ProgramFiles}, "Git", "cmd")));
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
+    # Some apps like lsd are only available via chocolatey
+    $this._InstallBinApp("Chocolatey.Chocolatey", $this._path(
+      @($env:ProgramData, "chocolatey", "bin")));
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     $this._installApp("Highresolution.X-MouseButtonControl");
     $this._installApp("Microsoft.VCRedist.2015+.x64");
@@ -124,7 +127,9 @@ class App {
     $this._installBinApp("Microsoft.VisualStudioCode", $this._path(
       @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));
     $this._configureVscode();
-    # TODO: https://github.com/Peltoche/lsd
+    # Better ls
+    & choco install -y lsd
+    $this._configureLsd();
     # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/tray-monitor.json
     # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/battery-info-view.json
     # $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
@@ -170,6 +175,7 @@ class App {
     }
 
     # After additional files are received
+
     # Interactive
     $this._mapCapsToF24();
 
@@ -185,22 +191,26 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
+      # Better "ls"
+      & cargo install lsd
       # General-purpose messaging.
       $this._installApp("Telegram.TelegramDesktop");
       # "Offline" google apps support and no telemetry delays line in "Edge".
-      $this._installApp("googlechrome");
+      $this._installApp("Google.Chrome");
       # PDF view.
-      $this._installApp("foxit-reader");
-      # 'psexec' (required to start non-elevated apps), 'procexp' etc
-      $this._installApp("sysinternals");
+      $this._installApp("Foxit.FoxitReader");
+      # Better process maangement
+      $this._installApp("Microsoft.Sysinternals.ProcessExplorer");
       # Desktop recording.
-      $this._installApp("obs-studio");
+      $this._installApp("OBSProject.OBSStudio");
       # TODO: configure to save position on exit
       $this._installApp("clsid2.mpc-hc");
       # ag command, "the silver searcher"
       $this._installApp("JFLarvoire.Ag");
       # screenshot tool, "sniping tool" corrupts colors
       $this._installApp("Flameshot.Flameshot");
+      # for g-helper
+      $this._installApp("Microsoft.DotNet.DesktopRuntime.7");
     }
 
     if ($this._isTest) {
@@ -258,6 +268,7 @@ class App {
   }
 
 
+  # For installers that add something to PATH (requires terminal restart)
   _installBinApp($appName, $binPath) {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
@@ -663,7 +674,7 @@ class App {
     $fontName = "JetBrainsMono";
     Write-Host "Cloning nerd-fonts into $path";
     & git clone --quiet --depth 1 --filter=blob:none --sparse $uri $path;
-    cd $path;
+    Set-Location $path;
     Write-Host "Checking out files for $fontName";
     & git sparse-checkout add "patched-fonts/$fontName";
     Write-Host "Installing $fontName";
@@ -783,6 +794,16 @@ class App {
   }
 
 
+  _configureLsd() {
+    $dstDir = $this._path(@($env:APPDATA, "lsd"));
+    if (-not (Test-Path -Path "$dstDir")) {
+      New-Dir -Path "$dstDir";
+    }
+    $srcPath = $this._path(@($this._cfgDir, "lsd.config.yaml"));
+    New-Hardlink -Path "$dstDir" -Name "config.yaml" -Value "$srcPath";
+  }
+
+
   _registerBatteryInfoViewStartup() {
     if ($this._isTest) { return; }
     $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
@@ -856,11 +877,3 @@ $app.configure();
 
 # TODO
 # remove all references to scoop
-# powershell.exe -c Set-ExecutionPolicy Unrestricted -scope CurrentUser
-# powershell.exe -c "iwr -useb get.scoop.sh | Invoke-Expression"
-# set PATH=%PATH%;%USERPROFILE%\scoop\shims
-# git config --global core.autocrlf input
-# replace colortool.exe Dracula-ColorTool.itermcolors with https://draculatheme.com/windows-terminal
-# TODO: symlink '~/AppData/Local/Microsoft/Windows Terminal/profiles.json'
-# TODO: Dracula color theme
-# TODO: Microsoft.DotNet.DesktopRuntime.7 for https://github.com/seerge/g-helper

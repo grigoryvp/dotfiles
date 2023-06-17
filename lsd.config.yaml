@@ -9,6 +9,19 @@ color:
   when: always
 ignore-globs:
   - .DS_Store
+  - .vscode
+  - desktop.ini
+  - Diablo *
+  - Steelrising
+  - Larian Studios
+  - My Games
+  - My Music
+  - My Pictures
+  - My Videos
+  - PowerShell
+  - Sound Recordings
+  - WindowsPowerShell
+  - Zoom
 sorting:
   column: name
   reverse: false

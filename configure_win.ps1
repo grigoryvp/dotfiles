@@ -130,12 +130,15 @@ class App {
     # Better ls
     & choco install -y lsd
     $this._configureLsd();
+    & choco install -y --ignore-checksums batteryinfoview
+    $name = "BatteryInfoView.cfg";
+    $srcPath = $this._path(@($this._cfgDir, $name));
+    $dstDir = $this._path(@($env:ProgramData, "chocolatey", "bin"));
+    New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
     # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/tray-monitor.json
-    # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/battery-info-view.json
-    # $this._copyToAppDir("BatteryInfoView.cfg", "battery-info-view");
-    # TODO: diff-so-fancy via npm (requires npm and StrawberryPerl).
+    # https://github.com/microsoft/winget-pkgs/pull/110075
     $this._registerAutohotkeyStartup();
-    #$this._registerBatteryInfoViewStartup();
+    $this._registerBatteryInfoViewStartup();
     #$this._registerBatteryIconStartup();
     #$this._registerCpuIconStartup();
     #$this._registerRamIconStartup();
@@ -191,8 +194,17 @@ class App {
 
     # Optional installs
     if ($this._isFull) {
-      # Better "ls"
-      & cargo install lsd
+      # for diff-so-fancy
+      $this._installBinApp("StrawberryPerl.StrawberryPerl",
+        "C:\Strawberry\perl\bin\");
+      # nvm command
+      $this._installBinApp("CoreyButler.NVMforWindows", $this._path(
+        @($env:LOCALAPPDATA, "nvm")));
+      # Node.js
+      & nvm install 20.3.0
+      & nvm use 20.3.0
+      # Better diff
+      & npm install -g diff-so-fancy
       # General-purpose messaging.
       $this._installApp("Telegram.TelegramDesktop");
       # "Offline" google apps support and no telemetry delays line in "Edge".
@@ -314,18 +326,6 @@ class App {
     if (Get-InstalledModule | Where-Object Name -eq $moduleName) { return; }
     Install-Module $moduleName -Scope CurrentUser;
     if (-not $?) { throw "Failed" }
-  }
-
-
-  _copyToAppDir($fileName, $appName) {
-    if ($this._isTest) { return; }
-    $srcFilePath = $this._path(@($this._cfgDir, $fileName));
-    $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
-    $dstFilePath = $this._path(@($dstPath, $fileName));
-    if (Test-Path -Path "$dstFilePath" ) {
-      Remove-Item "$dstFilePath" -Recurse -Force;
-    }
-    Copy-Item -Path "$srcFilePath" -Destination "$dstPath" -Force;
   }
 
 

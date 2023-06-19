@@ -135,13 +135,14 @@ class App {
     $srcPath = $this._path(@($this._cfgDir, $name));
     $dstDir = $this._path(@($env:ProgramData, "chocolatey", "bin"));
     New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
-    # TODO: https://github.com/grigoryvp/scoop-grigoryvp/blob/master/tray-monitor.json
-    # https://github.com/microsoft/winget-pkgs/pull/110075
+    $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
+    $this._installBinApp("strayge.tray-monitor", $this._papth(
+      @($env:LOCALAPPDATA, "Microsoft", "WinGet", "Packages", $dirname)));
     $this._registerAutohotkeyStartup();
     $this._registerBatteryInfoViewStartup();
-    #$this._registerBatteryIconStartup();
-    #$this._registerCpuIconStartup();
-    #$this._registerRamIconStartup();
+    $this._registerBatteryIconStartup();
+    $this._registerCpuIconStartup();
+    $this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
@@ -234,19 +235,6 @@ class App {
   }
 
 
-  setExecutionPolicy() {
-    # Required by Posh-Git, sudo etc.
-    if ((Get-ExecutionPolicy -Scope CurrentUser) -ne "Unrestricted") {
-      # scoop shims like sudo are executed via powershell.exe and it seems
-      # that pwsh.exe and powershell.exe have separated execution policy
-      # config
-      & powershell.exe `
-        -Command Set-ExecutionPolicy Unrestricted `
-        -Scope CurrentUser;
-    }
-  }
-
-
   [Boolean] _hasCli($name) {
     if ($this._isTest) { return $false; }
     Get-Command $name -ErrorAction SilentlyContinue;
@@ -326,18 +314,6 @@ class App {
     if (Get-InstalledModule | Where-Object Name -eq $moduleName) { return; }
     Install-Module $moduleName -Scope CurrentUser;
     if (-not $?) { throw "Failed" }
-  }
-
-
-  _linkToAppDir($fileName, $appName) {
-    if ($this._isTest) { return; }
-    $srcFilePath = $this._path(@($this._cfgDir, $fileName));
-    $dstPath = $this._path(@("~", "scoop", "apps", $appName, "current"));
-    $dstFilePath = $this._path(@($dstPath, $fileName));
-    if (Test-Path -Path "$dstFilePath" ) {
-      Remove-Item "$dstFilePath" -Recurse -Force;
-    }
-    New-Hardlink -Path "$dstPath" -Name "$fileName" -Value "$srcFilePath";
   }
 
 
@@ -874,6 +850,3 @@ $ErrorActionPreference = "Stop";
 $pathIntrinsics = $ExecutionContext.SessionState.Path;
 $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
-
-# TODO
-# remove all references to scoop

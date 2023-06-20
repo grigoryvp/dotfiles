@@ -128,6 +128,7 @@ class App {
       @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));
     $this._configureVscode();
     # Better ls
+    # TODO: move to winget
     & choco install -y lsd
     $this._configureLsd();
     & choco install -y --ignore-checksums batteryinfoview

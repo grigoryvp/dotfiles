@@ -469,7 +469,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk70 up}"
     }
   }
-  else if (GeyKeyState("esc", "P")) {
+  else if (GetKeyState("esc", "P")) {
   }
   else {
     send "{blind}{vk53 up}"

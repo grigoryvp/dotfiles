@@ -14,9 +14,6 @@
     }, {
       "from": {"key_code": "return_or_enter"},
       "to": {"key_code": "right_control"}
-    }, {
-      "from": {"key_code": "left_command"},
-      "to": {"key_code": "escape"}
     }],
     "virtual_hid_keyboard": {
         "country_code": 0
@@ -73,6 +70,52 @@
           }]
         }]
       }, {
+        "description": "left cmd to esc as meta",
+        "manipulators": [
+
+        {
+          "description": "Use left cmd as both 'esc' and 'meta' key",
+          "type": "basic",
+          "from": {
+            "key_code": "left_command",
+            "modifiers": {"optional": ["any"]}
+          },
+          "parameters": {
+            "basic.to_if_held_down_threshold_milliseconds": 500
+          },
+          "to": [{
+            "set_variable": {
+              "name": "_s",
+              "value": 1
+            }
+          }],
+          "to_if_held_down": [{
+            "set_variable": {
+              "name": "_s",
+              "value": 1
+            }
+          }, {
+            "set_variable": {
+              "name": "_s_held",
+              "value": 1
+            }
+          }],
+          "to_after_key_up": [{
+            "set_variable": {
+              "name": "_s",
+              "value": 0
+            }
+          }, {
+            "set_variable": {
+              "name": "_s_held",
+              "value": 0
+            }
+          }, {
+            "key_code": "escape"
+          }]
+        }]
+      }, {
+
         "description": "Path of Exile",
         "manipulators": [
         {
@@ -108,10 +151,10 @@
           }]
         },
         {
-          "description": "meta-g for fast logout",
+          "description": "esc-f for fast logout",
           "type": "basic",
           "from": {
-            "key_code": "g"
+            "key_code": "f"
           },
           "to": [
             {"key_code": "return_or_enter"},
@@ -124,7 +167,7 @@
           ],
           "conditions": [{
             "type": "variable_if",
-            "name": "_m",
+            "name": "_s",
             "value": 1
           }, {
             "type": "frontmost_application_if",
@@ -134,10 +177,10 @@
           }]
         },
         {
-          "description": "meta-b for hideout",
+          "description": "esc-d for hideout",
           "type": "basic",
           "from": {
-            "key_code": "b"
+            "key_code": "d"
           },
           "to": [
             {"key_code": "return_or_enter"},
@@ -153,7 +196,7 @@
           ],
           "conditions": [{
             "type": "variable_if",
-            "name": "_m",
+            "name": "_s",
             "value": 1
           }, {
             "type": "frontmost_application_if",
@@ -863,6 +906,72 @@
           "conditions": [{
             "type": "variable_if",
             "name": "_m",
+            "value": 1
+          }]
+        },
+
+        {
+          "description": "esc-s for english signature",
+          "type": "basic",
+          "from": {
+            "key_code": "s"
+          },
+          "to": [
+            {"key_code": "B"},
+            {"key_code": "e"},
+            {"key_code": "s"},
+            {"key_code": "t"},
+            {"key_code": "space"},
+            {"key_code": "r"},
+            {"key_code": "e"},
+            {"key_code": "g"},
+            {"key_code": "a"},
+            {"key_code": "r"},
+            {"key_code": "d"},
+            {"key_code": "s"},
+            {"key_code": ","},
+            {"key_code": "return_or_enter"},
+            {"key_code": "G"},
+            {"key_code": "r"},
+            {"key_code": "i"},
+            {"key_code": "g"},
+            {"key_code": "o"},
+            {"key_code": "r"},
+            {"key_code": "y"},
+            {"key_code": "space"},
+            {"key_code": "P"},
+            {"key_code": "e"},
+            {"key_code": "t"},
+            {"key_code": "r"},
+            {"key_code": "o"},
+            {"key_code": "v"},
+            {"key_code": ","},
+            {"key_code": "return_or_enter"},
+            {"key_code": "plus"},
+            {"key_code": "3"},
+            {"key_code": "1"},
+            {"key_code": "6"},
+            {"key_code": "3"},
+            {"key_code": "4"},
+            {"key_code": "5"},
+            {"key_code": "8"},
+            {"key_code": "5"},
+            {"key_code": "4"},
+            {"key_code": "return_or_enter"},
+            {"key_code": "at"},
+            {"key_code": "g"},
+            {"key_code": "r"},
+            {"key_code": "i"},
+            {"key_code": "g"},
+            {"key_code": "o"},
+            {"key_code": "r"},
+            {"key_code": "y"},
+            {"key_code": "v"},
+            {"key_code": "p"}
+          ],
+          "conditions": [{
+            "type": "variable_if",
+            "name": "_s",
             "value": 1
           }]
         }

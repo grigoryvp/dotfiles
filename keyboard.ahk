@@ -354,6 +354,7 @@ $^tab up:: send "^{tab}"
 
 ;;  meta-f for F3
 ;;  meta-shift-f switch to 1st language
+;;  esc-f for game command
 *$f:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -364,6 +365,12 @@ $^tab up:: send "^{tab}"
     else {
       send "{blind}{vk72 down}"
     }
+  }
+  else if (GetKeyState("esc", "P")) {
+    ;;  TODO: check if PoE foreground
+    send "{enter}"
+    send "/exit"
+    send "{enter}"
   }
   else {
     send "{blind}{vk46 down}"
@@ -378,6 +385,8 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk72 up}"
     }
   }
+  else if (GetKeyState("esc", "P")) {
+  }
   else {
     send "{blind}{vk46 up}"
   }
@@ -385,6 +394,7 @@ $^tab up:: send "^{tab}"
 
 ;;  meta-d for F2
 ;;  meta-d switch to 2nd language
+;;  esc-d for game command
 *$d:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -395,6 +405,12 @@ $^tab up:: send "^{tab}"
     else {
       send "{blind}{vk71 down}"
     }
+  }
+  else if (GetKeyState("esc", "P")) {
+    ;;  TODO: check if PoE foreground
+    send "{enter}"
+    send "/hideout"
+    send "{enter}"
   }
   else {
     send "{blind}{vk44 down}"
@@ -409,6 +425,8 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk71 up}"
     }
   }
+  else if (GetKeyState("esc", "P")) {
+  }
   else {
     send "{blind}{vk44 up}"
   }
@@ -416,6 +434,7 @@ $^tab up:: send "^{tab}"
 
 ;;  meta-s for F1
 ;;  meta-s switch to 3nd language
+;;  esc-s for english signature
 *$s:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -433,6 +452,10 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk70 down}"
     }
   }
+  else if (GetKeyState("esc", "P")) {
+    ClipBoard := "Best regards,`nGrigory Petrov,`n+31681345854`n@grigoryvp"
+    send "^v"
+  }
   else {
     send "{blind}{vk53 down}"
   }
@@ -445,6 +468,8 @@ $^tab up:: send "^{tab}"
     else {
       send "{blind}{vk70 up}"
     }
+  }
+  else if (GeyKeyState("esc", "P")) {
   }
   else {
     send "{blind}{vk53 up}"
@@ -577,16 +602,6 @@ $^tab up:: send "^{tab}"
 ;; ===========================================================================
 ;; Misc
 ;; ===========================================================================
-
-::sigen:: {
-  ClipBoard := "Best regards,`nGrigory Petrov,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
-  send "^v"
-}
-
-::sigru:: {
-  ClipBoard := "С уважением,`nГригорий Петров,`n+7-926-225-16-08`nhttp://facebook.com/grigoryvp"
-  send "^v"
-}
 
 ;;  Some keyboards emulate "edge swipes" by sending these key combonations
 $#a:: {

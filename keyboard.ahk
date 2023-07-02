@@ -56,9 +56,15 @@ A_MaxHotkeysPerInterval := 500
 tab::lctrl
 enter::rctrl
 backspace::ralt
-;;  Escape is hard to reach with a pinkey
-lalt::escape
 #inputlevel 0
+
+;;  Escape is hard to reach with a pinkey
+*lalt up:: {
+  ;;  Not used as meta like "esc-s"?
+  if (A_PriorKey = "LAlt") {
+    send "{escape}"
+  }
+}
 
 perform(cmd, arg, direction) {
   if (cmd = "winclose") {

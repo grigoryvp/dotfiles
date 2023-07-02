@@ -366,7 +366,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk72 down}"
     }
   }
-  else if (GetKeyState("esc", "P")) {
+  else if (GetKeyState("lalt", "P")) {
     ;;  TODO: check if PoE foreground
     send "{enter}"
     send "/exit"
@@ -385,7 +385,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk72 up}"
     }
   }
-  else if (GetKeyState("esc", "P")) {
+  else if (GetKeyState("lalt", "P")) {
   }
   else {
     send "{blind}{vk46 up}"
@@ -406,7 +406,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk71 down}"
     }
   }
-  else if (GetKeyState("esc", "P")) {
+  else if (GetKeyState("lalt", "P")) {
     ;;  TODO: check if PoE foreground
     send "{enter}"
     send "/hideout"
@@ -425,7 +425,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk71 up}"
     }
   }
-  else if (GetKeyState("esc", "P")) {
+  else if (GetKeyState("lalt", "P")) {
   }
   else {
     send "{blind}{vk44 up}"
@@ -452,9 +452,8 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk70 down}"
     }
   }
-  else if (GetKeyState("esc", "P")) {
-    ClipBoard := "Best regards,`nGrigory Petrov,`n+31681345854`n@grigoryvp"
-    send "^v"
+  else if (GetKeyState("lalt", "P")) {
+    send "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"
   }
   else {
     send "{blind}{vk53 down}"
@@ -469,7 +468,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk70 up}"
     }
   }
-  else if (GetKeyState("esc", "P")) {
+  else if (GetKeyState("lalt", "P")) {
   }
   else {
     send "{blind}{vk53 up}"

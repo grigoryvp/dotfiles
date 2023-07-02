@@ -268,8 +268,8 @@ alias tox='tox -q'
 alias rmf='rm -rf'
 
 my_list() {
-  if [ -e /usr/local/bin/lsd ]; then
-    /usr/local/bin/lsd "$@"
+  if [ -e /opt/homebrew/bin/lsd ]; then
+    /opt/homebrew/bin/lsd "$@"
   elif [ -e /usr/local/bin/exa ]; then
     /usr/local/bin/exa \
       -l \

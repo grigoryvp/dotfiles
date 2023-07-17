@@ -56,6 +56,7 @@ A_MaxHotkeysPerInterval := 500
 tab::lctrl
 enter::rctrl
 backspace::ralt
+lctrl::lwin
 #inputlevel 0
 
 ;;  Escape is hard to reach with a pinkey

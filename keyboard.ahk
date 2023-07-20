@@ -505,22 +505,22 @@ $^tab up:: send "^{tab}"
   }
 }
 
-;;  esc-2 for game text 1
-*$2:: {
+;;  esc-q for game text 1
+*$q:: {
   if (GetKeyState("lalt", "P")) {
     ;;  TODO: check if PoE foreground
     send "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"
   }
   else {
-    send "{blind}{2 down}"
+    send "{blind}{q down}"
   }
 }
 
-*$2 up:: {
+*$q up:: {
   if (GetKeyState("lalt", "P")) {
   }
   else {
-    send "{blind}{2 up}"
+    send "{blind}{q up}"
   }
 }
 

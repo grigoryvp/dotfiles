@@ -505,6 +505,25 @@ $^tab up:: send "^{tab}"
   }
 }
 
+;;  esc-2 for game text 1
+*$2:: {
+  if (GetKeyState("lalt", "P")) {
+    ;;  TODO: check if PoE foreground
+    send "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"
+  }
+  else {
+    send "{blind}{2 down}"
+  }
+}
+
+*$2 up:: {
+  if (GetKeyState("lalt", "P")) {
+  }
+  else {
+    send "{blind}{2 up}"
+  }
+}
+
 ;; ===========================================================================
 ;; Multi-key combinations
 ;; ===========================================================================

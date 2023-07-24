@@ -851,3 +851,5 @@ $ErrorActionPreference = "Stop";
 $pathIntrinsics = $ExecutionContext.SessionState.Path;
 $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
+
+# TODO: xmousebutton config with wheel to click for poe

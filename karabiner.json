@@ -135,6 +135,22 @@
           }]
         },
         {
+          "description": "Only left shift 'unstacks'",
+          "type": "basic",
+          "from": {
+            "key_code": "right_shift"
+          },
+          "to": [{
+            "key_code": "left_shift"
+          }],
+          "conditions": [{
+            "type": "frontmost_application_if",
+            "bundle_identifiers": [
+              "^com\\.GGG\\.PathOfExile$"
+            ]
+          }]
+        },
+        {
           "description": "Not possible to rebind the 'split stack' hotkey",
           "type": "basic",
           "from": {

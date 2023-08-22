@@ -110,7 +110,8 @@
               "name": "_s_held",
               "value": 0
             }
-          }, {
+          }],
+          "to_if_alone": [{
             "key_code": "escape"
           }]
         }]

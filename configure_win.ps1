@@ -121,6 +121,7 @@ class App {
       @($env:ProgramData, "chocolatey", "bin")));
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     # TODO: Need version 2.20.4, in 2.20.5 "{WAITMS:100}{LMB}" does not work.
+    # https://dvps.highrez.co.uk/downloads/XMouseButtonControlSetup.2.20.4.exe
     $this._installApp("Highresolution.X-MouseButtonControl");
     $this._installApp("Microsoft.VCRedist.2015+.x64");
     $this._installBinApp("KeePassXCTeam.KeePassXC", $this._path(

@@ -58,6 +58,7 @@ pip install --upgrade pip
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
 # In "Preferences/Keyboard/Shortcuts/Mission Control":
 # * Add "⇧⌘\" to "Notification Center"
+# Disable all in "Preferences/Trackpad/More Gestures":
 # In "Preferences/Dock & Menu Bar":
 # * Remove all icons except 24h clock
 # * Enable dock auto-hide

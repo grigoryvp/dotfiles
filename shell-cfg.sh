@@ -113,6 +113,9 @@ export PIPENV_VENV_IN_PROJECT="1"
 ##  Do not lock dependencies (very slow).
 export PIPENV_SKIP_LOCK="1"
 
+##  Caprover default branch
+export CAPROVER_DEFAULT_BRANCH=main
+
 ##  OSX?
 if [ "$(uname)" = "Darwin" ]; then
   ##  Add color to |ls| output

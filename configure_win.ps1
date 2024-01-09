@@ -487,6 +487,7 @@ class App {
   }
 
 
+  # Remapped via RandyRants.SharpKeys
   _mapCapsToF24() {
     if (-not $this._needMapCapsToF24()) {
       Write-Host "caps already mapped to F24";

@@ -145,7 +145,6 @@
   "workbench.startupEditor": "none",
   "workbench.tips.enabled": false,
   "workbench.editor.labelFormat": "short",
-  "workbench.activityBar.visible": true,
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
@@ -153,7 +152,6 @@
   "workbench.iconTheme": "vscode-great-icons",
   "workbench.colorCustomizations": {
   },
-  "workbench.editor.untitled.hint": "hidden",
   "files": {
     "eol": "\n",
     "associations": {
@@ -200,7 +198,7 @@
     "editor.formatOnType": false,
     "editor.suggestSelection": "first",
     "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": false
+    "editor.wordBasedSuggestions": "off"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -220,5 +218,7 @@
     "vue",
     "erb",
     "html"
-  ]
+  ],
+  "workbench.editor.empty.hint": "hidden",
+  "xi.debug": false
 }

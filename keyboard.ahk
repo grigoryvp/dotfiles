@@ -59,7 +59,8 @@ backspace::ralt
 lctrl::lwin
 #inputlevel 0
 
-;;  Escape is hard to reach with a pinkey
+;; TODO: replace with Windows native remap for GD compatibility
+;; Escape is hard to reach with a pinkey
 *lalt up:: {
   ;;  Not used as meta like "esc-s"?
   if (A_PriorKey = "LAlt") {

@@ -183,8 +183,6 @@ class App {
 
     # After additional files are received
   
-    # TODO: left alt to esc since esc is hard to reach
-
     # Interactive
     $this._mapCapsToF24();
 

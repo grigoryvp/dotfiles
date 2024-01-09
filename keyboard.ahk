@@ -59,8 +59,8 @@ backspace::ralt
 lctrl::lwin
 #inputlevel 0
 
-;; TODO: replace with Windows native remap for GD compatibility
-;; Escape is hard to reach with a pinkey
+;;  Escape is hard to reach with a pinkey
+;;! SharpKeys remaps like Esc=>F24 will not work with native apps like GD
 *lalt up:: {
   ;;  Not used as meta like "esc-s"?
   if (A_PriorKey = "LAlt") {

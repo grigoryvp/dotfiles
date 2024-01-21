@@ -233,6 +233,7 @@ alias bua="bundle add"
 alias buad="bundle add --group development test"
 alias bue="bundle exec"
 alias bur="bue ruby"
+alias buk="bue rake"
 alias bus="bue rails"
 busg() {
   bus generate $@ --no-helper --no-test-framework --no-template-engine

@@ -310,4 +310,7 @@ if ($IsWindows) {
   # Not added by winget installed to path
   $path = _path(@("~", "apps", "AutoHotkey.AutoHotkey", "v2"));
   $Env:PATH = "$Env:PATH;$path";
+  # Installed by cloning from git
+  $path = _path(@("~", ".pyenv", "bin"));
+  $Env:PATH = "$Env:PATH;$path";
 }

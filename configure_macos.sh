@@ -212,6 +212,8 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
+# TODO: switch to rye
+# source "$HOME/.rye/env"
 pyenv install 3.11.1
 pyenv global 3.11.1
 python3 -m pip install --upgrade pip virtualenv

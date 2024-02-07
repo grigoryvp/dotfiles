@@ -89,5 +89,9 @@
   "key": "ctrl+n",
   "command": "explorer.newFile",
   "when": "explorerViewletFocus"
+},
+{
+  "key": "shift+end",
+  "command": "cSpell.goToNextSpellingIssueAndSuggest"
 }
 ]

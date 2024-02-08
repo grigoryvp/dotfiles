@@ -409,6 +409,11 @@ if [ -d $HOME/.pyenv ]; then
   start_path_with "$HOME/.pyenv/plugins/pyenv-virtualenv/shims";
 fi
 
+##  Load eye, if installed
+if [ -d $HOME/.rye ]; then
+  source "$HOME/.rye/env"
+fi
+
 ##  Load rbenv, if installed
 if [ -d $HOME/.rbenv ]; then
   start_path_with "$HOME/.rbenv/bin"

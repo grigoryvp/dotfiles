@@ -55,7 +55,6 @@ A_MaxHotkeysPerInterval := 500
 #inputlevel 1
 tab::lctrl
 enter::rctrl
-backspace::ralt
 lctrl::lwin
 #inputlevel 0
 

@@ -205,7 +205,8 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
-  hs.hotkey.bind("⌘⇧", "v", function()
+  -- maximize on primary (bottom, laptop) screen
+  hs.hotkey.bind("⌘⇧", "c", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     local frame = wnd:frame()
@@ -213,14 +214,15 @@ function App:registerHotkeys()
     local screenFrame = hs.screen.primaryScreen():frame()
     local duration = 0
     wnd:setFrame(screenFrame, duration)
-    -- hs.screen.primaryScreen() returns smaller frame
+    -- primaryScreen() and allScreens() returns smaller frame
     ---@type table
     local screenFrame = wnd:screen():frame()
     local duration = 0
     wnd:setFrame(screenFrame, duration)
   end)
 
-  hs.hotkey.bind("⌘⇧", "c", function()
+  -- maximize on secondary (top, display) screen
+  hs.hotkey.bind("⌘⇧", "v", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     local frame = wnd:frame()
@@ -235,6 +237,11 @@ function App:registerHotkeys()
     end
     local duration = 0
     wnd:setFrame(nonprimaryScreen:frame(), duration)
+    -- primaryScreen() and allScreens() returns smaller frame
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
   end)
 
   hs.hotkey.bind("⌘⇧", "space", function()

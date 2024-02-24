@@ -1521,28 +1521,28 @@
         },
 
         {
-          "description": "meta-shift-v => maximize on the primary screen",
+          "description": "meta-shift-c => maximize on the primary screen",
           "type": "basic",
           "from": {
-            "key_code": "v",
+            "key_code": "c",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "v",
+            "key_code": "c",
             "modifiers": ["right_command", "right_shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]
         },
 
         {
-          "description": "meta-shift-c => maximize on the non-primary screen",
+          "description": "meta-shift-v => maximize on the non-primary screen",
           "type": "basic",
           "from": {
-            "key_code": "c",
+            "key_code": "v",
             "modifiers": {"mandatory": ["shift"]}
           },
           "to": [{
-            "key_code": "c",
+            "key_code": "v",
             "modifiers": ["right_command", "right_shift"]
           }],
           "conditions": [{"type": "variable_if", "name": "_m", "value": 1}]

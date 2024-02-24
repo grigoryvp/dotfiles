@@ -67,6 +67,9 @@ lctrl::lwin
   }
 }
 
+esc::send {control down}{alt down}
+esc up::send {control up}{alt up}
+
 perform(cmd, arg, direction) {
   if (cmd = "winclose") {
     winclose "A"

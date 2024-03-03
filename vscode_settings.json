@@ -160,7 +160,6 @@
       "*.tsx": "typescriptreact"
     }
   },
-  "workbench.colorTheme": "grigoryvp memory theme",
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
   "python.showStartPage": false,
@@ -255,6 +254,7 @@
     "мемов",
     "метапрограммирование",
     "метапрограммировании",
+    "метапрограммирования",
     "многострочниках",
     "Монти",
     "моржик",
@@ -297,5 +297,6 @@
     "флешек",
     "хендл",
     "человекочитаемые"
-  ]
+  ],
+  "workbench.colorTheme": "grigoryvp memory theme"
 }

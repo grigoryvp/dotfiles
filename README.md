@@ -30,8 +30,8 @@ git clone https://github.com/michaeldfallen/git-radar ~/.git-radar
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 # Reload shell
-pyenv install 3.9.5
-pyenv global 3.9.5
+pyenv install 3.12.2
+pyenv global 3.12.2
 pip install --upgrade pip
 ```
 

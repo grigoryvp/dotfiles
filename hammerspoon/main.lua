@@ -32,7 +32,7 @@ function App:new()
   inst.mailDockItem = nil
   inst.slackDockItem = nil
   inst.discordDockItem = nil
-  inst.bitlyToken = nil
+  inst.vkToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
   inst.lastIp = nil
@@ -890,18 +890,20 @@ function App:createMenu()
       return
     end
     -- TODO: correctly get home dir
+
     local db = "/Users/user/dotfiles/passwords.kdbx"
     local app = "/opt/homebrew/bin/keepassxc-cli"
-    local args = {"show", "-s", db, "bit.ly"}
+    local args = {"show", "-s", db, "vk.gvp-url-shortener"}
     local onTaskExit = function(exitCode, stdOut, _)
       if exitCode ~= 0 then
         return hs.alert.show("Error executing keepassxc")
       end
-      bitlyToken = stdOut:match("Notes: (.+)\n")
+      vkToken = stdOut:match("Notes: (.+)\n")
       hs.alert.show("Loaded")
     end
     local task = hs.task.new(app, onTaskExit, args)
     task:setInput(masterPass)
+
     -- Do not trust GC
     masterPass = ""
     task:start()
@@ -964,7 +966,7 @@ function App:createMenu()
 
 
   self.menuItem:addSubmenuItem("Shorten URL", function()
-    if not bitlyToken then
+    if not vkToken then
       return hs.alert.show("Passwords not loaded")
     end
 
@@ -979,22 +981,29 @@ function App:createMenu()
       clipboard = clipboard:sub(1, queryPos - 1)
     end
 
-    local url = "https://api-ssl.bitly.com/v4/shorten"
-    local encodedUrl = hs.http.encodeForQuery(clipboard)
-    local data = hs.json.encode({
-      long_url = clipboard
-    })
+    local url = "https://api.vk.com/method/utils.getShortLink"
+    url = url .. "?" .. "url=" .. hs.http.encodeForQuery(clipboard)
+    url = url .. "&" .. "private=1"
+    url = url .. "&" .. "v=5.199"
     local headers = {
-      Authorization = "Bearer " .. bitlyToken,
-      ["Content-Type"] = "application/json"
+      Authorization = "Bearer " .. vkToken
     }
-    hs.http.asyncPost(url, data, headers, function(status, response, _)
+    hs.http.asyncGet(url, headers, function(status, response, _)
       if status ~= 200 and status ~= 201 then
         return hs.alert.show("Failed")
       end
       local response = hs.json.decode(response)
-      hs.pasteboard.setContents(response.link)
-      return hs.alert.show("Success")
+      if not response.response then
+        if response.error then
+          dir(response.error)
+        else
+          dir(response)
+        end
+        return hs.alert.show("Failed")
+      else
+        hs.pasteboard.setContents(response.response.short_url)
+        return hs.alert.show("Success")
+      end
     end)
   end)
 end

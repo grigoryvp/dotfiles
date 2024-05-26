@@ -67,6 +67,17 @@ function menuitem:update()
           w = width,
           h = menuHeight
         },
+        fillColor = {red = 0, green = 0, blue = 0},
+        action = "fill"
+      })
+      self._canvas:insertElement({
+        type = "rectangle",
+        frame = {
+          x = curOffset,
+          y = 0,
+          w = width,
+          h = menuHeight
+        },
         strokeColor = {red = 1, green = 1, blue = 1},
         action = "stroke"
       })

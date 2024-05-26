@@ -35,12 +35,34 @@ function menuitem:update()
   for _, widget in ipairs(self._widgets) do
 
     if widget.type == "spacer" then
+      self._canvas:insertElement({
+        type = "rectangle",
+        frame = {
+          x = curOffset,
+          y = 0,
+          w = widget.width,
+          h = menuHeight
+        },
+        fillColor = {red = 0, green = 0, blue = 0},
+        action = "fill"
+      })
       curOffset = curOffset + widget.width
       totalWidth = totalWidth + widget.width
 
     elseif widget.type == "text" then
       -- Approximation for a known fixed-width font with known height
       local width = #widget.text * 8
+      self._canvas:insertElement({
+        type = "rectangle",
+        frame = {
+          x = curOffset,
+          y = 0,
+          w = width,
+          h = menuHeight
+        },
+        fillColor = {red = 0, green = 0, blue = 0},
+        action = "fill"
+      })
       self._canvas:insertElement({
         type = "text",
         frame = {
@@ -78,7 +100,7 @@ function menuitem:update()
           w = width,
           h = menuHeight
         },
-        strokeColor = {red = 1, green = 1, blue = 1},
+        strokeColor = {red = 0.5, green = 0.5, blue = 0.5},
         action = "stroke"
       })
       for i = 1, #widget.graph_data do

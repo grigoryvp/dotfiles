@@ -680,7 +680,7 @@ OnTimer() {
   mqtt_pass := EnvGet("MQTT_PASS")
   mqtt_cert := EnvGet("MQTT_CERT")
 
-  cmd = "mosquitto_pub.exe"
+  cmd := "mosquitto_pub.exe"
   cmd := cmd . " --host " . mqtt_url
   cmd := cmd . " --port 8883 "
   cmd := cmd . " --cafile " . mqtt_cert

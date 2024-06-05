@@ -78,6 +78,9 @@ class App {
       }
     }
 
+    # DEBUG
+    $this._addToPath("foo");
+
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
@@ -852,6 +855,18 @@ class App {
     $name = "x-mouse-button-control.bat";
     New-File -path $startDir -Name $name -Value "$content" `
   }
+
+
+  _addToPath($subpath) {
+    $prefix = "HKLM:\SYSTEM\CurrentControlSet\Control";
+    $val = Get-ItemProperty `
+      -Path "$prefix\\Session Manager\Environment" `
+      -Name "PATH" `
+      -ErrorAction SilentlyContinue;
+    if ($val) {
+      Write-Host "Path $val";
+    }
+  }
 }
 
 # Stop on unhandled exceptions.
@@ -862,4 +877,3 @@ $app.configure();
 
 # TODO: xmousebutton config with wheel to click for poe
 # TODO: OPENSSL_ia32cap env var to ~0x20000000 for games
-# TODO: modify PATH and set env to HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment

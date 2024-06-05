@@ -675,7 +675,7 @@ OnTimer() {
     animation := 174
   }
 
-  ctrl_state = GetKeyState("control", "P")
+  ctrl_state := GetKeyState("control", "P")
 
   mqtt_url := EnvGet("MQTT_URL")
   mqtt_user := EnvGet("MQTT_USER")

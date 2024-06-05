@@ -674,6 +674,21 @@ OnTimer() {
   else {
     animation := 174
   }
+
+  mqtt_url := EnvGet("MQTT_URL")
+  mqtt_user := EnvGet("MQTT_USER")
+  mqtt_pass := EnvGet("MQTT_PASS")
+  mqtt_cert := EnvGet("MQTT_CERT")
+
+  cmd = "mosquitto_pub.exe"
+  cmd := cmd . " --host " . mqtt_url
+  cmd := cmd . " --port 8883 "
+  cmd := cmd . " --cafile " . mqtt_cert
+  cmd := cmd . " -u " . mqtt_user
+  cmd := cmd . " -P " . mqtt_pass
+  cmd := cmd . " -t debug"
+  cmd := cmd . " -m foo"
+  run cmd,, "Hide"
 }
 
 SetTimer(OnTimer, 500)

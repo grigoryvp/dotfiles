@@ -864,13 +864,13 @@ class App {
     $root = "HKLM:\SYSTEM\CurrentControlSet\Control";
     $uri = "$root\Session Manager\Environment";
     $name = "Path";
-    $val = Get-ItemProperty -Path $uri -Name $name `
+    $ret = Get-ItemProperty -Path $uri -Name $name `
       -ErrorAction SilentlyContinue;
-    if ($val) {
-      $path = $val.Path;
+    if ($ret) {
+      $path = $ret.Path;
       if (-not $path.Contains($subpath)) {
         $path = "${path};$subpath";
-        # Requires reboot, -Type ExpandString
+        # Requires reboot
         Set-ItemProperty $uri -Name $name -Value $path;
       }
     }
@@ -880,18 +880,18 @@ class App {
   _setEnv($name, $val) {
     $root = "HKLM:\SYSTEM\CurrentControlSet\Control";
     $uri = "$root\Session Manager\Environment";
-    $val = Get-ItemProperty -Path $uri -Name $name `
+    $ret = Get-ItemProperty -Path $uri -Name $name `
       -ErrorAction SilentlyContinue;
-    if ($val) {
-      # Requires reboot, -Type ExpandString
+    if ($ret) {
+      # Requires reboot
       Set-ItemProperty $uri -Name $name -Value $val;
     }
     else {
       New-ItemProperty `
         -Path $uri `
         -PropertyType String `
-        -Name $name `
-        -Value $val `
+        -Name "$name" `
+        -Value "$val" `
         -Force;
     }
   }

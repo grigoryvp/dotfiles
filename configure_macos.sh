@@ -217,5 +217,5 @@ pyenv global 3.12.2
 python3 -m pip install --upgrade pip virtualenv
 rbenv install 3.2.0
 rbenv global 3.2.0
-nodenv install 17.6.0
-nodenv global 17.6.0
+nodenv install 22.2.0
+nodenv global 22.2.0

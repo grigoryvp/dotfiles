@@ -10,5 +10,15 @@
   "Lua.workspace.preloadFileSize": 256,
   "Lua.diagnostics.disable": [
     "lowercase-global"
+  ],
+  "cSpell.words": [
+    "Classpath",
+    "dont",
+    "esbenp",
+    "ignorecase",
+    "ipynb",
+    "pwsh",
+    "Pylance",
+    "vsicons"
   ]
 }

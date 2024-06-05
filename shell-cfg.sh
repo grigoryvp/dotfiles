@@ -424,6 +424,7 @@ fi
 if [ -d $HOME/.nodenv ]; then
   start_path_with "$HOME/.nodenv/bin"
   start_path_with "$HOME/.nodenv/shims"
+  eval "$(nodenv init -)"
 fi
 
 ##  Load phpenv, if installed

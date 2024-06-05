@@ -174,7 +174,7 @@ class App {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
       # Interactive.
       if (-not (Test-Path -Path "$markerPath")) {
-        $this._askForGithubCredentials();
+        $this._askForCredentials();
         $this._uploadSshKey();
       }
       # Re-clone with SSH keys
@@ -227,6 +227,9 @@ class App {
       $this._installApp("Flameshot.Flameshot");
       # for g-helper
       $this._installApp("Microsoft.DotNet.DesktopRuntime.7");
+      # for mosquitto_pub
+      $this._installBinApp("EclipseFoundation.Mosquitto", $this._path(
+        @($env:ProgramFiles, "mosquitto")));
     }
 
     if ($this._isTest) {
@@ -546,7 +549,7 @@ class App {
   }
 
 
-  _askForGithubCredentials() {
+  _askForCredentials() {
     $pass = Read-Host -AsSecureString -Prompt "Enter password"
 
     $ptr = [Security.SecureStringMarshal]::SecureStringToCoTaskMemAnsi($pass);

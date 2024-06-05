@@ -721,6 +721,7 @@ class App {
     if (Test-Path -Path "$dstPath") {
         Remove-Item "$dstPath" -Recurse -Force;
     }
+    Write-Host "softlink $dstDir vscode_snippets/ $srcPath";
     New-Softlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
 
     $extList = @(& code --list-extensions);
@@ -858,13 +859,18 @@ class App {
 
 
   _addToPath($subpath) {
-    $prefix = "HKLM:\SYSTEM\CurrentControlSet\Control";
-    $val = Get-ItemProperty `
-      -Path "$prefix\\Session Manager\Environment" `
-      -Name "PATH" `
+    $root = "HKLM:\SYSTEM\CurrentControlSet\Control";
+    $path = "$root\Session Manager\Environment";
+    $name = "Path";
+    $val = Get-ItemProperty -Path $path -Name $name `
       -ErrorAction SilentlyContinue;
     if ($val) {
-      Write-Host "Path $val";
+      $path = $val.Path;
+      if (-not $path.Contains($subpath)) {
+        $path = "${path};$subpath";
+        # Requires reboot.
+        Set-ItemProperty $path -Name $name -Type ExpandString -Value $path;
+      }
     }
   }
 }

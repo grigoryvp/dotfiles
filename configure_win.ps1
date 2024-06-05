@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.8";
+  $_ver = "1.0.9";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -718,7 +718,7 @@ class App {
     if (Test-Path -Path "$dstPath") {
         Remove-Item "$dstPath" -Recurse -Force;
     }
-    New-Hardlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
+    New-Softlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
 
     $extList = @(& code --list-extensions);
     if (-not $extList.Contains("grigoryvp.language-xi")) {

@@ -732,7 +732,6 @@ class App {
     if (Test-Path -Path "$dstPath") {
         Remove-Item "$dstPath" -Recurse -Force;
     }
-    Write-Host "softlink $dstDir vscode_snippets/ $srcPath";
     New-Softlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
 
     $extList = @(& code --list-extensions);

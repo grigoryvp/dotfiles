@@ -675,6 +675,8 @@ OnTimer() {
     animation := 174
   }
 
+  ctrl_state = GetKeyState("control", "P"));
+
   mqtt_url := EnvGet("MQTT_URL")
   mqtt_user := EnvGet("MQTT_USER")
   mqtt_pass := EnvGet("MQTT_PASS")
@@ -687,7 +689,7 @@ OnTimer() {
   cmd := cmd . " -u " . mqtt_user
   cmd := cmd . " -P " . mqtt_pass
   cmd := cmd . " -t debug"
-  cmd := cmd . " -m " . A_TickCount
+  cmd := cmd . " -m " . A_TickCount . " C: " . ctrl_state
   run cmd,, "Hide"
 }
 

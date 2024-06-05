@@ -890,8 +890,8 @@ class App {
       New-ItemProperty `
         -Path $uri `
         -PropertyType String `
-        -Name "$name" `
-        -Value "$val" `
+        -Name $name `
+        -Value $val `
         -Force;
     }
   }

@@ -157,7 +157,8 @@
     "associations": {
       "*.js": "typescriptreact",
       "*.ts": "typescriptreact",
-      "*.tsx": "typescriptreact"
+      "*.tsx": "typescriptreact",
+      "*.json": "jsonc"
     }
   },
   "python.languageServer": "Pylance",
@@ -307,5 +308,8 @@
     "хендл",
     "человекочитаемые"
   ],
+  "powershell.powerShellAdditionalExePaths": {
+    "Shell": "/opt/homebrew/bin/pwsh"
+  },
   "workbench.colorTheme": "grigoryvp memory theme"
 }

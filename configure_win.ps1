@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.10";
+  $_ver = "1.0.11";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -21,6 +21,11 @@ class App {
     user = "foo";
     pass = "bar";
     token = "baz";
+  };
+  $_mqtt = @{
+    url = $null;
+    user = $null;
+    pass = $null;
   };
   #endregion
 
@@ -180,6 +185,9 @@ class App {
       if (-not (Test-Path -Path "$markerPath")) {
         $this._askForCredentials();
         $this._uploadSshKey();
+        $this._setEnv("MQTT_URL", $this._mqtt.url);
+        $this._setEnv("MQTT_USER", $this._mqtt.user);
+        $this._setEnv("MQTT_PASS", $this._mqtt.user);
       }
       # Re-clone with SSH keys
       $this._getFilesFromGit();
@@ -574,6 +582,10 @@ class App {
     $this._github.user = $this._attrFromKeepass("github", "username");
     $this._github.pass = $this._attrFromKeepass("github", "password");
     $this._github.token = $this._attrFromKeepass("github", "auto-cfg-token");
+
+    $this._mqtt.url = $this._attrFromKeepass("hivemq", "login_url");
+    $this._mqtt.user = $this._attrFromKeepass("hivemq", "login_user");
+    $this._mqtt.pass = $this._attrFromKeepass("hivemq", "login_pass");
   }
 
 

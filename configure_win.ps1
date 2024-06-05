@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.12";
+  $_ver = "1.0.13";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -109,6 +109,12 @@ class App {
         Write-Host "$($this._psDir) already exists";
       }
     }
+  
+    Write-Host "Downloading let's encrypt root certificate..."
+    $url = "https://letsencrypt.org/certs/isrgrootx1.pem";
+    $certFile = $this._path(@("~", "isrgrootx1.pem"));
+    Invoke-WebRequest $url -OutFile $certFile
+    $this._setEnv("MQTT_CERT", $certFile);
 
     $this._installWsl();
     $this._installPowershellModule("posh-git");

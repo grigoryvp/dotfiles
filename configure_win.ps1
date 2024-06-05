@@ -860,16 +860,16 @@ class App {
 
   _addToPath($subpath) {
     $root = "HKLM:\SYSTEM\CurrentControlSet\Control";
-    $path = "$root\Session Manager\Environment";
+    $uri = "$root\Session Manager\Environment";
     $name = "Path";
-    $val = Get-ItemProperty -Path $path -Name $name `
+    $val = Get-ItemProperty -Path $uri -Name $name `
       -ErrorAction SilentlyContinue;
     if ($val) {
       $path = $val.Path;
       if (-not $path.Contains($subpath)) {
         $path = "${path};$subpath";
         # Requires reboot, -Type ExpandString
-        Set-ItemProperty $path -Name $name -Value $path;
+        Set-ItemProperty $uri -Name $name -Value $path;
       }
     }
   }

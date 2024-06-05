@@ -689,7 +689,7 @@ OnTimer() {
   cmd := cmd . " -u " . mqtt_user
   cmd := cmd . " -P " . mqtt_pass
   cmd := cmd . " -t debug"
-  cmd := cmd . " -m """ . A_TickCount . """"
+  cmd := cmd . " -m " . A_TickCount . "foo"
   run cmd,, "Hide"
 }
 

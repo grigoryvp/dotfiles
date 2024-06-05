@@ -868,8 +868,8 @@ class App {
       $path = $val.Path;
       if (-not $path.Contains($subpath)) {
         $path = "${path};$subpath";
-        # Requires reboot.
-        Set-ItemProperty $path -Name $name -Type ExpandString -Value $path;
+        # Requires reboot, -Type ExpandString
+        Set-ItemProperty $path -Name $name -Value $path;
       }
     }
   }

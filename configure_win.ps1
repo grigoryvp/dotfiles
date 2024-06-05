@@ -11,6 +11,7 @@ class App {
   $_isFull = $false;
   $_isPublic = $false;
   $_POST_INSTALL_MSG = "";
+  $_keepassdb = $null;
   $_pass = $null;
   $_cfgDirLinux = $null;
   $_cfgDir = $null;
@@ -549,24 +550,25 @@ class App {
   }
 
 
+  [String] _attrFromKeepass($record, $attr) {
+    # -s to show protected attribute (password) as clear text.
+    $ret = & Write-Output $this._pass | keepassxc-cli `
+      show -s $this._keepassdb $record --attributes $attr;
+    return $ret;
+  }
+
+
   _askForCredentials() {
     $pass = Read-Host -AsSecureString -Prompt "Enter password"
 
     $ptr = [Security.SecureStringMarshal]::SecureStringToCoTaskMemAnsi($pass);
-    $str = [Runtime.InteropServices.Marshal]::PtrToStringAnsi($ptr);
-    $this._pass = $str;
+    $pass = [Runtime.InteropServices.Marshal]::PtrToStringAnsi($ptr);
+    $this._pass = $pass;
+    $this._keepassdb = $this._path(@($this._cfgDir, "passwords.kdbx"));
 
-    $db = $this._path(@($this._cfgDir, "passwords.kdbx"));
-    # -s to show protected attribute (password) as clear text.
-    $ret = & Write-Output $this._pass | keepassxc-cli show -s $db github;
-    # Title: ...
-    # UserName: ...
-    # Password: ...
-    # URL: ...
-    # Notes: ...
-    $this._github.user = $ret[1].Replace("UserName: ", "");
-    $this._github.pass = $ret[2].Replace("Password: ", "");
-    $this._github.token = $ret[4].Replace("Notes: ", "");
+    $this._github.user = $this._attrFromKeepass("github", "username");
+    $this._github.pass = $this._attrFromKeepass("github", "password");
+    $this._github.token = $this._attrFromKeepass("github", "auto-cfg-token");
   }
 
 
@@ -860,3 +862,4 @@ $app.configure();
 
 # TODO: xmousebutton config with wheel to click for poe
 # TODO: OPENSSL_ia32cap env var to ~0x20000000 for games
+# TODO: modify PATH and set env to HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment

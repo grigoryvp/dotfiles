@@ -83,9 +83,6 @@ class App {
       }
     }
 
-    # DEBUG
-    $this._setEnv("foo", "bar");
-  
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {

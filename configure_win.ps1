@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.9";
+  $_ver = "1.0.10";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -79,8 +79,8 @@ class App {
     }
 
     # DEBUG
-    $this._addToPath("foo");
-
+    $this._setEnv("foo", "bar");
+  
     # Auto-created by PowerShell 5.x until 6.x+ is a system default.
     # Create and set hidden attribute to exclude from 'ls'.
     if (-not $this._isTest) {
@@ -143,7 +143,7 @@ class App {
     $dstDir = $this._path(@($env:ProgramData, "chocolatey", "bin"));
     New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
     $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
-    $this._installBinApp("strayge.tray-monitor", $this._papth(
+    $this._installBinApp("strayge.tray-monitor", $this._path(
       @($env:LOCALAPPDATA, "Microsoft", "WinGet", "Packages", $dirname)));
     $this._registerAutohotkeyStartup();
     $this._registerBatteryInfoViewStartup();
@@ -294,6 +294,7 @@ class App {
     if (-not $env:PATH.Contains($binPath)) {
       $env:PATH = "${env:PATH};$binPath";
     }
+    $this._addToPath($binPath);
   }
 
 
@@ -315,6 +316,7 @@ class App {
     if (-not $env:PATH.Contains($binPath)) {
       $env:PATH = "${env:PATH};$binPath";
     }
+    $this._addToPath($binPath);
   }
 
 
@@ -871,6 +873,26 @@ class App {
         # Requires reboot, -Type ExpandString
         Set-ItemProperty $uri -Name $name -Value $path;
       }
+    }
+  }
+
+
+  _setEnv($name, $val) {
+    $root = "HKLM:\SYSTEM\CurrentControlSet\Control";
+    $uri = "$root\Session Manager\Environment";
+    $val = Get-ItemProperty -Path $uri -Name $name `
+      -ErrorAction SilentlyContinue;
+    if ($val) {
+      # Requires reboot, -Type ExpandString
+      Set-ItemProperty $uri -Name $name -Value $val;
+    }
+    else {
+      New-ItemProperty `
+        -Path $uri `
+        -PropertyType String `
+        -Name $name `
+        -Value $val `
+        -Force;
     }
   }
 }

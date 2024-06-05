@@ -181,10 +181,10 @@ class App {
       # Interactive.
       if (-not (Test-Path -Path "$markerPath")) {
         $this._askForCredentials();
-        $this._uploadSshKey();
         $this._setEnv("MQTT_URL", $this._mqtt.url);
         $this._setEnv("MQTT_USER", $this._mqtt.user);
         $this._setEnv("MQTT_PASS", $this._mqtt.user);
+        $this._uploadSshKey();
       }
       # Re-clone with SSH keys
       $this._getFilesFromGit();

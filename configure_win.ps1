@@ -856,3 +856,4 @@ $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
 
 # TODO: xmousebutton config with wheel to click for poe
+# TODO: OPENSSL_ia32cap env var to ~0x20000000 for games

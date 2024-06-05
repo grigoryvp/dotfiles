@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.11";
+  $_ver = "1.0.12";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -183,7 +183,7 @@ class App {
         $this._askForCredentials();
         $this._setEnv("MQTT_URL", $this._mqtt.url);
         $this._setEnv("MQTT_USER", $this._mqtt.user);
-        $this._setEnv("MQTT_PASS", $this._mqtt.user);
+        $this._setEnv("MQTT_PASS", $this._mqtt.pass);
         $this._uploadSshKey();
       }
       # Re-clone with SSH keys

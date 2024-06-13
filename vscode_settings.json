@@ -311,5 +311,6 @@
   "powershell.powerShellAdditionalExePaths": {
     "Shell": "/opt/homebrew/bin/pwsh"
   },
+  "disable-lcd-text": true,
   "workbench.colorTheme": "grigoryvp memory theme"
 }

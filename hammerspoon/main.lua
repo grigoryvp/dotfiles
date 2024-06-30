@@ -52,6 +52,7 @@ function App:loadSettings()
   self.pingRouterExt = hs.settings.get("pingRouterExt")
   self.pingInetInt = hs.settings.get("pingInetInt")
   self.pingInetExt = hs.settings.get("pingInetExt")
+  self.showBatteryTime = hs.settings.get("showBatteryTime")
   self.keepBrightness = hs.settings.get("keepBrightness")
 end
 
@@ -840,18 +841,22 @@ function App:onHeartbeat()
     minLeft = math.floor((secRemaining - hrLeft * 3600) / 60)
   end
 
-  local timeLeft = " ("
-  if recordCount > 0 then
-    if hrLeft > 0 then
-      timeLeft = timeLeft .. hrLeft .. "h"
+  local batteryText = ("%.0f"):format(battery)
+  if self.showBatteryTime then
+    local timeLeft = " ("
+    if recordCount > 0 then
+      if hrLeft > 0 then
+        timeLeft = timeLeft .. hrLeft .. "h"
+      end
+      if minLeft > 0 then
+        if hrLeft > 0 then timeLeft = timeLeft .. " " end
+        timeLeft = timeLeft .. minLeft .. "m"
+      end
+      timeLeft = timeLeft .. ")"
+    else
+      timeLeft = ""
     end
-    if minLeft > 0 then
-      if hrLeft > 0 then timeLeft = timeLeft .. " " end
-      timeLeft = timeLeft .. minLeft .. "m"
-    end
-    timeLeft = timeLeft .. ")"
-  else
-    timeLeft = ""
+    batteryText = batteryText .. timeLeft
   end
 
   self.menuItem:addText("wifi")
@@ -868,7 +873,7 @@ function App:onHeartbeat()
   self.menuItem:addSpacer(4)
   self.menuItem:addText("bat")
   self.menuItem:addSpacer(4)
-  self.menuItem:addText(("%.0f"):format(battery) .. timeLeft)
+  self.menuItem:addText(batteryText)
   self.menuItem:update()
 end
 
@@ -950,6 +955,15 @@ function App:createMenu()
       self.inetIcmpHistory = {}
       hs.settings.set("pingInetExt", self.pingInetExt)
       self:restartInetPingExt()
+    end
+  )
+
+  self.menuItem:addSubmenuCheckbox(
+    "Show battery time",
+    self.showBatteryTime,
+    function(checked)
+      self.showBatteryTime = checked
+      hs.settings.set("showBatteryTime", self.showBatteryTime)
     end
   )
 

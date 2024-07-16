@@ -688,7 +688,7 @@ OnTimer() {
   mqtt_pass := EnvGet("MQTT_PASS")
   mqtt_cert := EnvGet("MQTT_CERT")
 
-  msg = A_TickCount . " C: " . ctrl_state
+  msg := A_TickCount . " C: " . ctrl_state
 
   cmd := "mosquitto_pub.exe"
   cmd := cmd . " --host " . mqtt_url

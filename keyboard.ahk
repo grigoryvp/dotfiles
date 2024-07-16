@@ -53,9 +53,9 @@ if (!A_IsAdmin) {
 A_MaxHotkeysPerInterval := 500
 
 #inputlevel 1
+lctrl::lwin
 tab::lctrl
 enter::rctrl
-lctrl::lwin
 #inputlevel 0
 
 ;;  Escape is hard to reach with a pinkey
@@ -666,6 +666,12 @@ $#tab:: {
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
 animation := 174
 OnTimer() {
+
+  ;;  Try to prevent "sticky control"
+  if (!GetKeyState("tab", "P")) {
+    send "{lctrl up}"
+  }
+
   global animation
   TraySetIcon("Shell32.dll", animation, 1)
   if (animation < 175) {
@@ -682,6 +688,8 @@ OnTimer() {
   mqtt_pass := EnvGet("MQTT_PASS")
   mqtt_cert := EnvGet("MQTT_CERT")
 
+  msg = A_TickCount . " C: " . ctrl_state
+
   cmd := "mosquitto_pub.exe"
   cmd := cmd . " --host " . mqtt_url
   cmd := cmd . " --port 8883 "
@@ -689,7 +697,7 @@ OnTimer() {
   cmd := cmd . " -u " . mqtt_user
   cmd := cmd . " -P " . mqtt_pass
   cmd := cmd . " -t debug"
-  cmd := cmd . " -m `"" . A_TickCount . " C: " . ctrl_state . "`""
+  cmd := cmd . " -m `"" . msg . "`""
   run cmd,, "Hide"
 }
 

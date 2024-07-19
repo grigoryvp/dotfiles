@@ -70,10 +70,10 @@ enter::rctrl
 esc::send "{control down}{alt down}"
 esc up::send "{control up}{alt up}"
 
-;;  F1 for game bar
-f1::send "#g"
-;;  F5 for "record last 30 seconds" game bar function
+;;  F5 (meata-x) for "record last 30 seconds" game bar function
 f5::send "#!g"
+;;  F6 (meta-c) for game bar
+f6::send "#g"
 
 perform(cmd, arg, direction) {
   if (cmd = "winclose") {

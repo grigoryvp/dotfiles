@@ -672,11 +672,6 @@ $#tab:: {
 animation := 174
 OnTimer() {
 
-  ;;  Try to prevent "sticky control"
-  if (!GetKeyState("tab", "P")) {
-    send "{lctrl up}"
-  }
-
   global animation
   TraySetIcon("Shell32.dll", animation, 1)
   if (animation < 175) {

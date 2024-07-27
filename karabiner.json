@@ -168,7 +168,7 @@
           }]
         },
         {
-          "description": "esc-f for fast logout",
+          "description": "super-f for fast logout",
           "type": "basic",
           "from": {
             "key_code": "f"
@@ -194,7 +194,7 @@
           }]
         },
         {
-          "description": "esc-d for hideout",
+          "description": "super-d for hideout",
           "type": "basic",
           "from": {
             "key_code": "d"

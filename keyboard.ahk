@@ -174,7 +174,7 @@ $rctrl up:: {
   global appReturnUpTick
   appReturnUpTick := A_TickCount
   send "{rctrl up}"
-  if (A_PriorKey = "rctrl") {
+  if (A_PriorKey = "rcontrol") {
     send "{enter}"
   }
   else if (GetKeyState("lctrl", "P")) {
@@ -188,7 +188,7 @@ $rctrl up:: {
 ;;  Single tab press = tab
 $lctrl up:: {
   send "{lctrl up}"
-  if (A_PriorKey = "lctrl") {
+  if (A_PriorKey = "lcontrol") {
     send "{tab}"
   }
   else if (GetKeyState("rctrl", "P")) {

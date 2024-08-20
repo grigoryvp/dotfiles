@@ -169,6 +169,13 @@ $+vked up:: {
   appLeaderUpTick := A_TickCount
 }
 
+;;  Single esc (lalt) press = esc, otherwise it's a mod key
+*$esc up:: {
+  if (A_PriorKey = "escape") {
+    send "{esc}"
+  }
+}
+
 ;;  Single tab press = tab
 ~$lctrl up:: {
   if (A_PriorKey = "lcontrol") {

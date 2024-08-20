@@ -562,7 +562,7 @@ $lctrl up:: {
 ;; ===========================================================================
 
 ;;  'meta-semicolon' for left mouse button.
-*$`;:: {
+*$;:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("lctrl", "P") && GetKeyState("shift", "P")) {
       send "^+{lbutton down}"

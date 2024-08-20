@@ -52,24 +52,6 @@ if (!A_IsAdmin) {
 ;;  No warning if key is hold for 2 seconds (HotkeyInterval)
 A_MaxHotkeysPerInterval := 500
 
-#inputlevel 1
-lctrl::lwin
-tab::lctrl
-enter::rctrl
-#inputlevel 0
-
-;;  Escape is hard to reach with a pinkey
-;;! SharpKeys remaps like Esc=>F24 will not work with native apps like GD
-*lalt up:: {
-  ;;  Not used as meta like "esc-s"?
-  if (A_PriorKey = "LAlt") {
-    send "{escape}"
-  }
-}
-
-esc::send "{control down}{alt down}"
-esc up::send "{control up}{alt up}"
-
 ;;  F5 (meata-x) for game bar
 f5::send "#g"
 ;;  F6 (meta-c) for "record last 30 seconds" game bar function
@@ -114,7 +96,7 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
     if (GetKeyState("shift", "P")) {
       perform(mod2, to2, direction)
     }
-    else if (GetKeyState("tab", "P")) {
+    else if (GetKeyState("lctrl", "P")) {
       perform(mod3, to3, direction)
     }
     else {
@@ -188,26 +170,31 @@ $+vked up:: {
 }
 
 ;;  'Enter' up
-$enter up:: {
+$rctrl up:: {
   global appReturnUpTick
   appReturnUpTick := A_TickCount
   send "{rctrl up}"
-  if (A_PriorKey = "Enter") {
+  if (A_PriorKey = "rctrl") {
     send "{enter}"
+  }
+  else if (GetKeyState("lctrl", "P")) {
+    send "^{enter}"
+  }
+  else if (GetKeyState("lshift", "P")) {
+    send "+{enter}"
   }
 }
 
 ;;  Single tab press = tab
-$tab up:: {
+$lctrl up:: {
   send "{lctrl up}"
-  if (A_PriorKey = "Tab") {
+  if (A_PriorKey = "lctrl") {
     send "{tab}"
   }
+  else if (GetKeyState("rctrl", "P")) {
+    send "^{tab}"
+  }
 }
-
-$^enter up:: send "^{enter}"
-$+enter up:: send "+{enter}"
-$^tab up:: send "^{tab}"
 
 ;;  ==========================================================================
 ;;  Keys and combinations remap
@@ -369,7 +356,7 @@ $^tab up:: send "^{tab}"
 
 ;;  meta-f for F3
 ;;  meta-shift-f switch to 1st language
-;;  esc-f for game command
+;;  lalt(esc)-f for game command
 *$f:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -381,7 +368,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk72 down}"
     }
   }
-  else if (GetKeyState("lalt", "P")) {
+  else if (GetKeyState("esc", "P")) {
     ;;  TODO: check if PoE foreground
     send "{enter}"
     send "/exit"
@@ -400,7 +387,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk72 up}"
     }
   }
-  else if (GetKeyState("lalt", "P")) {
+  else if (GetKeyState("esc", "P")) {
   }
   else {
     send "{blind}{vk46 up}"
@@ -409,7 +396,7 @@ $^tab up:: send "^{tab}"
 
 ;;  meta-d for F2
 ;;  meta-d switch to 2nd language
-;;  esc-d for game command
+;;  lalt(esc)-d for game command
 *$d:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -421,7 +408,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk71 down}"
     }
   }
-  else if (GetKeyState("lalt", "P")) {
+  else if (GetKeyState("esc", "P")) {
     ;;  TODO: check if PoE foreground
     send "{enter}"
     send "/hideout"
@@ -440,7 +427,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk71 up}"
     }
   }
-  else if (GetKeyState("lalt", "P")) {
+  else if (GetKeyState("esc", "P")) {
   }
   else {
     send "{blind}{vk44 up}"
@@ -449,7 +436,7 @@ $^tab up:: send "^{tab}"
 
 ;;  meta-s for F1
 ;;  meta-s switch to 3nd language
-;;  esc-s for english signature
+;;  lalt(esc)-s for english signature
 *$s:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -467,7 +454,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk70 down}"
     }
   }
-  else if (GetKeyState("lalt", "P")) {
+  else if (GetKeyState("esc", "P")) {
     send "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"
   }
   else {
@@ -483,7 +470,7 @@ $^tab up:: send "^{tab}"
       send "{blind}{vk70 up}"
     }
   }
-  else if (GetKeyState("lalt", "P")) {
+  else if (GetKeyState("esc", "P")) {
   }
   else {
     send "{blind}{vk53 up}"
@@ -494,9 +481,9 @@ $^tab up:: send "^{tab}"
 ;;  Fast text entry
 ;;  ==========================================================================
 
-;;  esc-1 for game text 1
+;;  lalt(esc)-1 for game text 1
 *$1:: {
-  if (GetKeyState("lalt", "P")) {
+  if (GetKeyState("esc", "P")) {
     ;;  TODO: check if PoE foreground
     send "-[rgb]-|nne|rint"
   }
@@ -506,16 +493,16 @@ $^tab up:: send "^{tab}"
 }
 
 *$1 up:: {
-  if (GetKeyState("lalt", "P")) {
+  if (GetKeyState("esc", "P")) {
   }
   else {
     send "{blind}{1 up}"
   }
 }
 
-;;  esc-q for game text 1
+;;  lalt(esc)-q for game text 1
 *$q:: {
-  if (GetKeyState("lalt", "P")) {
+  if (GetKeyState("esc", "P")) {
     ;;  TODO: check if PoE foreground
     send "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"
   }
@@ -525,7 +512,7 @@ $^tab up:: send "^{tab}"
 }
 
 *$q up:: {
-  if (GetKeyState("lalt", "P")) {
+  if (GetKeyState("esc", "P")) {
   }
   else {
     send "{blind}{q up}"
@@ -577,10 +564,10 @@ $^tab up:: send "^{tab}"
 ;;  'meta-semicolon' for left mouse button.
 *$`;:: {
   if (GetKeyState("vked", "P")) {
-    if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
+    if (GetKeyState("lctrl", "P") && GetKeyState("shift", "P")) {
       send "^+{lbutton down}"
     }
-    else if (GetKeyState("tab", "P")) {
+    else if (GetKeyState("lctrl", "P")) {
       send "^{lbutton down}"
     }
     else if (GetKeyState("shift", "P")) {
@@ -602,10 +589,10 @@ $^tab up:: send "^{tab}"
     ;;! Sending button up with modifier key requires for apps like
     ;;  mspaint to correctly detect shift+drag followed by release and
     ;;  for chrome to correctly detect shift-click
-    if (GetKeyState("tab", "P") && GetKeyState("shift", "P")) {
+    if (GetKeyState("lctrl", "P") && GetKeyState("shift", "P")) {
       send "^+{lbutton up}"
     }
-    if (GetKeyState("tab", "P")) {
+    if (GetKeyState("lctrl", "P")) {
       send "^{lbutton up}"
     }
     else if (GetKeyState("shift", "P")) {

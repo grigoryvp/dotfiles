@@ -199,7 +199,7 @@ class App {
     # After additional files are received
   
     # Interactive
-    $this._mapCapsToF24();
+    $this._mapKeyboard();
 
     # Interactive.
     $this._installFonts();
@@ -506,19 +506,24 @@ class App {
 
 
   # Remapped via RandyRants.SharpKeys
-  _mapCapsToF24() {
+  _mapKeyboard() {
     if (-not $this._needMapCapsToF24()) {
       Write-Host "caps already mapped to F24";
       return;
     }
 
     Write-Host "mapping caps to F24";
+    # caps to F24 for autohotkey meta
+    # tab to lctrl (autohotkey changes single key back to tab)
+    # enter to rctrl (autohotkey change single key back to enter)
+    # left alt to esc for left-hand keypad gaming
+    # left ctrl to left win for left-hand keypad gaming (no win key)
     $val = ([byte[]](
-        0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00,
-        0x02, 0x00, 0x00, 0x00,
-        0x6F, 0x00, 0x3A, 0x00,
-        0x02, 0x00, 0x00, 0x00
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x06, 0x00, 0x00, 0x00, 0x6F, 0x00, 0x3A, 0x00,
+        0x1D, 0xE0, 0x1C, 0x00, 0x01, 0x00, 0x38, 0x00,
+        0x5B, 0xE0, 0x1D, 0x00, 0x1D, 0x00, 0x0F, 0x00,
+        0x00, 0x00, 0x00, 0x00
     ));
     New-ItemProperty `
       -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" `

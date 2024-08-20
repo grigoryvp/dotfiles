@@ -170,7 +170,7 @@ $+vked up:: {
 }
 
 ;;  'Enter' up
-$rctrl up:: {
+*$rctrl up:: {
   global appReturnUpTick
   appReturnUpTick := A_TickCount
   send "{rctrl up}"
@@ -186,7 +186,7 @@ $rctrl up:: {
 }
 
 ;;  Single tab press = tab
-$lctrl up:: {
+*$lctrl up:: {
   send "{lctrl up}"
   if (A_PriorKey = "lcontrol") {
     send "{tab}"

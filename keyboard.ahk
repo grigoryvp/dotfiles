@@ -41,8 +41,8 @@ appLeaderDownTick := 0
 appLeaderUpTick := 0
 appEnterDownTick := 0
 appEnterUpTick := 0
-appReturnUpTick := 0
-appReturnDownTick := 0
+appEnterUpTick := 0
+appEnterDownTick := 0
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -126,7 +126,7 @@ $vked:: {
   }
   ;;  For games like WoW right buttons hold are used for movement, so
   ;;  sometimes caps lock is released while holding tick or semicolon.
-  ;;  Holding caps lock again should return button hold.
+  ;;  Holding caps lock again should enter button hold.
   if (GetKeyState(";", "P")) {
     send "{lbutton down}"
     while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
@@ -169,10 +169,17 @@ $+vked up:: {
   appLeaderUpTick := A_TickCount
 }
 
-;;  Single esc (lalt) press = esc, otherwise it's a mod key
+;;  Single esc (lalt) press = esc, otherwise it's meta-2
 *$esc up:: {
   if (A_PriorKey = "escape") {
     send "{esc}"
+  }
+}
+
+;;  Single enter (ralt) press = enter, otherwise it's meta-3
+*$enter up:: {
+  if (A_PriorKey = "enter") {
+    send "{enter}"
   }
 }
 
@@ -188,8 +195,8 @@ $+vked up:: {
 
 ;;  'Enter' up
 ~$rctrl up:: {
-  global appReturnUpTick
-  appReturnUpTick := A_TickCount
+  global appEnterUpTick
+  appEnterUpTick := A_TickCount
   if (A_PriorKey = "rcontrol") {
     send "{enter}"
   }

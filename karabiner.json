@@ -594,6 +594,20 @@
         },
 
         {
+          "description": "'meta3-shift-l' for cmd-control-q (screen lock)",
+          "type": "basic",
+          "from": {
+            "key_code": "l",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "key_code": "q",
+            "modifiers": ["command", "control"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m3", "value": 1}]
+        },
+
+        {
           "description": "meta-2 for 1st app",
           "type": "basic",
           "from": {

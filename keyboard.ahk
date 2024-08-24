@@ -108,6 +108,34 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   }
 }
 
+appRemap = Map()
+
+;;  TODO: implement
+;;  New experimental syntax
+add_remap(from, modifiers, to, modifiers) {
+  config = Map("modifiers", modifiers, "to", to, "modifiers", modifiers)
+  if (appRemap.has(from)) {
+    appRemap[from].push(config)
+  }
+  else {
+    appRemap[from] := config
+  }
+}
+
+on_keydown(key) {
+  if (appRemap.has(key)) {
+  }
+  else {
+  }
+}
+
+on_keyup(key) {
+  if (appRemap.has(key)) {
+  }
+  else {
+  }
+}
+
 ;;  Switch between normal and 'compatible' mode for apps/games that
 ;;  can't handle multi-key virtual combinations, like "Grim Dawn"
 !pgdn:: {
@@ -246,10 +274,24 @@ $+vked up:: {
 *$k::remap("down", "vk4b", "", "up", "+", "up", "", "vk4b")
 *$k up::remap("up", "vk4b", "", "up", "+", "up", "", "vk4b")
 
+;;  New experimental syntax
+add_remap("vk4b", ["meta-1"], "up", [])
+add_remap("vk4b", ["meta-1", "shift"], "up", ["shift"])
+add_remap("vk4b", ["meta-3"], "PrintScreen", [])
+*$l::on_keydown("vk4b")
+*$l up::on_keyup("kv4b")
+
 ;;  'meta-l' for right arrow (vim-like).
 ;;  'meta-shift-l' for shift-right-arrow (vim-like + selection modify).
 *$l::remap("down", "vk4c", "", "right", "+", "right", "", "vk4c")
 *$l up::remap("up", "vk4c", "", "right", "+", "right", "", "vk4c")
+
+;;  New experimental syntax
+add_remap("vk4c", ["meta-1"], "right", [])
+add_remap("vk4c", ["meta-1", "shift"], "right", ["shift"])
+add_remap("vk4c", ["meta-3"], "lock", [])
+*$l::on_keydown("vk4c")
+*$l up::on_keyup("kv4c")
 
 ;;  'meta-w' for home.
 *$w::remap("down", "vk57", "", "home", "", "vk57", "", "vk57")

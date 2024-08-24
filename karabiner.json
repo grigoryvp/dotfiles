@@ -9,6 +9,9 @@
     "name": "grigoryvp profile",
     "selected": true,
     "simple_modifications": [{
+      "from": {"key_code": "right_command"},
+      "to": {"key_code": "return_or_enter"}
+    }, {
       "from": {"key_code": "tab"},
       "to": {"key_code": "left_control"}
     }, {

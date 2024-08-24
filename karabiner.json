@@ -554,6 +554,20 @@
         },
 
         {
+          "description": "'meta3-k' for shift-command-4 (screenshot)",
+          "type": "basic",
+          "from": {
+            "key_code": "k",
+            "modifiers": {"optional": ["any"]}
+          },
+          "to": [{
+            "key_code": "4",
+            "modifiers": ["command", "shift"]
+          }],
+          "conditions": [{"type": "variable_if", "name": "_m3", "value": 1}]
+        },
+
+        {
           "description": "'meta1-shift-l' for shift-right-arrow (vim-like + selection modify)",
           "type": "basic",
           "from": {
@@ -594,7 +608,7 @@
         },
 
         {
-          "description": "'meta3-shift-l' for cmd-control-q (screen lock)",
+          "description": "'meta3-l' for cmd-control-q (screen lock)",
           "type": "basic",
           "from": {
             "key_code": "l",

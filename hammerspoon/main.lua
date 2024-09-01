@@ -885,6 +885,36 @@ function App:startHeartbeat()
 end
 
 
+function App:shortenUrl(targetUrl)
+  if not self.vkToken then
+    return hs.alert.show("Passwords not loaded")
+  end
+
+  local url = "https://api.vk.com/method/utils.getShortLink"
+  url = url .. "?" .. "url=" .. hs.http.encodeForQuery(targetUrl)
+  url = url .. "&" .. "private=1"
+  url = url .. "&" .. "access_token=" .. hs.http.encodeForQuery(self.vkToken)
+  url = url .. "&" .. "v=5.199"
+  hs.http.asyncGet(url, nil, function(status, response, _)
+    if status ~= 200 and status ~= 201 then
+      return hs.alert.show("Failed")
+    end
+    local response = hs.json.decode(response)
+    if not response.response then
+      if response.error then
+        dir(response.error)
+      else
+        dir(response)
+      end
+      return hs.alert.show("Failed")
+    else
+      hs.pasteboard.setContents(response.response.short_url)
+      return hs.alert.show("Success")
+    end
+  end)
+end
+
+
 function App:createMenu()
 
   self.menuItem:addSubmenuItem("Load passwords", function()
@@ -898,12 +928,14 @@ function App:createMenu()
 
     local db = "/Users/user/dotfiles/passwords.kdbx"
     local app = "/opt/homebrew/bin/keepassxc-cli"
-    local args = {"show", "-s", db, "vk.gvp-url-shortener"}
+    local args = {
+      "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "notes"
+    }
     local onTaskExit = function(exitCode, stdOut, _)
       if exitCode ~= 0 then
         return hs.alert.show("Error executing keepassxc")
       end
-      vkToken = stdOut:match("Notes: (.+)\n")
+      self.vkToken = stdOut
       hs.alert.show("Loaded")
     end
     local task = hs.task.new(app, onTaskExit, args)
@@ -980,44 +1012,24 @@ function App:createMenu()
 
 
   self.menuItem:addSubmenuItem("Shorten URL", function()
-    if not vkToken then
-      return hs.alert.show("Passwords not loaded")
-    end
-
     local clipboard = hs.pasteboard.readString()
     if not clipboard:match("^https?://") then
       return hs.alert.show("No URL in clipboard")
     end
+    self:shortenUrl(clipboard)
+  end)
 
+  self.menuItem:addSubmenuItem("Shorten & trim URL", function()
+    local clipboard = hs.pasteboard.readString()
+    if not clipboard:match("^https?://") then
+      return hs.alert.show("No URL in clipboard")
+    end
     -- Remove query string before shortening.
     local queryPos = clipboard:find("?")
     if queryPos then
       clipboard = clipboard:sub(1, queryPos - 1)
     end
-
-    local url = "https://api.vk.com/method/utils.getShortLink"
-    url = url .. "?" .. "url=" .. hs.http.encodeForQuery(clipboard)
-    url = url .. "&" .. "private=1"
-    url = url .. "&" .. "v=5.199"
-    local headers = {
-      Authorization = "Bearer " .. vkToken
-    }
-    hs.http.asyncGet(url, headers, function(status, response, _)
-      if status ~= 200 and status ~= 201 then
-        return hs.alert.show("Failed")
-      end
-      local response = hs.json.decode(response)
-      if not response.response then
-        if response.error then
-          dir(response.error)
-        else
-          dir(response)
-        end
-        return hs.alert.show("Failed")
-      else
-        hs.pasteboard.setContents(response.response.short_url)
-        return hs.alert.show("Success")
-      end
-    end)
+    self:shortenUrl(clipboard)
   end)
+
 end

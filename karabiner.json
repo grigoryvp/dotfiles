@@ -1329,7 +1329,8 @@
               "^com\\.microsoft\\.edgemac$",
               "^com\\.apple\\.Safari$",
               "^org\\.chromium\\.Chromium$",
-              "^com\\.google\\.Chrome$"
+              "^com\\.google\\.Chrome$",
+              "^ru\\.keepcoder\\.Telegram$"
             ]
           }]
         },

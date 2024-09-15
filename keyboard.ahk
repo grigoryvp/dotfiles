@@ -178,7 +178,7 @@ $vked:: {
   }
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   else if (GetKeyState("esc", "P")) {
-    send "{lalt up}"
+    send "{lalt down}"
   }
 }
 

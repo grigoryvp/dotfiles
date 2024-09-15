@@ -222,6 +222,9 @@
   "workbench.editor.empty.hint": "hidden",
   "xi.debug": false,
   "cSpell.language": "en,ru",
+  "cSpell.ignoreWords": [
+    "трем"
+  ],
   "cSpell.userWords": [
     "Duolingo",
     "frontmost",
@@ -290,6 +293,7 @@
     "переиспользование",
     "переиспользования",
     "переиспользуем",
+    "переиспользуемые",
     "переиспользуемый",
     "переиспользуемых",
     "переиспользует",
@@ -315,6 +319,7 @@
     "стагнируют",
     "таба",
     "тимлид",
+    "трем",
     "туториалах",
     "флешек",
     "хендл",
@@ -325,5 +330,6 @@
     "Shell": "/opt/homebrew/bin/pwsh"
   },
   "disable-lcd-text": true,
-  "workbench.colorTheme": "grigoryvp memory theme"
+  "workbench.colorTheme": "grigoryvp memory theme",
+  "cmake.showOptionsMovedNotification": false
 }

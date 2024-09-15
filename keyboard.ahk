@@ -118,7 +118,7 @@ add_remap(from, from_mods, to, to_mods) {
     appRemap[from].push(config)
   }
   else {
-    appRemap[from] := config
+    appRemap[from] := [config]
   }
 }
 

@@ -43,7 +43,14 @@ appEnterDownTick := 0
 appEnterUpTick := 0
 appEnterUpTick := 0
 appEnterDownTick := 0
-appAltSetDown := 0
+;;  Separate flags for alt down emulation with meta-2 while meta-1 is
+;;  pressed and meta-1 while meta-2 is pressed. This is used to ensure
+;;  that the same key that set alt down will also put it up and do nothing
+;;  else. Otherwise it's possible to down meta-1, down meta-2 (holds alt),
+;;  up meta-1 (incorrectly releases alt), up meta-2 (incorrectly triggers
+;;  esc).
+appAltHoldByMeta1 := 0
+appAltHoldByMeta2 := 0
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -179,8 +186,8 @@ $vked:: {
   }
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   else if (GetKeyState("esc", "P")) {
-    global appAltSetDown
-    appAltSetDown := 1
+    global appAltHoldByMeta1
+    appAltHoldByMeta1 := 1
     send "{lalt down}"
   }
 }
@@ -189,10 +196,11 @@ $vked:: {
 $vked up:: {
   global appLeaderUpTick
   appLeaderUpTick := A_TickCount
+
+  global appAltHoldByMeta1
   ;;  meta-1+meta-2 for left alt (while using external mouse)
-  if (GetKeyState("esc", "P")) {
-    global appAltSetDown
-    appAltSetDown := 0
+  if (appAltHoldByMeta1) {
+    appAltHoldByMeta1 := 0
     send "{lalt up}"
   }
 }
@@ -213,8 +221,8 @@ $+vked up:: {
 ;;  meta-1+meta-2 for left alt (while using external mouse)
 *$esc:: {
   if (GetKeyState("vked", "P")) {
-    global appAltSetDown
-    appAltSetDown := 1
+    global appAltHoldByMeta2
+    appAltHoldByMeta2 := 1
     send "{lalt down}"
   }
 }
@@ -222,9 +230,9 @@ $+vked up:: {
 ;;  Single esc (lalt) press = esc, otherwise it's meta-2
 *$esc up:: {
   ;;  meta-1+meta-2 for left alt (while using external mouse)
-  if (appAltSetDown) {
-    global appAltSetDown
-    appAltSetDown := 0
+  if (appAltHoldByMeta2) {
+    global appAltHoldByMeta2
+    appAltHoldByMeta2 := 0
     send "{lalt up}"
   }
   else if (A_PriorKey = "escape") {

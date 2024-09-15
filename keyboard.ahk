@@ -108,12 +108,12 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   }
 }
 
-appRemap = Map()
+appRemap := Map()
 
 ;;  TODO: implement
 ;;  New experimental syntax
 add_remap(from, modifiers, to, modifiers) {
-  config = Map("modifiers", modifiers, "to", to, "modifiers", modifiers)
+  config := Map("modifiers", modifiers, "to", to, "modifiers", modifiers)
   if (appRemap.has(from)) {
     appRemap[from].push(config)
   }

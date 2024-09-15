@@ -43,6 +43,7 @@ appEnterDownTick := 0
 appEnterUpTick := 0
 appEnterUpTick := 0
 appEnterDownTick := 0
+appAltSetDown := 0
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -178,6 +179,8 @@ $vked:: {
   }
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   else if (GetKeyState("esc", "P")) {
+    global appAltSetDown
+    appAltSetDown := 1
     send "{lalt down}"
   }
 }
@@ -188,6 +191,8 @@ $vked up:: {
   appLeaderUpTick := A_TickCount
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   if (GetKeyState("esc", "P")) {
+    global appAltSetDown
+    appAltSetDown := 0
     send "{lalt up}"
   }
 }
@@ -208,6 +213,8 @@ $+vked up:: {
 ;;  meta-1+meta-2 for left alt (while using external mouse)
 *$esc:: {
   if (GetKeyState("vked", "P")) {
+    global appAltSetDown
+    appAltSetDown := 1
     send "{lalt down}"
   }
 }
@@ -215,7 +222,9 @@ $+vked up:: {
 ;;  Single esc (lalt) press = esc, otherwise it's meta-2
 *$esc up:: {
   ;;  meta-1+meta-2 for left alt (while using external mouse)
-  if (GetKeyState("vked", "P")) {
+  if (appAltSetDown) {
+    global appAltSetDown
+    appAltSetDown := 0
     send "{lalt up}"
   }
   else if (A_PriorKey = "escape") {

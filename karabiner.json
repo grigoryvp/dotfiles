@@ -369,7 +369,7 @@
         },
 
         {
-          "description": "meta-tab-semicolon for command-lmb",
+          "description": "meta1-ctrl(tab)-semicolon for command(ctrl)-lmb",
           "type": "basic",
           "from": {
             "key_code": "semicolon",
@@ -382,6 +382,22 @@
           "conditions": [{"type": "variable_if", "name": "_m1", "value": 1}]
         },
 
+        {
+          "description": "meta1-meta2-semicolon for option(alt)-lmb",
+          "type": "basic",
+          "from": {
+            "key_code": "semicolon"
+          },
+          "to": [{
+            "pointing_button": "button1",
+            "modifiers": ["left_option"]
+          }],
+          "conditions": [{
+            "type": "variable_if", "name": "_m1", "value": 1
+          }, {
+            "type": "variable_if", "name": "_m2", "value": 1
+          }]
+        },
         {
           "description": "meta-semicolon for left mouse button",
           "type": "basic",

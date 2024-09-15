@@ -112,8 +112,8 @@ appRemap := Map()
 
 ;;  TODO: implement
 ;;  New experimental syntax
-add_remap(from, modifiers, to, modifiers) {
-  config := Map("modifiers", modifiers, "to", to, "modifiers", modifiers)
+add_remap(from, from_mods, to, to_mods) {
+  config := Map("modifiers", from_mods, "to", to, "modifiers", to_mods)
   if (appRemap.has(from)) {
     appRemap[from].push(config)
   }

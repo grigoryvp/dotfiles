@@ -278,8 +278,8 @@ $+vked up:: {
 add_remap("vk4b", ["meta-1"], "up", [])
 add_remap("vk4b", ["meta-1", "shift"], "up", ["shift"])
 add_remap("vk4b", ["meta-3"], "PrintScreen", [])
-*$l::on_keydown("vk4b")
-*$l up::on_keyup("kv4b")
+;; *$k::on_keydown("vk4b")
+;; *$k up::on_keyup("kv4b")
 
 ;;  'meta-l' for right arrow (vim-like).
 ;;  'meta-shift-l' for shift-right-arrow (vim-like + selection modify).
@@ -290,8 +290,8 @@ add_remap("vk4b", ["meta-3"], "PrintScreen", [])
 add_remap("vk4c", ["meta-1"], "right", [])
 add_remap("vk4c", ["meta-1", "shift"], "right", ["shift"])
 add_remap("vk4c", ["meta-3"], "lock", [])
-*$l::on_keydown("vk4c")
-*$l up::on_keyup("kv4c")
+;; *$l::on_keydown("vk4c")
+;; *$l up::on_keyup("kv4c")
 
 ;;  'meta-w' for home.
 *$w::remap("down", "vk57", "", "home", "", "vk57", "", "vk57")

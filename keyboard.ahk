@@ -176,6 +176,10 @@ $vked:: {
     }
     send "{mbutton up}"
   }
+  ;;  meta-1+meta-2 for left alt (while using external mouse)
+  else if (GetKeyState("esc", "P")) {
+    send "{lalt up}"
+  }
 }
 
 ;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
@@ -197,11 +201,20 @@ $+vked up:: {
   appLeaderUpTick := A_TickCount
 }
 
+;;  meta-1+meta-2 for left alt (while using external mouse)
+*$esc:: {
+  if (GetKeyState("vked", "P")) {
+    send "{lalt down}"
+  }
+}
+
 ;;  Single esc (lalt) press = esc, otherwise it's meta-2
 *$esc up:: {
   if (A_PriorKey = "escape") {
     send "{esc}"
   }
+  ;;  meta-1+meta-2 for left alt (while using external mouse)
+  send "{lalt up}"
 }
 
 ;;  Single enter (ralt) press = enter, otherwise it's meta-3

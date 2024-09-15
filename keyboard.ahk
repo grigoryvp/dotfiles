@@ -186,6 +186,10 @@ $vked:: {
 $vked up:: {
   global appLeaderUpTick
   appLeaderUpTick := A_TickCount
+  ;;  meta-1+meta-2 for left alt (while using external mouse)
+  if (GetKeyState("esc", "P")) {
+    send "{lalt up}"
+  }
 }
 
 ;;  Supress rshift+caps that produces char codes in chrome and erases

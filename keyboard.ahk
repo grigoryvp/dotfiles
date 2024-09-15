@@ -742,7 +742,8 @@ OnTimer() {
   run cmd,, "Hide"
 }
 
-SetTimer(OnTimer, 500)
+;; Seems to degrade AutoHotkey, subject to test
+;; SetTimer(OnTimer, 500)
 
 ;; TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
 ;; TODO: url shortener on context menu

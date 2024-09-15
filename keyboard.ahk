@@ -214,11 +214,13 @@ $+vked up:: {
 
 ;;  Single esc (lalt) press = esc, otherwise it's meta-2
 *$esc up:: {
-  if (A_PriorKey = "escape") {
+  ;;  meta-1+meta-2 for left alt (while using external mouse)
+  if (GetKeyState("vked", "P")) {
+    send "{lalt up}"
+  }
+  else if (A_PriorKey = "escape") {
     send "{esc}"
   }
-  ;;  meta-1+meta-2 for left alt (while using external mouse)
-  send "{lalt up}"
 }
 
 ;;  Single enter (ralt) press = enter, otherwise it's meta-3

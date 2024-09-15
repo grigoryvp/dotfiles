@@ -627,7 +627,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
     else if (GetKeyState("shift", "P")) {
       send "+{lbutton down}"
     }
-    else if (GetKeyState("alt", "P")) {
+    else if (GetKeyState("escape", "P")) {
       send "!{lbutton down}"
     }
     else {
@@ -652,7 +652,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
     else if (GetKeyState("shift", "P")) {
       send "+{lbutton up}"
     }
-    else if (GetKeyState("alt", "P")) {
+    else if (GetKeyState("escape", "P")) {
       send "!{lbutton up}"
     }
     else {

@@ -301,7 +301,7 @@
         },
 
         {
-          "description": "ctrl-enter; before next one",
+          "description": "ctrl-enter (command-enter); before next one",
           "type": "basic",
           "from": {
             "key_code": "right_control",
@@ -309,7 +309,7 @@
           },
           "to": [{
             "key_code": "return_or_enter",
-            "modifiers": ["left_control"]
+            "modifiers": ["right_command"]
           }]
         },
 

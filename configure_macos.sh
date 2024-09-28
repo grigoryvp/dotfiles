@@ -190,6 +190,8 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard false
 # Disable inline attachments in Mail
 defaults write com.apple.mail DisableInlineAttachmentViewing true
+# "Continuos scroll" by default for PDF preview
+defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 # Tends to hang with 100% cpu load
 launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
 # Input method name lookup for debug purpose
@@ -219,3 +221,4 @@ rbenv install 3.2.0
 rbenv global 3.2.0
 nodenv install 22.2.0
 nodenv global 22.2.0
+echo "Disable caps via Settings/Keyboard/Shortcuts/Modifier"

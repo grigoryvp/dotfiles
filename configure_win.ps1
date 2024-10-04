@@ -664,6 +664,9 @@ class App {
 
     $trigger = New-ScheduledTaskTrigger -AtLogOn;
     Set-ScheduledTask -TaskName $name -Trigger $trigger;
+
+    $settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit 0;
+    Set-ScheduledTask -TaskName $name -Settings $settings;
   }
 
 

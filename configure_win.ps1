@@ -128,9 +128,6 @@ class App {
       @(${env:ProgramFiles}, "Git", "cmd")));
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
-    # Some apps like lsd are only available via chocolatey
-    $this._InstallBinApp("Chocolatey.Chocolatey", $this._path(
-      @($env:ProgramData, "chocolatey", "bin")));
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
     # TODO: Need version 2.20.4, in 2.20.5 "{WAITMS:100}{LMB}" does not work.
     # https://dvps.highrez.co.uk/downloads/XMouseButtonControlSetup.2.20.4.exe
@@ -142,13 +139,13 @@ class App {
       @($env:LOCALAPPDATA, "Programs", "Microsoft VS Code", "bin")));
     $this._configureVscode();
     # Better ls
-    # TODO: move to winget
-    & choco install -y lsd
+    $this._installApp("lsd-rs.lsd");
     $this._configureLsd();
-    & choco install -y --ignore-checksums batteryinfoview
+    # TODO: install batteryinfoview via winget like "NirSoft.WifiInfoView"
+    # this._installLocationApp("NirSoft.BatteryInfoView", "")
     $name = "BatteryInfoView.cfg";
     $srcPath = $this._path(@($this._cfgDir, $name));
-    $dstDir = $this._path(@($env:ProgramData, "chocolatey", "bin"));
+    $dstDir = $this._path(@("~", "apps", "NirSoft.BatteryInfoView"));
     New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
     $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
     $this._installBinApp("strayge.tray-monitor", $this._path(
@@ -920,6 +917,12 @@ class App {
         -Force;
     }
   }
+
+  # Apps that are not used anymore but have non-trivial install instructions
+  _notUsed() {
+    $this._InstallBinApp("Chocolatey.Chocolatey", $this._path(
+      @($env:ProgramData, "chocolatey", "bin")));
+  }
 }
 
 # Stop on unhandled exceptions.
@@ -930,3 +933,4 @@ $app.configure();
 
 # TODO: xmousebutton config with wheel to click for poe
 # TODO: OPENSSL_ia32cap env var to ~0x20000000 for games
+# TODO: https://github.com/EFLFE/PingoMeter

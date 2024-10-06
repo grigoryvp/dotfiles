@@ -42,10 +42,8 @@ class App {
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
+      - Reboot and make --full configuration
       - Load X-Mouse Button Control settings
-      - Reboot
-      - Make --full configuration
-      - Configure X-Mouse Button Control:
         * Disable 'Settings/Pointer/Change cursor when move to scroll'
         * Map Mouse4 => 'change movement to scroll' with setings:
           * Sensitivity 1
@@ -120,6 +118,7 @@ class App {
     # Game compatibility
     $this._setEnv("OPENSSL_ia32cap", "~0x20000000");
 
+    # 1-st stage install, requires reboot for a second stage
     $this._installWsl();
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
@@ -216,8 +215,11 @@ class App {
         Copy-Item -Path "$src" -Destination . -Force;
     }
 
-    # Optional installs
+    # Optional installs after reboot
     if ($this._isFull) {
+      # 2-nd stage install after reboot
+      $this._installWsl();
+      $this._copySshKeyToWsl();
       # for diff-so-fancy
       $this._installBinApp("StrawberryPerl.StrawberryPerl",
         "C:\Strawberry\perl\bin\");
@@ -352,7 +354,7 @@ class App {
       return;
     }
     Write-Host "Installing WSL. Create a user named 'user' with a password";
-    Start-Process wsl -ArgumentList '--install' -Wait;
+    Start-Process wsl -ArgumentList "--install" -Wait;
   }
 
 
@@ -415,6 +417,11 @@ class App {
     }
     Write-Host "Generating ssh key";
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
+  }
+
+
+  _copySshKeyToWsl() {
+    if ($this._isTest) { return; }
 
     $wslSshDir = "\\wsl$\Ubuntu\home\user\.ssh"
     if (-not (Test-Path -Path "$wslSshDir" )) {

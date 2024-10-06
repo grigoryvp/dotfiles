@@ -128,6 +128,7 @@ class App {
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
+    $this._installApp("gerardog.gsudo");
     $this._installBinApp("Git.Git", $this._path(
       @(${env:ProgramFiles}, "Git", "cmd")));
     # Clone without keys via HTTPS
@@ -655,8 +656,14 @@ class App {
 
     $name = "autohotkey";
     $task = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue;
+    $registered = $true;
     if (-not $task) {
-      $task = New-ScheduledTask -TaskName $name;
+      Write-Host "Creating new AutoHotkey scheduled task";
+      $task = New-ScheduledTask;
+      $registered = $false;
+    }
+    else {
+      Write-Host "Modifying existing AutoHotkey scheduled task";
     }
 
     $argmap = @{
@@ -665,15 +672,19 @@ class App {
       Argument = $this._path(@($this._cfgDir, "keyboard.ahk"))
     }
     $action = New-ScheduledTaskAction @argmap;
-    Set-ScheduledTask -TaskName $name -Action $action;
+    Set-ScheduledTask -InputObject $task -Action $action;
 
     $trigger = New-ScheduledTaskTrigger -AtLogOn;
-    Set-ScheduledTask -TaskName $name -Trigger $trigger;
+    Set-ScheduledTask -InputObject $task -Trigger $trigger;
 
     $settings = New-ScheduledTaskSettingsSet `
       -ExecutionTimeLimit 0 `
       -AllowStartIfOnBatteries;
-    Set-ScheduledTask -TaskName $name -Settings $settings;
+    Set-ScheduledTask -InputObject $task -Settings $settings;
+
+    if (-not $registered) {
+      Register-ScheduledTask -InputObject $task -TaskName $name;
+    }
   }
 
 

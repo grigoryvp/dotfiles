@@ -1,17 +1,22 @@
 # My Win and MacOS box auto config
 
-## Windows install via cmd.exe
+## Windows install
+
+Start with Windows Terminal and `Command Prompt` (not "Windows PowerShell"):
 
 ```bat
-winget install --silent gerardog.gsudo
-set PATH=%PATH%;%ProgramFiles%\gsudo\Current
 winget install --silent Microsoft.PowerShell
-set PATH=%PATH%;%ProgramFiles%\PowerShell\7
-rem inspect $error if Invoke-Expression fails.
-set REPO_URL=https://raw.githubusercontent.com/grigoryvp/dotfiles
-set URL=%REPO_URL%/master/configure_win.ps1
-:: 'Invoke-Expression' instead of 'iex' since 'iex' is removed by profile.ps1
-sudo pwsh -c "iwr -He @{'Cache-Control'='no-cache'} %URL% | Invoke-Expression"
+```
+
+Relaunch terminal, continue with `Elevated PowerShell`:
+
+```ps1
+$repo_url = "https://raw.githubusercontent.com/grigoryvp/dotfiles"
+$url = "$repo_url/master/configure_win.ps1"
+# 'Invoke-Expression' instead of 'iex' since 'iex' is removed by profile.ps1
+Invoke-WebRequest $url -OutFile ./configure.ps1
+# inspect $error if Invoke-Expression fails.
+./configure.ps1
 ```
 
 Follow instructions for post-configuration.

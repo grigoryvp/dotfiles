@@ -684,6 +684,8 @@ class App {
 
     Set-ScheduledTask -TaskName $name -Trigger $trigger;
 
+    Set-ScheduledTask -TaskName $name -RunLevel Highest;
+
     $settings = New-ScheduledTaskSettingsSet `
       -ExecutionTimeLimit 0 `
       -AllowStartIfOnBatteries;

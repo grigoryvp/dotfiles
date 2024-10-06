@@ -128,7 +128,6 @@ class App {
     $this._setDebounceOptions();
     $this._setTouchpadOptions();
     $this._setInputMethodOptions();
-    $this._installApp("gerardog.gsudo");
     $this._installBinApp("Git.Git", $this._path(
       @(${env:ProgramFiles}, "Git", "cmd")));
     # Clone without keys via HTTPS
@@ -951,6 +950,10 @@ class App {
   _notUsed() {
     $this._InstallBinApp("Chocolatey.Chocolatey", $this._path(
       @($env:ProgramData, "chocolatey", "bin")));
+    # Windows 11 now has sudo under "developer settings". It's worse than
+    # this one, since it spawns new terminal windows instead of resuing
+    # the current one.
+    $this._installApp("gerardog.gsudo");
   }
 }
 

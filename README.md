@@ -2,8 +2,6 @@
 
 ## Windows install
 
-Start with Windows Terminal and `Command Prompt` (not "Windows PowerShell"):
-
 ```bat
 winget install --silent Microsoft.PowerShell
 ```
@@ -15,7 +13,6 @@ $repo_url = "https://raw.githubusercontent.com/grigoryvp/dotfiles"
 $url = "$repo_url/master/configure_win.ps1"
 # 'Invoke-Expression' instead of 'iex' since 'iex' is removed by profile.ps1
 Invoke-WebRequest $url -OutFile ./configure.ps1
-# inspect $error if Invoke-Expression fails.
 ./configure.ps1
 ```
 

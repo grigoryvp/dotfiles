@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.13";
+  $_ver = "1.0.14";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -42,6 +42,7 @@ class App {
     $this._psDir = $this._path(@("~", "Documents", "PowerShell"));
     $this._POST_INSTALL_MSG = @"
       Config complete. Manual things to do
+      - Load X-Mouse Button Control settings
       - Reboot
       - Make --full configuration
       - Configure X-Mouse Button Control:
@@ -116,6 +117,9 @@ class App {
     Invoke-WebRequest $url -OutFile $certFile
     $this._setEnv("MQTT_CERT", $certFile);
 
+    # Game compatibility
+    $this._setEnv("OPENSSL_ia32cap", "~0x20000000");
+
     $this._installWsl();
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
@@ -150,12 +154,16 @@ class App {
     $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
     $this._installBinApp("strayge.tray-monitor", $this._path(
       @($env:LOCALAPPDATA, "Microsoft", "WinGet", "Packages", $dirname)));
+    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129
+    # $this._installApp("EFLFE.PingoMeter");
     $this._registerAutohotkeyStartup();
     $this._registerBatteryInfoViewStartup();
     $this._registerBatteryIconStartup();
     $this._registerCpuIconStartup();
     $this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
+    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129
+    # $this._registerPingometerStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -882,6 +890,19 @@ class App {
   }
 
 
+  _registerPingometerStartup() {
+    if ($this._isTest) { return; }
+    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    if (Test-Path -Path "$startDir\pingometer.bat") {
+      Remove-Item "$startDir\pingometer.bat" -Recurse -Force;
+    }
+    $content = "pwsh -Command Start-Process Pingometer.exe";
+    $content += " -WindowStyle Hidden";
+    $name = "pingometer.bat";
+    New-File -path $startDir -Name $name -Value "$content";
+  }
+
+
   _addToPath($subpath) {
     $root = "HKLM:\SYSTEM\CurrentControlSet\Control";
     $uri = "$root\Session Manager\Environment";
@@ -930,7 +951,3 @@ $ErrorActionPreference = "Stop";
 $pathIntrinsics = $ExecutionContext.SessionState.Path;
 $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
-
-# TODO: xmousebutton config with wheel to click for poe
-# TODO: OPENSSL_ia32cap env var to ~0x20000000 for games
-# TODO: https://github.com/EFLFE/PingoMeter

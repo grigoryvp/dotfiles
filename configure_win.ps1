@@ -674,7 +674,7 @@ class App {
     if (-not $task) {
       Write-Host "Creating new AutoHotkey scheduled task";
       Register-ScheduledTask -TaskName $name `
-        -Action $action -Trigger $trigger -RunLevl Highest;
+        -Action $action -Trigger $trigger -RunLevel Highest;
     }
     else {
       Write-Host "Modifying existing AutoHotkey scheduled task";

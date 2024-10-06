@@ -28,6 +28,10 @@ prune = true
 # "fatal: Cannot rebase onto multiple branches" if git-radar is used.
 rebase = true
 
+[safe]
+# Can be manipulated via sudo which changes user
+directory = "C:/Users/user/dotfiles"
+
 [alias]
 cl = "clone"
 ch = "checkout"

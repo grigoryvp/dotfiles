@@ -37,12 +37,8 @@
 
 codepage := 65001 ; utf-8
 appLastLangHotkey := ""
-appLeaderDownTick := 0
 appLeaderUpTick := 0
-appEnterDownTick := 0
-appEnterUpTick := 0
-appEnterUpTick := 0
-appEnterDownTick := 0
+appLeaderDownTick := 0
 ;;  Separate flags for alt down emulation with meta-2 while meta-1 is
 ;;  pressed and meta-1 while meta-2 is pressed. This is used to ensure
 ;;  that the same key that set alt down will also put it up and do nothing
@@ -258,8 +254,6 @@ $+vked up:: {
 
 ;;  'Enter' up
 ~$rctrl up:: {
-  global appEnterUpTick
-  appEnterUpTick := A_TickCount
   if (A_PriorKey = "rcontrol") {
     send "{enter}"
   }

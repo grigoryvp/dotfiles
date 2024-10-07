@@ -231,7 +231,7 @@ class App {
       & nvm install latest
       & nvm use latest
       Write-Host "Updating npm"
-      $ npm install -g npm@latest
+      & npm install -g npm@latest
       # Better diff
       & npm install -g diff-so-fancy
       # General-purpose messaging.

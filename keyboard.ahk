@@ -744,20 +744,9 @@ $#down:: {
 $#tab:: {
 }
 
-;;  TODO: add network ping here. Maybe by calling "ping"?
-;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
-animation := 174
-OnTimer() {
 
-  global animation
-  TraySetIcon("Shell32.dll", animation, 1)
-  if (animation < 175) {
-    animation := animation + 1
-  }
-  else {
-    animation := 174
-  }
-
+;;  Used for remote debug purpose
+SendMqtt() {
   ctrl_state := GetKeyState("control", "P")
 
   mqtt_url := EnvGet("MQTT_URL")
@@ -778,8 +767,24 @@ OnTimer() {
   run cmd,, "Hide"
 }
 
-;; Seems to degrade AutoHotkey, subject to test
-;; SetTimer(OnTimer, 500)
+appIconMain := LoadPicture("icons/ahk.png")
+appIconDebug := LoadPicture("icons/ahk_d.png")
+appShowDebugIcon := 0
 
-;; TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
+;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
+;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
+OnTimer() {
+
+  global appShowDebugIcon
+  if (appShowDebugIcon) {
+    TraySetIcon(appIconDebug)
+  }
+  else {
+    TraySetIcon(appIconMain)
+  }
+
+}
+
+SetTimer(OnTimer, 500)
+
 ;; TODO: url shortener on context menu

@@ -99,16 +99,28 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       perform(mod2, to2, direction)
+      if (direction = "down") {
+        A_IconTip := "m1-s-" . from . " to " . mod2 . "{" . to2 . "}"
+      }
     }
     else if (GetKeyState("lctrl", "P")) {
       perform(mod3, to3, direction)
+      if (direction = "down") {
+        A_IconTip := "m1-c-" . from . " to " . mod3 . "{" . to3 . "}"
+      }
     }
     else {
       perform(mod1, to1, direction)
+      if (direction = "down") {
+        A_IconTip := "m1-" . from . " to " . mod1 . "{" . to1 . "}"
+      }
     }
   }
   else {
     send "{blind}{" . from . " " . direction . "}"
+    if (direction = "down") {
+      A_IconTip := from . " pass through"
+    }
   }
 }
 

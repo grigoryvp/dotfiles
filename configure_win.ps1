@@ -146,21 +146,18 @@ class App {
     $this._configureLsd();
     # TODO: install batteryinfoview via winget like "NirSoft.WifiInfoView"
     # this._installLocationApp("NirSoft.BatteryInfoView", "")
-    $name = "BatteryInfoView.cfg";
-    $srcPath = $this._path(@($this._cfgDir, $name));
-    $dstDir = $this._path(@("~", "apps", "NirSoft.BatteryInfoView"));
-    New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
+    # $name = "BatteryInfoView.cfg";
+    # $srcPath = $this._path(@($this._cfgDir, $name));
+    # $dstDir = $this._path(@("~", "apps", "NirSoft.BatteryInfoView"));
+    # New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
     $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
-    $this._installBinApp("strayge.tray-monitor", $this._path(
-      @($env:LOCALAPPDATA, "Microsoft", "WinGet", "Packages", $dirname)));
+    $this._installApp("strayge.tray-monitor");
     # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129
     # $this._installApp("EFLFE.PingoMeter");
     $this._registerAutohotkeyStartup();
-    $this._registerBatteryInfoViewStartup();
-    $this._registerBatteryIconStartup();
-    $this._registerCpuIconStartup();
-    $this._registerRamIconStartup();
     $this._registerXMouseButtonControlStartup();
+    # TODO: wait for BatteryInfoView install
+    # $this._registerBatteryInfoViewStartup();
     # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129
     # $this._registerPingometerStartup();
 
@@ -851,45 +848,6 @@ class App {
     $content += " -WindowStyle Hidden";
     $name = "battery-info-view.bat"
     New-File -Path $startDir -Name $name -Value "$content";
-  }
-
-
-  _registerBatteryIconStartup() {
-    if ($this._isTest) { return; }
-    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\battery-icon.bat") {
-      Remove-Item "$startDir\battery-icon.bat" -Recurse -Force;
-    }
-    $content = "pwsh -Command Start-Process BatteryIcon.exe";
-    $content += " -WindowStyle Hidden";
-    $name = "battery-icon.bat";
-    New-File -Path $startDir -Name $name -Value "$content";
-  }
-
-
-  _registerCpuIconStartup() {
-    if ($this._isTest) { return; }
-    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\cpu-icon.bat") {
-      Remove-Item "$startDir\cpu-icon.bat" -Recurse -Force;
-    }
-    $content = "pwsh -Command Start-Process CpuIcon.exe";
-    $content += " -WindowStyle Hidden";
-    $name = "cpu-icon.bat";
-    New-File -path $startDir -Name $name -Value "$content";
-  }
-
-
-  _registerRamIconStartup() {
-    if ($this._isTest) { return; }
-    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\ram-icon.bat") {
-      Remove-Item "$startDir\ram-icon.bat" -Recurse -Force;
-    }
-    $content = "pwsh -Command Start-Process RamIcon.exe";
-    $content += " -WindowStyle Hidden";
-    $name = "ram-icon.bat";
-    New-File -path $startDir -Name $name -Value "$content";
   }
 
 

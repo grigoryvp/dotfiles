@@ -221,8 +221,11 @@ class App {
       $this._installBinApp("StrawberryPerl.StrawberryPerl",
         "C:\Strawberry\perl\bin\");
       # nvm command
-      $this._installBinApp("CoreyButler.NVMforWindows", $this._path(
-        @($env:LOCALAPPDATA, "nvm")));
+      $this._installBinAppWithVer(
+        "CoreyButler.NVMforWindows",
+        $this._path(@($env:LOCALAPPDATA, "nvm")),
+        # version 1.1.12 fails "non-terminal" execution
+        "1.1.11");
       # Node.js
       & nvm install 20.3.0
       & nvm use 20.3.0
@@ -295,6 +298,10 @@ class App {
 
   # For installers that add something to PATH (requires terminal restart)
   _installBinApp($appName, $binPath) {
+    $this._installBinAppWithVer($appName, $binPath, $null);
+  }
+
+  _installBinAppWithVer($appName, $binPath, $ver) {
     if ($this._isTest) { return; }
     if ($this._isAppStatusInstalled($appName)) {
       Write-Host "$appName is already installed";
@@ -304,7 +311,12 @@ class App {
       return;
     }
     Write-Host "Installing $appName with binary in path"
-    winget install --silent $appName;
+    if ($ver) {
+      winget install --silent $appName --version $ver --no-upgrade --exact;
+    }
+    else {
+      winget install --silent $appName;
+    }
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
     if (-not $env:PATH.Contains($binPath)) {
       $env:PATH = "${env:PATH};$binPath";

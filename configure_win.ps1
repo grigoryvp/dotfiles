@@ -132,9 +132,9 @@ class App {
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
-    $thos._uninstallApp("Microsoft.OneDrive");
-    $thos._uninstallApp("Microsoft.Teams");
-    $thos._uninstallApp("Copilot");
+    $this._uninstallApp("Microsoft.OneDrive");
+    $this._uninstallApp("Microsoft.Teams");
+    $this._uninstallApp("Copilot");
     # TODO: Need version 2.20.4, in 2.20.5 "{WAITMS:100}{LMB}" does not work.
     # https://dvps.highrez.co.uk/downloads/XMouseButtonControlSetup.2.20.4.exe
     $this._installApp("Highresolution.X-MouseButtonControl");

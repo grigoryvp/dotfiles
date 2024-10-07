@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.14";
+  $_ver = "1.0.15";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -227,8 +227,8 @@ class App {
         # version 1.1.12 fails "non-terminal" execution
         "1.1.11");
       # Node.js
-      & nvm install 20.3.0
-      & nvm use 20.3.0
+      & nvm install latest
+      & nvm use latest
       # Better diff
       & npm install -g diff-so-fancy
       # General-purpose messaging.

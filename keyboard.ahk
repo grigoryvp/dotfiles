@@ -767,9 +767,11 @@ SendMqtt() {
 }
 
 appHomePath := EnvGet("USERPROFILE")
-appIconMain := LoadPicture(appHomePath . "\dotfiles\icons\ahk.ico")
-appIconDebug := LoadPicture(appHomePath . "\dotfiles\icons\ahk_d.ico")
-appShowDebugIcon := 0
+appIconPath := appHomePath . "\dotfiles\icons"
+image_type := 1
+appIconMain := LoadPicture(appIconPath . "\ahk.ico",, &image_type)
+appIconDebug := LoadPicture(appIconPath . "\ahk_d.ico",, &image_type)
+appShowDebugIcon := false
 
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
 ;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
@@ -777,10 +779,13 @@ OnTimer() {
 
   global appShowDebugIcon
   if (appShowDebugIcon) {
-    TraySetIcon(appIconDebug)
+    ;;  Use '*' to copy icon and don't destroy original on change
+    TraySetIcon("HICON:*" . appIconDebug)
+    appShowDebugIcon := false
   }
   else {
-    TraySetIcon(appIconMain)
+    TraySetIcon("HICON:*" . appIconMain)
+    appShowDebugIcon := true
   }
 
 }

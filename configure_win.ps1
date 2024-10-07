@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.15";
+  $_ver = "1.0.16";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -223,7 +223,7 @@ class App {
       # nvm command
       $this._installBinAppWithVer(
         "CoreyButler.NVMforWindows",
-        $this._path(@($env:LOCALAPPDATA, "nvm")),
+        $this._path(@($env:APPDATA, "nvm")),
         # version 1.1.12 fails "non-terminal" execution
         "1.1.11");
       # Node.js
@@ -325,11 +325,12 @@ class App {
       }
       return;
     }
-    Write-Host "Installing $appName with binary in path"
     if ($ver) {
+      Write-Host "Installing $appName with binary in path, version $ver"
       winget install --silent $appName --version $ver --no-upgrade --exact;
     }
     else {
+      Write-Host "Installing $appName with binary in path"
       winget install --silent $appName;
     }
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }

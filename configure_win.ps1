@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.16";
+  $_ver = "1.0.17";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -232,6 +232,10 @@ class App {
       Write-Host "Installing latest nodejs"
       & nvm install latest
       & nvm use latest
+      $nodePath = $this._path(@($env:ProgramFiles, "nodejs"));
+      if (-not $env:PATH.Contains($nodePath)) {
+        $env:PATH = "${env:PATH};$nodePath";
+      }
       Write-Host "Updating npm"
       & npm install -g npm@latest
       # Better diff

@@ -226,6 +226,8 @@ class App {
         $this._path(@($env:APPDATA, "nvm")),
         # version 1.1.12 fails "non-terminal" execution
         "1.1.11");
+      # For nvm command to work in an existing terminal
+      $env:NVM_HOME = $this._path(@($env:APPDATA, "nvm"));
       # Node.js
       Write-Host "Installing latest nodejs"
       & nvm install latest

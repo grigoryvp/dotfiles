@@ -45,8 +45,8 @@ appLeaderDownTick := 0
 ;;  else. Otherwise it's possible to down meta-1, down meta-2 (holds alt),
 ;;  up meta-1 (incorrectly releases alt), up meta-2 (incorrectly triggers
 ;;  esc).
-appAltHoldByMeta1 := 0
-appAltHoldByMeta2 := 0
+appAltHoldByMeta1 := false
+appAltHoldByMeta2 := false
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -182,7 +182,7 @@ $vked:: {
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   else if (GetKeyState("esc", "P")) {
     global appAltHoldByMeta1
-    appAltHoldByMeta1 := 1
+    appAltHoldByMeta1 := true
     send "{lalt down}"
   }
 }
@@ -195,7 +195,7 @@ $vked up:: {
   global appAltHoldByMeta1
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   if (appAltHoldByMeta1) {
-    appAltHoldByMeta1 := 0
+    appAltHoldByMeta1 := false
     send "{lalt up}"
   }
 }
@@ -217,7 +217,7 @@ $+vked up:: {
 *$esc:: {
   if (GetKeyState("vked", "P")) {
     global appAltHoldByMeta2
-    appAltHoldByMeta2 := 1
+    appAltHoldByMeta2 := true
     send "{lalt down}"
   }
 }
@@ -227,7 +227,7 @@ $+vked up:: {
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   if (appAltHoldByMeta2) {
     global appAltHoldByMeta2
-    appAltHoldByMeta2 := 0
+    appAltHoldByMeta2 := false
     send "{lalt up}"
   }
   else if (A_PriorKey = "escape") {

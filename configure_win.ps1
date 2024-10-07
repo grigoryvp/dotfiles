@@ -118,7 +118,7 @@ class App {
     # Game compatibility
     $this._setEnv("OPENSSL_ia32cap", "~0x20000000");
 
-    # 1-st stage install, requires reboot for a second stage
+    # Requires reboot for a second stage install
     $this._installWsl();
     $this._installPowershellModule("posh-git");
     $this._installPowershellModule("WindowsCompatibility");
@@ -132,6 +132,9 @@ class App {
     # Clone without keys via HTTPS
     $this._getFilesFromGit();
     $this._installLocationApp("AutoHotkey.AutoHotkey", "");
+    $thos._uninstallApp("Microsoft.OneDrive");
+    $thos._uninstallApp("Microsoft.Teams");
+    $thos._uninstallApp("Copilot");
     # TODO: Need version 2.20.4, in 2.20.5 "{WAITMS:100}{LMB}" does not work.
     # https://dvps.highrez.co.uk/downloads/XMouseButtonControlSetup.2.20.4.exe
     $this._installApp("Highresolution.X-MouseButtonControl");
@@ -214,9 +217,6 @@ class App {
 
     # Optional installs after reboot
     if ($this._isFull) {
-      # 2-nd stage install after reboot
-      $this._installWsl();
-      $this._copySshKeyToWsl();
       # for diff-so-fancy
       $this._installBinApp("StrawberryPerl.StrawberryPerl",
         "C:\Strawberry\perl\bin\");
@@ -227,8 +227,11 @@ class App {
         # version 1.1.12 fails "non-terminal" execution
         "1.1.11");
       # Node.js
+      Write-Host "Installing latest nodejs"
       & nvm install latest
       & nvm use latest
+      Write-Host "Updating npm"
+      $ npm install -g npm@latest
       # Better diff
       & npm install -g diff-so-fancy
       # General-purpose messaging.
@@ -296,6 +299,18 @@ class App {
   }
 
 
+  _uninstallApp($appName) {
+    if ($this._isTest) { return; }
+    if (-not $this._isAppStatusInstalled($appName)) {
+      Write-Host "$appName is already uninstalled";
+      return;
+    }
+    Write-Host "Uninstalling $appName"
+    winget uninstall --silent $appName;
+    if ($LASTEXITCODE -ne 0) { throw "Failed to uninstall $appName" }
+  }
+
+
   # For installers that add something to PATH (requires terminal restart)
   _installBinApp($appName, $binPath) {
     $this._installBinAppWithVer($appName, $binPath, $null);
@@ -357,13 +372,41 @@ class App {
 
 
   _installWsl() {
+    Write-Host "Installing WSL";
+    if ($this._isTest) { return; }
+
     & wsl --status;
     if ($LASTEXITCODE -eq 0) {
-      Write-Host "WSL is already installed";
+      if (Test-Path -Path "\\wsl$\Ubuntu") {
+        Write-Host "WSL is already installed";
+        $wslSshDir = "\\wsl$\Ubuntu\home\user\.ssh"
+        if (Test-Path -Path "$wslSshDir" ) {
+          Write-Host "Keys are already copied to WSL"
+          return;
+        }
+        else {
+          Write-Host "Creating wsl://~/.ssh";
+          New-Dir -Path "$wslSshDir";
+          Write-Host "Copying keys to wsl://~/.ssh";
+          $srcPath = $this._path(@("~", ".ssh", "id_rsa"))
+          Copy-Item -Path "$srcPath" -Destination "$wslSshDir" -Force;
+          $srcPath = $this._path(@("~", ".ssh", "id_rsa.pub"))
+          Copy-Item -Path "$srcPath" -Destination "$wslSshDir" -Force;
+          & wsl chmod 600 ~/.ssh/id_rsa
+          return;
+        }
+      }
+      else {
+        # Need to be install two times: before and after reboot
+        Write-Host "Installing WSL. Create a 'user' user with a password";
+        Start-Process wsl -ArgumentList "--install" -Wait;
+        return;
+      }
+    }
+    else {
+      Start-Process wsl -ArgumentList "--install" -Wait;
       return;
     }
-    Write-Host "Installing WSL. Create a user named 'user' with a password";
-    Start-Process wsl -ArgumentList "--install" -Wait;
   }
 
 
@@ -426,23 +469,6 @@ class App {
     }
     Write-Host "Generating ssh key";
     Start-Process ssh-keygen -ArgumentList '-N "" -f .ssh/id_rsa' -Wait;
-  }
-
-
-  _copySshKeyToWsl() {
-    if ($this._isTest) { return; }
-
-    $wslSshDir = "\\wsl$\Ubuntu\home\user\.ssh"
-    if (-not (Test-Path -Path "$wslSshDir" )) {
-      Write-Host "Creating wsl://~/.ssh";
-      New-Dir -Path "$wslSshDir";
-      Write-Host "Copying keys to wsl://~/.ssh";
-      $srcPath = $this._path(@("~", ".ssh", "id_rsa"))
-      Copy-Item -Path "$srcPath" -Destination "$wslSshDir" -Force;
-      $srcPath = $this._path(@("~", ".ssh", "id_rsa.pub"))
-      Copy-Item -Path "$srcPath" -Destination "$wslSshDir" -Force;
-      & wsl chmod 600 ~/.ssh/id_rsa
-    }
   }
 
 

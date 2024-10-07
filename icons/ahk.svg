@@ -15,11 +15,13 @@
       r="120"
     />
     <text
-      id="D"
-      x="67"
-      y="82"
+      id="text"
+      x="50%"
+      y="50%"
+      dominant-baseline="middle"
+      text-anchor="middle"
       font-family="Arial"
-      font-size="48"
+      font-size="192"
       font-weight="700"
-      fill="rgb(230,172,115)">D</text>
+      fill="rgb(230,172,115)">d</text>
 </svg>

@@ -147,8 +147,7 @@ on_keyup(key) {
 ;;  Switch between normal and 'compatible' mode for apps/games that
 ;;  can't handle multi-key virtual combinations, like "Grim Dawn"
 !pgdn:: {
-  home_path := EnvGet("USERPROFILE")
-  path := home_path . "\dotfiles\keyboard_compat.ahk"
+  path := appHomePath . "\dotfiles\keyboard_compat.ahk"
   run "autohotkey.exe " . path,, "Hide"
   Suspend
 }
@@ -767,8 +766,9 @@ SendMqtt() {
   run cmd,, "Hide"
 }
 
-appIconMain := LoadPicture("icons/ahk.png")
-appIconDebug := LoadPicture("icons/ahk_d.png")
+appHomePath := EnvGet("USERPROFILE")
+appIconMain := LoadPicture(appHomePath . "\dotfiles\icons\ahk.ico")
+appIconDebug := LoadPicture(appHomePath . "\dotfiles\icons\ahk_d.ico")
 appShowDebugIcon := 0
 
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'

@@ -230,13 +230,12 @@ class App {
       $env:NVM_HOME = $this._path(@($env:APPDATA, "nvm"));
       # Node.js
       Write-Host "Installing latest nodejs";
-      # If not set to "on" will fail to create symlink
       & nvm on
       & nvm install latest
       & nvm use latest
       $nodePath = $this._path(@($env:ProgramFiles, "nodejs"));
       if (-not (Test-Path -Path $nodePath)) {
-        throw "nvm failed to create nodejs symlink";
+        throw "nvm failed to create nodejs symlink; run 'nvm use latest'";
       }
       if (-not $env:PATH.Contains($nodePath)) {
         $env:PATH = "${env:PATH};$nodePath";

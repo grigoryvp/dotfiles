@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.19";
+  $_ver = "1.0.20";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -248,6 +248,8 @@ class App {
       $this._installApp("Telegram.TelegramDesktop");
       # "Offline" google apps support and no telemetry delays line in "Edge".
       $this._installApp("Google.Chrome");
+      # file management
+      $this._installApp("alexx2000.DoubleCommander");
       # PDF view.
       $this._installApp("Foxit.FoxitReader");
       # Better process maangement

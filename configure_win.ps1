@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.17";
+  $_ver = "1.0.18";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -229,12 +229,17 @@ class App {
       # For nvm command to work in an existing terminal
       $env:NVM_HOME = $this._path(@($env:APPDATA, "nvm"));
       # Node.js
-      Write-Host "Installing latest nodejs"
+      Write-Host "Installing latest nodejs";
       & nvm install latest
       & nvm use latest
       $nodePath = $this._path(@($env:ProgramFiles, "nodejs"));
       if (-not $env:PATH.Contains($nodePath)) {
         $env:PATH = "${env:PATH};$nodePath";
+      }
+      if (-not (Test-Path -Path $nodePath)) {
+        Write-Host "Fixing nvm nodejs symlink";
+        # Sometimes nvm donesn't creat the symlink on first run
+        & nvm use latest
       }
       Write-Host "Updating npm"
       & npm install -g npm@latest
@@ -313,7 +318,8 @@ class App {
     }
     Write-Host "Uninstalling $appName"
     winget uninstall --silent $appName;
-    if ($LASTEXITCODE -ne 0) { throw "Failed to uninstall $appName" }
+    # There is no reason to check error code since uninstallers tend to
+    # show error codes upon successfull uninstall
   }
 
 

@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.18";
+  $_ver = "1.0.19";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -230,16 +230,16 @@ class App {
       $env:NVM_HOME = $this._path(@($env:APPDATA, "nvm"));
       # Node.js
       Write-Host "Installing latest nodejs";
+      # If not set to "on" will fail to create symlink
+      & nvm on
       & nvm install latest
       & nvm use latest
       $nodePath = $this._path(@($env:ProgramFiles, "nodejs"));
+      if (-not (Test-Path -Path $nodePath)) {
+        throw "nvm failed to create nodejs symlink";
+      }
       if (-not $env:PATH.Contains($nodePath)) {
         $env:PATH = "${env:PATH};$nodePath";
-      }
-      if (-not (Test-Path -Path $nodePath)) {
-        Write-Host "Fixing nvm nodejs symlink";
-        # Sometimes nvm donesn't creat the symlink on first run
-        & nvm use latest
       }
       Write-Host "Updating npm"
       & npm install -g npm@latest

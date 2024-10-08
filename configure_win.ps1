@@ -235,7 +235,7 @@ class App {
       & nvm use latest
       $nodePath = $this._path(@($env:ProgramFiles, "nodejs"));
       if (-not (Test-Path -Path $nodePath)) {
-        throw "nvm failed to create nodejs symlink; run 'nvm use latest'";
+        throw "run 'nvm use latest' manually";
       }
       if (-not $env:PATH.Contains($nodePath)) {
         $env:PATH = "${env:PATH};$nodePath";

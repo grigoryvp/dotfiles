@@ -215,6 +215,10 @@ class App {
         Copy-Item -Path "$src" -Destination . -Force;
     }
 
+    # Hide seach in the taskbar
+    $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
+    Set-ItemProperty -Path $path -Name SearchboxTaskbarMode -Value 0
+
     # Optional installs after reboot
     if ($this._isFull) {
       # for diff-so-fancy

@@ -723,7 +723,7 @@ class App {
     $action = New-ScheduledTaskAction @argmap;
     $trigger = New-ScheduledTaskTrigger -AtLogOn;
     # Delay for a few seconds, otherwise Windows will not display tray icon
-    $trigger.Delay = 'PT5S'
+    $trigger.Delay = 'PT10S'
 
     $task = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue;
     if (-not $task) {

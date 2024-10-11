@@ -75,6 +75,7 @@ pip install --upgrade pip
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.
 # Disable keyboard backlight in the control center
+# Disable Music access to bluetooth in /Preferences/Privacy/Bluetooth"
 # Intall Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
 # For old macOS versions:

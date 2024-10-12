@@ -225,8 +225,12 @@ $+vked up:: {
   appLeaderUpTick := A_TickCount
 }
 
-;;  meta-1+meta-2 for left alt (while using external mouse)
 *$esc:: {
+  ;;  meta-2 + shift for holding esc
+  if (GetKeyState("lshift", "P")) {
+    send "{esc down}"
+  }
+  ;;  meta-1+meta-2 for left alt (while using external mouse)
   if (GetKeyState("vked", "P")) {
     global appAltHoldByMeta2
     appAltHoldByMeta2 := true
@@ -236,6 +240,10 @@ $+vked up:: {
 
 ;;  Single esc (lalt) press = esc, otherwise it's meta-2
 *$esc up:: {
+  ;;  meta-2 + shift for holding esc
+  if (GetKeyState("lshift", "P")) {
+    send "{esc up}"
+  }
   ;;  meta-1+meta-2 for left alt (while using external mouse)
   if (appAltHoldByMeta2) {
     global appAltHoldByMeta2

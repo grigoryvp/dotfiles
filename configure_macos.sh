@@ -28,7 +28,7 @@ brew install libyaml
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install mpv --cask
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy fig
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy uv
 if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else
@@ -196,9 +196,6 @@ defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
-git clone https://github.com/pyenv/pyenv-update.git ~/.pyenv/plugins/pyenv-update
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
@@ -209,14 +206,11 @@ git clone https://github.com/phpenv/phpenv.git ~/.phpenv
 git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
 git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
 git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
-export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
-pyenv install 3.12.2
-pyenv global 3.12.2
-python3 -m pip install --upgrade pip virtualenv
+uv python install 3.13
 rbenv install 3.2.0
 rbenv global 3.2.0
 nodenv install 22.2.0

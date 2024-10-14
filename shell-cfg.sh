@@ -241,6 +241,12 @@ busg() {
 alias busgc="busg controller"
 alias busgm="busg model"
 
+#  Python virtual environment
+alias uvp="uv run python"
+alias uvc="uv init"
+alias uvi="uv sync"
+alias uva="uv pip install"
+
 buss() {
   if [ -e ./bin/dev ]; then
     ./bin/dev
@@ -400,13 +406,6 @@ mcd() {
 ##  For tools installed via "go get" to be on path
 if which go > /dev/null; then
   start_path_with $(go env GOPATH)/bin
-fi
-
-##  Load pyenv, if installed
-if [ -d $HOME/.pyenv ]; then
-  start_path_with "$HOME/.pyenv/bin"
-  start_path_with "$HOME/.pyenv/shims"
-  start_path_with "$HOME/.pyenv/plugins/pyenv-virtualenv/shims";
 fi
 
 ##  Load eye, if installed

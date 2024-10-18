@@ -1032,4 +1032,11 @@ function App:createMenu()
     self:shortenUrl(clipboard)
   end)
 
+  self.menuItem:addSubmenuItem("Flatten text", function()
+    local str = hs.pasteboard.readString()
+    str = str:gsub("^%s*", "")
+    str = str:gsub("%s*$", "")
+    str = str:gsub("\n", " ")
+    hs.pasteboard.setContents(str)
+  end)
 end

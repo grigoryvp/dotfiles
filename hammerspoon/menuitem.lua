@@ -7,6 +7,8 @@ local fontHeight = 13
 -- Offset, in virtual pixels, from menubar top. Given menuHeight and
 -- fontHeight this provides font position that resembles default one.
 local fontTopOffset = 3
+--- Maximum number of text objects cached
+local maxCacheSize = 100
 
 
 function menuitem:new()
@@ -14,7 +16,13 @@ function menuitem:new()
     _widgets = {},
     _submenu = {},
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
-    _item = hs.menubar.new()
+    _item = hs.menubar.new(),
+    _cache = {
+      text = {
+        objects = {},
+        sizes = {}
+      }
+    }
   }
   self.__index = self
   return setmetatable(inst, self)
@@ -61,10 +69,6 @@ function menuitem:update()
         fillColor = {red = 0, green = 0, blue = 0},
         action = "fill"
       })
-      styledText = hs.styledtext.new(widget.text, {
-        font = {name = "Courier", size = fontHeight},
-        color = {red = 1, green = 1, blue = 1}
-      })
       self._canvas:insertElement({
         type = "text",
         frame = {
@@ -73,7 +77,7 @@ function menuitem:update()
           w = widget.width,
           h = menuHeight
         },
-        text = styledText
+        text = widget.object
       })
       curOffset = curOffset + widget.width
       totalWidth = totalWidth + widget.width
@@ -131,14 +135,31 @@ end
 
 
 function menuitem:addText(text)
-  styledText = hs.styledtext.new(text, {
-    font = {name = "Courier", size = fontHeight},
-    color = {red = 1, green = 1, blue = 1}
-  })
-  size = hs.drawing.getTextDrawingSize(styledText)
+  styledText = self._cache.text.objects[text]
+  if not styledText then
+    if count(self._cache.text.objects) > maxCacheSize then
+      self._cache.text.objects = {}
+    end
+    styledText = hs.styledtext.new(text, {
+      font = {name = "Courier", size = fontHeight},
+      color = {red = 1, green = 1, blue = 1}
+    })
+    self._cache.text.objects[text] = styledText
+  end
+
+  size = self._cache.text.sizes[text]
+  if not size then
+    if count(self._cache.text.sizes) > maxCacheSize then
+      self._cache.text.sizes = {}
+    end
+    size = hs.drawing.getTextDrawingSize(styledText)
+    self._cache.text.sizes = size
+  end
+
   table.insert(self._widgets, {
     type = "text",
     text = text,
+    object = styledText,
     width = math.ceil(size.w)
   })
 end

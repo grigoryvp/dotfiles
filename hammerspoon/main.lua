@@ -875,7 +875,8 @@ function App:onHeartbeat()
   self.menuItem:addSpacer(4)
   self.menuItem:addText("🔋")
   self.menuItem:addSpacer(4)
-  self.menuItem:addText(batteryText)
+  -- Fixed width font size for 3 characters so "1" and "100" take same space
+  self.menuItem:addTextWithWidth(batteryText, 3 * 8)
   self.menuItem:update()
 end
 

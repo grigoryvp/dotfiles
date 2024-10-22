@@ -135,6 +135,12 @@ end
 
 
 function menuitem:addText(text)
+  self:addTextWithWidth(text, nil)
+end
+
+
+
+function menuitem:addTextWithWidth(text, width)
   styledText = self._cache.text.objects[text]
   if not styledText then
     if count(self._cache.text.objects) > maxCacheSize then
@@ -156,11 +162,15 @@ function menuitem:addText(text)
     self._cache.text.sizes[text] = size
   end
 
+  if not width then
+    width = math.ceil(size.w)
+  end
+
   table.insert(self._widgets, {
     type = "text",
     text = text,
     object = styledText,
-    width = math.ceil(size.w)
+    width = width
   })
 end
 

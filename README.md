@@ -65,6 +65,7 @@ pip install --upgrade pip
 # * Remove all icons except 24h clock
 # * Enable dock auto-hide
 # In "Preferences/Mission Control/Hot Corners" disable quick notes
+# In "Preferences/Keyboard/Shortcuts/Function Keys" enable F-keys.
 # Remove all widgets and add notes as widget
 # Disable sleep in "Preferences/Energy Saver"
 # Disable sound effects in "Preferences/Sound/Effects"

@@ -9,7 +9,9 @@ function App:new()
   inst.menuItem = menuitem:new()
   inst.lastCpuUsage = hs.host.cpuUsageTicks()
   inst.cpuLoadHistory = {}
-  inst.maxCpuLoadHistory = 20
+  -- Cpu history is smaller to preserve space since only constant load is
+  -- of interes
+  inst.maxCpuLoadHistory = 10
   inst.routerIcmpHistory = {}
   inst.inetIcmpHistory = {}
   -- Interval, in seconds, to send pings, check cpu load etc.
@@ -795,7 +797,7 @@ function App:onHeartbeat()
     else
       self.menuItem:addText((" "):rep(#notifications * 2 - 1))
     end
-    self.menuItem:addSpacer(10)
+    self.menuItem:addSpacer(8)
   end
 
   local battery = hs.battery.percentage()
@@ -859,19 +861,19 @@ function App:onHeartbeat()
     batteryText = batteryText .. timeLeft
   end
 
-  self.menuItem:addText("wifi")
+  self.menuItem:addText("🛜")
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(routerGraph, self.maxIcmpHistory)
   self.menuItem:addSpacer(4)
-  self.menuItem:addText("inet")
+  self.menuItem:addText("🌐")
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(inetGraph, self.maxIcmpHistory)
   self.menuItem:addSpacer(4)
-  self.menuItem:addText("cpu")
+  self.menuItem:addText("💎")
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
   self.menuItem:addSpacer(4)
-  self.menuItem:addText("bat")
+  self.menuItem:addText("🔋")
   self.menuItem:addSpacer(4)
   self.menuItem:addText(batteryText)
   self.menuItem:update()

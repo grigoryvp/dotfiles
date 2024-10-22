@@ -50,34 +50,33 @@ function menuitem:update()
       totalWidth = totalWidth + widget.width
 
     elseif widget.type == "text" then
-      -- Approximation for a known fixed-width font with known height
-      local width = #widget.text * 8
       self._canvas:insertElement({
         type = "rectangle",
         frame = {
           x = curOffset,
           y = 0,
-          w = width,
+          w = widget.width,
           h = menuHeight
         },
         fillColor = {red = 0, green = 0, blue = 0},
         action = "fill"
+      })
+      styledText = hs.styledtext.new(widget.text, {
+        font = {name = "Courier", size = fontHeight},
+        color = {red = 1, green = 1, blue = 1}
       })
       self._canvas:insertElement({
         type = "text",
         frame = {
           x = curOffset,
           y = fontTopOffset,
-          w = width,
+          w = widget.width,
           h = menuHeight
         },
-        text = hs.styledtext.new(widget.text, {
-          font = {name = "Courier", size = fontHeight},
-          color = {red = 1, green = 1, blue = 1}
-        })
+        text = styledText
       })
-      curOffset = curOffset + width
-      totalWidth = totalWidth + width
+      curOffset = curOffset + widget.width
+      totalWidth = totalWidth + widget.width
 
     elseif widget.type == "graph" then
       local width = widget.max_len * 2 + 2
@@ -132,7 +131,16 @@ end
 
 
 function menuitem:addText(text)
-  table.insert(self._widgets, {type = "text", text = text})
+  styledText = hs.styledtext.new(text, {
+    font = {name = "Courier", size = fontHeight},
+    color = {red = 1, green = 1, blue = 1}
+  })
+  size = hs.drawing.getTextDrawingSize(styledText)
+  table.insert(self._widgets, {
+    type = "text",
+    text = text,
+    width = math.ceil(size.w)
+  })
 end
 
 

@@ -153,7 +153,7 @@ function menuitem:addText(text)
       self._cache.text.sizes = {}
     end
     size = hs.drawing.getTextDrawingSize(styledText)
-    self._cache.text.sizes = size
+    self._cache.text.sizes[text] = size
   end
 
   table.insert(self._widgets, {

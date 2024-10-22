@@ -1036,7 +1036,12 @@ function App:createMenu()
     local str = hs.pasteboard.readString()
     str = str:gsub("^%s*", "")
     str = str:gsub("%s*$", "")
+    -- Remove ansi hyphenation
+    str = str:gsub("(%w)-%s*\n%s*(%w)", "%1%2")
+    -- [] will not work for non-ansi characters like unicode hyphen
+    str = str:gsub("(%w)\u{2010}%s*\n%s*(%w)", "%1%2")
     str = str:gsub("\n", " ")
+    str = str:gsub("%s+", " ") -- Collapse two+ spaces into one
     hs.pasteboard.setContents(str)
   end)
 end

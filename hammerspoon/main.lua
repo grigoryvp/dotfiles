@@ -1023,6 +1023,9 @@ function App:createMenu()
     if not clipboard:match("^https?://") then
       return hs.alert.show("No URL in clipboard")
     end
+    if clipboard:match("^https?://vk.cc") then
+      return hs.alert.show("Short URL in clipboard")
+    end
     self:shortenUrl(clipboard)
   end)
 
@@ -1030,6 +1033,9 @@ function App:createMenu()
     local clipboard = hs.pasteboard.readString()
     if not clipboard:match("^https?://") then
       return hs.alert.show("No URL in clipboard")
+    end
+    if clipboard:match("^https?://vk.cc") then
+      return hs.alert.show("Short URL in clipboard")
     end
     -- Remove query string before shortening.
     local queryPos = clipboard:find("?")

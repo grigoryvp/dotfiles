@@ -91,8 +91,9 @@ echo "2) Allow '.Karabiner-...Manager.app' in 'Security & Privacy'"
 echo "3) Complete the 'Keyboard Setup Assistant'"
 echo "4) Press enter"
 read -s
-# Karabiner can't detect config file change if linked via symlink.
-ln -fs ~/dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
+# Entire config dir should be symlinked
+rm -rf ~/.config/karabiner 
+ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.

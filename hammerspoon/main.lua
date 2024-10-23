@@ -873,7 +873,7 @@ function App:onHeartbeat()
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
   self.menuItem:addSpacer(4)
-  if hs.battery.isCharging() then
+  if hs.battery.isCharging() or hs.battery.isCharged() then
     self.menuItem:addText("🔋")
   else
     self.menuItem:addText("🪫")

@@ -155,7 +155,8 @@ class App {
     # New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
     $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
     $this._installApp("strayge.tray-monitor");
-    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129
+    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
+    # which will be available in WinGet 1.9
     # $this._installApp("EFLFE.PingoMeter");
     $this._registerAutohotkeyStartup();
     $this._registerXMouseButtonControlStartup();

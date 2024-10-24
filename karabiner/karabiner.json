@@ -1390,6 +1390,26 @@
                                 "type": "basic"
                             },
                             {
+                                "description": "meta-2-1 => command-1 for Preview app",
+                                "conditions": [
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "1"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "1",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
                                 "description": "control-2 => command-2 for mac-win consistency",
                                 "from": {
                                     "key_code": "2",
@@ -1404,10 +1424,50 @@
                                 "type": "basic"
                             },
                             {
+                                "description": "meta-2-2 => command-2 for Preview app",
+                                "conditions": [
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "2"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
                                 "description": "control-3 => command-3 for mac-win consistency",
                                 "from": {
                                     "key_code": "3",
                                     "modifiers": { "mandatory": ["right_control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "3",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "meta-2-3 => command-3 for Preview app",
+                                "conditions": [
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "3"
                                 },
                                 "to": [
                                     {
@@ -1455,6 +1515,27 @@
                                     {
                                         "key_code": "6",
                                         "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "shift-meta-2-g => alt-command-g for Preview app",
+                                "conditions": [
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "g",
+                                    "modifiers": { "mandatory": ["shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "g",
+                                        "modifiers": ["right_alt", "right_command"]
                                     }
                                 ],
                                 "type": "basic"

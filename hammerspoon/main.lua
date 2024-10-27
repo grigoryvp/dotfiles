@@ -212,7 +212,6 @@ function App:registerHotkeys()
   hs.hotkey.bind("⌘⌥", "i", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
-    local frame = wnd:frame()
     ---@type table
     local primaryScreen = hs.screen.primaryScreen()
     local nonprimaryScreen = primaryScreen
@@ -223,6 +222,7 @@ function App:registerHotkeys()
       end
     end
     local duration = 0
+    local screenFrame = nonprimaryScreen:frame()
     wnd:setFrame(nonprimaryScreen:frame(), duration)
     -- primaryScreen() and allScreens() returns smaller frame
     ---@type table
@@ -235,7 +235,6 @@ function App:registerHotkeys()
   hs.hotkey.bind("⌘⌥", ",", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
-    local frame = wnd:frame()
     ---@type table
     local screenFrame = hs.screen.primaryScreen():frame()
     local duration = 0
@@ -250,7 +249,6 @@ function App:registerHotkeys()
   hs.hotkey.bind("⌘⇧", "space", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
-    local frame = wnd:frame()
     ---@type table
     local screenFrame = wnd:screen():frame()
     local duration = 0

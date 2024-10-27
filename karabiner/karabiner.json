@@ -56,10 +56,10 @@
                         ]
                     },
                     {
-                        "description": "left cmd to meta+esc",
+                        "description": "left cmd to m2 and esc",
                         "manipulators": [
                             {
-                                "description": "Use left cmd as both 'meta' and 'esc' key",
+                                "description": "Use left cmd as both 'meta-2' and 'esc' key",
                                 "from": {
                                     "key_code": "left_command",
                                     "modifiers": { "optional": ["any"] }
@@ -107,10 +107,10 @@
                         ]
                     },
                     {
-                        "description": "right cmd to meta+enter",
+                        "description": "right cmd to m3 and enter",
                         "manipulators": [
                             {
-                                "description": "Use right cmd as both 'meta' and 'enter' key",
+                                "description": "Use right cmd as both 'meta-3' and 'enter' key",
                                 "from": {
                                     "key_code": "right_command",
                                     "modifiers": { "optional": ["any"] }
@@ -325,7 +325,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-open-bracket for escape (vim-like)",
+                                "description": "m1-open-bracket for escape (vim-like)",
                                 "from": {
                                     "key_code": "open_bracket",
                                     "modifiers": { "optional": ["any"] }
@@ -341,7 +341,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-p for backspace",
+                                "description": "m1-p for backspace",
                                 "from": { "key_code": "p" },
                                 "to": [{ "key_code": "delete_or_backspace" }],
                                 "type": "basic"
@@ -354,7 +354,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-p for deleting things",
+                                "description": "m1-shift-p for deleting things",
                                 "from": {
                                     "key_code": "p",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -375,7 +375,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta1-ctrl(tab)-semicolon for command(ctrl)-lmb",
+                                "description": "m1-ctrl(tab)-semicolon for command(ctrl)-lmb",
                                 "from": {
                                     "key_code": "semicolon",
                                     "modifiers": { "mandatory": ["left_control"] }
@@ -401,7 +401,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta1-meta2-semicolon for option(alt)-lmb",
+                                "description": "m1-m2-semicolon for option(alt)-lmb",
                                 "from": { "key_code": "semicolon" },
                                 "to": [
                                     {
@@ -419,7 +419,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-semicolon for left mouse button",
+                                "description": "m1-semicolon for left mouse button",
                                 "from": {
                                     "key_code": "semicolon",
                                     "modifiers": { "optional": ["any"] }
@@ -435,7 +435,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-quote for right mouse button",
+                                "description": "m1-quote for right mouse button",
                                 "from": {
                                     "key_code": "quote",
                                     "modifiers": { "optional": ["any"] }
@@ -451,7 +451,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-slash for central mouse button",
+                                "description": "m1-slash for central mouse button",
                                 "from": {
                                     "key_code": "slash",
                                     "modifiers": { "optional": ["any"] }
@@ -467,7 +467,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-period for 6th mouse button (scroll)",
+                                "description": "m1-period for 6th mouse button (scroll)",
                                 "from": { "key_code": "period" },
                                 "to": [{ "pointing_button": "button6" }],
                                 "type": "basic"
@@ -480,7 +480,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-shift-h' for shift-left-arrow (vim-like + selection modify)",
+                                "description": "'m1-shift-h' for shift-left-arrow (vim-like + selection modify)",
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -501,7 +501,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-w' for home",
+                                "description": "'m1-w' for home",
                                 "from": {
                                     "key_code": "w",
                                     "modifiers": { "optional": ["any"] }
@@ -517,7 +517,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-h' for left arrow (vim-like); low priority",
+                                "description": "'m1-h' for left arrow (vim-like); low priority",
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": { "optional": ["any"] }
@@ -533,7 +533,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-shift-j' for shift-down-arrow (vim-like + selection modify)",
+                                "description": "'m1-shift-j' for shift-down-arrow (vim-like + selection modify)",
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -554,7 +554,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-e' for page down",
+                                "description": "'m1-e' for page down",
                                 "from": {
                                     "key_code": "e",
                                     "modifiers": { "optional": ["any"] }
@@ -570,7 +570,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-j' for down arrow (vim-like); low priority",
+                                "description": "'m1-j' for down arrow (vim-like); low priority",
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": { "optional": ["any"] }
@@ -586,7 +586,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-shift-k' for shift-up-arrow (vim-like + selection modify)",
+                                "description": "'m1-shift-k' for shift-up-arrow (vim-like + selection modify)",
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -607,7 +607,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-r' for page up",
+                                "description": "'m1-r' for page up",
                                 "from": {
                                     "key_code": "r",
                                     "modifiers": { "optional": ["any"] }
@@ -623,7 +623,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-k' for up arrow (vim-like); low priority",
+                                "description": "'m1-k' for up arrow (vim-like); low priority",
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": { "optional": ["any"] }
@@ -639,7 +639,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta3-k' for shift-command-4 (screenshot)",
+                                "description": "'m3-k' for shift-command-4 (screenshot)",
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": { "optional": ["any"] }
@@ -660,7 +660,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta1-shift-l' for shift-right-arrow (vim-like + selection modify)",
+                                "description": "'m1-shift-l' for shift-right-arrow (vim-like + selection modify)",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -681,7 +681,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-t' for end",
+                                "description": "'m1-t' for end",
                                 "from": {
                                     "key_code": "t",
                                     "modifiers": { "optional": ["any"] }
@@ -697,7 +697,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta-l' for right arrow (vim-like); low priority",
+                                "description": "'m1-l' for right arrow (vim-like); low priority",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": { "optional": ["any"] }
@@ -713,7 +713,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'meta3-l' for cmd-control-q (screen lock)",
+                                "description": "'m3-l' for cmd-control-q (screen lock)",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": { "optional": ["any"] }
@@ -734,7 +734,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-2 for 1st app",
+                                "description": "m1-2 for 1st app",
                                 "from": { "key_code": "2" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 0}'" }],
                                 "type": "basic"
@@ -747,7 +747,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-3 for 2nd app",
+                                "description": "m1-3 for 2nd app",
                                 "from": { "key_code": "3" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 1}'" }],
                                 "type": "basic"
@@ -760,7 +760,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-4 for 3nd app",
+                                "description": "m1-4 for 3nd app",
                                 "from": { "key_code": "4" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 2}'" }],
                                 "type": "basic"
@@ -773,7 +773,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-5 for 4th app",
+                                "description": "m1-5 for 4th app",
                                 "from": { "key_code": "5" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 3}'" }],
                                 "type": "basic"
@@ -786,7 +786,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-6 for 5th app",
+                                "description": "m1-6 for 5th app",
                                 "from": { "key_code": "6" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 4}'" }],
                                 "type": "basic"
@@ -799,7 +799,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-7 for 6th app",
+                                "description": "m1-7 for 6th app",
                                 "from": { "key_code": "7" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 5}'" }],
                                 "type": "basic"
@@ -812,7 +812,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-8 for 7th app",
+                                "description": "m1-8 for 7th app",
                                 "from": { "key_code": "8" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 6}'" }],
                                 "type": "basic"
@@ -825,7 +825,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-9 for 8th app",
+                                "description": "m1-9 for 8th app",
                                 "from": { "key_code": "9" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 7}'" }],
                                 "type": "basic"
@@ -838,7 +838,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-0 for 9th app",
+                                "description": "m1-0 for 9th app",
                                 "from": { "key_code": "0" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 8}'" }],
                                 "type": "basic"
@@ -851,7 +851,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-minus for 10th app",
+                                "description": "m1-minus for 10th app",
                                 "from": { "key_code": "hyphen" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 9}'" }],
                                 "type": "basic"
@@ -864,7 +864,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-plus for closing apps",
+                                "description": "m1-shift-plus for closing apps",
                                 "from": {
                                     "key_code": "equal_sign",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -885,7 +885,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-plus for 11th app",
+                                "description": "m1-plus for 11th app",
                                 "from": { "key_code": "equal_sign" },
                                 "to": [
                                     {
@@ -903,7 +903,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-| for launchpad",
+                                "description": "m1-backslash for launchpad",
                                 "from": { "key_code": "backslash" },
                                 "to": [{ "key_code": "launchpad" }],
                                 "type": "basic"
@@ -916,7 +916,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-s-| for notifications",
+                                "description": "m1-s-backslash for notifications",
                                 "from": {
                                     "key_code": "backslash",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -937,7 +937,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-right_shift-g for emoji selector",
+                                "description": "m1-shift-g for emoji selector",
                                 "from": {
                                     "key_code": "g",
                                     "modifiers": { "mandatory": ["right_shift"] }
@@ -958,7 +958,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-g for F4",
+                                "description": "m1-g for F4",
                                 "from": {
                                     "key_code": "g",
                                     "modifiers": { "optional": ["any"] }
@@ -974,7 +974,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-f switch to 1st language",
+                                "description": "m1-shift-f switch to 1st language",
                                 "from": {
                                     "key_code": "f",
                                     "modifiers": { "mandatory": ["right_shift"] }
@@ -990,7 +990,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-f for F3",
+                                "description": "m1-f for F3",
                                 "from": {
                                     "key_code": "f",
                                     "modifiers": { "optional": ["any"] }
@@ -1006,7 +1006,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-right_shift-d switch to 2nd language",
+                                "description": "m1-shift-d switch to 2nd language",
                                 "from": {
                                     "key_code": "d",
                                     "modifiers": { "mandatory": ["right_shift"] }
@@ -1022,7 +1022,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-d for F2",
+                                "description": "m1-d for F2",
                                 "from": {
                                     "key_code": "d",
                                     "modifiers": { "optional": ["any"] }
@@ -1038,7 +1038,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-right_shift-s switch to 3nd language",
+                                "description": "m1-shift-s switch to 3nd language",
                                 "from": {
                                     "key_code": "s",
                                     "modifiers": { "mandatory": ["right_shift"] }
@@ -1054,7 +1054,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-s for F1",
+                                "description": "m1-s for F1",
                                 "from": {
                                     "key_code": "s",
                                     "modifiers": { "optional": ["any"] }
@@ -1070,7 +1070,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-b for F8",
+                                "description": "m1-b for F8",
                                 "from": { "key_code": "b" },
                                 "to": [{ "key_code": "f8" }],
                                 "type": "basic"
@@ -1083,7 +1083,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-v for F7",
+                                "description": "m1-v for F7",
                                 "from": { "key_code": "v" },
                                 "to": [{ "key_code": "f7" }],
                                 "type": "basic"
@@ -1096,7 +1096,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-c for F6",
+                                "description": "m1-c for F6",
                                 "from": { "key_code": "c" },
                                 "to": [{ "key_code": "f6" }],
                                 "type": "basic"
@@ -1109,7 +1109,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-x for F5",
+                                "description": "m1-x for F5",
                                 "from": { "key_code": "x" },
                                 "to": [{ "key_code": "f5" }],
                                 "type": "basic"
@@ -1426,7 +1426,7 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "meta-2-1 => command-1 for Preview app",
+                                "description": "m2-1 => command-1 for Preview app",
                                 "conditions": [
                                     {
                                         "name": "_m2",
@@ -1460,7 +1460,7 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "meta-2-2 => command-2 for Preview app",
+                                "description": "m2-2 => command-2 for Preview app",
                                 "conditions": [
                                     {
                                         "name": "_m2",
@@ -1494,7 +1494,7 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "meta-2-3 => command-3 for Preview app",
+                                "description": "m2-3 => command-3 for Preview app",
                                 "conditions": [
                                     {
                                         "name": "_m2",
@@ -1556,7 +1556,7 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "shift-meta-2-g => alt-command-g for Preview app",
+                                "description": "m2-shift-g => alt-command-g for Preview app",
                                 "conditions": [
                                     {
                                         "name": "_m2",
@@ -1762,7 +1762,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-y => top left",
+                                "description": "m1-shift-y => top left",
                                 "from": {
                                     "key_code": "y",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1783,7 +1783,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-u => bottom left",
+                                "description": "m1-shift-u => bottom left",
                                 "from": {
                                     "key_code": "u",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1804,7 +1804,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-i => top right",
+                                "description": "m1-shift-i => top right",
                                 "from": {
                                     "key_code": "i",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1825,7 +1825,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-o => bottom right",
+                                "description": "m1-shift-o => bottom right",
                                 "from": {
                                     "key_code": "o",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1846,7 +1846,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-n => left 1/2, 1/3, 2/3",
+                                "description": "m1-shift-n => left 1/2, 1/3, 2/3",
                                 "from": {
                                     "key_code": "n",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1867,7 +1867,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-m => right 1/2, 1/3, 2/3",
+                                "description": "m1-shift-m => right 1/2, 1/3, 2/3",
                                 "from": {
                                     "key_code": "m",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1888,7 +1888,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-, => top 1/2, 1/3, 2/3",
+                                "description": "m1-shift-comma => top 1/2, 1/3, 2/3",
                                 "from": {
                                     "key_code": "comma",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1909,7 +1909,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-. => bottom 1/2, 1/3, 2/3",
+                                "description": "m1-shift-period => bottom 1/2, 1/3, 2/3",
                                 "from": {
                                     "key_code": "period",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1930,7 +1930,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-space => maximize",
+                                "description": "m1-shift-space => maximize",
                                 "from": {
                                     "key_code": "spacebar",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1951,7 +1951,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-c => maximize on the primary screen",
+                                "description": "m1-shift-c => maximize on the primary screen",
                                 "from": {
                                     "key_code": "c",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1972,7 +1972,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "meta-shift-v => maximize on the non-primary screen",
+                                "description": "m1-shift-v => maximize on the non-primary screen",
                                 "from": {
                                     "key_code": "v",
                                     "modifiers": { "mandatory": ["shift"] }

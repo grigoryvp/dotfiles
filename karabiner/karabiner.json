@@ -1122,6 +1122,42 @@
                                         "value": 1
                                     }
                                 ],
+                                "description": "m2-e for email",
+                                "from": { "key_code": "e" },
+                                "to": [
+                                    { "key_code": "g" },
+                                    { "key_code": "r" },
+                                    { "key_code": "i" },
+                                    { "key_code": "g" },
+                                    { "key_code": "o" },
+                                    { "key_code": "r" },
+                                    { "key_code": "y" },
+                                    { "key_code": "v" },
+                                    { "key_code": "p" },
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    { "key_code": "g" },
+                                    { "key_code": "m" },
+                                    { "key_code": "a" },
+                                    { "key_code": "i" },
+                                    { "key_code": "l" },
+                                    { "key_code": "period" },
+                                    { "key_code": "c" },
+                                    { "key_code": "o" },
+                                    { "key_code": "m" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": "esc-s for english signature",
                                 "from": { "key_code": "s" },
                                 "to": [

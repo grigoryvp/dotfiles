@@ -1,5 +1,8 @@
 -- See ./.vscode/settings.json for linter configuration
 
+-- Doesn't seem to work
+hs.window.animationDuration = 0
+
 function onReadlinkExit(exitCode, stdOut, _)
   if exitCode ~= 0 or not stdOut then
     return print("ERROR: init.lua is not a link within ~/.hammerspoon")

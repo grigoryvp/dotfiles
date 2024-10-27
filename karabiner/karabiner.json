@@ -639,10 +639,9 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'m3-k' for shift-command-4 (screenshot)",
+                                "description": "'m3-slash' for shift-command-4 (screenshot)",
                                 "from": {
-                                    "key_code": "k",
-                                    "modifiers": { "optional": ["any"] }
+                                    "key_code": "slash"
                                 },
                                 "to": [
                                     {
@@ -713,10 +712,9 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'m3-l' for cmd-control-q (screen lock)",
+                                "description": "'m3-backslash' for cmd-control-q (screen lock)",
                                 "from": {
-                                    "key_code": "l",
-                                    "modifiers": { "optional": ["any"] }
+                                    "key_code": "backslash"
                                 },
                                 "to": [
                                     {
@@ -932,15 +930,14 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m1",
+                                        "name": "_m3",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-g for emoji selector",
+                                "description": "m3-l for emoji selector",
                                 "from": {
-                                    "key_code": "g",
-                                    "modifiers": { "mandatory": ["right_shift"] }
+                                    "key_code": "l"
                                 },
                                 "to": [
                                     {
@@ -969,15 +966,14 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m1",
+                                        "name": "_m3",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-f switch to 1st language",
+                                "description": "m3-k switch to 1st language (English)",
                                 "from": {
-                                    "key_code": "f",
-                                    "modifiers": { "mandatory": ["right_shift"] }
+                                    "key_code": "j"
                                 },
                                 "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.ABC$" } }],
                                 "type": "basic"
@@ -1001,15 +997,14 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m1",
+                                        "name": "_m3",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-d switch to 2nd language",
+                                "description": "m3-k switch to 2nd language (Russian)",
                                 "from": {
-                                    "key_code": "d",
-                                    "modifiers": { "mandatory": ["right_shift"] }
+                                    "key_code": "k"
                                 },
                                 "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$" } }],
                                 "type": "basic"
@@ -1033,15 +1028,14 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m1",
+                                        "name": "_m3",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-s switch to 3nd language",
+                                "description": "m3-u switch to 3nd language (Japanese)",
                                 "from": {
-                                    "key_code": "s",
-                                    "modifiers": { "mandatory": ["right_shift"] }
+                                    "key_code": "u"
                                 },
                                 "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.RomajiTyping\\.Japanese$" } }],
                                 "type": "basic"

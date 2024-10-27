@@ -124,6 +124,22 @@ function App:startHttpServer()
 end
 
 
+function App:_setWndFrame(wnd, frame)
+  if not wnd then return end
+
+  local app = hs.axuielement.applicationElement(wnd:application())
+  local wasEnhanced = app.AXEnhancedUserInterface
+  app.AXEnhancedUserInterface = false
+
+  wnd:setTopLeft(frame.x, frame.y)
+  hs.timer.usleep(0.1 * 1000 * 1000)
+  local duration = 0
+  wnd:setFrame(frame, duration)
+
+  app.AXEnhancedUserInterface = wasEnhanced
+end
+
+
 function App:registerHotkeys()
   local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="}
   for i, hotkey in ipairs(hotkeys) do
@@ -212,7 +228,6 @@ function App:registerHotkeys()
   hs.hotkey.bind("⌘⌥", "i", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
-    hs.window.animationDuration = 0
     ---@type table
     local primaryScreen = hs.screen.primaryScreen()
     local nonprimaryScreen = primaryScreen
@@ -224,29 +239,16 @@ function App:registerHotkeys()
     end
     ---@type table
     local screenFrame = nonprimaryScreen:frame()
-    wnd:setTopLeft(screenFrame.x, screenFrame.y)
-    -- primaryScreen() and allScreens() returns smaller frame
-    hs.timer.usleep(0.5 * 1000 * 1000)
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-    local duration = 0
-    wnd:setFrame(screenFrame, duration)
+    self:_setWndFrame(wnd, screenFrame)
   end)
 
   -- move window screen down
   hs.hotkey.bind("⌘⌥", ",", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
-    hs.window.animationDuration = 0
     ---@type table
     local screenFrame = hs.screen.primaryScreen():frame()
-    wnd:setTopLeft(screenFrame.x, screenFrame.y)
-    -- primaryScreen() and allScreens() returns smaller frame
-    hs.timer.usleep(0.5 * 1000 * 1000)
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-    local duration = 0
-    wnd:setFrame(screenFrame, duration)
+    self:_setWndFrame(wnd, screenFrame)
   end)
 
   hs.hotkey.bind("⌘⇧", "space", function()
@@ -254,8 +256,7 @@ function App:registerHotkeys()
     if not wnd then return end
     ---@type table
     local screenFrame = wnd:screen():frame()
-    local duration = 0
-    wnd:setFrame(screenFrame, duration)
+    self:_setWndFrame(wnd, screenFrame)
   end)
 
   hs.hotkey.bind("⌘⇧", "m", function()
@@ -269,8 +270,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", ",", function()
@@ -284,8 +284,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", ".", function()
@@ -299,8 +298,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y
     frame.w = screenFrame.w
     frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", "/", function()
@@ -314,8 +312,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y + screenFrame.h / 2
     frame.w = screenFrame.w
     frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", "u", function()
@@ -329,8 +326,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", "i", function()
@@ -344,8 +340,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", "o", function()
@@ -359,8 +354,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y + screenFrame.h / 2
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", "p", function()
@@ -374,8 +368,7 @@ function App:registerHotkeys()
     frame.y = screenFrame.y + screenFrame.h / 2
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
+    self:_setWndFrame(wnd, frame)
   end)
 end
 

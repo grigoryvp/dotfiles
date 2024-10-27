@@ -28,25 +28,24 @@
 ;;  working (UAC, lock screen, "Grim Dawn" etc).
 ;;. '/' is much better fit for middle mouse button since triple-mode 'enter'
 ;;  is overkill.
-;;. One-finger scroll is used too often for meta-]: too much load for pinkey,
+;;. One-finger scroll is used too often for m1-]: too much load for pinkey,
 ;;  so it's better to move it to something that is easier to hold, ex
-;;  meta-.
+;;  m1-.
 ;;. Unlike MacOS where hammerspoon can click any dock item, Windows
-;;  can switch only between 10 taskbar apps by itself, so mapping meta-plus
+;;  can switch only between 10 taskbar apps by itself, so mapping m1-plus
 ;;  for 11-th app is not easy.
 
 codepage := 65001 ; utf-8
 appLastLangHotkey := ""
 appLeaderUpTick := 0
 appLeaderDownTick := 0
-;;  Separate flags for alt down emulation with meta-2 while meta-1 is
-;;  pressed and meta-1 while meta-2 is pressed. This is used to ensure
+;;  Separate flags for alt down emulation with m2 while m1 is
+;;  pressed and m1 while m2 is pressed. This is used to ensure
 ;;  that the same key that set alt down will also put it up and do nothing
-;;  else. Otherwise it's possible to down meta-1, down meta-2 (holds alt),
-;;  up meta-1 (incorrectly releases alt), up meta-2 (incorrectly triggers
-;;  esc).
-appAltHoldByMeta1 := false
-appAltHoldByMeta2 := false
+;;  else. Otherwise it's possible to down m1, down m2 (holds alt),
+;;  up m1 (incorrectly releases alt), up m2 (incorrectly triggers esc).
+appAltHoldByM1 := false
+appAltHoldByM2 := false
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -58,7 +57,7 @@ A_MaxHotkeysPerInterval := 500
 
 ;;  F5 (meata-x) for game bar
 f5::send "#g"
-;;  F6 (meta-c) for "record last 30 seconds" game bar function
+;;  F6 (m1-c) for "record last 30 seconds" game bar function
 f6::send "#!g"
 
 perform(cmd, arg, direction) {
@@ -152,15 +151,7 @@ on_keyup(key) {
   }
 }
 
-;;  Switch between normal and 'compatible' mode for apps/games that
-;;  can't handle multi-key virtual combinations, like "Grim Dawn"
-!pgdn:: {
-  path := appHomePath . "\dotfiles\keyboard_compat.ahk"
-  run "autohotkey.exe " . path,, "Hide"
-  Suspend
-}
-
-;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
+;;  Use caps lock as 'm1' key to trigger things (caps remapped to f24).
 $vked:: {
   ;;  First press since release? (beware repetition)
   if (appLeaderUpTick >= appLeaderDownTick) {
@@ -191,29 +182,29 @@ $vked:: {
     }
     send "{mbutton up}"
   }
-  ;;  meta-1+meta-2 for left alt (while using external mouse)
+  ;;  m1+m2 for left alt (while using external mouse)
   else if (GetKeyState("esc", "P")) {
-    global appAltHoldByMeta1
-    appAltHoldByMeta1 := true
+    global appAltHoldByM1
+    appAltHoldByM1 := true
     send "{lalt down}"
   }
 }
 
-;;  Use caps lock as 'meta' key to trigger things (caps remapped to f24).
+;;  Use caps lock as 'm1' key to trigger things (caps remapped to f24).
 $vked up:: {
   global appLeaderUpTick
   appLeaderUpTick := A_TickCount
 
-  global appAltHoldByMeta1
-  ;;  meta-1+meta-2 for left alt (while using external mouse)
-  if (appAltHoldByMeta1) {
-    appAltHoldByMeta1 := false
+  global appAltHoldByM1
+  ;;  m1+m2 for left alt (while using external mouse)
+  if (appAltHoldByM1) {
+    appAltHoldByM1 := false
     send "{lalt up}"
   }
 }
 
 ;;  Supress rshift+caps that produces char codes in chrome and erases
-;;  cell content in spreadsheets while switching language via meta-s-f.
+;;  cell content in spreadsheets while switching language via m1-s-f.
 $+vked:: {
   global appLeaderDownTick
   if (appLeaderUpTick >= appLeaderDownTick) {
@@ -226,28 +217,28 @@ $+vked up:: {
 }
 
 *$esc:: {
-  ;;  meta-2 + shift for holding esc
+  ;;  m2 + shift for holding esc
   if (GetKeyState("lshift", "P")) {
     send "{esc down}"
   }
-  ;;  meta-1+meta-2 for left alt (while using external mouse)
+  ;;  m1+m2 for left alt (while using external mouse)
   if (GetKeyState("vked", "P")) {
-    global appAltHoldByMeta2
-    appAltHoldByMeta2 := true
+    global appAltHoldByM2
+    appAltHoldByM2 := true
     send "{lalt down}"
   }
 }
 
-;;  Single esc (lalt) press = esc, otherwise it's meta-2
+;;  Single esc (lalt) press = esc, otherwise it's m2
 *$esc up:: {
-  ;;  meta-2 + shift for holding esc
+  ;;  m2+shift for holding esc
   if (GetKeyState("lshift", "P")) {
     send "{esc up}"
   }
-  ;;  meta-1+meta-2 for left alt (while using external mouse)
-  if (appAltHoldByMeta2) {
-    global appAltHoldByMeta2
-    appAltHoldByMeta2 := false
+  ;;  m1+m2 for left alt (while using external mouse)
+  if (appAltHoldByM2) {
+    global appAltHoldByM2
+    appAltHoldByM2 := false
     send "{lalt up}"
   }
   else if (A_PriorKey = "escape") {
@@ -255,7 +246,7 @@ $+vked up:: {
   }
 }
 
-;;  Single enter (ralt) press = enter, otherwise it's meta-3
+;;  Single enter (ralt) press = enter, otherwise it's m3
 *$enter up:: {
   if (A_PriorKey = "enter") {
     send "{enter}"
@@ -289,94 +280,94 @@ $+vked up:: {
 ;;  Keys and combinations remap
 ;;  ==========================================================================
 
-;;  'meta-open-bracket' for escape (vim-like).
+;;  'm1-open-bracket' for escape (vim-like).
 *$[::remap("down", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 *$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
 
-;;  'meta-.' for mouse button 4 (scroll)
-;;  'meta-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
+;;  'm1-.' for mouse button 4 (scroll)
+;;  'm1-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
 *$.::remap("down", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
 *$. up::remap("up", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
 
-;;  'meta-plus' for 11th app (not implemented yet).
-;;  'meta-shift-plus' for closing apps
+;;  'm1-plus' for 11th app (not implemented yet).
+;;  'm1-shift-plus' for closing apps
 *$=::remap("down", "vkbb", "#^", "-", "none", "", "", "vkbb")
 *$= up::remap("up", "vkbb", "#^", "-", "winclose", "", "", "vkbb")
 
-;;  'meta-p' for backspace
-;;  'meta-shift-p' for deleting things.
+;;  'm1-p' for backspace
+;;  'm1-shift-p' for deleting things.
 *$p::remap("down", "vk50", "", "backspace", "none", "", "", "vk50")
 *$p up::remap("up", "vk50", "", "backspace", "delete", "", "", "vk50")
 
-;;  'meta-h' for left arrow (vim-like).
-;;  'meta-shift-h' for shift-left-arrow (vim-like + selection modify).
+;;  'm1-h' for left arrow (vim-like).
+;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
 *$h::remap("down", "vk48", "", "left", "+", "left", "", "vk48")
 *$h up::remap("up", "vk48", "", "left", "+", "left", "", "vk48")
 
-;;  'meta-j' for down arrow (vim-like).
-;;  'meta-shift-j' for shift-down-arrow (vim-like + selection modify).
+;;  'm1-j' for down arrow (vim-like).
+;;  'm1-shift-j' for shift-down-arrow (vim-like + selection modify).
 *$j::remap("down", "vk4a", "", "down", "+", "down", "", "vk4a")
 *$j up::remap("up", "vk4a", "", "down", "+", "down", "", "vk4a")
 
-;;  'meta-k' for up arrow (vim-like).
-;;  'meta-shift-k' for shift-up-arrow (vim-like + selection modify).
+;;  'm1-k' for up arrow (vim-like).
+;;  'm1-shift-k' for shift-up-arrow (vim-like + selection modify).
 *$k::remap("down", "vk4b", "", "up", "+", "up", "", "vk4b")
 *$k up::remap("up", "vk4b", "", "up", "+", "up", "", "vk4b")
 
 ;;  New experimental syntax
-add_remap("vk4b", ["meta-1"], "up", [])
-add_remap("vk4b", ["meta-1", "shift"], "up", ["shift"])
-add_remap("vk4b", ["meta-3"], "PrintScreen", [])
+add_remap("vk4b", ["m1"], "up", [])
+add_remap("vk4b", ["m1", "shift"], "up", ["shift"])
+add_remap("vk4b", ["m3"], "PrintScreen", [])
 ;; *$k::on_keydown("vk4b")
 ;; *$k up::on_keyup("kv4b")
 
-;;  'meta-l' for right arrow (vim-like).
-;;  'meta-shift-l' for shift-right-arrow (vim-like + selection modify).
+;;  'm1-l' for right arrow (vim-like).
+;;  'm1-shift-l' for shift-right-arrow (vim-like + selection modify).
 *$l::remap("down", "vk4c", "", "right", "+", "right", "", "vk4c")
 *$l up::remap("up", "vk4c", "", "right", "+", "right", "", "vk4c")
 
 ;;  New experimental syntax
-add_remap("vk4c", ["meta-1"], "right", [])
-add_remap("vk4c", ["meta-1", "shift"], "right", ["shift"])
-add_remap("vk4c", ["meta-3"], "lock", [])
+add_remap("vk4c", ["m1"], "right", [])
+add_remap("vk4c", ["m1", "shift"], "right", ["shift"])
+add_remap("vk4c", ["m3"], "lock", [])
 ;; *$l::on_keydown("vk4c")
 ;; *$l up::on_keyup("kv4c")
 
-;;  'meta-w' for home.
+;;  'm1-w' for home.
 *$w::remap("down", "vk57", "", "home", "", "vk57", "", "vk57")
 *$w up::remap("up", "vk57", "", "home", "", "vk57", "", "vk57")
 
-;;  'meta-e' for page down.
+;;  'm1-e' for page down.
 *$e::remap("down", "vk45", "", "pgdn", "", "vk45", "", "vk45")
 *$e up::remap("up", "vk45", "", "pgdn", "", "vk45", "", "vk45")
 
-;;  'meta-r' for page up.
+;;  'm1-r' for page up.
 *$r::remap("down", "vk52", "", "pgup", "", "vk52", "", "vk52")
 *$r up::remap("up", "vk52", "", "pgup", "", "vk52", "", "vk52")
 
-;;  'meta-t' for end.
+;;  'm1-t' for end.
 *$t::remap("down", "vk54", "", "end", "", "vk54", "", "vk54")
 *$t up::remap("up", "vk54", "", "end", "", "vk54", "", "vk54")
 
-;;  'meta-x' for F5.
+;;  'm1-x' for F5.
 *$x::remap("down", "vk58", "", "f5", "", "vk58", "", "vk58")
 *$x up::remap("up", "vk58", "", "f5", "", "vk58", "", "vk58")
 
-;;  'meta-c' for F6.
+;;  'm1-c' for F6.
 *$c::remap("down", "vk43", "", "f6", "", "vk43", "", "vk43")
 *$c up::remap("up", "vk43", "", "f6", "", "vk43", "", "vk43")
 
-;;  'meta-v' for F7.
+;;  'm1-v' for F7.
 *$v::remap("down", "vk56", "", "f7", "", "vk56", "", "vk56")
 *$v up::remap("up", "vk56", "", "f7", "", "vk56", "", "vk56")
 
-;;  'meta-b' for F8.
+;;  'm1-b' for F8.
 *$b::remap("down", "vk42", "", "f8", "", "vk42", "", "vk42")
 *$b up::remap("up", "vk42", "", "f8", "", "vk42", "", "vk42")
 
-;;  'meta-|' for launchpad.
-;;  'meta-s-|' for notifications.
-;;  'meta-c-|' for game HUD's (GOG, steam etc)
+;;  'm1-backslash' for launchpad.
+;;  'm1-s-backslash' for notifications.
+;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
 *$\::remap("down", "vkdc", "", "lwin", "#", "a", "+", "tab")
 *$\ up::remap("up", "vkdc", "", "lwin", "#", "a", "+", "tab")
 
@@ -384,43 +375,43 @@ add_remap("vk4c", ["meta-3"], "lock", [])
 ;;  App launcher
 ;;  ==========================================================================
 
-;;  'meta-2' fo 1st app
+;;  'm1-2' fo 1st app
 *$2::remap("down", "vk32", "#^", "1", "", "vk32", "", "vk32")
 *$2 up::remap("up", "vk32", "#^", "1", "", "vk32", "", "vk32")
 
-;;  'meta-3' fo 2nd app
+;;  'm1-3' fo 2nd app
 *$3::remap("down", "vk33", "#^", "2", "", "vk33", "", "vk33")
 *$3 up::remap("up", "vk33", "#^", "2", "", "vk33", "", "vk33")
 
-;;  'meta-4' fo 3nd app
+;;  'm1-4' fo 3nd app
 *$4::remap("down", "vk34", "#^", "3", "", "vk34", "", "vk34")
 *$4 up::remap("up", "vk34", "#^", "3", "", "vk34", "", "vk34")
 
-;;  'meta-5' fo 4th app
+;;  'm1-5' fo 4th app
 *$5::remap("down", "vk35", "#^", "4", "", "vk35", "", "vk35")
 *$5 up::remap("up", "vk35", "#^", "4", "", "vk35", "", "vk35")
 
-;;  'meta-6' fo 5th app
+;;  'm1-6' fo 5th app
 *$6::remap("down", "vk36", "#^", "5", "", "vk36", "", "vk36")
 *$6 up::remap("up", "vk36", "#^", "5", "", "vk36", "", "vk36")
 
-;;  'meta-7' for 6th app
+;;  'm1-7' for 6th app
 *$7::remap("down", "vk37", "#^", "6", "", "vk37", "", "vk37")
 *$7 up::remap("up", "vk37", "#^", "6", "", "vk37", "", "vk37")
 
-;;  'meta-8' for 7th app
+;;  'm1-8' for 7th app
 *$8::remap("down", "vk38", "#^", "7", "", "vk38", "", "vk38")
 *$8 up::remap("up", "vk38", "#^", "7", "", "vk38", "", "vk38")
 
-;;  'meta-9' for 8th app
+;;  'm1-9' for 8th app
 *$9::remap("down", "vk39", "#^", "8", "", "vk39", "", "vk39")
 *$9 up::remap("up", "vk39", "#^", "8", "", "vk39", "", "vk39")
 
-;;  'meta-0' for 9th app
+;;  'm1-0' for 9th app
 *$0::remap("down", "vk30", "#^", "9", "", "vk30", "", "vk30")
 *$0 up::remap("up", "vk30", "#^", "9", "", "vk30", "", "vk30")
 
-;;  'meta-minus' for 10th app
+;;  'm1-minus' for 10th app
 *$-::remap("down", "vkbd", "#^", "0", "", "vkbd", "", "vkbd")
 *$- up::remap("up", "vkbd", "#^", "0", "", "vkbd", "", "vkbd")
 
@@ -428,8 +419,8 @@ add_remap("vk4c", ["meta-3"], "lock", [])
 ;;  Language switch
 ;;  ==========================================================================
 
-;;  meta-g for F4
-;;  meta-shift-g for emoji selector
+;;  m1-g for F4
+;;  m1-shift-g for emoji selector
 *$g:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -457,9 +448,9 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
-;;  meta-f for F3
-;;  meta-shift-f switch to 1st language
-;;  lalt(esc)-f for game command
+;;  m1-f for F3
+;;  m1-shift-f switch to 1st language
+;;  m2-f for game command
 *$f:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -497,9 +488,9 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
-;;  meta-d for F2
-;;  meta-d switch to 2nd language
-;;  lalt(esc)-d for game command
+;;  m1-d for F2
+;;  m1-d switch to 2nd language
+;;  m2-d for game command
 *$d:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -537,9 +528,9 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
-;;  meta-s for F1
-;;  meta-s switch to 3nd language
-;;  lalt(esc)-s for english signature
+;;  m1-s for F1
+;;  m1-s switch to 3nd language
+;;  m2-s for english signature
 *$s:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
@@ -584,7 +575,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
 ;;  Fast text entry
 ;;  ==========================================================================
 
-;;  lalt(esc)-1 for game text 1
+;;  m2-1 for game text 1
 *$1:: {
   if (GetKeyState("esc", "P")) {
     ;;  TODO: check if PoE foreground
@@ -603,7 +594,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
-;;  lalt(esc)-q for game text 1
+;;  m2-q for game text 1
 *$q:: {
   if (GetKeyState("esc", "P")) {
     ;;  TODO: check if PoE foreground
@@ -622,41 +613,59 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
+;;  m2-e for email
+*$e:: {
+  if (GetKeyState("esc", "P")) {
+    send "grigoryvp@gmail.com"
+  }
+  else {
+    send "{blind}{e down}"
+  }
+}
+
+*$e up:: {
+  if (GetKeyState("esc", "P")) {
+  }
+  else {
+    send "{blind}{e up}"
+  }
+}
+
 ;; ===========================================================================
 ;; Multi-key combinations
 ;; ===========================================================================
 
-;;  'meta-shift-y' => top left (third party tool mapped to f13)
+;;  'm1-shift-y' => top left (third party tool mapped to f13)
 *$y::remap("down", "vk59", "", "vk59", "", "f13", "", "vk59")
 *$y up::remap("up", "vk59", "", "vk59", "", "f13", "", "vk59")
 
-;;  'meta-shift-u' => bottom left (third party tool mapped to f14)
+;;  'm1-shift-u' => bottom left (third party tool mapped to f14)
 *$u::remap("down", "vk55", "", "vk55", "", "f14", "", "vk55")
 *$u up::remap("up", "vk55", "", "vk55", "", "f14", "", "vk55")
 
-;;  'meta-shift-i' => top right (third party tool mapped to f15)
+;;  'm1-shift-i' => top right (third party tool mapped to f15)
 *$i::remap("down", "vk49", "", "vk49", "", "f15", "", "vk49")
 *$i up::remap("up", "vk49", "", "vk49", "", "f15", "", "vk49")
 
-;;  'meta-shift-o' => botom right (third party tool mapped to f16)
+;;  'm1-shift-o' => botom right (third party tool mapped to f16)
 *$o::remap("down", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 *$o up::remap("up", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 
-;;  'meta-shift-n' => left 1/2, 1/3, 2/3 (third party tool mapped to f17)
+;;  'm1-shift-n' => left 1/2, 1/3, 2/3 (third party tool mapped to f17)
 ;;  Stub implementation.
 *$n::remap("down", "vk4e", "", "vk4e", "#", "left", "", "vk4e")
 *$n up::remap("up", "vk4e", "", "vk4e", "#", "left", "", "vk4e")
 
-;;  'meta-shift-m' => right 1/2, 1/3, 2/3 (third party tool mapped to f18)
+;;  'm1-shift-m' => right 1/2, 1/3, 2/3 (third party tool mapped to f18)
 ;;  Stub implementation.
 *$m::remap("down", "vk4d", "", "vk4d", "#", "right", "", "vk4d")
 *$m up::remap("up", "vk4d", "", "vk4d", "#", "right", "", "vk4d")
 
-;;  'meta-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
+;;  'm1-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
 *$,::remap("down", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
 *$, up::remap("up", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
 
-;;  'meta-shift-space' => maximize
+;;  'm1-shift-space' => maximize
 *$space::remap("down", "vk20", "", "f21", "none", "", "", "vk20")
 *$space up::remap("up", "vk20", "", "f21", "winmaximize", "", "", "vk20")
 
@@ -664,7 +673,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
 ;; Left, right and middle mouse buttons
 ;; ===========================================================================
 
-;;  'meta-semicolon' for left mouse button.
+;;  'm1-semicolon' for left mouse button.
 *$;:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("lctrl", "P") && GetKeyState("shift", "P")) {
@@ -713,7 +722,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
-;;  'meta-quote' for right mouse button.
+;;  'm1-quote' for right mouse button.
 *$':: {
   if (GetKeyState("vked", "P")) {
     send "{rbutton down}"
@@ -729,7 +738,7 @@ add_remap("vk4c", ["meta-3"], "lock", [])
   }
 }
 
-;;  'meta-slash' for middle mouse button.
+;;  'm1-slash' for middle mouse button.
 *$/:: {
   if (GetKeyState("vked", "P")) {
     send "{mbutton down}"

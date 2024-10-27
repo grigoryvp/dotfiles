@@ -208,24 +208,8 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
-  -- maximize on primary (bottom, laptop) screen
-  hs.hotkey.bind("⌘⇧", "c", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = hs.screen.primaryScreen():frame()
-    local duration = 0
-    wnd:setFrame(screenFrame, duration)
-    -- primaryScreen() and allScreens() returns smaller frame
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-    local duration = 0
-    wnd:setFrame(screenFrame, duration)
-  end)
-
-  -- maximize on secondary (top, display) screen
-  hs.hotkey.bind("⌘⇧", "v", function()
+  -- move window screen up
+  hs.hotkey.bind("⌘⌥", "i", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     local frame = wnd:frame()
@@ -247,6 +231,22 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
+  -- move window screen down
+  hs.hotkey.bind("⌘⌥", ",", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = hs.screen.primaryScreen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
+    -- primaryScreen() and allScreens() returns smaller frame
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+    local duration = 0
+    wnd:setFrame(screenFrame, duration)
+  end)
+
   hs.hotkey.bind("⌘⇧", "space", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
@@ -257,21 +257,6 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
-  hs.hotkey.bind("⌘⇧", "n", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h
-    local duration = 0
-    wnd:setFrame(frame, duration)
-  end)
-
   hs.hotkey.bind("⌘⇧", "m", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
@@ -279,7 +264,7 @@ function App:registerHotkeys()
     ---@type table
     local screenFrame = wnd:screen():frame()
 
-    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.x = screenFrame.x
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h
@@ -294,6 +279,21 @@ function App:registerHotkeys()
     ---@type table
     local screenFrame = wnd:screen():frame()
 
+    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", ".", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
     frame.x = screenFrame.x
     frame.y = screenFrame.y
     frame.w = screenFrame.w
@@ -302,7 +302,7 @@ function App:registerHotkeys()
     wnd:setFrame(frame, duration)
   end)
 
-  hs.hotkey.bind("⌘⇧", ".", function()
+  hs.hotkey.bind("⌘⇧", "/", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     local frame = wnd:frame()
@@ -317,21 +317,6 @@ function App:registerHotkeys()
     wnd:setFrame(frame, duration)
   end)
 
-  hs.hotkey.bind("⌘⇧", "y", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h / 2
-    local duration = 0
-    wnd:setFrame(frame, duration)
-  end)
-
   hs.hotkey.bind("⌘⇧", "u", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
@@ -339,7 +324,7 @@ function App:registerHotkeys()
     ---@type table
     local screenFrame = wnd:screen():frame()
 
-    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.x = screenFrame.x
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h / 2
@@ -354,6 +339,21 @@ function App:registerHotkeys()
     ---@type table
     local screenFrame = wnd:screen():frame()
 
+    frame.x = screenFrame.x + screenFrame.w / 2
+    frame.y = screenFrame.y
+    frame.w = screenFrame.w / 2
+    frame.h = screenFrame.h / 2
+    local duration = 0
+    wnd:setFrame(frame, duration)
+  end)
+
+  hs.hotkey.bind("⌘⇧", "o", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    local frame = wnd:frame()
+    ---@type table
+    local screenFrame = wnd:screen():frame()
+
     frame.x = screenFrame.x
     frame.y = screenFrame.y + screenFrame.h / 2
     frame.w = screenFrame.w / 2
@@ -362,7 +362,7 @@ function App:registerHotkeys()
     wnd:setFrame(frame, duration)
   end)
 
-  hs.hotkey.bind("⌘⇧", "o", function()
+  hs.hotkey.bind("⌘⇧", "p", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     local frame = wnd:frame()

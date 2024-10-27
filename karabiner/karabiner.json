@@ -339,6 +339,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-p for backspace",
@@ -352,17 +362,56 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-p for deleting things",
+                                "description": "m1-m3-p for deleting things)",
                                 "from": {
-                                    "key_code": "p",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "p"
                                 },
                                 "to": [
                                     {
                                         "key_code": "delete_or_backspace",
                                         "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m1-m2-m3-p for closing apps",
+                                "from": {
+                                    "key_code": "p"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "q",
+                                        "modifiers": ["right_command"]
                                     }
                                 ],
                                 "type": "basic"
@@ -449,6 +498,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-slash for central mouse button",
@@ -465,6 +519,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-period for 6th mouse button (scroll)",
@@ -852,27 +911,6 @@
                                 "description": "m1-minus for 10th app",
                                 "from": { "key_code": "hyphen" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 9}'" }],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m1",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "description": "m1-shift-plus for closing apps",
-                                "from": {
-                                    "key_code": "equal_sign",
-                                    "modifiers": { "mandatory": ["shift"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "q",
-                                        "modifiers": ["right_command"]
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
@@ -1754,33 +1792,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
-                                    }
-                                ],
-                                "description": "m1-shift-y => top left",
-                                "from": {
-                                    "key_code": "y",
-                                    "modifiers": { "mandatory": ["shift"] }
-                                },
-                                "to": [
+                                    },
                                     {
-                                        "key_code": "y",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m1",
+                                        "name": "_m2",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-u => bottom left",
+                                "description": "m1-m2-u => top left",
                                 "from": {
-                                    "key_code": "u",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "u"
                                 },
                                 "to": [
                                     {
@@ -1796,12 +1817,21 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "m1-shift-i => top right",
+                                "description": "m1-m2-i => top right",
                                 "from": {
-                                    "key_code": "i",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "i"
                                 },
                                 "to": [
                                     {
@@ -1817,12 +1847,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-o => bottom right",
+                                "description": "m1-m2-o => bottom left",
                                 "from": {
-                                    "key_code": "o",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "o"
                                 },
                                 "to": [
                                     {
@@ -1838,16 +1872,20 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-n => left 1/2, 1/3, 2/3",
+                                "description": "m1-m2-p => bottom right",
                                 "from": {
-                                    "key_code": "n",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "p"
                                 },
                                 "to": [
                                     {
-                                        "key_code": "n",
+                                        "key_code": "p",
                                         "modifiers": ["right_command", "right_shift"]
                                     }
                                 ],
@@ -1859,12 +1897,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-m => right 1/2, 1/3, 2/3",
+                                "description": "m1-m2-m => left 1/2, 1/3, 2/3",
                                 "from": {
-                                    "key_code": "m",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "m"
                                 },
                                 "to": [
                                     {
@@ -1880,12 +1922,21 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "m1-shift-comma => top 1/2, 1/3, 2/3",
+                                "description": "m1-m2-comma => right 1/2, 1/3, 2/3",
                                 "from": {
-                                    "key_code": "comma",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "comma"
                                 },
                                 "to": [
                                     {
@@ -1901,12 +1952,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-period => bottom 1/2, 1/3, 2/3",
+                                "description": "m1-m2-period => top 1/2, 1/3, 2/3",
                                 "from": {
-                                    "key_code": "period",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "period"
                                 },
                                 "to": [
                                     {
@@ -1922,12 +1977,41 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-space => maximize",
+                                "description": "m1-m2-slash => bottom 1/2, 1/3, 2/3",
                                 "from": {
-                                    "key_code": "spacebar",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "slash"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "slash",
+                                        "modifiers": ["right_command", "right_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m1-m2-space => maximize",
+                                "from": {
+                                    "key_code": "spacebar"
                                 },
                                 "to": [
                                     {
@@ -1943,17 +2027,26 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-c => maximize on the primary screen",
+                                "description": "m1-m2-m3-i => move window screen up",
                                 "from": {
-                                    "key_code": "c",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "i"
                                 },
                                 "to": [
                                     {
-                                        "key_code": "c",
-                                        "modifiers": ["right_command", "right_shift"]
+                                        "key_code": "i",
+                                        "modifiers": ["right_command", "right_alt"]
                                     }
                                 ],
                                 "type": "basic"
@@ -1964,17 +2057,26 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-shift-v => maximize on the non-primary screen",
+                                "description": "m1-m2-m3-comma => move window screen down",
                                 "from": {
-                                    "key_code": "v",
-                                    "modifiers": { "mandatory": ["shift"] }
+                                    "key_code": "comma"
                                 },
                                 "to": [
                                     {
-                                        "key_code": "v",
-                                        "modifiers": ["right_command", "right_shift"]
+                                        "key_code": "comma",
+                                        "modifiers": ["right_command", "right_alt"]
                                     }
                                 ],
                                 "type": "basic"

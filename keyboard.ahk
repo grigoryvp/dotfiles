@@ -816,3 +816,7 @@ OnTimer() {
 SetTimer(OnTimer, 500)
 
 ;; TODO: url shortener on context menu
+;; TODO: m1-m2-u/i/o/p/m/comma/period/slash for resizing windows
+;; TODO: m1-m3-p for deleting things
+;; TODO: m1-m2-m3-p for closing windows
+;; TODO: m1-m2-m3-j/k/l/i/slash for moving windows around

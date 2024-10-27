@@ -2021,7 +2021,7 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     },
                                     {
                                         "name": "_m3",
@@ -2029,7 +2029,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-m2-m3-i => move window screen up",
+                                "description": "m1-m3-i => move window screen up",
                                 "from": {
                                     "key_code": "i"
                                 },
@@ -2051,7 +2051,7 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     },
                                     {
                                         "name": "_m3",
@@ -2059,7 +2059,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-m2-m3-comma => move window screen down",
+                                "description": "m1-m3-comma => move window screen down",
                                 "from": {
                                     "key_code": "comma"
                                 },
@@ -2081,7 +2081,7 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     },
                                     {
                                         "name": "_m3",
@@ -2089,7 +2089,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-m2-m3-k for closing apps",
+                                "description": "m1-m3-k for closing apps",
                                 "from": {
                                     "key_code": "k"
                                 },

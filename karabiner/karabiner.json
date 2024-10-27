@@ -392,36 +392,6 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
-                                    },
-                                    {
-                                        "name": "_m2",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    },
-                                    {
-                                        "name": "_m3",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "description": "m1-m2-m3-p for closing apps",
-                                "from": {
-                                    "key_code": "p"
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "q",
-                                        "modifiers": ["right_command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m1",
-                                        "type": "variable_if",
-                                        "value": 1
                                     }
                                 ],
                                 "description": "m1-ctrl(tab)-semicolon for command(ctrl)-lmb",
@@ -680,6 +650,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "'m1-k' for up arrow (vim-like); low priority",
@@ -1034,6 +1014,16 @@
                             },
                             {
                                 "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
                                     {
                                         "name": "_m3",
                                         "type": "variable_if",
@@ -2077,6 +2067,36 @@
                                     {
                                         "key_code": "comma",
                                         "modifiers": ["right_command", "right_alt"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m1-m2-m3-k for closing apps",
+                                "from": {
+                                    "key_code": "k"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "q",
+                                        "modifiers": ["right_command"]
                                     }
                                 ],
                                 "type": "basic"

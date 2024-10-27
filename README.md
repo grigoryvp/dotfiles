@@ -92,6 +92,7 @@ pip install --upgrade pip
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
 * A way to communicate with hammerspoon without hotkeys.
+* Remember window resize state while moving it between screens.
 
 ## License
 

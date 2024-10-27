@@ -147,7 +147,17 @@ function App:_moveWndToScreen(wnd, screen)
   local srcFrame = wnd:screen():frame()
   ---@type table
   local dstFrame = screen:frame()
-  -- TODO: calculate target frame based on the current window position
+
+  local dx = (math.abs(srcFrame.x - wndFrame.x)) / srcFrame.w
+  local dy = (math.abs(srcFrame.y - wndFrame.y)) / srcFrame.h
+  local dw = wndFrame.w / srcFrame.w
+  local dh = wndFrame.h / srcFrame.h
+
+  dstFrame.x = dstFrame.x + dstFrame.w * dx
+  dstFrame.y = dstFrame.y + dstFrame.h * dy
+  dstFrame.w = dstFrame.w * dw
+  dstFrame.h = dstFrame.h * dh
+
   self:_setWndFrame(wnd, dstFrame)
 end
 

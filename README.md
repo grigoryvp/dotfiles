@@ -93,7 +93,6 @@ pip install --upgrade pip
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
 * A way to communicate with hammerspoon without hotkeys.
 * Remember window resize state while moving it between screens.
-* https://github.com/Hammerspoon/hammerspoon/issues/3224
 
 ## License
 

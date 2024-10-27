@@ -140,6 +140,18 @@ function App:_setWndFrame(wnd, frame)
 end
 
 
+function App:_moveWndToScreen(wnd, screen)
+  ---@type table
+  local wndFrame = wnd:frame()
+  ---@type table
+  local srcFrame = wnd:screen():frame()
+  ---@type table
+  local dstFrame = screen:frame()
+  -- TODO: calculate target frame based on the current window position
+  self:_setWndFrame(wnd, dstFrame)
+end
+
+
 function App:registerHotkeys()
   local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="}
   for i, hotkey in ipairs(hotkeys) do
@@ -237,9 +249,7 @@ function App:registerHotkeys()
         break
       end
     end
-    ---@type table
-    local screenFrame = nonprimaryScreen:frame()
-    self:_setWndFrame(wnd, screenFrame)
+    self:_moveWndToScreen(wnd, nonprimaryScreen)
   end)
 
   -- move window screen down
@@ -247,8 +257,7 @@ function App:registerHotkeys()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     ---@type table
-    local screenFrame = hs.screen.primaryScreen():frame()
-    self:_setWndFrame(wnd, screenFrame)
+    self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
   end)
 
   hs.hotkey.bind("⌘⇧", "space", function()

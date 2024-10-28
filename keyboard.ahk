@@ -338,6 +338,7 @@ add_remap("vk4c", ["m3"], "lock", [])
 *$w up::remap("up", "vk57", "", "home", "", "vk57", "", "vk57")
 
 ;;  'm1-e' for page down.
+;; TODO:  m2-e for email
 *$e::remap("down", "vk45", "", "pgdn", "", "vk45", "", "vk45")
 *$e up::remap("up", "vk45", "", "pgdn", "", "vk45", "", "vk45")
 
@@ -610,24 +611,6 @@ add_remap("vk4c", ["m3"], "lock", [])
   }
   else {
     send "{blind}{q up}"
-  }
-}
-
-;;  m2-e for email
-*$e:: {
-  if (GetKeyState("esc", "P")) {
-    send "grigoryvp@gmail.com"
-  }
-  else {
-    send "{blind}{e down}"
-  }
-}
-
-*$e up:: {
-  if (GetKeyState("esc", "P")) {
-  }
-  else {
-    send "{blind}{e up}"
   }
 }
 

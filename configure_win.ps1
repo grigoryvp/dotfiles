@@ -153,7 +153,7 @@ class App {
     # $srcPath = $this._path(@($this._cfgDir, $name));
     # $dstDir = $this._path(@("~", "apps", "NirSoft.BatteryInfoView"));
     # New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
-    $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
+    # $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
     $this._installApp("strayge.tray-monitor");
     # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
     # which will be available in WinGet 1.9
@@ -692,6 +692,7 @@ class App {
           Write-Host "Upload manually and touch .ssh/${marker}";
           Write-Host "Login: '$($this._github.user)'";
           Write-Host "Pass: '$($this._github.pass)'";
+          Write-Host "REBOOT IF FIRST INSTALL (to correctly install WSL)";
           throw "Failed";
         }
         else {

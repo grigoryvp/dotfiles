@@ -461,6 +461,7 @@ class App {
       Write-Host "Removing existing temp dir $tmpDirName"
       Remove-Item "$tmpDirName" -Recurse -Force;
     }
+    # May hang: https://gitlab.com/gitlab-org/gitlab/-/issues/499350
     Write-Host "git clone $uri $tmpDirName";
     & git clone --quiet "$uri" "$tmpDirName";
     # Replace HTTP git config with SSH one, if any.

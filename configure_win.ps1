@@ -461,7 +461,7 @@ class App {
       Write-Host "Removing existing temp dir $tmpDirName"
       Remove-Item "$tmpDirName" -Recurse -Force;
     }
-    Write-Host "Cloning into temp dir $tmpDirName"
+    Write-Host "git clone $uri $tmpDirName";
     & git clone --quiet "$uri" "$tmpDirName";
     # Replace HTTP git config with SSH one, if any.
     Write-Host "Removing current dir $($this._cfgDir)"

@@ -2,8 +2,8 @@
 
 ## Windows install
 
-```bat
-winget install --silent Microsoft.PowerShell
+```ps1
+winget install --silent Microsoft.PowerShell # aks elevation IN BACKGROUND
 ```
 
 Relaunch terminal, continue with `Elevated PowerShell`:
@@ -72,6 +72,7 @@ pip install --upgrade pip
 # Enable password lock in "Preferences/Security/General/Require password"
 # Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
+# Disable iTerm2 Settings/General/Selection/Clicking
 # Configure hammerspoon for autostart
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.

@@ -241,6 +241,7 @@
     "libsqlite",
     "libxmlsec",
     "mimestream",
+    "oneof",
     "pagebreak",
     "pandoc",
     "Petrov",

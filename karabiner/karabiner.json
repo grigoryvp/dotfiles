@@ -948,14 +948,15 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m3",
+                                        "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m3-l for emoji selector",
+                                "description": "m3-s-g for emoji selector",
                                 "from": {
-                                    "key_code": "l"
+                                    "key_code": "g",
+                                    "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "to": [
                                     {
@@ -984,14 +985,15 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m3",
+                                        "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m3-k switch to 1st language (English)",
+                                "description": "m1-s-f switch to 1st language (English)",
                                 "from": {
-                                    "key_code": "j"
+                                    "key_code": "f",
+                                    "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.ABC$" } }],
                                 "type": "basic"
@@ -1017,22 +1019,13 @@
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
-                                        "value": 0
-                                    },
-                                    {
-                                        "name": "_m2",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    },
-                                    {
-                                        "name": "_m3",
-                                        "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m3-k switch to 2nd language (Russian)",
+                                "description": "m1-s-d switch to 2nd language (Russian)",
                                 "from": {
-                                    "key_code": "k"
+                                    "key_code": "d",
+                                    "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$" } }],
                                 "type": "basic"
@@ -1056,14 +1049,15 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m3",
+                                        "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m3-u switch to 3nd language (Japanese)",
+                                "description": "m1-s-s switch to 3nd language (Japanese)",
                                 "from": {
-                                    "key_code": "u"
+                                    "key_code": "s",
+                                    "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.inputmethod\\.Kotoeri\\.RomajiTyping\\.Japanese$" } }],
                                 "type": "basic"
@@ -2074,24 +2068,14 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m1",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    },
-                                    {
-                                        "name": "_m2",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    },
-                                    {
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-m3-k for closing apps",
+                                "description": "m3-n for closing apps",
                                 "from": {
-                                    "key_code": "k"
+                                    "key_code": "n"
                                 },
                                 "to": [
                                     {

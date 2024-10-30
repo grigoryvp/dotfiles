@@ -246,8 +246,16 @@ function App:registerHotkeys()
     wnd:setFrame(screenFrame, duration)
   end)
 
+  -- move window screen down
+  hs.hotkey.bind("⌘⌥", "j", function()
+    local wnd = hs.window.frontmostWindow()
+    if not wnd then return end
+    ---@type table
+    self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
+  end)
+
   -- move window screen up
-  hs.hotkey.bind("⌘⌥", "i", function()
+  hs.hotkey.bind("⌘⌥", "k", function()
     local wnd = hs.window.frontmostWindow()
     if not wnd then return end
     ---@type table
@@ -260,14 +268,6 @@ function App:registerHotkeys()
       end
     end
     self:_moveWndToScreen(wnd, nonprimaryScreen)
-  end)
-
-  -- move window screen down
-  hs.hotkey.bind("⌘⌥", ",", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    ---@type table
-    self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
   end)
 
   hs.hotkey.bind("⌘⇧", "space", function()

@@ -953,7 +953,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m3-s-g for emoji selector",
+                                "description": "m1-s-g for emoji selector",
                                 "from": {
                                     "key_code": "g",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -2015,21 +2015,21 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 0
+                                        "value": 1
                                     },
                                     {
                                         "name": "_m3",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     }
                                 ],
-                                "description": "m1-m3-i => move window screen up",
+                                "description": "m1-m2-j => move window screen down",
                                 "from": {
-                                    "key_code": "i"
+                                    "key_code": "j"
                                 },
                                 "to": [
                                     {
-                                        "key_code": "i",
+                                        "key_code": "j",
                                         "modifiers": ["right_command", "right_alt"]
                                     }
                                 ],
@@ -2045,21 +2045,21 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 0
+                                        "value": 1
                                     },
                                     {
                                         "name": "_m3",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     }
                                 ],
-                                "description": "m1-m3-comma => move window screen down",
+                                "description": "m1-m2-k => move window screen up",
                                 "from": {
-                                    "key_code": "comma"
+                                    "key_code": "k"
                                 },
                                 "to": [
                                     {
-                                        "key_code": "comma",
+                                        "key_code": "k",
                                         "modifiers": ["right_command", "right_alt"]
                                     }
                                 ],
@@ -2071,11 +2071,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
-                                    }
+                                    },
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-m2-n for closing apps",

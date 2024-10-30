@@ -14,6 +14,10 @@
         "args": []
     }]
   }],
+  "vim.visualModeKeyBindings": [{
+    "before": ["p"],
+    "after":["P"]
+  }],
   "vim.normalModeKeyBindingsNonRecursive": [{
     "before": ["n"],
     "after": ["n", "z", "z"]
@@ -226,13 +230,19 @@
     "трем"
   ],
   "cSpell.userWords": [
+    "anychar",
+    "charfrom",
+    "Classpath",
     "documentclass",
+    "dont",
     "dotfiles",
     "Duolingo",
     "frontmost",
     "grigory",
     "grigoryvp",
     "hammerspoon",
+    "ignorecase",
+    "ipynb",
     "karabiner",
     "Keepass",
     "libbz",
@@ -240,6 +250,7 @@
     "libreadline",
     "libsqlite",
     "libxmlsec",
+    "lookaround",
     "mimestream",
     "oneof",
     "pagebreak",
@@ -247,12 +258,14 @@
     "Petrov",
     "phpenv",
     "pyenv",
+    "Pylance",
     "remappable",
     "skylighting",
     "spacebar",
     "Trackpad",
     "unhashable",
     "virtualenv",
+    "vsicons",
     "winget",
     "автоконверсии",
     "айти",

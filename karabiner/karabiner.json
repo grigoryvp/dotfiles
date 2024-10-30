@@ -2068,12 +2068,17 @@
                             {
                                 "conditions": [
                                     {
-                                        "name": "_m3",
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                    {
+                                        "name": "_m2",
                                         "type": "variable_if",
                                         "value": 1
                                     }
                                 ],
-                                "description": "m3-n for closing apps",
+                                "description": "m1-m2-n for closing apps",
                                 "from": {
                                     "key_code": "n"
                                 },

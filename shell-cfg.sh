@@ -247,6 +247,9 @@ alias uvc="uv init"
 alias uvi="uv sync"
 alias uva="uv pip install"
 
+#  Hammerspoon
+alias hsr="hs -c 'hs.reload()'"
+
 buss() {
   if [ -e ./bin/dev ]; then
     ./bin/dev

@@ -544,9 +544,19 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "'m1-h' for left arrow (vim-like); low priority",
+                                "description": "'m1-h' for left arrow (vim-like, after m1-s-h)",
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": { "optional": ["any"] }
@@ -597,9 +607,19 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "'m1-j' for down arrow (vim-like); low priority",
+                                "description": "'m1-j' for down arrow (vim-like, after m1-s-j)",
                                 "from": {
                                     "key_code": "j",
                                     "modifiers": { "optional": ["any"] }
@@ -662,7 +682,7 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "'m1-k' for up arrow (vim-like); low priority",
+                                "description": "'m1-k' for up arrow (vim-like, after m1-s-k)",
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": { "optional": ["any"] }
@@ -733,9 +753,19 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "'m1-l' for right arrow (vim-like); low priority",
+                                "description": "'m1-l' for right arrow (vim-like, after m1-s-l)",
                                 "from": {
                                     "key_code": "l",
                                     "modifiers": { "optional": ["any"] }
@@ -958,12 +988,7 @@
                                     "key_code": "g",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [
-                                    {
-                                        "key_code": "spacebar",
-                                        "modifiers": ["right_command", "left_control"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"show_char_picker\"}'" }],
                                 "type": "basic"
                             },
                             {

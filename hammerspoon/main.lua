@@ -1,7 +1,3 @@
-require "helpers"
-require "menuitem"
-
-
 App = {}
 function App:new()
   local inst = setmetatable({
@@ -115,6 +111,9 @@ function App:startHttpServer()
         return "switch_app.app_index not in 0..9 range", 400, {}
       end
       self:clickDockItem(appIndex + 1)
+      return "", 200, {}
+    elseif json.command == "show_char_picker" then
+      self:showCharPicker()
       return "", 200, {}
     else
       return "unknown command", 400, {}
@@ -1070,4 +1069,35 @@ function App:createMenu()
     str = str:gsub("%s+", " ") -- Collapse two+ spaces into one
     hs.pasteboard.setContents(str)
   end)
+end
+
+function App:showCharPicker()
+  local layout = hs.keycodes.currentLayout()
+  hs.keycodes.setLayout("ABC")
+  local chooser = hs.chooser.new(function(choice)
+    if not choice then
+      focusLastFocused()
+      return
+    end
+    hs.pasteboard.setContents(choice["emoji"])
+    focusLastFocused()
+    hs.eventtap.keyStrokes(hs.pasteboard.getContents())
+    hs.keycodes.setLayout(layout)
+  end)
+
+  chooser:choices({
+    {["text"] = "😊 smile", ["emoji"] = "😊"},
+    {["text"] = "😜 crazy", ["emoji"] = "😜"},
+    {["text"] = "😇 halo", ["emoji"] = "😇"},
+    {["text"] = "😳 eyes", ["emoji"] = "😳"},
+    {["text"] = "🤔 think", ["emoji"] = "🤔"},
+    {["text"] = "🔥 fire", ["emoji"] = "🔥"},
+    {["text"] = "🙏 hands", ["emoji"] = "🙏"},
+    {["text"] = "🤝 shake", ["emoji"] = "🤝"},
+    {["text"] = "👉 right", ["emoji"] = "👉"},
+    {["text"] = "🚕 car", ["emoji"] = "🚕"},
+    {["text"] = "✈️ airplane", ["emoji"] = "✈️"},
+  })
+
+  chooser:show()
 end

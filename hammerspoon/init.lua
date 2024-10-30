@@ -1,5 +1,8 @@
 -- See ./.vscode/settings.json for linter configuration
 
+-- "hs" cli tool for remote communication
+require "hs.ipc"
+
 -- Doesn't seem to work
 hs.window.animationDuration = 0
 
@@ -10,6 +13,9 @@ function onReadlinkExit(exitCode, stdOut, _)
   local srcDir = stdOut:match("(.+/)") or "./"
   -- init.lua is linked, rest of the files are in the original dir
   package.path = package.path .. ";" .. srcDir .. "?.lua"
+
+  require "helpers"
+  require "menuitem"
   require "main"
 
   app = App:new()

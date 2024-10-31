@@ -1079,9 +1079,8 @@ function App:showCharPicker()
       focusLastFocused()
       return
     end
-    hs.pasteboard.setContents(choice["emoji"])
     focusLastFocused()
-    hs.eventtap.keyStrokes(hs.pasteboard.getContents())
+    hs.eventtap.keyStrokes(choice["emoji"])
     hs.keycodes.setLayout(layout)
   end)
 
@@ -1091,6 +1090,11 @@ function App:showCharPicker()
     {["text"] = "😇 halo", ["emoji"] = "😇"},
     {["text"] = "😳 eyes", ["emoji"] = "😳"},
     {["text"] = "🤔 think", ["emoji"] = "🤔"},
+    {["text"] = "😂 lol", ["emoji"] = "😂"},
+    {["text"] = "😥 sad", ["emoji"] = "😥"},
+    {["text"] = "😘 kiss", ["emoji"] = "😘"},
+    {["text"] = "😍 love", ["emoji"] = "😍"},
+    {["text"] = "❤️ heart", ["emoji"] = "❤️"},
     {["text"] = "🔥 fire", ["emoji"] = "🔥"},
     {["text"] = "🙏 hands", ["emoji"] = "🙏"},
     {["text"] = "🤝 shake", ["emoji"] = "🤝"},

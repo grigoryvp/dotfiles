@@ -2100,15 +2100,15 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     },
                                     {
                                         "name": "_m3",
                                         "type": "variable_if",
-                                        "value": 0
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-m2-n for closing apps",
+                                "description": "m1-m3-n for closing apps",
                                 "from": {
                                     "key_code": "n"
                                 },

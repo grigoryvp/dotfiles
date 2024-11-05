@@ -744,7 +744,8 @@ class App {
 
     $settings = New-ScheduledTaskSettingsSet `
       -ExecutionTimeLimit 0 `
-      -AllowStartIfOnBatteries;
+      -AllowStartIfOnBatteries `
+      --DontStopIfGoingOnBatteries;
     Set-ScheduledTask -TaskName $name -Settings $settings;
   }
 

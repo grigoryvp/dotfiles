@@ -157,6 +157,8 @@ class App {
     $this._installApp("strayge.tray-monitor");
     # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
     # which will be available in WinGet 1.9
+    # TODO: create pingometer config file (auto created in current dir
+    # on start)
     # $this._installApp("EFLFE.PingoMeter");
     $this._registerAutohotkeyStartup();
     $this._registerXMouseButtonControlStartup();
@@ -930,7 +932,7 @@ class App {
     if (Test-Path -Path "$startDir\pingometer.bat") {
       Remove-Item "$startDir\pingometer.bat" -Recurse -Force;
     }
-    $content = "pwsh -Command Start-Process Pingometer.exe";
+    $content = "pwsh -Command Start-Process PingoMeter.exe";
     $content += " -WindowStyle Hidden";
     $name = "pingometer.bat";
     New-File -path $startDir -Name $name -Value "$content";

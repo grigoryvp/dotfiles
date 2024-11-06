@@ -156,10 +156,42 @@ class App {
     # this._installLocationApp("NirSoft.BatteryInfoView", "")
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
+ 
+    if (-not $this._isPublic) {
+      $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+      # Interactive.
+      if (-not (Test-Path -Path "$markerPath")) {
+        $this._askForCredentials();
+        $this._setEnv("MQTT_URL", $this._mqtt.url);
+        $this._setEnv("MQTT_USER", $this._mqtt.user);
+        $this._setEnv("MQTT_PASS", $this._mqtt.pass);
+        $this._uploadSshKey();
+      }
+      # Re-clone with SSH keys
+      $this._getFilesFromGit();
+    }
+
+    # After additional files are received
+  
+    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
+    $this._installAppFromManifest("EFLFE.PingoMeter");
+    $this._configurePingoMeter();
+
+    # Register startup after all additional files are received since
+    # starting apps like autohotkey blocks config files
+    $this._registerPingometerStartup();
     $this._registerAutohotkeyStartup();
     $this._registerXMouseButtonControlStartup();
     # TODO: wait for BatteryInfoView install
     # $this._registerBatteryInfoViewStartup();
+
+    # Interactive
+    $this._mapKeyboard();
+
+    # Interactive.
+    $this._installFonts();
+
+    $this._getXiWindows();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -182,35 +214,6 @@ class App {
       $content = "[include]`npath = `"$($this._cfgDirLinux)/git-cfg.toml`"`n";
       New-File -Path "~" -Name ".gitconfig" -Value "$content";
     }
-    
-    if (-not $this._isPublic) {
-      $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
-      # Interactive.
-      if (-not (Test-Path -Path "$markerPath")) {
-        $this._askForCredentials();
-        $this._setEnv("MQTT_URL", $this._mqtt.url);
-        $this._setEnv("MQTT_USER", $this._mqtt.user);
-        $this._setEnv("MQTT_PASS", $this._mqtt.pass);
-        $this._uploadSshKey();
-      }
-      # Re-clone with SSH keys
-      $this._getFilesFromGit();
-    }
-
-    # After additional files are received
-  
-    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
-    $this._installAppFromManifest("EFLFE.PingoMeter");
-    $this._configurePingoMeter();
-    $this._registerPingometerStartup();
-
-    # Interactive
-    $this._mapKeyboard();
-
-    # Interactive.
-    $this._installFonts();
-
-    $this._getXiWindows();
 
     if (-not (Test-Path -Path ".editorconfig")) {
         $src = $this._path(@($this._cfgDir, ".editorconfig"));

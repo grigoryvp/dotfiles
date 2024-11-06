@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.22";
+  $_ver = "1.0.23";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -117,6 +117,11 @@ class App {
 
     # Game compatibility
     $this._setEnv("OPENSSL_ia32cap", "~0x20000000");
+
+    if (-not $this._isTest) {
+      # Ensure at least 1.9 version for "add to path" manifest flag
+      & winget upgrade winget;
+    }
 
     # Requires reboot for a second stage install
     $this._installWsl();
@@ -307,7 +312,7 @@ class App {
       return;
     }
     Write-Host "Installing $appName"
-    winget install --silent $appName;
+    & winget install --silent $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
   }
 
@@ -325,7 +330,7 @@ class App {
       $appName
     ));
     Write-Host "Installing $appName from $manifestPath"
-    winget install --silent --manifest $manifestPath;
+    & winget install --silent --manifest $manifestPath;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
   }
 
@@ -337,7 +342,7 @@ class App {
       return;
     }
     Write-Host "Uninstalling $appName"
-    winget uninstall --silent $appName;
+    & winget uninstall --silent $appName;
     # There is no reason to check error code since uninstallers tend to
     # show error codes upon successfull uninstall
   }
@@ -359,11 +364,11 @@ class App {
     }
     if ($ver) {
       Write-Host "Installing $appName with binary in path, version $ver"
-      winget install --silent $appName --version $ver --no-upgrade --exact;
+      & winget install --silent $appName --version $ver --no-upgrade --exact;
     }
     else {
       Write-Host "Installing $appName with binary in path"
-      winget install --silent $appName;
+      & winget install --silent $appName;
     }
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
     if (-not $env:PATH.Contains($binPath)) {
@@ -386,7 +391,7 @@ class App {
       return;
     }
     Write-Host "Installing $appName into $location"
-    winget install --silent --location $location $appName;
+    & winget install --silent --location $location $appName;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
     if (-not $env:PATH.Contains($binPath)) {
       $env:PATH = "${env:PATH};$binPath";

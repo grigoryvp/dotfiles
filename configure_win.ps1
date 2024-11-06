@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.23";
+  $_ver = "1.0.24";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -121,6 +121,8 @@ class App {
     if (-not $this._isTest) {
       # Ensure at least 1.9 version for "add to path" manifest flag
       & winget upgrade winget;
+      # Enable install from manifests
+      & winget settings --enable LocalManifestFiles
     }
 
     $this._installApp("Microsoft.VCRedist.2015+.x64");

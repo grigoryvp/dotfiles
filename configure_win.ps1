@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.20";
+  $_ver = "1.0.21";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -149,23 +149,16 @@ class App {
     $this._configureLsd();
     # TODO: install batteryinfoview via winget like "NirSoft.WifiInfoView"
     # this._installLocationApp("NirSoft.BatteryInfoView", "")
-    # $name = "BatteryInfoView.cfg";
-    # $srcPath = $this._path(@($this._cfgDir, $name));
-    # $dstDir = $this._path(@("~", "apps", "NirSoft.BatteryInfoView"));
-    # New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
-    # $dirname = "strayge.tray-monitor_Microsoft.Winget.Source_8wekyb3d8bbwe";
+    # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
     # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
-    # which will be available in WinGet 1.9
-    # TODO: create pingometer config file (auto created in current dir
-    # on start)
-    # $this._installApp("EFLFE.PingoMeter");
+    $this._installAppFromManifest("EFLFE.PingoMeter");
+    $this._configurePingoMeter();
     $this._registerAutohotkeyStartup();
     $this._registerXMouseButtonControlStartup();
     # TODO: wait for BatteryInfoView install
     # $this._registerBatteryInfoViewStartup();
-    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129
-    # $this._registerPingometerStartup();
+    $this._registerPingometerStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -314,6 +307,24 @@ class App {
     }
     Write-Host "Installing $appName"
     winget install --silent $appName;
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
+  }
+
+
+  _installAppFromManifest($appName) {
+    if ($this._isTest) { return; }
+    if ($this._isAppStatusInstalled($appName)) {
+      Write-Host "$appName is already installed";
+      return;
+    }
+    Write-Host "Installing $appName from manifest"
+    $manifestPath = $this._path(@(
+      $this._cfgDir,
+      "winget",
+      "manifests",
+      $appName
+    ));
+    winget install --silent --manifest $manifestPath;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
   }
 
@@ -891,12 +902,43 @@ class App {
 
 
   _configureLsd() {
+    if ($this._isTest) { return; }
     $dstDir = $this._path(@($env:APPDATA, "lsd"));
     if (-not (Test-Path -Path "$dstDir")) {
       New-Dir -Path "$dstDir";
     }
     $srcPath = $this._path(@($this._cfgDir, "lsd.config.yaml"));
     New-Hardlink -Path "$dstDir" -Name "config.yaml" -Value "$srcPath";
+  }
+
+
+  _configureBatteryInfoView() {
+    if ($this._isTest) { return; }
+    $name = "BatteryInfoView.cfg";
+    $srcPath = $this._path(@($this._cfgDir, $name));
+    $dstDir = $this._path(@("~", "apps", "NirSoft.BatteryInfoView"));
+    New-Hardlink -Path "$dstDir" -Name $name -Value "$srcPath";
+  }
+
+
+  _configurePingoMeter() {
+    if ($this._isTest) { return; }
+    $srcPath = $this._path(@($this._cfgDir, "pingometer-cfg.txt"));
+    $dstDir = $this._path(@(
+      $env:LOCALAPPDATA,
+      "Microsoft",
+      "WinGet",
+      "Packages",
+      "EFLFE.PingoMeter__DefaultSource",
+      "PingoMeter"
+    ));
+    $dstFileName = "config.txt";
+    $dstPath = $this._path($dstDir, $dstFileName);
+    if (Test-Path -Path "$dstFileName") {
+      Remove-Item "$dstFileName" -Recurse -Force;
+    }
+    Write-Host "Creating hardlink $srcPath => $dstPath";
+    New-Hardlink -Path "$dstDir" -Name "$dstFileName" -Value "$srcPath";
   }
 
 
@@ -932,8 +974,12 @@ class App {
     if (Test-Path -Path "$startDir\pingometer.bat") {
       Remove-Item "$startDir\pingometer.bat" -Recurse -Force;
     }
-    $content = "pwsh -Command Start-Process PingoMeter.exe";
+    $content = "set PKG_DIR=%LOCALAPPDATA\Microsoft\WinGet\Packages"
+    $content += "`nset SRC_DIR=%PKG_DIR%\EFLFE.PingoMeter__DefaultSource"
+    $content += "`nset APP_DIR=%SRC_DIR%\PingoMeter"
+    $content += "`npwsh -Command Start-Process PingoMeter.exe";
     $content += " -WindowStyle Hidden";
+    $content += " -WorkingDirectory %APP_DIR%";
     $name = "pingometer.bat";
     New-File -path $startDir -Name $name -Value "$content";
   }

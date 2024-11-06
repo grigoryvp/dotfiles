@@ -317,13 +317,13 @@ class App {
       Write-Host "$appName is already installed";
       return;
     }
-    Write-Host "Installing $appName from manifest"
     $manifestPath = $this._path(@(
       $this._cfgDir,
       "winget",
       "manifests",
       $appName
     ));
+    Write-Host "Installing $appName from $manifestPath"
     winget install --silent --manifest $manifestPath;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
   }

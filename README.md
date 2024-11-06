@@ -3,7 +3,7 @@
 ## Windows install
 
 ```ps1
-winget install --silent Microsoft.PowerShell # aks elevation IN BACKGROUND
+winget install --silent Microsoft.PowerShell # asks elevation IN BACKGROUND
 ```
 
 Relaunch terminal, continue with `Elevated PowerShell`:

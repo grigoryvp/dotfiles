@@ -933,7 +933,7 @@ class App {
       "PingoMeter"
     ));
     $dstFileName = "config.txt";
-    $dstPath = $this._path($dstDir, $dstFileName);
+    $dstPath = $this._path(@($dstDir, $dstFileName));
     if (Test-Path -Path "$dstFileName") {
       Remove-Item "$dstFileName" -Recurse -Force;
     }

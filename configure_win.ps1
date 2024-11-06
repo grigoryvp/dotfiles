@@ -974,7 +974,7 @@ class App {
     if (Test-Path -Path "$startDir\pingometer.bat") {
       Remove-Item "$startDir\pingometer.bat" -Recurse -Force;
     }
-    $content = "set PKG_DIR=%LOCALAPPDATA\Microsoft\WinGet\Packages"
+    $content = "set PKG_DIR=%LOCALAPPDATA%\Microsoft\WinGet\Packages"
     $content += "`nset SRC_DIR=%PKG_DIR%\EFLFE.PingoMeter__DefaultSource"
     $content += "`nset APP_DIR=%SRC_DIR%\PingoMeter"
     $content += "`npwsh -Command Start-Process PingoMeter.exe";

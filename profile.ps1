@@ -182,12 +182,12 @@ function Start-Srv() {
   $job = {
     Set-Location $Args[0];
     $driveName = 'site';
-    $Args = @{
+    $_Args = @{
       Name = $driveName
       PSProvider = 'FileSystem'
       Root = $PWD.Path
     };
-    New-PSDrive @Args;
+    New-PSDrive @_Args;
     $listener = New-Object System.Net.HttpListener;
     $listener.Prefixes.Add("http://localhost:8080/");
     $listener.Start();

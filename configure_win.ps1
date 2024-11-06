@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.21";
+  $_ver = "1.0.22";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -151,14 +151,10 @@ class App {
     # this._installLocationApp("NirSoft.BatteryInfoView", "")
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
-    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
-    $this._installAppFromManifest("EFLFE.PingoMeter");
-    $this._configurePingoMeter();
     $this._registerAutohotkeyStartup();
     $this._registerXMouseButtonControlStartup();
     # TODO: wait for BatteryInfoView install
     # $this._registerBatteryInfoViewStartup();
-    $this._registerPingometerStartup();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -198,6 +194,11 @@ class App {
 
     # After additional files are received
   
+    # TODO: wait for https://github.com/microsoft/winget-pkgs/pull/178129,
+    $this._installAppFromManifest("EFLFE.PingoMeter");
+    $this._configurePingoMeter();
+    $this._registerPingometerStartup();
+
     # Interactive
     $this._mapKeyboard();
 

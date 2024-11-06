@@ -1,0 +1,17 @@
+# PingoMeter config file
+Delay 500
+MaxPing 1000
+BgColor 0:0:0
+GoodColor 120:180:0
+NormalColor 255:180:0
+BadColor 255:0:0
+RunOnStartup False
+TheIPAddress 1.1.1.1
+AlarmConnectionLost False
+AlarmTimeOut False
+AlarmResumed False
+UseNumbers False
+SFXConnectionLost (none)
+SFXTimeOut (none)
+SFXResumed (none)
+OfflineCounter False

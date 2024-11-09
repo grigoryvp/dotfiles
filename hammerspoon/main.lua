@@ -1099,6 +1099,7 @@ function App:showCharPicker()
     {["text"] = "🙏 hands", ["emoji"] = "🙏"},
     {["text"] = "🤝 shake", ["emoji"] = "🤝"},
     {["text"] = "👉 right", ["emoji"] = "👉"},
+    {["text"] = "👋 wave", ["emoji"] = "👋"},
     {["text"] = "🚕 car", ["emoji"] = "🚕"},
     {["text"] = "✈️ airplane", ["emoji"] = "✈️"},
   })

@@ -1270,6 +1270,35 @@
                                     { "key_code": "p" }
                                 ],
                                 "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m2-t for phone",
+                                "from": { "key_code": "t" },
+                                "to": [
+                                    {
+                                        "key_code": "equal_sign",
+                                        "modifiers": ["left_shift"]
+                                    },
+                                    { "key_code": "3" },
+                                    { "key_code": "1" },
+                                    { "key_code": "6" },
+                                    { "key_code": "8" },
+                                    { "key_code": "1" },
+                                    { "key_code": "3" },
+                                    { "key_code": "4" },
+                                    { "key_code": "5" },
+                                    { "key_code": "8" },
+                                    { "key_code": "5" },
+                                    { "key_code": "4" }
+                                ],
+                                "type": "basic"
                             }
                         ]
                     },

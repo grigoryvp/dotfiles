@@ -242,6 +242,7 @@ alias busgc="busg controller"
 alias busgm="busg model"
 
 #  Python virtual environment
+alias uvr="uv run"
 alias uvp="uv run python"
 alias uvc="uv init"
 alias uvi="uv sync"

@@ -981,6 +981,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-s-g for emoji selector",
@@ -997,6 +1002,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-g for F4",
@@ -1008,11 +1018,37 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [{
+                                  "name": "_m1",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }, {
+                                  "name": "_m2",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }],
+                                "description": "m1-m2-g for s-F4",
+                                "from": {
+                                    "key_code": "g",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{
+                                  "key_code": "f4",
+                                  "modifiers": ["left_shift"]
+                                }],
+                                "type": "basic"
+                            },
+                            {
                                 "conditions": [
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-s-f switch to 1st language (English)",
@@ -1029,6 +1065,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-f for F3",
@@ -1040,11 +1081,37 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [{
+                                  "name": "_m1",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }, {
+                                  "name": "_m2",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }],
+                                "description": "m1-m2-f for s-F3",
+                                "from": {
+                                    "key_code": "f",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{
+                                  "key_code": "f3",
+                                  "modifiers": ["left_shift"]
+                                }],
+                                "type": "basic"
+                            },
+                            {
                                 "conditions": [
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-s-d switch to 2nd language (Russian)",
@@ -1061,6 +1128,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-d for F2",
@@ -1072,11 +1144,37 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [{
+                                  "name": "_m1",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }, {
+                                  "name": "_m2",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }],
+                                "description": "m1-m2-d for s-F2",
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{
+                                  "key_code": "f2",
+                                  "modifiers": ["left_shift"]
+                                }],
+                                "type": "basic"
+                            },
+                            {
                                 "conditions": [
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-s-s switch to 3nd language (Japanese)",
@@ -1093,6 +1191,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-s for F1",
@@ -1101,6 +1204,27 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "to": [{ "key_code": "f1" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [{
+                                  "name": "_m1",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }, {
+                                  "name": "_m2",
+                                  "type": "variable_if",
+                                  "value": 1
+                                }],
+                                "description": "m1-m2-s for s-F1",
+                                "from": {
+                                    "key_code": "s",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{
+                                  "key_code": "f1",
+                                  "modifiers": ["left_shift"]
+                                }],
                                 "type": "basic"
                             },
                             {

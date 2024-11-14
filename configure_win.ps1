@@ -1048,3 +1048,6 @@ $ErrorActionPreference = "Stop";
 $pathIntrinsics = $ExecutionContext.SessionState.Path;
 $app = [App]::new($args, $pathIntrinsics);
 $app.configure();
+
+# TODO: try to use rainmeter with "always on top" over-taskbar skin.
+# TODO: configure no reboot reg key if it works, https://vk.cc/cEEWuN

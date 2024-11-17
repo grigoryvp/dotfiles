@@ -359,6 +359,15 @@
                             {
                                 "conditions": [
                                     {
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.edgemac$",
+                                            "^com\\.apple\\.Safari$",
+                                            "^org\\.chromium\\.Chromium$",
+                                            "^com\\.google\\.Chrome$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    },
+                                    {
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
@@ -374,7 +383,37 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-m3-p for deleting things)",
+                                "description": "m1-m3-p for deleting things (command-option-hyphen deletes rows in google sheet)",
+                                "from": {
+                                    "key_code": "p"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "hyphen",
+                                        "modifiers": ["left_command", "left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m1-m3-p for deleting things",
                                 "from": {
                                     "key_code": "p"
                                 },
@@ -392,6 +431,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-ctrl(tab)-semicolon for command(ctrl)-lmb",
@@ -436,6 +480,11 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-semicolon for left mouse button",

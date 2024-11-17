@@ -125,6 +125,47 @@ function menuitem:update()
       end
       curOffset = curOffset + width
       totalWidth = totalWidth + width
+    elseif widget.type == "indicator" then
+      local width = 8
+      self._canvas:insertElement({
+        type = "rectangle",
+        frame = {
+          x = curOffset,
+          y = 0,
+          w = width,
+          h = menuHeight
+        },
+        fillColor = {red = 0, green = 0, blue = 0},
+        action = "fill"
+      })
+      self._canvas:insertElement({
+        type = "rectangle",
+        frame = {
+          x = curOffset,
+          y = 0,
+          w = width,
+          h = menuHeight
+        },
+        strokeColor = {red = 0.5, green = 0.5, blue = 0.5},
+        action = "stroke"
+      })
+      yOffset = 0
+      for _, indicator in ipairs(widget.info) do
+        self._canvas:insertElement({
+          type = "rectangle",
+          frame = {
+            x = curOffset + 2,
+            y = yOffset + 2,
+            w = 4,
+            h = 3
+          },
+          fillColor = indicator.color,
+          action = "fill"
+        })
+        yOffset = yOffset + 3 + 2
+      end
+      curOffset = curOffset + width
+      totalWidth = totalWidth + width
     end
   end
 
@@ -137,7 +178,6 @@ end
 function menuitem:addText(text)
   self:addTextWithWidth(text, nil)
 end
-
 
 
 function menuitem:addTextWithWidth(text, width)
@@ -180,6 +220,13 @@ function menuitem:addGraph(graph_data, max_len)
     type = "graph",
     graph_data = graph_data,
     max_len = max_len})
+end
+
+
+function menuitem:addIndicator(indicator)
+  table.insert(self._widgets, {
+    type = "indicator",
+    info = indicator})
 end
 
 

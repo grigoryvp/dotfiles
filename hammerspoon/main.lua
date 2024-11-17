@@ -14,6 +14,7 @@ function App:new()
   inst.heartbeatInterval = 0.2
   inst.heartbeatsPerSec = 5
   inst.heartbeatsInBigTimeout = inst.heartbeatsPerSec * 10
+  inst.heartbeatsInMedTimeout = inst.heartbeatsPerSec * 1
   -- Increased on first loop, start with 0 to kick off all % checks
   inst.heartbeatCounter = -1
   inst.heartbeatTime = hs.timer.absoluteTime() / 1000000000
@@ -41,6 +42,7 @@ function App:new()
   inst.pingRouterExt = false
   inst.pingInetInt = false
   inst.pingInetExt = false
+  inst.karabinerState = {}
   return inst
 end
 
@@ -633,6 +635,13 @@ function App:getDockItems()
 end
 
 
+function App:getKarabinerState()
+  local dir = "/Library/Application Support/org.pqrs/tmp/"
+  local path = dir .. "karabiner_grabber_manipulator_environment.json"
+  self.karabinerState = hs.json.read(path)
+end
+
+
 function App:onHeartbeat()
 
   self.heartbeatCounter = self.heartbeatCounter + 1
@@ -672,6 +681,11 @@ function App:onHeartbeat()
   local heartbeatsToWait = self.heartbeatsInBigTimeout
   local isBigTimeout = (self.heartbeatCounter % heartbeatsToWait) == 0
   isBigTimeout = self.heartbeatCounter == 0 or isBigTimeout
+
+  heartbeatsToWait = self.heartbeatsInMedTimeout
+  local isMedTimeout = (self.heartbeatCounter % heartbeatsToWait) == 0
+  isMedTimeout = self.heartbeatCounter == 0 or isMedTimeout
+
   local curTime = hs.timer.absoluteTime() / 1000000000;
   local oneLess = (self.heartbeatsPerSec - 1) * self.heartbeatInterval
   local oneMore = (self.heartbeatsPerSec + 1) * self.heartbeatInterval
@@ -695,6 +709,10 @@ function App:onHeartbeat()
       -- Prevent auto-brightness
       hs.brightness.set(50)
     end
+  end
+
+  if isMedTimeout then
+    self:getKarabinerState()
   end
 
   if not self.telegramDockItem
@@ -874,6 +892,27 @@ function App:onHeartbeat()
     batteryText = batteryText .. timeLeft
   end
 
+  local indicator = {}
+  if self.karabinerState["variables"] then
+    if self.karabinerState["variables"]["_m1"] == 1 then
+      table.insert(indicator, {
+        color = {red = 0.0, green = 1.0, blue = 0.0}
+      })
+    end
+    if self.karabinerState["variables"]["_m2"] == 1 then
+      table.insert(indicator, {
+        color = {red = 1.0, green = 1.0, blue = 0.0}
+      })
+    end
+    if self.karabinerState["variables"]["_m3"] == 1 then
+      table.insert(indicator, {
+        color = {red = 0.0, green = 1.0, blue = 1.0}
+      })
+    end
+  end
+
+  self.menuItem:addIndicator(indicator)
+  self.menuItem:addSpacer(4)
   self.menuItem:addText("🛜")
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(routerGraph, self.maxIcmpHistory)

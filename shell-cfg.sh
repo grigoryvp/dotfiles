@@ -246,7 +246,8 @@ alias uvr="uv run"
 alias uvp="uv run python"
 alias uvc="uv init"
 alias uvi="uv sync"
-alias uva="uv pip install"
+alias uva="uv add"
+alias uvs="uvr manage.py runserver"
 
 #  Hammerspoon
 alias hsr="hs -c 'hs.reload()'"

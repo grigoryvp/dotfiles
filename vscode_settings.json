@@ -269,7 +269,9 @@
     "phpenv",
     "pyenv",
     "Pylance",
+    "Radeon",
     "remappable",
+    "Ryzen",
     "skylighting",
     "spacebar",
     "subcomponents",
@@ -378,5 +380,10 @@
   },
   "disable-lcd-text": true,
   "workbench.colorTheme": "grigoryvp memory theme",
-  "cmake.showOptionsMovedNotification": false
+  "cmake.showOptionsMovedNotification": false,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  }
 }

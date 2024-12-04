@@ -1224,9 +1224,14 @@
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "m1-s-s switch to 3nd language (Japanese)",
+                                "description": "m1-shift-s switch to 3nd language (Japanese)",
                                 "from": {
                                     "key_code": "s",
                                     "modifiers": { "mandatory": ["shift"] }
@@ -1243,6 +1248,11 @@
                                     },
                                     {
                                         "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
                                     }
@@ -1264,6 +1274,10 @@
                                   "name": "_m2",
                                   "type": "variable_if",
                                   "value": 1
+                                }, {
+                                  "name": "_m3",
+                                  "type": "variable_if",
+                                  "value": 0
                                 }],
                                 "description": "m1-m2-s for s-F1",
                                 "from": {
@@ -1367,12 +1381,22 @@
                             {
                                 "conditions": [
                                     {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
-                                "description": "esc-s for english signature",
+                                "description": "m2-s for english signature",
                                 "from": { "key_code": "s" },
                                 "to": [
                                     {

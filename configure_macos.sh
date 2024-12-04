@@ -195,6 +195,8 @@ defaults write com.apple.mail AddressesIncludeNameOnPasteboard false
 defaults write com.apple.mail DisableInlineAttachmentViewing true
 # "Continuos scroll" by default for PDF preview
 defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
+# Don't auto-show dock on mouse hover (m1-slash instead)
+defaults write com.apple.dock autohide-delay -float 999999
 # Tends to hang with 100% cpu load
 launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
 # Input method name lookup for debug purpose

@@ -1,3 +1,4 @@
+-- TODO: control elgato lights: https://github.com/alexcwatt/hammerspoon-config/blob/efd327a302f509e7985dc8587ae6175b3d84bd9a/Spoons/ElgatoKeys.spoon/init.lua
 -- See ./.vscode/settings.json for linter configuration
 
 -- "hs" cli tool for remote communication

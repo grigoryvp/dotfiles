@@ -893,7 +893,7 @@ function App:onHeartbeat()
   end
 
   local indicator = {}
-  if self.karabinerState["variables"] then
+  if self.karabinerState and self.karabinerState["variables"] then
     if self.karabinerState["variables"]["_m1"] == 1 then
       table.insert(indicator, {
         color = {red = 0.0, green = 1.0, blue = 0.0}
@@ -1139,6 +1139,9 @@ function App:showCharPicker()
     {["text"] = "🙏 hands", ["emoji"] = "🙏"},
     {["text"] = "🤝 shake", ["emoji"] = "🤝"},
     {["text"] = "👉 right", ["emoji"] = "👉"},
+    {["text"] = "👍 yes", ["emoji"] = "👍"},
+    {["text"] = "👎 no", ["emoji"] = "👎"},
+    {["text"] = "👌 ok", ["emoji"] = "👌"},
     {["text"] = "👋 wave", ["emoji"] = "👋"},
     {["text"] = "🚕 car", ["emoji"] = "🚕"},
     {["text"] = "✈️ airplane", ["emoji"] = "✈️"},

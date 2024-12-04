@@ -117,6 +117,9 @@ function App:startHttpServer()
     elseif json.command == "show_char_picker" then
       self:showCharPicker()
       return "", 200, {}
+    elseif json.command == "shorten_url" then
+      self:shortenUrlInClipboard()
+      return "", 200, {}
     else
       return "unknown command", 400, {}
     end
@@ -944,7 +947,7 @@ function App:startHeartbeat()
 end
 
 
-function App:shortenUrl(targetUrl)
+function App:_shortenUrl(targetUrl)
   if not self.vkToken then
     return hs.alert.show("Passwords not loaded")
   end
@@ -971,6 +974,35 @@ function App:shortenUrl(targetUrl)
       return hs.alert.show("Success")
     end
   end)
+end
+
+
+function App:shortenUrlInClipboard()
+  local clipboard = hs.pasteboard.readString()
+  if not clipboard:match("^https?://") then
+    return hs.alert.show("No URL in clipboard")
+  end
+  if clipboard:match("^https?://vk.cc") then
+    return hs.alert.show("Short URL in clipboard")
+  end
+  self:_shortenUrl(clipboard)
+end
+
+
+function App:shortenAndTrimUrlInClipboard()
+  local clipboard = hs.pasteboard.readString()
+  if not clipboard:match("^https?://") then
+    return hs.alert.show("No URL in clipboard")
+  end
+  if clipboard:match("^https?://vk.cc") then
+    return hs.alert.show("Short URL in clipboard")
+  end
+  -- Remove query string before shortening.
+  local queryPos = clipboard:find("?")
+  if queryPos then
+    clipboard = clipboard:sub(1, queryPos - 1)
+  end
+  self:_shortenUrl(clipboard)
 end
 
 
@@ -1071,30 +1103,11 @@ function App:createMenu()
 
 
   self.menuItem:addSubmenuItem("Shorten URL", function()
-    local clipboard = hs.pasteboard.readString()
-    if not clipboard:match("^https?://") then
-      return hs.alert.show("No URL in clipboard")
-    end
-    if clipboard:match("^https?://vk.cc") then
-      return hs.alert.show("Short URL in clipboard")
-    end
-    self:shortenUrl(clipboard)
+    self:shortenUrlInClipboard()
   end)
 
   self.menuItem:addSubmenuItem("Shorten & trim URL", function()
-    local clipboard = hs.pasteboard.readString()
-    if not clipboard:match("^https?://") then
-      return hs.alert.show("No URL in clipboard")
-    end
-    if clipboard:match("^https?://vk.cc") then
-      return hs.alert.show("Short URL in clipboard")
-    end
-    -- Remove query string before shortening.
-    local queryPos = clipboard:find("?")
-    if queryPos then
-      clipboard = clipboard:sub(1, queryPos - 1)
-    end
-    self:shortenUrl(clipboard)
+    self:shortenAndTrimUrlInClipboard()
   end)
 
   self.menuItem:addSubmenuItem("Flatten text", function()

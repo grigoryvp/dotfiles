@@ -842,6 +842,29 @@
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "'m3-s' for short url",
+                                "from": { "key_code": "s" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"shorten_url\"}'" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
                                         "value": 1
                                     }
                                 ],

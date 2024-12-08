@@ -170,6 +170,9 @@ function HsWindow:screen()
 end
 
 
+function HsWindow:setTopLeft(x, y) end
+
+
 HsScreen = {}
 function HsScreen:new()
   return setmetatable({
@@ -183,13 +186,18 @@ end
 
 
 HsTask = {}
-function HsTask:new()
+function HsTask:new(hs, app, callback, args)
   return setmetatable({
+    _hs = hs,
+    _app = app,
+    _callback = callback,
+    _args = args
   }, {__index = self})
 end
 
 
 function HsTask:start()
+  self._callback(self._hs._taskMockExitCode, self._hs._taskMockStdOut)
 end
 
 
@@ -221,104 +229,138 @@ end
 Hs = {}
 function Hs:new()
   local screen = HsScreen:new()
-  return setmetatable({
-    console = {
-      clearConsole = function() end,
-    },
-    canvas = {
-      new = function(props)
-        return HsCanvas:new(props)
-      end,
-    },
-    menubar = {
-      new = function()
-        return HsMenubar:new()
-      end,
-    },
-    host = {
-      cpuUsageTicks = function()
-        return {
-          overall = {
-            active = 0,
-            idle = 100,
-          },
-        }
-      end,
-    },
-    timer = {
-      absoluteTime = function()
-        return 0
-      end,
-      doEvery = function(interval, handler) end,
-    },
-    axuielement = {
-      applicationElement = function(app)
-        return HsAppElement:new()
-      end,
-    },
-    hotkey = {
-      bind = function(modifiers, hotkey, handler)
-        handler()
-      end,
-    },
-    network = {
-      ping = {
-        echoRequest = function(addr)
-          return HsEchoRequest:new(addr)
-        end,
-      },
-      primaryInterfaces = function()
-        return nil, nil
-      end,
-    },
-    eventtap = {
-      event  = {
-        types = {
-          otherMouseDragged = 1,
+  local this = {}
+  this._taskMockExitCode = 0
+  this._taskMockStdOut = ""
+  this.console = {
+    clearConsole = function() end,
+  }
+  this.canvas = {
+    new = function(props)
+      return HsCanvas:new(props)
+    end,
+  }
+  this.menubar = {
+    new = function()
+      return HsMenubar:new()
+    end,
+  }
+  this.host = {
+    cpuUsageTicks = function()
+      return {
+        overall = {
+          active = 0,
+          idle = 100,
         },
-        properties = {
-          mouseEventDeltaX = 0,
-          mouseEventDeltaY = 1,
-          mouseEventButtonNumber = 2,
-        },
-        newScrollEvent = function(event, props, type) end,
+      }
+    end,
+  }
+  this.timer = {
+    absoluteTime = function()
+      return 0
+    end,
+    doEvery = function(interval, handler) end,
+    usleep = function(interval) end
+  }
+  this.axuielement = {
+    applicationElement = function(app)
+      return HsAppElement:new()
+    end,
+  }
+  this.hotkey = {
+    bind = function(modifiers, hotkey, handler)
+      handler()
+    end,
+  }
+  this.network = {
+    ping = {
+      echoRequest = function(addr)
+        return HsEchoRequest:new(addr)
+      end,
+    },
+    primaryInterfaces = function()
+      return nil, nil
+    end,
+  }
+  this.eventtap = {
+    event  = {
+      types = {
+        otherMouseDragged = 1,
       },
-      new = function(event, handler)
-        return HsEventtap:new(event, handler)
-      end,
+      properties = {
+        mouseEventDeltaX = 0,
+        mouseEventDeltaY = 1,
+        mouseEventButtonNumber = 2,
+      },
+      newScrollEvent = function(event, props, type) end,
     },
-    window = {
-      frontmostWindow = function()
-        return HsWindow:new(screen)
-      end,
-    },
-    pasteboard = {
-      readString = function()
-        return ""
-      end,
-      setContents = function(content) end,
-    },
-    mouse = {
-      absolutePosition = function(position) end,
-    },
-    task = {
-      new = function(app, callback, args)
-        return HsTask:new()
-      end,
-    },
-    battery = {
-      percentage = function()
-        return 100
-      end
-    },
-    styledtext = {
-      new = function(text, props) end
-    },
-    settings = {
-      get = function(name) end,
-      set = function(name, val) end,
-    }
-  }, {__index = self})
+    new = function(event, handler)
+      return HsEventtap:new(event, handler)
+    end,
+  }
+  this.window = {
+    frontmostWindow = function()
+      return HsWindow:new(screen)
+    end,
+  }
+  this.pasteboard = {
+    readString = function()
+      return ""
+    end,
+    setContents = function(content) end,
+  }
+  this.mouse = {
+    absolutePosition = function(position) end,
+  }
+  this.task = {
+    _mock = function(exitCode, stdOut)
+      this._taskMockExitCode = exitCode
+      this._taskMockStdOut = stdOut
+    end,
+    new = function(app, callback, args)
+      return HsTask:new(this, app, callback, args)
+    end,
+  }
+  this.battery = {
+    percentage = function()
+      return 100
+    end,
+    isCharging = function()
+      return true
+    end,
+    isCharged = function()
+      return true
+    end
+  }
+  this.styledtext = {
+    new = function(text, props) end
+  }
+  this.settings = {
+    get = function(name) end,
+    set = function(name, val) end,
+  }
+  this.application = {
+    find = function(name) end
+  }
+  this.screen = {
+    primaryScreen = function()
+      return HsScreen:new()
+    end,
+    allScreens = function()
+      return {HsScreen:new()}
+    end
+  }
+  this.json = {
+    read = function()
+      return {}
+    end
+  }
+  this.drawing = {
+    getTextDrawingSize = function(text)
+      return {w=1, h=1}
+    end
+  }
+  return setmetatable(this, {__index = self})
 end
 
 
@@ -330,6 +372,9 @@ end
 curDirToModuleSearchPath()
 hs = Hs:new()
 require "main"
+require "menuitem"
+require "helpers"
+require "netstat"
 
 app = App:new()
 assert(
@@ -351,3 +396,18 @@ app:restartRouterPingInt()
 app:netGraphFromIcmpHistory(history)
 app:cpuGraphFromLoadHistory({1, 2, 3})
 app:onHeartbeat()
+hs.task._mock(1, "")
+netstat:get(function(res)
+  assert(res == nil)
+end)
+hs.task._mock(0,
+  "Routing tables\n\n" ..
+  "Internet:\n" ..
+  "Destination Gateway     Flags  Netif Expire\n" ..
+  "default     link#22     UCSg   utun4\n" ..
+  "default     192.168.0.1 UGScIg en0\n" ..
+  "1.1.1.1     link#22     UHWIig utun4\n"
+)
+netstat:get(function(res)
+  assert(res == nil)
+end)

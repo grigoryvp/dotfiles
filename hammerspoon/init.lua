@@ -16,6 +16,7 @@ function onReadlinkExit(exitCode, stdOut, _)
   package.path = package.path .. ";" .. srcDir .. "?.lua"
 
   require "helpers"
+  require "netstat"
   require "menuitem"
   require "main"
 

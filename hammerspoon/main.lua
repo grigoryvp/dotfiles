@@ -37,7 +37,6 @@ function App:new()
   inst.lastIp = nil
   inst.inetIp = "1.1.1.1"
   inst.routerIp = nil
-  inst.routerIpTask = nil
   inst.pingRouterInt = false
   inst.pingRouterExt = false
   inst.pingInetInt = false
@@ -777,32 +776,21 @@ function App:onHeartbeat()
   end
 
   local needNewRouterIp = self.lastIp and not self.routerIp
-  -- Router Ip can change without local IP being chenged on VPN connect
-  if needNewRouterIp or isBigTimeout then
-    function onRouteToolExit(exitCode, stdOut, _)
-      if exitCode ~= 0 or not stdOut then
+  -- Router Ip can change without local IP being changed on VPN connect
+  if (needNewRouterIp or isBigTimeout) and not netstat:isRunning() then
+    netstat:get(function(res)
+      if not res then
         self.routerIp = nil
         self.routerIcmpHistory = {}
         self:restartRouterPingInt()
         self:restartRouterPingExt()
-        return
-      end
-      local pattern = "gateway: ([^%s]+)"
-      self.routerIp = stdOut:match(pattern)
-      if not self.routerIp then
+      elseif self.routerIp ~= res.gateway then
+        self.routerIp = res.gateway
         self.routerIcmpHistory = {}
         self:restartRouterPingInt()
         self:restartRouterPingExt()
-        return
       end
-      self:restartRouterPingInt()
-      self:restartRouterPingExt()
-      return
-    end
-
-    local args = {"get", "default"}
-    self.routerIpTask = hs.task.new("/sbin/route", onRouteToolExit, args)
-    self.routerIpTask:start()
+    end)
   end
 
   local notifications = {}

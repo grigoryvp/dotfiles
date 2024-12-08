@@ -201,6 +201,11 @@ function HsTask:start()
 end
 
 
+function HsTask:isRunning()
+  return false
+end
+
+
 HsCanvas = {}
 function HsCanvas:new(props)
   return setmetatable({
@@ -404,10 +409,10 @@ hs.task._mock(0,
   "Routing tables\n\n" ..
   "Internet:\n" ..
   "Destination Gateway     Flags  Netif Expire\n" ..
-  "default     link#22     UCSg   utun4\n" ..
-  "default     192.168.0.1 UGScIg en0\n" ..
-  "1.1.1.1     link#22     UHWIig utun4\n"
+  "default     link#22     UCSg   utun4       \n" ..
+  "default     192.168.0.1 UGScIg en0         \n" ..
+  "1.1.1.1     link#22     UHWIig utun4       \n"
 )
 netstat:get(function(res)
-  assert(res == nil)
+  assert(res.gateway == "192.168.0.1")
 end)

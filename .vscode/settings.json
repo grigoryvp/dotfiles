@@ -12,23 +12,32 @@
     "lowercase-global"
   ],
   "cSpell.words": [
+    "axuielement",
     "Classpath",
     "dont",
     "edgemac",
+    "EFLFE",
     "esbenp",
+    "eventtap",
+    "httpserver",
+    "Iface",
     "ignorecase",
+    "inet",
     "inputmethod",
     "ipynb",
+    "kdbx",
     "keepassx",
     "keepassxc",
     "keepcoder",
     "keylayout",
     "Kotoeri",
+    "nonprimary",
+    "PingoMeter",
+    "pqrs",
     "pwsh",
     "Pylance",
     "Romaji",
-    "vsicons",
-    "PingoMeter",
-    "EFLFE"
+    "usleep",
+    "vsicons"
   ]
 }

@@ -6,7 +6,7 @@ function App:new()
   inst.lastCpuUsage = hs.host.cpuUsageTicks()
   inst.cpuLoadHistory = {}
   -- Cpu history is smaller to preserve space since only constant load is
-  -- of interes
+  -- of interest
   inst.maxCpuLoadHistory = 10
   inst.routerIcmpHistory = {}
   inst.inetIcmpHistory = {}
@@ -31,6 +31,7 @@ function App:new()
   inst.mailDockItem = nil
   inst.slackDockItem = nil
   inst.discordDockItem = nil
+  inst.whatsappDockItem = nil
   inst.vkToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
@@ -72,7 +73,7 @@ function App:clickDockItem(number)
     if item.AXRoleDescription == "application dock item" then
       -- Hotkeys affect items to the right of user-placed separator
       -- (system preferences for now). To the left are items that are
-      -- iterested only for notifications.
+      -- interested only for notifications.
       if isSeparatorFound then
         if currentNumber == number then
           item:doAXPress()
@@ -416,7 +417,7 @@ function App:registerMouse()
     local mouseButton6 = 5
     if btn ~= mouseButton6 then return end
     self.mouseDragServer:start()
-    return true --supress mouse click
+    return true --suppress mouse click
   end)
   self.otherMouseDownServer:start()
 
@@ -427,7 +428,7 @@ function App:registerMouse()
     local mouseButton6 = 5
     if btn ~= mouseButton6 then return end
     self.mouseDragServer:stop()
-    return true --supress mouse click
+    return true --suppress mouse click
   end)
   self.otherMouseUpServer:start()
 end
@@ -720,7 +721,8 @@ function App:onHeartbeat()
   if not self.telegramDockItem
      or not self.mailDockItem
      or not self.slackDockItem
-     or not self.discordDockItem then
+     or not self.discordDockItem
+     or not self.whatsappDockItem then
     -- Do not check too often, CPU expensive
     if isBigTimeout then
       for _, item in ipairs(self.dockItems) do
@@ -735,6 +737,9 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "Discord" then
           self.discordDockItem = item
+        end
+        if item.AXTitle == "WhatsApp" then
+          self.whatsappDockItem = item
         end
       end
     end
@@ -804,10 +809,13 @@ function App:onHeartbeat()
     table.insert(notifications, "S")
   end
   if self.discordDockItem and self.discordDockItem.AXStatusLabel then
-    -- "•" indicates channel messages, counter indicates privats and mentions
+    -- "•" indicates channel messages, counter indicates privates and mentions
     if self.discordDockItem.AXStatusLabel ~= "•" then
       table.insert(notifications, "D")
     end
+  end
+  if self.whatsappDockItem and self.whatsappDockItem.AXStatusLabel then
+    table.insert(notifications, "W")
   end
 
   self.menuItem:clear()
@@ -996,6 +1004,10 @@ end
 
 function App:createMenu()
 
+  self.menuItem:addSubmenuItem("Reload", function()
+    hs:reload()
+  end)
+
   self.menuItem:addSubmenuItem("Load passwords", function()
     local msg = "Enter master password"
     local secure = true
@@ -1146,6 +1158,22 @@ function App:showCharPicker()
     {["text"] = "👋 wave", ["emoji"] = "👋"},
     {["text"] = "🚕 car", ["emoji"] = "🚕"},
     {["text"] = "✈️ airplane", ["emoji"] = "✈️"},
+    {["text"] = "✉️ mail", ["emoji"] = "✉️"},
+    {["text"] = "侵 dark", ["emoji"] = "侵"},
+    {["text"] = "死 dead", ["emoji"] = "死"},
+    {["text"] = "大 boss", ["emoji"] = "大"},
+    {["text"] = "相 partner", ["emoji"] = "相"},
+    {["text"] = "娘 daughter", ["emoji"] = "娘"},
+    {["text"] = "郎 son", ["emoji"] = "郎"},
+    {["text"] = "僚 colleague", ["emoji"] = "僚"},
+    {["text"] = "音 podcast", ["emoji"] = "音"},
+    {["text"] = "政 head", ["emoji"] = "政"},
+    {["text"] = "教 speaker", ["emoji"] = "教"},
+    {["text"] = "業 LFE", ["emoji"] = "業"},
+    {["text"] = "員 LFW", ["emoji"] = "員"},
+    {["text"] = "力 influence", ["emoji"] = "力"},
+    {["text"] = "会 meet", ["emoji"] = "会"},
+    {["text"] = "去 past", ["emoji"] = "去"},  -- to mark languages in anki
   })
 
   chooser:show()

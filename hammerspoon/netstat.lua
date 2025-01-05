@@ -2,7 +2,7 @@
 TIMEOUT_SEC = 5
 
 netstat = {
-  _task = nil
+  _task = nil,
   _startTimeSec = nil
 }
 

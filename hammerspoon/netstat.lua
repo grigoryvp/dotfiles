@@ -1,5 +1,9 @@
+-- Max amount of seconds for netstat to run (it hangs sometimes)
+TIMEOUT_SEC = 5
+
 netstat = {
   _task = nil
+  _startTimeSec = nil
 }
 
 
@@ -30,6 +34,7 @@ function netstat:get(callback)
     })
   end
 
+  self._startTimeSec = hs.timer.absoluteTime() / 1000000000
   self._task = hs.task.new("/usr/sbin/netstat", onExit, {"-rn"})
   self._task:start()
 end
@@ -39,5 +44,18 @@ function netstat:isRunning()
   if not self._task then
     return false
   end
-  return self._task:isRunning()
+
+  isRunning = self._task:isRunning()
+  if not isRunning then
+    return false
+  end
+
+  assert(type(self._startTimeSec == "number"), "integrity error")
+  curTimeSec = hs.timer.absoluteTime() / 1000000000
+  if curTimeSec > self._startTimeSec + TIMEOUT_SEC then
+    self._task:terminate()
+    return false
+  end
+
+  return true
 end

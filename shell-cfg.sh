@@ -219,13 +219,6 @@ alias vea=". .venv/bin/activate"
 alias ved="deactivate"
 alias ver="rm -rf .venv"
 
-alias pon="poetry init --no-interaction"
-alias poi="poetry install"
-alias poa="poetry add"
-alias por="poetry run"
-alias pop="poetry run python3"
-alias pom="poetry run python3 manage.py"
-
 ##  Rails virtual environment
 alias buc="bundle init"
 alias bui="bundle install"
@@ -241,12 +234,22 @@ busg() {
 alias busgc="busg controller"
 alias busgm="busg model"
 
+#  Old Python virtual environment with poetry
+alias poc="poetry init --no-interaction"
+alias poi="poetry install"
+alias poa="poetry add"
+alias por="poetry run"
+alias pop="poetry run python3"
+alias pom="poetry run python3 manage.py"
+alias pos="poetry run python3 manage.py runserver"
+
 #  Python virtual environment
-alias uvr="uv run"
-alias uvp="uv run python"
 alias uvc="uv init"
 alias uvi="uv sync"
 alias uva="uv add"
+alias uvr="uv run"
+alias uvp="uv run python"
+alias uvm="uvr manage.py"
 alias uvs="uvr manage.py runserver"
 
 #  Hammerspoon

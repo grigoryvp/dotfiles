@@ -236,8 +236,19 @@ function App:registerHotkeys()
     if not wnd then return end
     local app = wnd:application()
 
+    local oldClipboard = hs.pasteboard.uniquePasteboard()
+    hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
+
     hs.pasteboard.setContents(hs.pasteboard.readString())
+    -- command-v may not work due to focus issues
     app:selectMenuItem("Paste")
+
+    hs.timer.doAfter(0.01, function()
+      -- If not delayed in will replace the clipboard content BEFORE
+      -- it's pasted
+      hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+      hs.pasteboard.deletePasteboard(oldClipboard)
+    end)
   end)
 
   hs.hotkey.bind("⌘⇧", "space", function()
@@ -1125,7 +1136,7 @@ function App:createMenu()
 end
 
 function App:showCharPicker()
-  local layout = hs.keycodes.currentLayout()
+  local oldLayout = hs.keycodes.currentLayout()
   hs.keycodes.setLayout("ABC")
   local chooser = hs.chooser.new(function(choice)
     if not choice then
@@ -1133,11 +1144,20 @@ function App:showCharPicker()
       return
     end
     focusLastFocused()
-    hs.eventtap.keyStrokes(choice["emoji"])
-    hs.keycodes.setLayout(layout)
+  
+    local oldClipboard = hs.pasteboard.uniquePasteboard()
+    hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
+
+    hs.pasteboard.setContents(choice["emoji"])
+    hs.eventtap.keyStroke({"cmd"}, "v")
+
+    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+    hs.pasteboard.deletePasteboard(oldClipboard)
+    hs.keycodes.setLayout(oldLayout)
   end)
 
   chooser:choices({
+    -- Emoji
     {["text"] = "😊 smile", ["emoji"] = "😊"},
     {["text"] = "😜 crazy", ["emoji"] = "😜"},
     {["text"] = "😇 halo", ["emoji"] = "😇"},
@@ -1158,22 +1178,36 @@ function App:showCharPicker()
     {["text"] = "👋 wave", ["emoji"] = "👋"},
     {["text"] = "🚕 car", ["emoji"] = "🚕"},
     {["text"] = "✈️ airplane", ["emoji"] = "✈️"},
-    {["text"] = "✉️ mail", ["emoji"] = "✉️"},
-    {["text"] = "侵 dark", ["emoji"] = "侵"},
-    {["text"] = "死 dead", ["emoji"] = "死"},
-    {["text"] = "大 boss", ["emoji"] = "大"},
-    {["text"] = "相 partner", ["emoji"] = "相"},
-    {["text"] = "娘 daughter", ["emoji"] = "娘"},
-    {["text"] = "郎 son", ["emoji"] = "郎"},
-    {["text"] = "僚 colleague", ["emoji"] = "僚"},
-    {["text"] = "音 podcast", ["emoji"] = "音"},
-    {["text"] = "政 head", ["emoji"] = "政"},
+    {["text"] = "€ euro", ["emoji"] = "€"},
+    -- Languages
+    {["text"] = "🇷🇺 Russian", ["emoji"] = "🇷🇺"},
+    {["text"] = "🇬🇧 English", ["emoji"] = "🇬🇧"},
+    {["text"] = "🇳🇱 Dutch", ["emoji"] = "🇳🇱"},
+    -- Tags
+    {["text"] = "侵 mark", ["emoji"] = "侵"},
     {["text"] = "教 speaker", ["emoji"] = "教"},
+    {["text"] = "力 influencer", ["emoji"] = "力"},
+    {["text"] = "大 boss", ["emoji"] = "大"},
+    {["text"] = "死 dead", ["emoji"] = "死"},
+    -- Relations
+    {["text"] = "郎 son", ["emoji"] = "郎"},
+    {["text"] = "娘 daughter", ["emoji"] = "娘"},
+    {["text"] = "相 partner", ["emoji"] = "相"},
+    {["text"] = "友 friend", ["emoji"] = "友"},
+    {["text"] = "僚 colleague", ["emoji"] = "僚"},
+    -- Job or company suffixes
+    {["text"] = "元 ex", ["emoji"] = "元"},
+    {["text"] = "政 head", ["emoji"] = "政"},
+    {["text"] = "主 organizer", ["emoji"] = "主"},
+    {["text"] = "委 committee", ["emoji"] = "委"},
+    {["text"] = "音 podcast", ["emoji"] = "音"},
+    -- Language learning
+    {["text"] = "去 past", ["emoji"] = "去"},  -- to mark languages in anki
+    -- Utility tags
+    {["text"] = "会 meet", ["emoji"] = "会"},
+    {["text"] = "✉️ mail", ["emoji"] = "✉️"},
     {["text"] = "業 LFE", ["emoji"] = "業"},
     {["text"] = "員 LFW", ["emoji"] = "員"},
-    {["text"] = "力 influence", ["emoji"] = "力"},
-    {["text"] = "会 meet", ["emoji"] = "会"},
-    {["text"] = "去 past", ["emoji"] = "去"},  -- to mark languages in anki
   })
 
   chooser:show()

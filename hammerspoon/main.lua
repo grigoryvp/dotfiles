@@ -1195,6 +1195,7 @@ function App:showCharPicker()
     -- Tags
     {["text"] = "侵 mark", ["emoji"] = "侵"},
     {["text"] = "教 speaker", ["emoji"] = "教"},
+    {["text"] = "技 skilled", ["emoji"] = "技"},
     {["text"] = "力 influencer", ["emoji"] = "力"},
     {["text"] = "大 boss", ["emoji"] = "大"},
     {["text"] = "死 dead", ["emoji"] = "死"},
@@ -1211,7 +1212,9 @@ function App:showCharPicker()
     {["text"] = "委 committee", ["emoji"] = "委"},
     {["text"] = "音 podcast", ["emoji"] = "音"},
     -- Language learning
-    {["text"] = "去 past", ["emoji"] = "去"},  -- to mark languages in anki
+    {["text"] = "去 past", ["emoji"] = "去"},
+    {["text"] = "完 perfect", ["emoji"] = "完"},
+    {["text"] = "多 plural", ["emoji"] = "多"},
     -- Utility tags
     {["text"] = "会 meet", ["emoji"] = "会"},
     {["text"] = "✉️ mail", ["emoji"] = "✉️"},

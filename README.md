@@ -73,6 +73,7 @@ pip install --upgrade pip
 # Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
 # Disable iTerm2 Settings/General/Selection/Clicking
+# Enable add noTunes in Settings/General/Login
 # Configure hammerspoon for autostart
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.

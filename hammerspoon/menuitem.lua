@@ -235,8 +235,19 @@ function menuitem:addSpacer(width)
 end
 
 
-function menuitem:addSubmenuItem(title, fn)
-  table.insert(self._submenu, {title = title, fn = fn})
+function menuitem:addSubmenuItem(title, fn, id)
+  table.insert(self._submenu, {title = title, fn = fn, id = id})
+  self._item:setMenu(self._submenu)
+end
+
+
+function menuitem:setSubmenuItemTitle(id, title)
+  for _, submenu in pairs(self._submenu) do
+    if submenu.id == id then
+      submenu.title = title
+      break
+    end
+  end
   self._item:setMenu(self._submenu)
 end
 

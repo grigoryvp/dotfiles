@@ -3,6 +3,9 @@ function App:new()
   local inst = setmetatable({
   }, {__index = self})
   inst.menuItem = menuitem:new()
+  inst.MENU_LIGHTS_ON = 2
+  inst.MENU_LIGHTS_OFF = 3
+  inst.lastLightsCount = 0
   inst.lastCpuUsage = hs.host.cpuUsageTicks()
   inst.cpuLoadHistory = {}
   -- Cpu history is smaller to preserve space since only constant load is
@@ -717,11 +720,22 @@ function App:onHeartbeat()
   local cpuGraph = self:cpuGraphFromLoadHistory(self.cpuLoadHistory)
 
   if isBigTimeout then
+    -- Update info about elgato KeyLights
+    elgato:update()
     -- Get new dock items to click on them with meta-N hotkeys
     self:getDockItems()
     if self.keepBrightness then
       -- Prevent auto-brightness
       hs.brightness.set(50)
+    end
+
+    local lightsCount = elgato:lightsCount()
+    if lightsCount ~= self.lastLightsCount then
+      self.lastLightsCount = lightsCount
+      local title = "Turn on lights (" .. lightsCount .. ")"
+      self.menuItem:setSubmenuItemTitle(self.MENU_LIGHTS_ON, title)
+      local title = "Turn off lights (" .. lightsCount .. ")"
+      self.menuItem:setSubmenuItemTitle(self.MENU_LIGHTS_OFF, title)
     end
   end
 
@@ -1133,6 +1147,15 @@ function App:createMenu()
     str = str:gsub("%s+", " ") -- Collapse two+ spaces into one
     hs.pasteboard.setContents(str)
   end)
+
+  self.menuItem:addSubmenuItem("Turn on lights", function()
+    elgato:switch(true)
+  end, self.MENU_LIGHTS_ON)
+
+  local name = "Turn off lights"
+  self.menuItem:addSubmenuItem(name, function()
+    elgato:switch(false)
+  end, self.MENU_LIGHTS_OFF)
 end
 
 function App:showCharPicker()

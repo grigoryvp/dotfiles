@@ -1,4 +1,6 @@
--- TODO: control elgato lights: https://github.com/alexcwatt/hammerspoon-config/blob/efd327a302f509e7985dc8587ae6175b3d84bd9a/Spoons/ElgatoKeys.spoon/init.lua
+-- TODO: control elgato lights: 
+-- TODO: change ICMP to TCP since ICMP works while TCP may fail with
+--       the "no buffer space available" error.
 -- See ./.vscode/settings.json for linter configuration
 
 -- "hs" cli tool for remote communication
@@ -17,6 +19,7 @@ function onReadlinkExit(exitCode, stdOut, _)
 
   require "helpers"
   require "netstat"
+  require "elgato"
   require "menuitem"
   require "main"
 

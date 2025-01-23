@@ -255,6 +255,9 @@ alias uvs="uvr manage.py runserver"
 #  Hammerspoon
 alias hsr="hs -c 'hs.reload()'"
 
+#  Reopen in the existing vscode window
+alias c="code -r"
+
 buss() {
   if [ -e ./bin/dev ]; then
     ./bin/dev

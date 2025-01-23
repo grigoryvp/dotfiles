@@ -108,15 +108,25 @@ function App:startHttpServer()
     end
     local json = hs.json.decode(body)
     if json.command == "switch_app" then
-      local appIndex = tonumber(json.app_index)
-      if not appIndex then
-        return "switch_app without app_index", 400, {}
+      if json.app_index then
+        local appIndex = tonumber(json.app_index)
+        if not appIndex then
+          return "switch_app without app_index", 400, {}
+        end
+        if appIndex < 0 or appIndex > 9 then
+          return "switch_app.app_index not in 0..9 range", 400, {}
+        end
+        self:clickDockItem(appIndex + 1)
+        return "", 200, {}
+      elseif json.app_id then
+        if not self.slackDockItem then
+          return "slack not found in dock", 400, {}
+        end
+        self.slackDockItem:doAXPress()
+        return "", 200, {}
+      else
+        return "app not specified", 400, {}
       end
-      if appIndex < 0 or appIndex > 9 then
-        return "switch_app.app_index not in 0..9 range", 400, {}
-      end
-      self:clickDockItem(appIndex + 1)
-      return "", 200, {}
     elseif json.command == "show_char_picker" then
       self:showCharPicker()
       return "", 200, {}

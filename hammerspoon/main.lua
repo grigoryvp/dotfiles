@@ -108,6 +108,7 @@ function App:startHttpServer()
     end
     local json = hs.json.decode(body)
     if json.command == "switch_app" then
+
       if json.app_index then
         local appIndex = tonumber(json.app_index)
         if not appIndex then
@@ -127,6 +128,36 @@ function App:startHttpServer()
       else
         return "app not specified", 400, {}
       end
+
+    elseif json.command == "switch_web_profile" then
+
+      local profileIndex = tonumber(json.profile_index)
+      if not profileIndex then
+        return "switch_web_profile without profile_index", 400, {}
+      end
+      if profileIndex < 0 or profileIndex > 9 then
+        return "switch_web_profile.profile_index not in 0..9 range", 400, {}
+      end
+
+      waitSec = 2
+      browser = hs.application.open("Google Chrome", waitSec)
+      if not browser then
+        return "failed to activate chrome", 400, {}
+      end
+
+      menu = browser:getMenuItems()
+      for _, topLevel in ipairs(menu) do
+        if topLevel.AXTitle == "Profiles" then
+          for pos, item in ipairs(topLevel.AXChildren[1]) do
+            if pos == profileIndex + 1 then
+              browser:selectMenuItem({"Profiles", item.AXTitle})
+              return "", 200, {}
+            end
+          end
+        end
+      end
+      return "profile with index " .. profileIndex .. " not found", 400, {}
+
     elseif json.command == "show_char_picker" then
       self:showCharPicker()
       return "", 200, {}

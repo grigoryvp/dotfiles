@@ -225,6 +225,7 @@
   ],
   "workbench.editor.empty.hint": "hidden",
   "xi.debug": false,
+  "cSpell.checkLimit": 10000,
   "cSpell.language": "en,ru",
   "cSpell.ignoreWords": [
     "трем"
@@ -232,9 +233,11 @@
   "cSpell.userWords": [
     "Accor",
     "ADHD",
+    "aiomonitor",
     "Alexa",
     "anki",
     "anychar",
+    "applescript",
     "bindgen",
     "charfrom",
     "Classpath",
@@ -291,6 +294,7 @@
     "numpad",
     "oneof",
     "openwrt",
+    "osascript",
     "pagebreak",
     "pandoc",
     "Petrov",

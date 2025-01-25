@@ -37,7 +37,11 @@ brew install libyaml
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install mpv --cask
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy uv notunes chatgpt slack whatsapp discord
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar tailscale docker double-commander elgato-control-center rode-central mimestream vlc zoom
+# Amphetamine
+mas install 937984704
+# Windows App (RDP client)
+mas install 1295203466
 # Need to check for network issues
 # brew install orbstack
 if [ -e ~/dotfiles ]; then

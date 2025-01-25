@@ -44,10 +44,8 @@ pip install --upgrade pip
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # Install https://macos.telegram.org/
-# Install and config Amphetamine autostart and auto session on start and wake.
-# mas install 937984704
 # Menu: command-drag out "spotlight", "wifi"
-# Menu: hammerspoon, amphetamine, command center, time
+# Menu: hammerspoon, lunar, tailscale, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock
 # Add "gmail" (or use "mimestream"), "google cal", "trello" as chrome apps
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
@@ -79,8 +77,17 @@ pip install --upgrade pip
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.
 # Configure ChatGPT for autostart and "dock only" icon.
+# Configure Amphetamine auto session on start and wake.
+# Configure F2 to cm_HorizontalFilePanels for Double Commander
+# Add KeyLights, blue temp, 90% back, 40% front
 # Disable keyboard backlight in the control center
 # Disable Music access to bluetooth in /Preferences/Privacy/Bluetooth"
+# Import OBS Scenes
+# Install https://onekey.so/download/
+# Install https://tonkeeper.com/pro
+# Install Parallels Desktop
+# Install Microsoft PowerPoint
+# Install Pixelmator Pro from App Store
 # Install Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
 # For old macOS versions:

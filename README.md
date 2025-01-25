@@ -51,6 +51,7 @@ pip install --upgrade pip
 # Drop "/System/Library/CoreServices/Finder.app" into dock
 # Add "gmail" (or use "mimestream"), "google cal", "trello" as chrome apps
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
+# Dock left: chatGPT, Slack, WhatsApp, HEY
 # In "Preferences/Keyboard/Input Sources":
 # * Add "Russian-PC", "Japanese-Romaji"
 # In "Preferences/Keyboard/Shortcuts":

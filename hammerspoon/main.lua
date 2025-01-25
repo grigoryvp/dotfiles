@@ -94,8 +94,21 @@ function App:clickDockItemByNum(number)
     end
   end
   if not isSeparatorFound then
-    print("Separator (settings app) not found in the dock")
+    print("Separator (settings app) not found in dock")
   end
+end
+
+
+function App:clickDockItemByName(name)
+  for _, item in ipairs(self.dockItems) do
+    if item.AXRoleDescription == "application dock item" then
+      if item.AXTitle == name then
+        item:doAXPress()
+        return
+      end
+    end
+  end
+  print("App with name '" .. name .. "' not found in dock")
 end
 
 
@@ -133,6 +146,8 @@ function App:startHttpServer()
           end
           self.heyDockItem:doAXPress()
           return "", 200, {}
+        elseif json.app_id == "gpt" then
+          self:clickDockItemByName("ChatGPT")
         else
           return "unknown app_id", 400, {}
         end

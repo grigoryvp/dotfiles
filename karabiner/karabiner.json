@@ -2553,6 +2553,15 @@
                                 "type": "basic"
                             },
                             {
+                                "description": "alt-space for main ChatGPT window",
+                                "from": {
+                                  "key_code": "spacebar",
+                                  "modifiers": { "mandatory": ["left_option"] }
+                                },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}'" }],
+                                "type": "basic"
+                            },
+                            {
                                 "conditions": [
                                     {
                                         "name": "_m1",

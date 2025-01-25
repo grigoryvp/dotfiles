@@ -35,6 +35,7 @@ function App:new()
   inst.slackDockItem = nil
   inst.discordDockItem = nil
   inst.whatsappDockItem = nil
+  inst.heyDockItem = nil
   inst.vkToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
@@ -120,11 +121,21 @@ function App:startHttpServer()
         self:clickDockItem(appIndex + 1)
         return "", 200, {}
       elseif json.app_id then
-        if not self.slackDockItem then
-          return "slack not found in dock", 400, {}
+        if json.app_id == "slack" then
+          if not self.slackDockItem then
+            return "slack not found in dock", 400, {}
+          end
+          self.slackDockItem:doAXPress()
+          return "", 200, {}
+        elseif json.app_id == "hey" then
+          if not self.heyDockItem then
+            return "HEY not found in dock", 400, {}
+          end
+          self.heyDockItem:doAXPress()
+          return "", 200, {}
+        else
+          return "unknown app_id", 400, {}
         end
-        self.slackDockItem:doAXPress()
-        return "", 200, {}
       else
         return "app not specified", 400, {}
       end
@@ -788,7 +799,8 @@ function App:onHeartbeat()
      or not self.mailDockItem
      or not self.slackDockItem
      or not self.discordDockItem
-     or not self.whatsappDockItem then
+     or not self.whatsappDockItem
+     or not self.heyDockItem then
     -- Do not check too often, CPU expensive
     if isBigTimeout then
       for _, item in ipairs(self.dockItems) do
@@ -806,6 +818,9 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "WhatsApp" then
           self.whatsappDockItem = item
+        end
+        if item.AXTitle == "HEY" then
+          self.heyDockItem = item
         end
       end
     end
@@ -882,6 +897,9 @@ function App:onHeartbeat()
   end
   if self.whatsappDockItem and self.whatsappDockItem.AXStatusLabel then
     table.insert(notifications, "W")
+  end
+  if self.heyDockItem and self.heyDockItem.AXStatusLabel then
+    table.insert(notifications, "H")
   end
 
   self.menuItem:clear()

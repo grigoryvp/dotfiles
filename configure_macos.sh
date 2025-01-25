@@ -5,6 +5,15 @@ if ! [ -e ~/.ssh/known_hosts ]; then
   # Allows git clone without fingerprint confirmation
   ssh-keyscan github.com >> ~/.ssh/known_hosts
 fi
+# Download and install HEY.com mail app
+echo "Downloading HEY.com client..."
+curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
+hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
+vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
+echo "Installing ${vol_name} ..."
+cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
+hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
+rm "./HEY-arm64.dmg"
 # For Apple Silicon
 softwareupdate --install-rosetta --agree-to-license
 # XCode command-line tools
@@ -100,8 +109,6 @@ ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.
 chflags nohidden ~/Library
-# Opt out fig telemetry
-fig settings app.disableTelemetry true
 defaults write com.apple.finder AppleShowAllFiles YES
 defaults write -g AppleShowAllExtensions true
 # Keep folders on top while sorting by name in Finder.
@@ -219,5 +226,5 @@ uv python install 3.13
 rbenv install 3.2.0
 rbenv global 3.2.0
 nodenv install 22.2.0
-nodenv global 22.2.0
+nodenv global 22.2.0 
 echo "Disable caps via Settings/Keyboard/Shortcuts/Modifier"

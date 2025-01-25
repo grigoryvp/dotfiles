@@ -70,7 +70,7 @@ function App:ipStrToList(ip)
 end
 
 
-function App:clickDockItem(number)
+function App:clickDockItemByNum(number)
   local currentNumber = 1
   local isSeparatorFound = false
   for _, item in ipairs(self.dockItems) do
@@ -118,7 +118,7 @@ function App:startHttpServer()
         if appIndex < 0 or appIndex > 9 then
           return "switch_app.app_index not in 0..9 range", 400, {}
         end
-        self:clickDockItem(appIndex + 1)
+        self:clickDockItemByNum(appIndex + 1)
         return "", 200, {}
       elseif json.app_id then
         if json.app_id == "slack" then
@@ -222,12 +222,6 @@ end
 
 
 function App:registerHotkeys()
-  local hotkeys = {"2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="}
-  for i, hotkey in ipairs(hotkeys) do
-    hs.hotkey.bind({"⌘", "⌃", "⌥"}, hotkey, function()
-      self:clickDockItem(i)
-    end)
-  end
 
   hs.hotkey.bind("⌃", "w", function()
     local delay = 50000

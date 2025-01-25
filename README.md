@@ -51,7 +51,7 @@ pip install --upgrade pip
 # Drop "/System/Library/CoreServices/Finder.app" into dock
 # Add "gmail" (or use "mimestream"), "google cal", "trello" as chrome apps
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
-# Dock left: chatGPT, Slack, WhatsApp, HEY
+# Dock left: ChatGPT, Slack, WhatsApp, HEY
 # In "Preferences/Keyboard/Input Sources":
 # * Add "Russian-PC", "Japanese-Romaji"
 # In "Preferences/Keyboard/Shortcuts":
@@ -78,6 +78,7 @@ pip install --upgrade pip
 # Configure hammerspoon for autostart
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.
+# Configure ChatGPT for autostart and "dock only" icon.
 # Disable keyboard backlight in the control center
 # Disable Music access to bluetooth in /Preferences/Privacy/Bluetooth"
 # Install Xcode (this may take HOURS, better to do with App Store):

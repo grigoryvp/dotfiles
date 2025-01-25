@@ -31,12 +31,16 @@
     "keepcoder",
     "keylayout",
     "Kotoeri",
+    "libgpg",
+    "libyaml",
     "nonprimary",
     "PingoMeter",
     "pqrs",
     "pwsh",
     "Pylance",
     "Romaji",
+    "shellenv",
+    "softwareupdate",
     "usleep",
     "vsicons"
   ]

@@ -42,6 +42,14 @@ brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code fon
 mas install 937984704
 # Windows App (RDP client)
 mas install 1295203466
+
+echo "Installing uvc-util..."
+git clone https://github.com/jtfrey/uvc-util.git
+cd uvc-util/src
+gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
+chmod +x uvc-util
+cp uvc-util /Users/user/.local/bin/
+
 # Need to check for network issues
 # brew install orbstack
 if [ -e ~/dotfiles ]; then

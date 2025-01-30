@@ -175,6 +175,12 @@ modsPressed(mods) {
         return false
       }
     }
+    else if (modName == "m3") {
+      ;;  right alt, which is remapped to return
+      if (not GetKeyState("enter", "P")) {
+        return false
+      }
+    }
     ;;  keys like "shift" etc
     else if (not GetKeyState(modName, "P")) {
       return false
@@ -212,6 +218,12 @@ onKeyCommand(items) {
   if (command == "winmaximize") {
     winmaximize "A"
   }
+  else if (command == "winleft") {
+    send "#{left}"
+  }
+  else if (command == "winright") {
+    send "#{right}"
+  }
   else {
     ;;  assert
   }
@@ -228,7 +240,10 @@ onKey(key, dir) {
           return
         }
         else if (Type(to) == "Array") {
-          onKeyCommand(to)
+          if (dir == "up") {
+            onKeyCommand(to)
+          }
+          ;; skip original key behaviour on "down"
           return
         }
         else {
@@ -721,23 +736,23 @@ addRemap("vk4c", ["m1"], "right")
 *$o::remap("down", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 *$o up::remap("up", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 
-;;  'm1-shift-n' => left 1/2, 1/3, 2/3 (third party tool mapped to f17)
-;;  Stub implementation.
-*$n::remap("down", "vk4e", "", "vk4e", "#", "left", "", "vk4e")
-*$n up::remap("up", "vk4e", "", "vk4e", "#", "left", "", "vk4e")
+;; not used
+;; vk4e: "n"
 
-;;  'm1-shift-m' => right 1/2, 1/3, 2/3 (third party tool mapped to f18)
-;;  Stub implementation.
-*$m::remap("down", "vk4d", "", "vk4d", "#", "right", "", "vk4d")
-*$m up::remap("up", "vk4d", "", "vk4d", "#", "right", "", "vk4d")
-
-;;  'm1-shift-,' => top 1/2, 1/3, 2/3 (third party tool mapped to f19)
-*$,::remap("down", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
-*$, up::remap("up", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
-
+;; m1-m2-space => fullscreen
 addRemap("vk20", ["m1", "m2"], ["winmaximize"])
 *$space::onKeydown("vk20")
 *$space up::onKeyup("vk20")
+
+;;  'm1-m2-m' => left 1/2 screen
+addRemap("vk4d", ["m1", "m2"], ["winleft"])
+*$m::onKeydown("vk4d")
+*$m up::onKeyup("vk4d")
+
+;;  'm1-m2-comma' => right 1/2 screen
+addRemap("vkbc", ["m1", "m2"], ["winright"])
+*$,::onKeydown("vkbc")
+*$, up::onKeyup("vkbc")
 
 ;; ===========================================================================
 ;; Left, right and middle mouse buttons

@@ -50,7 +50,8 @@ class App {
           * Invert axis
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
-      - Add C-S-4-5-6 as en-ru-js hotkeys and copy via "Region/Administrative"
+      - Add C-S-4-5-6 as en-ru-js hotkeys in Time/Lang/Typing/Advanced/Keys
+      - copy lang settings via Time/Lang/Administrative"
       - Disable autostart in Task Manager
       - Disable autostart in Task Scheduler
       - Disable snap assist

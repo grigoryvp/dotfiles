@@ -169,6 +169,12 @@ modsPressed(mods) {
         return false
       }
     }
+    else if (modName == "m2") {
+      ;;  left alt, which is remapped to esc
+      if (not GetKeyState("esc", "P")) {
+        return false
+      }
+    }
     ;;  keys like "shift" etc
     else if (not GetKeyState(modName, "P")) {
       return false
@@ -201,8 +207,14 @@ modsToStr(mods) {
   return res
 }
 
-onKeyCommand(cmd) {
-  OutputDebug(mapToStr(cmd))
+onKeyCommand(items) {
+  command := items[1]
+  if (command == "winmaximize") {
+    winmaximize "A"
+  }
+  else {
+    ;;  assert
+  }
 }
 
 onKey(key, dir) {
@@ -215,8 +227,9 @@ onKey(key, dir) {
           send mods . "{" . to . " " . dir . "}"
           return
         }
-        else if (Type(to) == "Map") {
+        else if (Type(to) == "Array") {
           onKeyCommand(to)
+          return
         }
         else {
           ;; assertion
@@ -396,14 +409,14 @@ $+vked up:: {
 ;;  'm1-shift-k' for shift-up-arrow (vim-like + selection modify).
 addRemap("vk4b", ["m1", "shift"], "up", ["shift"])
 ;;  'm1-k' for up arrow (vim-like).
-addRemap("vk4b", ["m1"], "up", [])
+addRemap("vk4b", ["m1"], "up")
 *$k::onKeydown("vk4b")
 *$k up::onKeyup("vk4b")
 
 ;;  'm1-shift-l' for shift-right-arrow (vim-like + selection modify).
 addRemap("vk4c", ["m1", "shift"], "right", ["shift"])
 ;;  'm1-l' for right arrow (vim-like).
-addRemap("vk4c", ["m1"], "right", [])
+addRemap("vk4c", ["m1"], "right")
 *$l::onKeydown("vk4c")
 *$l up::onKeyup("kv4c")
 
@@ -722,9 +735,9 @@ addRemap("vk4c", ["m1"], "right", [])
 *$,::remap("down", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
 *$, up::remap("up", "vkbc", "", "vkbc", "", "f19", "", "vkbc")
 
-;;  'm1-shift-space' => maximize
-*$space::remap("down", "vk20", "", "f21", "none", "", "", "vk20")
-*$space up::remap("up", "vk20", "", "f21", "winmaximize", "", "", "vk20")
+addRemap("vk20", ["m1", "m2"], ["winmaximize"])
+*$space::onKeydown("vk20")
+*$space up::onKeyup("vk20")
 
 ;; ===========================================================================
 ;; Left, right and middle mouse buttons

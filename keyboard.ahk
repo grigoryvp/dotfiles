@@ -60,6 +60,30 @@ f5::send "#g"
 ;;  F6 (m1-c) for "record last 30 seconds" game bar function
 f6::send "#!g"
 
+repeatStr(times, str) {
+  res := ""
+  loop times
+    res .= str
+  return res
+}
+
+mapToStr(map, indent := 0) {
+  res := "{`n"
+  for key, val in map {
+    padding := repeatStr(indent + 2, " ")
+    if (IsObject(val)) {
+      res .= padding . key . ": " . mapToStr(val, indent + 2) . ",`n"
+    } else {
+      if (Type(val) == "String") {
+        res .= padding . key . ": `"" . val . "`",`n"
+      } else {
+        res .= padding . key . ": " . val . ",`n"
+      }
+    }
+  }
+  return res . repeatStr(indent, " ") . "}"
+}
+
 perform(cmd, arg, direction) {
   if (cmd = "winclose") {
     winclose "A"
@@ -125,10 +149,9 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
 
 appRemap := Map()
 
-;;  TODO: implement
-;;  New experimental syntax
-add_remap(from, from_mods, to, to_mods) {
-  config := Map("modifiers", from_mods, "to", to, "modifiers", to_mods)
+;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
+addRemap(from, fromMods, to, toMods := []) {
+  config := Map("from_mods", fromMods, "to", to, "to_mods", toMods)
   if (appRemap.has(from)) {
     appRemap[from].push(config)
   }
@@ -137,18 +160,79 @@ add_remap(from, from_mods, to, to_mods) {
   }
 }
 
-on_keydown(key) {
-  if (appRemap.has(key)) {
+;;  Receives the list of modifiers like ["m1", "shift"] and evaluates to
+;;  true if the corresponding keys are pressed
+modsPressed(mods) {
+  for i, modName in mods {
+    if (modName == "m1") {
+      if (not GetKeyState("vked", "P")) {
+        return false
+      }
+    }
+    ;;  keys like "shift" etc
+    else if (not GetKeyState(modName, "P")) {
+      return false
+    }
   }
-  else {
-  }
+  return true
 }
 
-on_keyup(key) {
+;;  Receives the list of modifiers like ["ctrl", alt"] and evaluates to
+;;  an autohotkey modifiers string for send command, ex "^!"
+modsToStr(mods) {
+  res := ""
+  for _, modName in mods {
+    if (modName == "win") {
+      res .= "#"
+    }
+    else if (modName == "ctrl") {
+      res .= "^"
+    }
+    else if (modName == "alt") {
+      res .= "!"
+    }
+    else if (modName == "shift") {
+      res .= "+"
+    }
+    else {
+      ;;  TODO: assertion
+    }
+  }
+  return res
+}
+
+onKeyCommand(cmd) {
+  OutputDebug(mapToStr(cmd))
+}
+
+onKey(key, dir) {
   if (appRemap.has(key)) {
+    for _, config in appRemap[key] {
+      if (modsPressed(config["from_mods"])) {
+        to := config["to"]
+        if (Type(to) == "String") {
+          mods := modsToStr(config["to_mods"])
+          send mods . "{" . to . " " . dir . "}"
+          return
+        }
+        else if (Type(to) == "Map") {
+          onKeyCommand(to)
+        }
+        else {
+          ;; assertion
+        }
+      }
+    }
   }
-  else {
-  }
+  send "{blind}{" . key . " " . dir . "}"
+}
+
+onKeydown(key) {
+  onKey(key, "down")
+}
+
+onKeyup(key) {
+  onKey(key, "up")
 }
 
 ;;  Use caps lock as 'm1' key to trigger things (caps remapped to f24).
@@ -309,29 +393,19 @@ $+vked up:: {
 *$j::remap("down", "vk4a", "", "down", "+", "down", "", "vk4a")
 *$j up::remap("up", "vk4a", "", "down", "+", "down", "", "vk4a")
 
-;;  'm1-k' for up arrow (vim-like).
 ;;  'm1-shift-k' for shift-up-arrow (vim-like + selection modify).
-*$k::remap("down", "vk4b", "", "up", "+", "up", "", "vk4b")
-*$k up::remap("up", "vk4b", "", "up", "+", "up", "", "vk4b")
+addRemap("vk4b", ["m1", "shift"], "up", ["shift"])
+;;  'm1-k' for up arrow (vim-like).
+addRemap("vk4b", ["m1"], "up", [])
+*$k::onKeydown("vk4b")
+*$k up::onKeyup("vk4b")
 
-;;  New experimental syntax
-add_remap("vk4b", ["m1"], "up", [])
-add_remap("vk4b", ["m1", "shift"], "up", ["shift"])
-add_remap("vk4b", ["m3"], "PrintScreen", [])
-;; *$k::on_keydown("vk4b")
-;; *$k up::on_keyup("kv4b")
-
-;;  'm1-l' for right arrow (vim-like).
 ;;  'm1-shift-l' for shift-right-arrow (vim-like + selection modify).
-*$l::remap("down", "vk4c", "", "right", "+", "right", "", "vk4c")
-*$l up::remap("up", "vk4c", "", "right", "+", "right", "", "vk4c")
-
-;;  New experimental syntax
-add_remap("vk4c", ["m1"], "right", [])
-add_remap("vk4c", ["m1", "shift"], "right", ["shift"])
-add_remap("vk4c", ["m3"], "lock", [])
-;; *$l::on_keydown("vk4c")
-;; *$l up::on_keyup("kv4c")
+addRemap("vk4c", ["m1", "shift"], "right", ["shift"])
+;;  'm1-l' for right arrow (vim-like).
+addRemap("vk4c", ["m1"], "right", [])
+*$l::onKeydown("vk4c")
+*$l up::onKeyup("kv4c")
 
 ;;  'm1-w' for home.
 *$w::remap("down", "vk57", "", "home", "", "vk57", "", "vk57")

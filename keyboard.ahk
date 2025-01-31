@@ -215,6 +215,9 @@ modsToStr(mods) {
 
 onKeyCommand(items) {
   command := items[1]
+  if (command == "winclose") {
+    winclose "A"
+  }
   if (command == "winmaximize") {
     winmaximize "A"
   }
@@ -736,8 +739,10 @@ addRemap("vk4c", ["m1"], "right")
 *$o::remap("down", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 *$o up::remap("up", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
 
-;; not used
-;; vk4e: "n"
+;; m1-m3-n => close window
+addRemap("vk4e", ["m1", "m3"], ["winclose"])
+*$n::onKeydown("vk4e")
+*$n up::onKeyup("vk4e")
 
 ;; m1-m2-space => fullscreen
 addRemap("vk20", ["m1", "m2"], ["winmaximize"])

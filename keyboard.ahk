@@ -213,8 +213,52 @@ modsToStr(mods) {
   return res
 }
 
+;;  Given list of maps describing monitors evaluate to the index in that
+;;  list where the window specified by the description is located
+monitorFromWnd(monitors, wnd) {
+  for monitorIdx, monitor in monitors {
+    if (
+      wnd["right"] > monitor["left"] and
+      wnd["left"] < monitor["right"] and
+      wnd["top"] < monitor["bottom"] and
+      wnd["bottom"] > monitor["top"]
+    ) {
+      return monitorIdx
+    }
+  }
+}
+
+setCurWinPos(pos) {
+  WinGetPos(&x, &y, &width, &height, "A")
+  wndInfo := Map(
+    "left", x,
+    "right", x + width,
+    "top", y,
+    "bottom", y + height,
+    "width", width,
+    "height", height)
+
+  monitorCount := MonitorGetCount()
+  monitors := []
+  loop monitorCount {
+    MonitorGetWorkArea(a_index, &left, &top, &right, &bottom)
+    monitors.Push(Map(
+      "index", a_index,
+      "left", left,
+      "right", right,
+      "top", top,
+      "bottom", bottom,
+      "width", right - left,
+      "height", bottom - top
+    ))
+  }
+
+  monitorIdx := monitorFromWnd(monitors, wndInfo)
+  OutputDebug("monitor " . monitorIdx)
+}
+
 onKeyCommand(items) {
-  command := items[1]
+  command := items.RemoveAt(1)
   if (command == "winclose") {
     winclose "A"
   }
@@ -226,6 +270,10 @@ onKeyCommand(items) {
   }
   else if (command == "winright") {
     send "#{right}"
+  }
+  else if (command == "winpos") {
+    pos := items.RemoveAt(1)
+    setCurWinPos(pos)
   }
   else {
     ;;  assert
@@ -244,7 +292,7 @@ onKey(key, dir) {
         }
         else if (Type(to) == "Array") {
           if (dir == "up") {
-            onKeyCommand(to)
+            onKeyCommand(to.Clone())
           }
           ;; skip original key behaviour on "down"
           return
@@ -723,13 +771,14 @@ addRemap("vk4c", ["m1"], "right")
 ;; Multi-key combinations
 ;; ===========================================================================
 
+;;  'm1-m2-u' => top left
+addRemap("vk55", ["m1", "m2"], ["winpos", "topleft"])
+*$u::onKeydown("vk55")
+*$u up::onKeyup("vk55")
+
 ;;  'm1-shift-y' => top left (third party tool mapped to f13)
 *$y::remap("down", "vk59", "", "vk59", "", "f13", "", "vk59")
 *$y up::remap("up", "vk59", "", "vk59", "", "f13", "", "vk59")
-
-;;  'm1-shift-u' => bottom left (third party tool mapped to f14)
-*$u::remap("down", "vk55", "", "vk55", "", "f14", "", "vk55")
-*$u up::remap("up", "vk55", "", "vk55", "", "f14", "", "vk55")
 
 ;;  'm1-shift-i' => top right (third party tool mapped to f15)
 *$i::remap("down", "vk49", "", "vk49", "", "f15", "", "vk49")

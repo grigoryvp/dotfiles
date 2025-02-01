@@ -308,6 +308,9 @@ setCurWinPos(pos) {
   wndInfo := getCurWinPos()
   monitors := getMonitors()
   monIdx := monitorFromWnd(monitors, wndInfo)
+  if (not monIdx) {
+    return
+  }
   monInfo := monitors[monIdx]
 
   if (pos == "left") {
@@ -374,6 +377,16 @@ setCurWinPos(pos) {
     recalculateGeometry(wndInfo, "left", "top")
     moveActiveWnd(wndInfo)
   }
+  ; Setting size instead of "maximizing" is better since "maximized"
+  ; windows cannot be moved programmatically to the left and right
+  else if (pos == "max") {
+    wndInfo["left"] := monInfo["left"]
+    wndInfo["right"] := monInfo["right"]
+    wndInfo["top"] := monInfo["top"]
+    wndInfo["bottom"] := monInfo["bottom"]
+    recalculateGeometry(wndInfo, "width", "height")
+    moveActiveWnd(wndInfo)
+  }
   else {
     ;;  assert
   }
@@ -383,6 +396,9 @@ setCurWinMon(dir) {
   wndInfo := getCurWinPos()
   monitors := getMonitors()
   monIdx := monitorFromWnd(monitors, wndInfo)
+  if (not monIdx) {
+    return
+  }
   monInfo := monitors[monIdx]
 
   dstMonIdx := ""
@@ -395,7 +411,7 @@ setCurWinMon(dir) {
         }
       }
       else if (dir == "down") {
-        if (curMonInfo["top"] >= monInfo["down"]) {
+        if (curMonInfo["top"] >= monInfo["bottom"]) {
           dstMonIdx := curMonIdx
           break
         }
@@ -420,15 +436,39 @@ setCurWinMon(dir) {
   }
 
   dstMonInfo := monitors[dstMonIdx]
+
+  ; Scale window for the target monitor
+  dx := Abs(monInfo["left"] - wndInfo["left"]) / monInfo["width"]
+  dy := Abs(monInfo["top"] - wndInfo["top"]) / monInfo["height"]
+  dw := wndInfo["width"] / monInfo["width"]
+  dh := wndInfo["height"] / monInfo["height"]
+  wndInfo["left"] := dstMonInfo["left"] + dstMonInfo["width"] * dx
+  wndInfo["top"] := dstMonInfo["top"] + dstMonInfo["height"] * dy
+  wndInfo["width"] := dstMonInfo["width"] * dw
+  wndInfo["height"] := dstMonInfo["height"] * dh
+  recalculateGeometry(wndInfo, "right", "bottom")
+
+  ; If window is bigger than display it will not be correctly placed
+  if (wndInfo["left"] < dstMonInfo["left"]) {
+    wndInfo["left"] := dstMonInfo["left"]
+  }
+  if (wndInfo["right"] > dstMonInfo["right"]) {
+    wndInfo["right"] := dstMonInfo["right"]
+  }
+  if (wndInfo["top"] < dstMonInfo["top"]) {
+    wndInfo["top"] := dstMonInfo["top"]
+  }
+  if (wndInfo["bottom"] > dstMonInfo["bottom"]) {
+    wndInfo["bottom"] := dstMonInfo["bottom"]
+  }
+  recalculateGeometry(wndInfo, "width", "height")
+  moveActiveWnd(wndInfo)
 }
 
 onKeyCommand(items) {
   command := items.RemoveAt(1)
   if (command == "winclose") {
     winclose "A"
-  }
-  if (command == "winmaximize") {
-    winmaximize "A"
   }
   if (command == "delete") {
     if (WinActive("ahk_exe explorer.exe")) {
@@ -980,7 +1020,7 @@ addRemap("vk4e", ["m1", "m3"], ["winclose"])
 *$n up::onKeyup("vk4e")
 
 ;; m1-m2-space => fullscreen
-addRemap("vk20", ["m1", "m2"], ["winmaximize"])
+addRemap("vk20", ["m1", "m2"], ["winpos", "max"])
 *$space::onKeydown("vk20")
 *$space up::onKeyup("vk20")
 

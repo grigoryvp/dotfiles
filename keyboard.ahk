@@ -633,10 +633,10 @@ $+vked up:: {
 *$=::remap("down", "vkbb", "#^", "-", "none", "", "", "vkbb")
 *$= up::remap("up", "vkbb", "#^", "-", "winclose", "", "", "vkbb")
 
-;;  'm1-h' for left arrow (vim-like).
-addRemap("vk48", ["m1"], "down")
 ;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
-addRemap("vk48", ["m1", "shift"], "down", ["shift"])
+addRemap("vk48", ["m1", "shift"], "left", ["shift"])
+;;  'm1-h' for left arrow (vim-like).
+addRemap("vk48", ["m1"], "left")
 *$h::onKeydown("vk48")
 *$h up::onKeyup("vk48")
 

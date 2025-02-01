@@ -54,6 +54,8 @@ function netstat:isRunning()
   curTimeSec = hs.timer.absoluteTime() / 1000000000
   if curTimeSec > self._startTimeSec + TIMEOUT_SEC then
     self._task:terminate()
+    -- otherwise next call to get() may receive "running"
+    self._task = nil
     return false
   end
 

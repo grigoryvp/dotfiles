@@ -353,6 +353,7 @@
     "viewsets",
     "virtualenv",
     "vsicons",
+    "winapi",
     "winget",
     "wsgi",
     "Yudkowsky",

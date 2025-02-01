@@ -521,8 +521,8 @@ $vked:: {
     }
     send "{mbutton up}"
   }
-  ;;  m1+m2 for left alt (while using external mouse)
-  else if (GetKeyState("esc", "P")) {
+  ;;  m1+m2+shift for left alt (while using external mouse)
+  else if (GetKeyState("esc", "P") and GetKeyState("lshift", "P")) {
     global appAltHoldByM1
     appAltHoldByM1 := true
     send "{lalt down}"
@@ -556,29 +556,29 @@ $+vked up:: {
 }
 
 *$esc:: {
-  ;;  m2 + shift for holding esc
-  if (GetKeyState("lshift", "P")) {
-    send "{esc down}"
-  }
-  ;;  m1+m2 for left alt (while using external mouse)
-  if (GetKeyState("vked", "P")) {
+  ;;  m1+m2+shift for left alt (while using external mouse)
+  if (GetKeyState("vked", "P") and GetKeyState("lshift", "P")) {
     global appAltHoldByM2
     appAltHoldByM2 := true
     send "{lalt down}"
+  }
+  ;;  m2 + shift for holding esc
+  else if (GetKeyState("lshift", "P")) {
+    send "{esc down}"
   }
 }
 
 ;;  Single esc (lalt) press => esc, otherwise it's m2
 *$esc up:: {
-  ;;  m2+shift for holding esc
-  if (GetKeyState("lshift", "P")) {
-    send "{esc up}"
-  }
-  ;;  m1+m2 for left alt (while using external mouse)
+  ;;  m1+m2+shift for left alt (while using external mouse)
   if (appAltHoldByM2) {
     global appAltHoldByM2
     appAltHoldByM2 := false
     send "{lalt up}"
+  }
+  ;;  m2+shift for holding esc
+  else if (GetKeyState("lshift", "P")) {
+    send "{esc up}"
   }
   else if (A_PriorKey == "Escape") {
     send "{esc}"

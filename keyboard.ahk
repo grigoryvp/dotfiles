@@ -91,18 +91,6 @@ perform(cmd, arg, direction) {
   else if (cmd == "winmaximize") {
     winmaximize "A"
   }
-  ;;  Delete things.
-  else if (cmd == "delete") {
-    if (WinActive("ahk_exe explorer.exe")) {
-      ;;  Explorer monitors physical 'shift' key, so sending 'delete'
-      ;;  will trigger whift-delete, which is "permanently delete", while
-      ;;  ctrl-d key combination is just 'delte' in most apps.
-      send "^d"
-    }
-    else {
-      send "{delete}"
-    }
-  }
   ;;  Do nothing (ex for remapping key up action)
   else if (cmd == "none") {
   }
@@ -322,6 +310,38 @@ setCurWinPos(pos) {
     recalculateGeometry(wndInfo, "right", "top")
     moveActiveWnd(wndInfo)
   }
+  if (pos == "topleft") {
+    wndInfo["left"] := monitorInfo["left"]
+    wndInfo["top"] := monitorInfo["top"]
+    wndInfo["width"] := monitorInfo["width"] / 2
+    wndInfo["height"] := monitorInfo["height"] / 2
+    recalculateGeometry(wndInfo, "right", "bottom")
+    moveActiveWnd(wndInfo)
+  }
+  else if (pos == "topright") {
+    wndInfo["right"] := monitorInfo["right"]
+    wndInfo["top"] := monitorInfo["top"]
+    wndInfo["width"] := monitorInfo["width"] / 2
+    wndInfo["height"] := monitorInfo["height"] / 2
+    recalculateGeometry(wndInfo, "left", "bottom")
+    moveActiveWnd(wndInfo)
+  }
+  else if (pos == "bottomleft") {
+    wndInfo["left"] := monitorInfo["left"]
+    wndInfo["bottom"] := monitorInfo["bottom"]
+    wndInfo["width"] := monitorInfo["width"] / 2
+    wndInfo["height"] := monitorInfo["height"] / 2
+    recalculateGeometry(wndInfo, "right", "top")
+    moveActiveWnd(wndInfo)
+  }
+  else if (pos == "bottomright") {
+    wndInfo["right"] := monitorInfo["right"]
+    wndInfo["bottom"] := monitorInfo["bottom"]
+    wndInfo["width"] := monitorInfo["width"] / 2
+    wndInfo["height"] := monitorInfo["height"] / 2
+    recalculateGeometry(wndInfo, "left", "top")
+    moveActiveWnd(wndInfo)
+  }
   else {
     ;;  assert
   }
@@ -335,6 +355,17 @@ onKeyCommand(items) {
   if (command == "winmaximize") {
     winmaximize "A"
   }
+  if (command == "delete") {
+    if (WinActive("ahk_exe explorer.exe")) {
+      ;;  Explorer monitors physical 'shift' key, so sending 'delete'
+      ;;  will trigger whift-delete, which is "permanently delete", while
+      ;;  ctrl-d key combination is just 'delte' in most apps.
+      send "^d"
+    }
+    else {
+      send "{delete}"
+    }
+  }
   else if (command == "winpos") {
     pos := items.RemoveAt(1)
     setCurWinPos(pos)
@@ -344,6 +375,7 @@ onKeyCommand(items) {
   }
 }
 
+; TODO: enable debug mode to OutputDebug()
 onKey(key, dir) {
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
@@ -520,11 +552,6 @@ $+vked up:: {
 ;;  'm1-shift-plus' for closing apps
 *$=::remap("down", "vkbb", "#^", "-", "none", "", "", "vkbb")
 *$= up::remap("up", "vkbb", "#^", "-", "winclose", "", "", "vkbb")
-
-;;  'm1-p' for backspace
-;;  'm1-shift-p' for deleting things.
-*$p::remap("down", "vk50", "", "backspace", "none", "", "", "vk50")
-*$p up::remap("up", "vk50", "", "backspace", "delete", "", "", "vk50")
 
 ;;  'm1-h' for left arrow (vim-like).
 ;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
@@ -836,22 +863,28 @@ addRemap("vk4c", ["m1"], "right")
 ;; ===========================================================================
 
 ;;  'm1-m2-u' => top left
-addRemap("vk55", ["m1", "m2"], ["winpos", "top"])
+addRemap("vk55", ["m1", "m2"], ["winpos", "topleft"])
 *$u::onKeydown("vk55")
 *$u up::onKeyup("vk55")
 
 ;;  'm1-m2-i' => top right
-addRemap("vk49", ["m1", "m2"], ["winpos", "bottom"])
+addRemap("vk49", ["m1", "m2"], ["winpos", "topright"])
 *$i::onKeydown("vk49")
 *$i up::onKeyup("vk49")
 
-;;  'm1-shift-y' => top left (third party tool mapped to f13)
-*$y::remap("down", "vk59", "", "vk59", "", "f13", "", "vk59")
-*$y up::remap("up", "vk59", "", "vk59", "", "f13", "", "vk59")
+;;  'm1-m2-o' => botom right
+addRemap("vk4f", ["m1", "m2"], ["winpos", "bottomleft"])
+*$o::onKeydown("vk4f")
+*$o up::onKeyup("vk4f")
 
-;;  'm1-shift-o' => botom right (third party tool mapped to f16)
-*$o::remap("down", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
-*$o up::remap("up", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
+;;  'm1-m2-p' => bottom right
+addRemap("vk50", ["m1", "m2"], ["winpos", "bottomright"])
+;;  'm1-m3-p' for deleting things.
+addRemap("vk50", ["m1", "m3"], ["delete"])
+;;  'm1-p' for backspace
+addRemap("vk50", ["m1"], "backspace")
+*$p::onKeydown("vk50")
+*$p up::onKeyup("vk50")
 
 ;; m1-m3-n => close window
 addRemap("vk4e", ["m1", "m3"], ["winclose"])

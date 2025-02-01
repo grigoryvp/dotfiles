@@ -279,6 +279,8 @@ class App {
       # for mosquitto_pub
       $this._installBinApp("EclipseFoundation.Mosquitto", $this._path(
         @($env:ProgramFiles, "mosquitto")));
+      # for keylight control
+      $this._installApp("Elgato.ControlCenter");
     }
 
     if ($this._isTest) {

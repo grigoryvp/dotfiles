@@ -729,7 +729,7 @@ addRemap("vk4c", ["m1", "shift"], "right", ["shift"])
 ;;  'm1-l' for right arrow (vim-like).
 addRemap("vk4c", ["m1"], "right")
 *$l::onKeydown("vk4c")
-*$l up::onKeyup("kv4c")
+*$l up::onKeyup("vk4c")
 
 ;;  'm1-w' for home.
 addRemap("vk57", ["m1"], "home")

@@ -36,7 +36,7 @@
 ;;  for 11-th app is not easy.
 
 codepage := 65001 ; utf-8
-appLastLangHotkey := ""
+appLastLang := ""
 appLeaderUpTick := 0
 appLeaderDownTick := 0
 ;;  Separate flags for alt down emulation with m2 while m1 is
@@ -465,6 +465,26 @@ setCurWinMon(dir) {
   moveActiveWnd(wndInfo)
 }
 
+switchToLang(lang) {
+  if (lang == "en") {
+    send("^+4")
+  }
+  else if (lang == "ru") {
+    send("^+5")
+  }
+  else if (lang == "jp") {
+    if (appLastLang == "jp") {
+      ;;  Switch between Hiragana and Latin input for Japanese keyboard
+      send "!``"
+    }
+    else {
+      send("^+6")
+    }
+  }
+  global appLastLang
+  appLastLang := lang
+}
+
 onKeyCommand(items) {
   command := items.RemoveAt(1)
   if (command == "winclose") {
@@ -481,6 +501,10 @@ onKeyCommand(items) {
       send "{delete}"
     }
   }
+  else if (command == "send") {
+    input := items.RemoveAt(1)
+    Send(input)
+  }
   else if (command == "winpos") {
     pos := items.RemoveAt(1)
     setCurWinPos(pos)
@@ -488,6 +512,10 @@ onKeyCommand(items) {
   else if (command == "winmon") {
     dir := items.RemoveAt(1)
     setCurWinMon(dir)
+  }
+  else if (command == "lang") {
+    lang := items.RemoveAt(1)
+    switchToLang(lang)
   }
   else {
     ;;  assert
@@ -660,18 +688,16 @@ $+vked up:: {
 ;;  ==========================================================================
 
 ;;  'm1-open-bracket' for escape (vim-like).
-*$[::remap("down", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
-*$[ up::remap("up", "vkdb", "", "esc", "", "vkdb", "", "vkdb")
+addRemap("vkdb", ["m1"], "esc")
+*$[::onKeydown("vkdb")
+*$[ up::onKeyup("vkdb")
 
+;;  'm1-m2-.' => move window top 1/2 display
+addRemap("vkbe", ["m1", "m2"], ["winpos", "top"])
 ;;  'm1-.' for mouse button 4 (scroll)
-;;  'm1-shift-.' => bottom 1/2, 1/3, 2/3 (third party tool mapped to f20)
-*$.::remap("down", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
-*$. up::remap("up", "vkbe", "", "xbutton1", "", "f20", "", "vkbe")
-
-;;  'm1-plus' for 11th app (not implemented yet).
-;;  'm1-shift-plus' for closing apps
-*$=::remap("down", "vkbb", "#^", "-", "none", "", "", "vkbb")
-*$= up::remap("up", "vkbb", "#^", "-", "winclose", "", "", "vkbb")
+addRemap("vkbe", ["m1"], "xbutton1")
+*$.::onKeydown("vkbe")
+*$. up::onKeyup("vkbe")
 
 ;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
 addRemap("vk48", ["m1", "shift"], "left", ["shift"])
@@ -706,285 +732,162 @@ addRemap("vk4c", ["m1"], "right")
 *$l up::onKeyup("kv4c")
 
 ;;  'm1-w' for home.
-*$w::remap("down", "vk57", "", "home", "", "vk57", "", "vk57")
-*$w up::remap("up", "vk57", "", "home", "", "vk57", "", "vk57")
+addRemap("vk57", ["m1"], "home")
+*$w::onKeydown("vk57")
+*$w up::onKeyup("vk57")
 
 ;;  'm1-e' for page down.
-;; TODO:  m2-e for email
-*$e::remap("down", "vk45", "", "pgdn", "", "vk45", "", "vk45")
-*$e up::remap("up", "vk45", "", "pgdn", "", "vk45", "", "vk45")
+addRemap("vk45", ["m1"], "pgdn")
+;;  'm2-e' for email
+addRemap("vk45", ["m2"], ["send", "grigoryvp{@}gmail.com"])
+*$e::onKeydown("vk45")
+*$e up::onKeyup("vk45")
 
 ;;  'm1-r' for page up.
-*$r::remap("down", "vk52", "", "pgup", "", "vk52", "", "vk52")
-*$r up::remap("up", "vk52", "", "pgup", "", "vk52", "", "vk52")
+addRemap("vk52", ["m1"], "pgup")
+*$r::onKeydown("vk52")
+*$r up::onKeyup("vk52")
 
 ;;  'm1-t' for end.
-*$t::remap("down", "vk54", "", "end", "", "vk54", "", "vk54")
-*$t up::remap("up", "vk54", "", "end", "", "vk54", "", "vk54")
+addRemap("vk54", ["m1"], "end")
+*$t::onKeydown("vk54")
+*$t up::onKeyup("vk54")
 
 ;;  'm1-x' for F5.
-*$x::remap("down", "vk58", "", "f5", "", "vk58", "", "vk58")
-*$x up::remap("up", "vk58", "", "f5", "", "vk58", "", "vk58")
+addRemap("vk58", ["m1"], "f5")
+*$x::onKeydown("vk58")
+*$x up::onKeyup("vk58")
 
 ;;  'm1-c' for F6.
-*$c::remap("down", "vk43", "", "f6", "", "vk43", "", "vk43")
-*$c up::remap("up", "vk43", "", "f6", "", "vk43", "", "vk43")
+addRemap("vk43", ["m1"], "f6")
+*$c::onKeydown("vk43")
+*$c up::onKeyup("vk43")
 
 ;;  'm1-v' for F7.
-*$v::remap("down", "vk56", "", "f7", "", "vk56", "", "vk56")
-*$v up::remap("up", "vk56", "", "f7", "", "vk56", "", "vk56")
+addRemap("vk56", ["m1"], "f7")
+*$v::onKeydown("vk56")
+*$v up::onKeyup("vk56")
 
 ;;  'm1-b' for F8.
-*$b::remap("down", "vk42", "", "f8", "", "vk42", "", "vk42")
-*$b up::remap("up", "vk42", "", "f8", "", "vk42", "", "vk42")
+addRemap("vk42", ["m1"], "f8")
+*$b::onKeydown("vk42")
+*$b up::onKeyup("vk42")
 
-;;  'm1-backslash' for launchpad.
-;;  'm1-s-backslash' for notifications.
 ;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
-*$\::remap("down", "vkdc", "", "lwin", "#", "a", "+", "tab")
-*$\ up::remap("up", "vkdc", "", "lwin", "#", "a", "+", "tab")
+addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
+;;  'm1-s-backslash' for notifications.
+addRemap("vkdc", ["m1", "shift"], "a", ["win"])
+;;  'm1-backslash' for launchpad.
+addRemap("vkdc", ["m1"], "lwin")
+*$\::onKeydown("vkdc")
+*$\ up::onKeyup("vkdc")
 
 ;;  ==========================================================================
 ;;  App launcher
 ;;  ==========================================================================
 
 ;;  'm1-2' fo 1st app
-*$2::remap("down", "vk32", "#^", "1", "", "vk32", "", "vk32")
-*$2 up::remap("up", "vk32", "#^", "1", "", "vk32", "", "vk32")
+addRemap("vk32", ["m1"], "1", ["win", "ctrl"])
+*$2::onKeydown("vk32")
+*$2 up::onKeyup("vk32")
 
 ;;  'm1-3' fo 2nd app
-*$3::remap("down", "vk33", "#^", "2", "", "vk33", "", "vk33")
-*$3 up::remap("up", "vk33", "#^", "2", "", "vk33", "", "vk33")
+addRemap("vk33", ["m1"], "2", ["win", "ctrl"])
+*$3::onKeydown("vk33")
+*$3 up::onKeyup("vk33")
 
-;;  'm1-4' fo 3nd app
-*$4::remap("down", "vk34", "#^", "3", "", "vk34", "", "vk34")
-*$4 up::remap("up", "vk34", "#^", "3", "", "vk34", "", "vk34")
+;;  'm1-4' fo 3rd app
+addRemap("vk34", ["m1"], "3", ["win", "ctrl"])
+*$4::onKeydown("vk34")
+*$4 up::onKeyup("vk34")
 
 ;;  'm1-5' fo 4th app
-*$5::remap("down", "vk35", "#^", "4", "", "vk35", "", "vk35")
-*$5 up::remap("up", "vk35", "#^", "4", "", "vk35", "", "vk35")
+addRemap("vk35", ["m1"], "4", ["win", "ctrl"])
+*$5::onKeydown("vk35")
+*$5 up::onKeyup("vk35")
 
 ;;  'm1-6' fo 5th app
-*$6::remap("down", "vk36", "#^", "5", "", "vk36", "", "vk36")
-*$6 up::remap("up", "vk36", "#^", "5", "", "vk36", "", "vk36")
+addRemap("vk36", ["m1"], "5", ["win", "ctrl"])
+*$6::onKeydown("vk36")
+*$6 up::onKeyup("vk36")
 
-;;  'm1-7' for 6th app
-*$7::remap("down", "vk37", "#^", "6", "", "vk37", "", "vk37")
-*$7 up::remap("up", "vk37", "#^", "6", "", "vk37", "", "vk37")
+;;  'm1-7' fo 6th app
+addRemap("vk37", ["m1"], "6", ["win", "ctrl"])
+*$7::onKeydown("vk37")
+*$7 up::onKeyup("vk37")
 
-;;  'm1-8' for 7th app
-*$8::remap("down", "vk38", "#^", "7", "", "vk38", "", "vk38")
-*$8 up::remap("up", "vk38", "#^", "7", "", "vk38", "", "vk38")
+;;  'm1-8' fo 7th app
+addRemap("vk38", ["m1"], "7", ["win", "ctrl"])
+*$8::onKeydown("vk38")
+*$8 up::onKeyup("vk38")
 
-;;  'm1-9' for 8th app
-*$9::remap("down", "vk39", "#^", "8", "", "vk39", "", "vk39")
-*$9 up::remap("up", "vk39", "#^", "8", "", "vk39", "", "vk39")
+;;  'm1-9' fo 8th app
+addRemap("vk39", ["m1"], "8", ["win", "ctrl"])
+*$9::onKeydown("vk39")
+*$9 up::onKeyup("vk39")
 
 ;;  'm1-0' for 9th app
-*$0::remap("down", "vk30", "#^", "9", "", "vk30", "", "vk30")
-*$0 up::remap("up", "vk30", "#^", "9", "", "vk30", "", "vk30")
+addRemap("vk30", ["m1"], "9", ["win", "ctrl"])
+*$0::onKeydown("vk30")
+*$0 up::onKeyup("vk30")
 
 ;;  'm1-minus' for 10th app
-*$-::remap("down", "vkbd", "#^", "0", "", "vkbd", "", "vkbd")
-*$- up::remap("up", "vkbd", "#^", "0", "", "vkbd", "", "vkbd")
+addRemap("vkbd", ["m1"], "0", ["win", "ctrl"])
+*$-::onKeydown("vkbd")
+*$- up::onKeydown("vkbd")
 
 ;;  ==========================================================================
 ;;  Language switch
 ;;  ==========================================================================
 
-;;  m1-g for F4
 ;;  m1-shift-g for emoji selector
-*$g:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      send "#{vkbe}"
-    }
-    else {
-      send "{blind}{vk73 down}"
-    }
-  }
-  else {
-    send "{blind}{vk47 down}"
-  }
-}
+addRemap("vk47", ["m1", "shift"], "vkbe", ["win"])
+;;  m1-g for F4
+addRemap("vk47", ["m1"], "vk73")
+*$g::onKeydown("vk47")
+*$g up::onKeyup("vk47")
 
-*$g up:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-    }
-    else {
-      send "{blind}{vk73 up}"
-    }
-  }
-  else {
-    send "{blind}{vk47 up}"
-  }
-}
-
-;;  m1-f for F3
 ;;  m1-shift-f switch to 1st language
+addRemap("vk46", ["m1", "shift"], ["lang", "en"])
+;;  m1-f for F3
+addRemap("vk46", ["m1"], "vk72")
 ;;  m2-f for game command
-*$f:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      global appLastLangHotkey
-      appLastLangHotkey := "4"
-      send "^+4"
-    }
-    else {
-      send "{blind}{vk72 down}"
-    }
-  }
-  else if (GetKeyState("esc", "P")) {
-    ;;  TODO: check if PoE foreground
-    send "{enter}"
-    send "/exit"
-    send "{enter}"
-  }
-  else {
-    send "{blind}{vk46 down}"
-  }
-}
+addRemap("vk46", ["m2"], ["send", "{enter}/exit{enter}"])
+*$f::onKeydown("vk46")
+*$f up::onKeyup("vk46")
 
-*$f up:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-    }
-    else {
-      send "{blind}{vk72 up}"
-    }
-  }
-  else if (GetKeyState("esc", "P")) {
-  }
-  else {
-    send "{blind}{vk46 up}"
-  }
-}
-
+;;  m1-shift--d switch to 2nd language
+addRemap("vk44", ["m1", "shift"], ["lang", "ru"])
 ;;  m1-d for F2
-;;  m1-d switch to 2nd language
+addRemap("vk44", ["m1"], "vk71")
 ;;  m2-d for game command
-*$d:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      global appLastLangHotkey
-      appLastLangHotkey := "5"
-      send "^+5"
-    }
-    else {
-      send "{blind}{vk71 down}"
-    }
-  }
-  else if (GetKeyState("esc", "P")) {
-    ;;  TODO: check if PoE foreground
-    send "{enter}"
-    send "/hideout"
-    send "{enter}"
-  }
-  else {
-    send "{blind}{vk44 down}"
-  }
-}
+addRemap("vk44", ["m2"], ["send", "{enter}/hideout{enter}"])
+*$d::onKeydown("vk44")
+*$d up::onKeyup("vk44")
 
-*$d up:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-    }
-    else {
-      send "{blind}{vk71 up}"
-    }
-  }
-  else if (GetKeyState("esc", "P")) {
-  }
-  else {
-    send "{blind}{vk44 up}"
-  }
-}
-
+;;  m1-shift-s switch to 3nd language
+addRemap("vk53", ["m1", "shift"], ["lang", "jp"])
 ;;  m1-s for F1
-;;  m1-s switch to 3nd language
+addRemap("vk53", ["m1"], "vk70")
 ;;  m2-s for english signature
-*$s:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      if (appLastLangHotkey == "6") {
-        ;;  Switch between Hiragana and Latin input for Japanese keyboard
-        send "!``"
-      }
-      else {
-        global appLastLangHotkey
-        appLastLangHotkey := "6"
-        send "^+6"
-      }
-    }
-    else {
-      send "{blind}{vk70 down}"
-    }
-  }
-  else if (GetKeyState("esc", "P")) {
-    send "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"
-  }
-  else {
-    send "{blind}{vk53 down}"
-  }
-}
-
-*$s up:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-    }
-    else {
-      send "{blind}{vk70 up}"
-    }
-  }
-  else if (GetKeyState("esc", "P")) {
-  }
-  else {
-    send "{blind}{vk53 up}"
-  }
-}
+addRemap("vk53", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"])
+*$s::onKeydown("vk53")
+*$s up::onKeyup("vk53")
 
 ;;  ==========================================================================
 ;;  Fast text entry
+;;  TODO: check if game is foreground for "send"
 ;;  ==========================================================================
 
 ;;  m2-1 for game text 1
-*$1:: {
-  if (GetKeyState("esc", "P")) {
-    ;;  TODO: check if PoE foreground
-    send "-[rgb]-|nne|rint"
-  }
-  else {
-    send "{blind}{1 down}"
-  }
-}
+addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
+*$1::onKeydown("1")
+*$1 up::onKeyup("1")
 
-*$1 up:: {
-  if (GetKeyState("esc", "P")) {
-  }
-  else {
-    send "{blind}{1 up}"
-  }
-}
-
-;;  m2-q for game text 1
-*$q:: {
-  if (GetKeyState("esc", "P")) {
-    ;;  TODO: check if PoE foreground
-    send "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"
-  }
-  else {
-    send "{blind}{q down}"
-  }
-}
-
-*$q up:: {
-  if (GetKeyState("esc", "P")) {
-  }
-  else {
-    send "{blind}{q up}"
-  }
-}
+;;  m2-q for game text 2
+addRemap("q", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])
+*$q::onKeydown("q")
+*$q up::onKeyup("q")
 
 ;; ===========================================================================
 ;; Multi-key combinations
@@ -1181,7 +1084,4 @@ OnTimer() {
 SetTimer(OnTimer, 500)
 
 ;; TODO: url shortener on context menu
-;; TODO: m1-m2-u/i/o/p/m/comma/period/slash for resizing windows
-;; TODO: m1-m2-j/k/h/l for moving windows around
-;; TODO: m1-m3-n for closing windows
-;; TODO: m1-m3-p for deleting things
+;; TODO: debug mode for context menu

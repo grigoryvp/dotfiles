@@ -36,6 +36,8 @@
 ;;  for 11-th app is not easy.
 
 codepage := 65001 ; utf-8
+;;  Map of all remap configurations
+appRemap := Map()
 appLastLang := ""
 appLeaderUpTick := 0
 appLeaderDownTick := 0
@@ -108,8 +110,6 @@ mapToStr(map, indent := 0) {
   }
   return res . repeatStr(indent, " ") . "}"
 }
-
-appRemap := Map()
 
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
 addRemap(from, fromMods, to, toMods := []) {
@@ -783,7 +783,7 @@ addRemap("vk30", ["m1"], "9", ["win", "ctrl"])
 ;;  'm1-minus' for 10th app
 addRemap("vkbd", ["m1"], "0", ["win", "ctrl"])
 *$-::onKeydown("vkbd")
-*$- up::onKeydown("vkbd")
+*$- up::onKeyup("vkbd")
 
 ;;  ==========================================================================
 ;;  Language switch

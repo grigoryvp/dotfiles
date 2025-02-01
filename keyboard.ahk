@@ -67,6 +67,31 @@ repeatStr(times, str) {
   return res
 }
 
+includes(container, needles*) {
+  if (needles.Length == 1) {
+    needle := needles[1]
+    for _, val in container {
+      if val == needle {
+        return true
+      }
+    }
+  }
+  else {
+    found := 0
+    for _, val in container {
+      for _, needle in needles {
+        if val == needle {
+          found += 1
+          if (found == needles.Length) {
+            return true
+          }
+        }
+      }
+    }
+  }
+  return false
+}
+
 mapToStr(map, indent := 0) {
   res := "{`n"
   for key, val in map {
@@ -250,18 +275,20 @@ moveActiveWnd(wndInfo) {
     "A")
 }
 
-setCurWinPos(pos) {
+getCurWinPos() {
   WinGetPos(&x, &y, &width, &height, "A")
-  wndInfo := Map(
+  return Map(
     "left", x,
     "right", x + width,
     "top", y,
     "bottom", y + height,
     "width", width,
     "height", height)
+}
 
-  monitorCount := MonitorGetCount()
+getMonitors() {
   monitors := []
+  monitorCount := MonitorGetCount()
   loop monitorCount {
     MonitorGetWorkArea(a_index, &left, &top, &right, &bottom)
     monitors.Push(Map(
@@ -274,77 +301,125 @@ setCurWinPos(pos) {
       "height", bottom - top
     ))
   }
+  return monitors
+}
 
-  monitorIdx := monitorFromWnd(monitors, wndInfo)
-  monitorInfo := monitors[monitorIdx]
+setCurWinPos(pos) {
+  wndInfo := getCurWinPos()
+  monitors := getMonitors()
+  monIdx := monitorFromWnd(monitors, wndInfo)
+  monInfo := monitors[monIdx]
 
   if (pos == "left") {
-    wndInfo["left"] := monitorInfo["left"]
-    wndInfo["top"] := monitorInfo["top"]
-    wndInfo["width"] := monitorInfo["width"] / 2
-    wndInfo["height"] := monitorInfo["height"]
+    wndInfo["left"] := monInfo["left"]
+    wndInfo["top"] := monInfo["top"]
+    wndInfo["width"] := monInfo["width"] / 2
+    wndInfo["height"] := monInfo["height"]
     recalculateGeometry(wndInfo, "right", "bottom")
     moveActiveWnd(wndInfo)
   }
   else if (pos == "right") {
-    wndInfo["right"] := monitorInfo["right"]
-    wndInfo["top"] := monitorInfo["top"]
-    wndInfo["width"] := monitorInfo["width"] / 2
-    wndInfo["height"] := monitorInfo["height"]
+    wndInfo["right"] := monInfo["right"]
+    wndInfo["top"] := monInfo["top"]
+    wndInfo["width"] := monInfo["width"] / 2
+    wndInfo["height"] := monInfo["height"]
     recalculateGeometry(wndInfo, "left", "bottom")
     moveActiveWnd(wndInfo)
   }
   else if (pos == "top") {
-    wndInfo["left"] := monitorInfo["left"]
-    wndInfo["top"] := monitorInfo["top"]
-    wndInfo["width"] := monitorInfo["width"]
-    wndInfo["height"] := monitorInfo["height"] / 2
+    wndInfo["left"] := monInfo["left"]
+    wndInfo["top"] := monInfo["top"]
+    wndInfo["width"] := monInfo["width"]
+    wndInfo["height"] := monInfo["height"] / 2
     recalculateGeometry(wndInfo, "right", "bottom")
     moveActiveWnd(wndInfo)
   }
   else if (pos == "bottom") {
-    wndInfo["left"] := monitorInfo["left"]
-    wndInfo["bottom"] := monitorInfo["bottom"]
-    wndInfo["width"] := monitorInfo["width"]
-    wndInfo["height"] := monitorInfo["height"] / 2
+    wndInfo["left"] := monInfo["left"]
+    wndInfo["bottom"] := monInfo["bottom"]
+    wndInfo["width"] := monInfo["width"]
+    wndInfo["height"] := monInfo["height"] / 2
     recalculateGeometry(wndInfo, "right", "top")
     moveActiveWnd(wndInfo)
   }
   if (pos == "topleft") {
-    wndInfo["left"] := monitorInfo["left"]
-    wndInfo["top"] := monitorInfo["top"]
-    wndInfo["width"] := monitorInfo["width"] / 2
-    wndInfo["height"] := monitorInfo["height"] / 2
+    wndInfo["left"] := monInfo["left"]
+    wndInfo["top"] := monInfo["top"]
+    wndInfo["width"] := monInfo["width"] / 2
+    wndInfo["height"] := monInfo["height"] / 2
     recalculateGeometry(wndInfo, "right", "bottom")
     moveActiveWnd(wndInfo)
   }
   else if (pos == "topright") {
-    wndInfo["right"] := monitorInfo["right"]
-    wndInfo["top"] := monitorInfo["top"]
-    wndInfo["width"] := monitorInfo["width"] / 2
-    wndInfo["height"] := monitorInfo["height"] / 2
+    wndInfo["right"] := monInfo["right"]
+    wndInfo["top"] := monInfo["top"]
+    wndInfo["width"] := monInfo["width"] / 2
+    wndInfo["height"] := monInfo["height"] / 2
     recalculateGeometry(wndInfo, "left", "bottom")
     moveActiveWnd(wndInfo)
   }
   else if (pos == "bottomleft") {
-    wndInfo["left"] := monitorInfo["left"]
-    wndInfo["bottom"] := monitorInfo["bottom"]
-    wndInfo["width"] := monitorInfo["width"] / 2
-    wndInfo["height"] := monitorInfo["height"] / 2
+    wndInfo["left"] := monInfo["left"]
+    wndInfo["bottom"] := monInfo["bottom"]
+    wndInfo["width"] := monInfo["width"] / 2
+    wndInfo["height"] := monInfo["height"] / 2
     recalculateGeometry(wndInfo, "right", "top")
     moveActiveWnd(wndInfo)
   }
   else if (pos == "bottomright") {
-    wndInfo["right"] := monitorInfo["right"]
-    wndInfo["bottom"] := monitorInfo["bottom"]
-    wndInfo["width"] := monitorInfo["width"] / 2
-    wndInfo["height"] := monitorInfo["height"] / 2
+    wndInfo["right"] := monInfo["right"]
+    wndInfo["bottom"] := monInfo["bottom"]
+    wndInfo["width"] := monInfo["width"] / 2
+    wndInfo["height"] := monInfo["height"] / 2
     recalculateGeometry(wndInfo, "left", "top")
     moveActiveWnd(wndInfo)
   }
   else {
     ;;  assert
   }
+}
+
+setCurWinMon(dir) {
+  wndInfo := getCurWinPos()
+  monitors := getMonitors()
+  monIdx := monitorFromWnd(monitors, wndInfo)
+  monInfo := monitors[monIdx]
+
+  dstMonIdx := ""
+  for curMonIdx, curMonInfo in monitors {
+    if (curMonIdx != monIdx) {
+      if (dir == "up") {
+        if (curMonInfo["bottom"] <= monInfo["top"]) {
+          dstMonIdx := curMonIdx
+          break
+        }
+      }
+      else if (dir == "down") {
+        if (curMonInfo["top"] >= monInfo["down"]) {
+          dstMonIdx := curMonIdx
+          break
+        }
+      }
+      else if (dir == "left") {
+        if (curMonInfo["right"] <= monInfo["left"]) {
+          dstMonIdx := curMonIdx
+          break
+        }
+      }
+      else if (dir == "right") {
+        if (curMonInfo["left"] >= monInfo["right"]) {
+          dstMonIdx := curMonIdx
+          break
+        }
+      }
+    }
+  }
+
+  if (not dstMonIdx) {
+    return
+  }
+
+  dstMonInfo := monitors[dstMonIdx]
 }
 
 onKeyCommand(items) {
@@ -370,6 +445,10 @@ onKeyCommand(items) {
     pos := items.RemoveAt(1)
     setCurWinPos(pos)
   }
+  else if (command == "winmon") {
+    dir := items.RemoveAt(1)
+    setCurWinMon(dir)
+  }
   else {
     ;;  assert
   }
@@ -379,7 +458,8 @@ onKeyCommand(items) {
 onKey(key, dir) {
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
-      if (modsPressed(config["from_mods"])) {
+      fromMods := config["from_mods"]
+      if (modsPressed(fromMods)) {
         to := config["to"]
         if (Type(to) == "String") {
           mods := modsToStr(config["to_mods"])
@@ -554,15 +634,23 @@ $+vked up:: {
 *$= up::remap("up", "vkbb", "#^", "-", "winclose", "", "", "vkbb")
 
 ;;  'm1-h' for left arrow (vim-like).
+addRemap("vk48", ["m1"], "down")
 ;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
-*$h::remap("down", "vk48", "", "left", "+", "left", "", "vk48")
-*$h up::remap("up", "vk48", "", "left", "+", "left", "", "vk48")
+addRemap("vk48", ["m1", "shift"], "down", ["shift"])
+*$h::onKeydown("vk48")
+*$h up::onKeyup("vk48")
 
-;;  'm1-j' for down arrow (vim-like).
+;;  'm1-m2-j' move window one monitor down
+addRemap("vk4a", ["m1", "m2"], ["winmon", "down"])
 ;;  'm1-shift-j' for shift-down-arrow (vim-like + selection modify).
-*$j::remap("down", "vk4a", "", "down", "+", "down", "", "vk4a")
-*$j up::remap("up", "vk4a", "", "down", "+", "down", "", "vk4a")
+addRemap("vk4a", ["m1", "shift"], "down", ["shift"])
+;;  'm1-j' for down arrow (vim-like).
+addRemap("vk4a", ["m1"], "down")
+*$j::onKeydown("vk4a")
+*$j up::onKeyup("vk4a")
 
+;;  'm1-m2-k' move window one monitor up
+addRemap("vk4b", ["m1", "m2"], ["winmon", "up"])
 ;;  'm1-shift-k' for shift-up-arrow (vim-like + selection modify).
 addRemap("vk4b", ["m1", "shift"], "up", ["shift"])
 ;;  'm1-k' for up arrow (vim-like).

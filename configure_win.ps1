@@ -606,7 +606,7 @@ class App {
       return;
     }
 
-    Write-Host "mapping caps to F24";
+    Write-Host "remapping keyboard";
     # caps to F24 for autohotkey meta
     # tab to lctrl (autohotkey changes single key back to tab)
     # enter to rctrl (autohotkey change single key back to enter)

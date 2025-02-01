@@ -548,7 +548,7 @@ class App {
 
     # Ms before key is repeated
     $argmap.Name = 'AutoRepeatDelay';
-    $argmap.Value = '400';
+    $argmap.Value = '300';
     New-ItemProperty @argmap;
 
     # Less is faster

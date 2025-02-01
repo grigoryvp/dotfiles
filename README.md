@@ -13,6 +13,7 @@ $repo_url = "https://raw.githubusercontent.com/grigoryvp/dotfiles"
 $url = "$repo_url/master/configure_win.ps1"
 # 'Invoke-Expression' instead of 'iex' since 'iex' is removed by profile.ps1
 Invoke-WebRequest $url -OutFile ./configure.ps1
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser
 ./configure.ps1
 ```
 

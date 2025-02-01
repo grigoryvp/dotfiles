@@ -109,57 +109,6 @@ mapToStr(map, indent := 0) {
   return res . repeatStr(indent, " ") . "}"
 }
 
-perform(cmd, arg, direction) {
-  if (cmd == "winclose") {
-    winclose "A"
-  }
-  else if (cmd == "winmaximize") {
-    winmaximize "A"
-  }
-  ;;  Do nothing (ex for remapping key up action)
-  else if (cmd == "none") {
-  }
-  ;;  Default remap is 'send' with modifier and direction.
-  else {
-    send cmd . "{" . arg . " " . direction . "}"
-  }
-}
-
-;;  Remap keydown (direction 'down') or keyup (direction 'up') from key
-;;  specified by 'from' into different things to do. Each thing is specified
-;;  with modifier and 'to'-clause. If modifier is an empty string (default),
-;;  'to'-clause specifies a key to remap. If modifier is reserved string
-;;  see 'perform' implementation. If modifier is ahk key modifier (like '^')
-;;  it is used as modified for key remap.
-remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("shift", "P")) {
-      perform(mod2, to2, direction)
-      if (direction == "down") {
-        A_IconTip := "m1-s-" . from . " to " . mod2 . "{" . to2 . "}"
-      }
-    }
-    else if (GetKeyState("lctrl", "P")) {
-      perform(mod3, to3, direction)
-      if (direction == "down") {
-        A_IconTip := "m1-c-" . from . " to " . mod3 . "{" . to3 . "}"
-      }
-    }
-    else {
-      perform(mod1, to1, direction)
-      if (direction == "down") {
-        A_IconTip := "m1-" . from . " to " . mod1 . "{" . to1 . "}"
-      }
-    }
-  }
-  else {
-    send "{blind}{" . from . " " . direction . "}"
-    if (direction == "down") {
-      A_IconTip := from . " pass through"
-    }
-  }
-}
-
 appRemap := Map()
 
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")

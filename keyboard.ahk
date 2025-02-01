@@ -85,14 +85,14 @@ mapToStr(map, indent := 0) {
 }
 
 perform(cmd, arg, direction) {
-  if (cmd = "winclose") {
+  if (cmd == "winclose") {
     winclose "A"
   }
-  else if (cmd = "winmaximize") {
+  else if (cmd == "winmaximize") {
     winmaximize "A"
   }
   ;;  Delete things.
-  else if (cmd = "delete") {
+  else if (cmd == "delete") {
     if (WinActive("ahk_exe explorer.exe")) {
       ;;  Explorer monitors physical 'shift' key, so sending 'delete'
       ;;  will trigger whift-delete, which is "permanently delete", while
@@ -104,7 +104,7 @@ perform(cmd, arg, direction) {
     }
   }
   ;;  Do nothing (ex for remapping key up action)
-  else if (cmd = "none") {
+  else if (cmd == "none") {
   }
   ;;  Default remap is 'send' with modifier and direction.
   else {
@@ -122,26 +122,26 @@ remap(direction, from, mod1, to1, mod2, to2, mod3, to3) {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
       perform(mod2, to2, direction)
-      if (direction = "down") {
+      if (direction == "down") {
         A_IconTip := "m1-s-" . from . " to " . mod2 . "{" . to2 . "}"
       }
     }
     else if (GetKeyState("lctrl", "P")) {
       perform(mod3, to3, direction)
-      if (direction = "down") {
+      if (direction == "down") {
         A_IconTip := "m1-c-" . from . " to " . mod3 . "{" . to3 . "}"
       }
     }
     else {
       perform(mod1, to1, direction)
-      if (direction = "down") {
+      if (direction == "down") {
         A_IconTip := "m1-" . from . " to " . mod1 . "{" . to1 . "}"
       }
     }
   }
   else {
     send "{blind}{" . from . " " . direction . "}"
-    if (direction = "down") {
+    if (direction == "down") {
       A_IconTip := from . " pass through"
     }
   }
@@ -228,6 +228,40 @@ monitorFromWnd(monitors, wnd) {
   }
 }
 
+;;  Takes map of "left", "right", "top", "bottom", "width", "height"
+;;  and recalculates specified attributes.
+recalculateGeometry(geometry, attributes*) {
+  for _, attr in attributes {
+    if (attr == "left") {
+      geometry["left"] := geometry["right"] - geometry["width"]
+    }
+    if (attr == "right") {
+      geometry["right"] := geometry["left"] + geometry["width"]
+    }
+    else if (attr == "top") {
+      geometry["top"] := geometry["bottom"] - geometry["height"]
+    }
+    else if (attr == "bottom") {
+      geometry["bottom"] := geometry["top"] + geometry["height"]
+    }
+    else if (attr == "width") {
+      geometry["width"] := geometry["right"] - geometry["left"]
+    }
+    else if (attr == "height") {
+      geometry["height"] := geometry["bottom"] - geometry["top"]
+    }
+  }
+}
+
+moveActiveWnd(wndInfo) {
+  WinMove(
+    wndInfo["left"],
+    wndInfo["top"],
+    wndInfo["width"],
+    wndInfo["height"],
+    "A")
+}
+
 setCurWinPos(pos) {
   WinGetPos(&x, &y, &width, &height, "A")
   wndInfo := Map(
@@ -254,7 +288,43 @@ setCurWinPos(pos) {
   }
 
   monitorIdx := monitorFromWnd(monitors, wndInfo)
-  OutputDebug("monitor " . monitorIdx)
+  monitorInfo := monitors[monitorIdx]
+
+  if (pos == "left") {
+    wndInfo["left"] := monitorInfo["left"]
+    wndInfo["top"] := monitorInfo["top"]
+    wndInfo["width"] := monitorInfo["width"] / 2
+    wndInfo["height"] := monitorInfo["height"]
+    recalculateGeometry(wndInfo, "right", "bottom")
+    moveActiveWnd(wndInfo)
+  }
+  else if (pos == "right") {
+    wndInfo["right"] := monitorInfo["right"]
+    wndInfo["top"] := monitorInfo["top"]
+    wndInfo["width"] := monitorInfo["width"] / 2
+    wndInfo["height"] := monitorInfo["height"]
+    recalculateGeometry(wndInfo, "left", "bottom")
+    moveActiveWnd(wndInfo)
+  }
+  else if (pos == "top") {
+    wndInfo["left"] := monitorInfo["left"]
+    wndInfo["top"] := monitorInfo["top"]
+    wndInfo["width"] := monitorInfo["width"]
+    wndInfo["height"] := monitorInfo["height"] / 2
+    recalculateGeometry(wndInfo, "right", "bottom")
+    moveActiveWnd(wndInfo)
+  }
+  else if (pos == "bottom") {
+    wndInfo["left"] := monitorInfo["left"]
+    wndInfo["bottom"] := monitorInfo["bottom"]
+    wndInfo["width"] := monitorInfo["width"]
+    wndInfo["height"] := monitorInfo["height"] / 2
+    recalculateGeometry(wndInfo, "right", "top")
+    moveActiveWnd(wndInfo)
+  }
+  else {
+    ;;  assert
+  }
 }
 
 onKeyCommand(items) {
@@ -264,12 +334,6 @@ onKeyCommand(items) {
   }
   if (command == "winmaximize") {
     winmaximize "A"
-  }
-  else if (command == "winleft") {
-    send "#{left}"
-  }
-  else if (command == "winright") {
-    send "#{right}"
   }
   else if (command == "winpos") {
     pos := items.RemoveAt(1)
@@ -392,7 +456,7 @@ $+vked up:: {
   }
 }
 
-;;  Single esc (lalt) press = esc, otherwise it's m2
+;;  Single esc (lalt) press => esc, otherwise it's m2
 *$esc up:: {
   ;;  m2+shift for holding esc
   if (GetKeyState("lshift", "P")) {
@@ -404,21 +468,21 @@ $+vked up:: {
     appAltHoldByM2 := false
     send "{lalt up}"
   }
-  else if (A_PriorKey = "escape") {
+  else if (A_PriorKey == "Escape") {
     send "{esc}"
   }
 }
 
-;;  Single enter (ralt) press = enter, otherwise it's m3
+;;  Single enter (ralt) press => enter, otherwise it's m3
 *$enter up:: {
-  if (A_PriorKey = "enter") {
+  if (A_PriorKey == "Enter") {
     send "{enter}"
   }
 }
 
-;;  Single tab press = tab
+;;  Single tab press => tab
 ~$lctrl up:: {
-  if (A_PriorKey = "lcontrol") {
+  if (A_PriorKey == "LControl") {
     send "{tab}"
   }
   else if (GetKeyState("rctrl", "P")) {
@@ -428,7 +492,7 @@ $+vked up:: {
 
 ;;  'Enter' up
 ~$rctrl up:: {
-  if (A_PriorKey = "rcontrol") {
+  if (A_PriorKey == "RControl") {
     send "{enter}"
   }
   else if (GetKeyState("lctrl", "P")) {
@@ -688,7 +752,7 @@ addRemap("vk4c", ["m1"], "right")
 *$s:: {
   if (GetKeyState("vked", "P")) {
     if (GetKeyState("shift", "P")) {
-      if (appLastLangHotkey = "6") {
+      if (appLastLangHotkey == "6") {
         ;;  Switch between Hiragana and Latin input for Japanese keyboard
         send "!``"
       }
@@ -772,17 +836,18 @@ addRemap("vk4c", ["m1"], "right")
 ;; ===========================================================================
 
 ;;  'm1-m2-u' => top left
-addRemap("vk55", ["m1", "m2"], ["winpos", "topleft"])
+addRemap("vk55", ["m1", "m2"], ["winpos", "top"])
 *$u::onKeydown("vk55")
 *$u up::onKeyup("vk55")
+
+;;  'm1-m2-i' => top right
+addRemap("vk49", ["m1", "m2"], ["winpos", "bottom"])
+*$i::onKeydown("vk49")
+*$i up::onKeyup("vk49")
 
 ;;  'm1-shift-y' => top left (third party tool mapped to f13)
 *$y::remap("down", "vk59", "", "vk59", "", "f13", "", "vk59")
 *$y up::remap("up", "vk59", "", "vk59", "", "f13", "", "vk59")
-
-;;  'm1-shift-i' => top right (third party tool mapped to f15)
-*$i::remap("down", "vk49", "", "vk49", "", "f15", "", "vk49")
-*$i up::remap("up", "vk49", "", "vk49", "", "f15", "", "vk49")
 
 ;;  'm1-shift-o' => botom right (third party tool mapped to f16)
 *$o::remap("down", "vk4f", "", "vk4f", "", "f16", "", "vk4f")
@@ -799,12 +864,12 @@ addRemap("vk20", ["m1", "m2"], ["winmaximize"])
 *$space up::onKeyup("vk20")
 
 ;;  'm1-m2-m' => left 1/2 screen
-addRemap("vk4d", ["m1", "m2"], ["winleft"])
+addRemap("vk4d", ["m1", "m2"], ["winpos", "left"])
 *$m::onKeydown("vk4d")
 *$m up::onKeyup("vk4d")
 
 ;;  'm1-m2-comma' => right 1/2 screen
-addRemap("vkbc", ["m1", "m2"], ["winright"])
+addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 *$,::onKeydown("vkbc")
 *$, up::onKeyup("vkbc")
 

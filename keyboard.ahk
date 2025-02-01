@@ -840,6 +840,8 @@ addRemap("vkbd", ["m1"], "0", ["win", "ctrl"])
 ;;  Language switch
 ;;  ==========================================================================
 
+;;  m1-m2-g for S-F4
+addRemap("vk47", ["m1", "m2"], "vk73", ["shift"])
 ;;  m1-shift-g for emoji selector
 addRemap("vk47", ["m1", "shift"], "vkbe", ["win"])
 ;;  m1-g for F4
@@ -847,6 +849,8 @@ addRemap("vk47", ["m1"], "vk73")
 *$g::onKeydown("vk47")
 *$g up::onKeyup("vk47")
 
+;;  m1-m2-f for S-F3
+addRemap("vk46", ["m1", "m2"], "vk72", ["shift"])
 ;;  m1-shift-f switch to 1st language
 addRemap("vk46", ["m1", "shift"], ["lang", "en"])
 ;;  m1-f for F3
@@ -856,7 +860,9 @@ addRemap("vk46", ["m2"], ["send", "{enter}/exit{enter}"])
 *$f::onKeydown("vk46")
 *$f up::onKeyup("vk46")
 
-;;  m1-shift--d switch to 2nd language
+;;  m1-m2-d for S-F2
+addRemap("vk44", ["m1", "m2"], "vk71", ["shift"])
+;;  m1-shift-d switch to 2nd language
 addRemap("vk44", ["m1", "shift"], ["lang", "ru"])
 ;;  m1-d for F2
 addRemap("vk44", ["m1"], "vk71")
@@ -865,6 +871,8 @@ addRemap("vk44", ["m2"], ["send", "{enter}/hideout{enter}"])
 *$d::onKeydown("vk44")
 *$d up::onKeyup("vk44")
 
+;;  m1-m2-s for S-F1
+addRemap("vk53", ["m1", "m2"], "vk70", ["shift"])
 ;;  m1-shift-s switch to 3nd language
 addRemap("vk53", ["m1", "shift"], ["lang", "jp"])
 ;;  m1-s for F1

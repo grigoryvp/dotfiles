@@ -6,7 +6,7 @@ function New-File() { New-Item -ItemType File -Force @args; }
 class App {
 
   #region Instance properties
-  $_ver = "1.0.24";
+  $_ver = "1.0.25";
   $_isTest = $false;
   $_isFull = $false;
   $_isPublic = $false;
@@ -53,6 +53,7 @@ class App {
       - Add C-S-4-5-6 as en-ru-js hotkeys in Time/Lang/Typing/Advanced/Keys
       - Unassign switch between languages in Time/Lang/Typing/Advanced/Keys
       - copy lang settings via Time/Lang/Administrative"
+      - Disable spam in System/Notification/Additional
       - Disable autostart in Task Manager
       - Disable autostart in Task Scheduler
       - Disable snap assist
@@ -119,6 +120,9 @@ class App {
 
     # Game compatibility
     $this._setEnv("OPENSSL_ia32cap", "~0x20000000");
+
+    # uv tool install target
+    $this._addToPath($this._path(@("~", ".local", "bin")));
 
     if (-not $this._isTest) {
       # Ensure at least 1.9 version for "add to path" manifest flag

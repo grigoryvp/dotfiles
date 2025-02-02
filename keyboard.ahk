@@ -782,6 +782,8 @@ addRemap("vk30", ["m1"], "9", ["win", "ctrl"])
 
 ;;  'm1-minus' for 10th app
 addRemap("vkbd", ["m1"], "0", ["win", "ctrl"])
+;;  'm2-minus' for em-dash
+addRemap("vkbd", ["m2"], ["send", "—"])
 *$-::onKeydown("vkbd")
 *$- up::onKeyup("vkbd")
 

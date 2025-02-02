@@ -41,13 +41,6 @@ appRemap := Map()
 appLastLang := ""
 appLeaderUpTick := 0
 appLeaderDownTick := 0
-;;  Separate flags for alt down emulation with m2 while m1 is
-;;  pressed and m1 while m2 is pressed. This is used to ensure
-;;  that the same key that set alt down will also put it up and do nothing
-;;  else. Otherwise it's possible to down m1, down m2 (holds alt),
-;;  up m1 (incorrectly releases alt), up m2 (incorrectly triggers esc).
-appAltHoldByM1 := false
-appAltHoldByM2 := false
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -538,25 +531,12 @@ $vked:: {
     }
     send "{mbutton up}"
   }
-  ;;  m1+m2+shift for left alt (while using external mouse)
-  else if (GetKeyState("esc", "P") and GetKeyState("lshift", "P")) {
-    global appAltHoldByM1
-    appAltHoldByM1 := true
-    send "{lalt down}"
-  }
 }
 
 ;;  Use caps lock as 'm1' key to trigger things (caps remapped to f24).
 $vked up:: {
   global appLeaderUpTick
   appLeaderUpTick := A_TickCount
-
-  global appAltHoldByM1
-  ;;  m1+m2 for left alt (while using external mouse)
-  if (appAltHoldByM1) {
-    appAltHoldByM1 := false
-    send "{lalt up}"
-  }
 }
 
 ;;  Supress rshift+caps that produces char codes in chrome and erases
@@ -573,28 +553,16 @@ $+vked up:: {
 }
 
 *$esc:: {
-  ;;  m1+m2+shift for left alt (while using external mouse)
-  if (GetKeyState("vked", "P") and GetKeyState("lshift", "P")) {
-    global appAltHoldByM2
-    appAltHoldByM2 := true
-    send "{lalt down}"
-  }
   ;;  m2 + shift for holding esc
-  else if (GetKeyState("lshift", "P")) {
+  if (GetKeyState("lshift", "P")) {
     send "{esc down}"
   }
 }
 
 ;;  Single esc (lalt) press => esc, otherwise it's m2
 *$esc up:: {
-  ;;  m1+m2+shift for left alt (while using external mouse)
-  if (appAltHoldByM2) {
-    global appAltHoldByM2
-    appAltHoldByM2 := false
-    send "{lalt up}"
-  }
   ;;  m2+shift for holding esc
-  else if (GetKeyState("lshift", "P")) {
+  if (GetKeyState("lshift", "P")) {
     send "{esc up}"
   }
   else if (A_PriorKey == "Escape") {

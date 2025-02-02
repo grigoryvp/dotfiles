@@ -37,7 +37,7 @@ function cdd() { Set-Location ~/Documents; }
 function cdc() { Set-Location ~/dotfiles; }
 function cdx() { Set-Location ~/.xi; }
 function cdh() { Set-Location ~; }
-function mcd() { & mkdir $Args; Set-Location $Args }
+function mcd() { & mkdir $Args[0]; Set-Location $Args[0] }
 #  Reopen in the existing vscode window
 function c() { & code -r $Args }
 function g() { & git $Args }

@@ -38,9 +38,9 @@
 codepage := 65001 ; utf-8
 ;;  Map of all remap configurations
 appRemap := Map()
+appMeta := Map()
+appKeysPressed := Map()
 appLastLang := ""
-appLeaderUpTick := 0
-appLeaderDownTick := 0
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -87,6 +87,15 @@ includes(container, needles*) {
   return false
 }
 
+remove(container, needle) {
+  for idx, val in container {
+    if val == needle {
+      container.RemoveAt(idx)
+      return
+    }
+  }
+}
+
 mapToStr(map, indent := 0) {
   res := "{`n"
   for key, val in map {
@@ -106,9 +115,18 @@ mapToStr(map, indent := 0) {
 
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
 addRemap(from, fromMods, to, toMods := []) {
-  config := Map("from_mods", fromMods, "to", to, "to_mods", toMods)
+  config := Map(
+    "from_mods", fromMods,
+    "to", to,
+    "to_mods", toMods,
+    "options", [])
+  if (Type(from) == "Array") {
+    options := from.Clone()
+    from := options.RemoveAt(1)
+    config["options"] := options
+  }
   if (appRemap.has(from)) {
-    appRemap[from].push(config)
+    appRemap[from].Push(config)
   }
   else {
     appRemap[from] := [config]
@@ -119,38 +137,24 @@ addRemap(from, fromMods, to, toMods := []) {
 ;;  true if the corresponding keys are pressed
 modsPressedForKey(mods, key) {
   for i, modName in mods {
-    if (modName == "m1") {
-      if (not GetKeyState("vked", "P")) {
+    ; used first to unset meta if it was set during initial keydown
+    if (modName == "always") {
+      return true
+    }
+    if (modName == "m1" or modName == "m2" or modName == "m3") {
+      if (not appMeta.Has(modName)) {
         return false
       }
-    }
-    else if (modName == "m2") {
-      ;;  left alt, which is remapped to esc
-      if (not GetKeyState("esc", "P")) {
-        return false
-      }
-    }
-    else if (modName == "m3") {
-      ;;  right alt, which is remapped to return
-      if (not GetKeyState("enter", "P")) {
+      if (not appMeta[modName]) {
         return false
       }
     }
     else if (modName == "alone") {
-      if (key == "esc") {
-        ;; todo: use native keydown-keyup detection within script
-        if (A_PriorKey != "Escape") {
+      for key, keyInfo in appKeysPressed {
+        if (keyInfo["key"] != key) {
           return false
         }
-      }
-      else {
-        ; assert
-      }
-    }
-    else if (modName == "together") {
-      if (key == "esc") {
-        ;; todo: use native keydown-keyup detection within script
-        if (A_PriorKey == "Escape") {
+        if (not keyInfo["alone"]) {
           return false
         }
       }
@@ -446,49 +450,67 @@ switchToLang(lang) {
   appLastLang := lang
 }
 
-onKeyCommand(items) {
+onKeyCommand(items, dir) {
   command := items.RemoveAt(1)
   if (command == "nothing") {
     return
   }
-  if (command == "winclose") {
-    winclose "A"
-  }
-  if (command == "delete") {
-    if (WinActive("ahk_exe explorer.exe")) {
-      ;;  Explorer monitors physical 'shift' key, so sending 'delete'
-      ;;  will trigger whift-delete, which is "permanently delete", while
-      ;;  ctrl-d key combination is just 'delte' in most apps.
-      send "^d"
+  if (command == "meta") {
+    name := items.RemoveAt(1)
+    if (dir == "down") {
+      appMeta[name] := true
+    }
+    else if (dir == "up") {
+      appMeta[name] := false
     }
     else {
-      send "{delete}"
+      ; assert
+    }
+    return
+  }
+  if (dir == "up") {
+    if (command == "winclose") {
+      winclose "A"
+      return
+    }
+    if (command == "delete") {
+      if (WinActive("ahk_exe explorer.exe")) {
+        ;;  Explorer monitors physical 'shift' key, so sending 'delete'
+        ;;  will trigger whift-delete, which is "permanently delete", while
+        ;;  ctrl-d key combination is just 'delte' in most apps.
+        send "^d"
+      }
+      else {
+        send "{delete}"
+      }
+      return
+    }
+    if (command == "send") {
+      input := items.RemoveAt(1)
+      Send(input)
+      return
+    }
+    if (command == "winpos") {
+      pos := items.RemoveAt(1)
+      setCurWinPos(pos)
+      return
+    }
+    if (command == "winmon") {
+      dir := items.RemoveAt(1)
+      setCurWinMon(dir)
+      return
+    }
+    if (command == "lang") {
+      lang := items.RemoveAt(1)
+      switchToLang(lang)
+      return
     }
   }
-  else if (command == "send") {
-    input := items.RemoveAt(1)
-    Send(input)
-  }
-  else if (command == "winpos") {
-    pos := items.RemoveAt(1)
-    setCurWinPos(pos)
-  }
-  else if (command == "winmon") {
-    dir := items.RemoveAt(1)
-    setCurWinMon(dir)
-  }
-  else if (command == "lang") {
-    lang := items.RemoveAt(1)
-    switchToLang(lang)
-  }
-  else {
-    ;;  assert
-  }
+  ;;  assert
 }
 
 ; TODO: enable debug mode to OutputDebug()
 onKey(key, dir) {
-  isAlone := false
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
       fromMods := config["from_mods"]
@@ -496,345 +518,344 @@ onKey(key, dir) {
         to := config["to"]
         if (Type(to) == "String") {
           mods := modsToStr(config["to_mods"])
-          ;; "alone" can be detected and triggers only on keyup, so send
-          ;; "keypress" instead of "key up"
           if (includes(fromMods, "alone")) {
-            ;; TODO: temporary fix until "modsPressedForKey()" is able
-            ;; to detect alone keydown and following return will work
-            isAlone := true
+            ;; "alone" has meaning only on key up
             if (dir == "up") {
               Send(mods . "{" . to . "}")
             }
-            else {
-              ;;  TODO: not working right now, see comment above
-              return
-            }
           }
           else {
-            Send(mods . "{" . to . " " . dir . "}")
+            isNorepeat := includes(config["options"], "norepeat")
+            isPressed := appKeysPressed.Has(key)
+            ; Don't send some buttons like left mouse button repeatedly
+            ; if configured so (ex they are "hold type")
+            if (dir == "up" or not isNorepeat or not isPressed) {
+              Send(mods . "{" . to . " " . dir . "}")
+            }
           }
-          return
         }
         else if (Type(to) == "Array") {
-          if (dir == "up") {
-            onKeyCommand(to.Clone())
-          }
-          ;; skip original key behaviour on "down"
-          return
+          onKeyCommand(to.Clone(), dir)
         }
         else {
           ;; assertion
         }
+        if (not includes(fromMods, "always")) {
+          ;; skip original key behaviour
+          return
+        }
       }
     }
   }
-  ;; TODO: temporary fix, see comments above
-  if (not isAlone) {
-    Send("{blind}{" . key . " " . dir . "}")
-  }
+  Send("{blind}{" . key . " " . dir . "}")
 }
 
 onKeydown(key) {
   onKey(key, "down")
+  if (not appKeysPressed.Has(key)) {
+    alone := true
+    if (appKeysPressed.Count > 0) {
+      alone := false
+      for curKey, keyInfo in appKeysPressed {
+        keyInfo["alone"] := false
+      }
+    }
+    appKeysPressed[key] := Map("key", key, "alone", alone)
+  }
 }
 
 onKeyup(key) {
   onKey(key, "up")
-}
-
-;;  Use caps lock as 'm1' key to trigger things (caps remapped to f24).
-$vked:: {
-  ;;  First press since release? (beware repetition)
-  if (appLeaderUpTick >= appLeaderDownTick) {
-    global appLeaderDownTick
-    appLeaderDownTick := A_TickCount
-  }
-  ;;  For games like WoW right buttons hold are used for movement, so
-  ;;  sometimes caps lock is released while holding tick or semicolon.
-  ;;  Holding caps lock again should enter button hold.
-  if (GetKeyState(";", "P")) {
-    send "{lbutton down}"
-    while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
-      Sleep 10
-    }
-    send "{lbutton up}"
-  }
-  else if (GetKeyState("'", "P")) {
-    send "{rbutton down}"
-    while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
-      Sleep 10
-    }
-    send "{rbutton up}"
-  }
-  else if (GetKeyState("/", "P")) {
-    send "{mbutton down}"
-    while (GetKeyState("vked", "P") && GetKeyState("/", "P")) {
-      Sleep 10
-    }
-    send "{mbutton up}"
+  if (appKeysPressed.Has(key)) {
+    appKeysPressed.Delete(key)
   }
 }
 
-;;  Use caps lock as 'm1' key to trigger things (caps remapped to f24).
-$vked up:: {
-  global appLeaderUpTick
-  appLeaderUpTick := A_TickCount
-}
+*$lalt::onKeydown("lalt") ; (esc)
+*$lalt up::onKeyup("lalt") ; (esc)
+*$vkc0::onKeydown("~")
+*$vkc0 up::onKeyup("~")
+*$1::onKeydown("1")
+*$1 up::onKeyup("1")
+*$2::onKeydown("2")
+*$2 up::onKeyup("2")
+*$3::onKeydown("3")
+*$3 up::onKeyup("3")
+*$4::onKeydown("4")
+*$4 up::onKeyup("4")
+*$5::onKeydown("5")
+*$5 up::onKeyup("5")
+*$6::onKeydown("6")
+*$6 up::onKeyup("6")
+*$7::onKeydown("7")
+*$7 up::onKeyup("7")
+*$8::onKeydown("8")
+*$8 up::onKeyup("8")
+*$9::onKeydown("9")
+*$9 up::onKeyup("9")
+*$0::onKeydown("0")
+*$0 up::onKeyup("0")
+*$-::onKeydown("-")
+*$- up::onKeyup("-")
+*$=::onKeydown("=")
+*$= up::onKeyup("=")
+*$vk8::onKeydown("backspace")
+*$vk8 up::onKeyup("backspace")
 
-;;  Supress rshift+caps that produces char codes in chrome and erases
-;;  cell content in spreadsheets while switching language via m1-s-f.
-$+vked:: {
-  global appLeaderDownTick
-  if (appLeaderUpTick >= appLeaderDownTick) {
-    appLeaderDownTick := A_TickCount
-  }
-}
-$+vked up:: {
-  global appLeaderUpTick
-  appLeaderUpTick := A_TickCount
-}
+*~$lctrl::onKeydown("lctrl") ; Don't suppress native "ctrl" function
+*~$lctrl up::onKeyup("lctrl") ; Don't suppress native "ctrl" function
+*$q::onKeydown("q")
+*$q up::onKeyup("q")
+*$w::onKeydown("w")
+*$w up::onKeyup("w")
+*$e::onKeydown("e")
+*$e up::onKeyup("e")
+*$r::onKeydown("r")
+*$r up::onKeyup("r")
+*$t::onKeydown("t")
+*$t up::onKeyup("t")
+*$y::onKeydown("y")
+*$y up::onKeyup("y")
+*$u::onKeydown("u")
+*$u up::onKeyup("u")
+*$i::onKeydown("i")
+*$i up::onKeyup("i")
+*$o::onKeydown("o")
+*$o up::onKeyup("o")
+*$p::onKeydown("p")
+*$p up::onKeyup("p")
+*$[::onKeydown("[")
+*$[ up::onKeyup("[")
+*$]::onKeydown("]")
+*$] up::onKeyup("]")
+*$\::onKeydown("\")
+*$\ up::onKeyup("\")
 
+*$vked::onKeydown("vked") ; caps lock
+*$vked up::onKeyup("vked") ; caps lock
+*$a::onKeydown("a")
+*$a up::onKeyup("a")
+*$s::onKeydown("s")
+*$s up::onKeyup("s")
+*$d::onKeydown("d")
+*$d up::onKeyup("d")
+*$f::onKeydown("f")
+*$f up::onKeyup("f")
+*$g::onKeydown("g")
+*$g up::onKeyup("g")
+*$h::onKeydown("h")
+*$h up::onKeyup("h")
+*$j::onKeydown("j")
+*$j up::onKeyup("j")
+*$k::onKeydown("k")
+*$k up::onKeyup("k")
+*$l::onKeydown("l")
+*$l up::onKeyup("l")
+*$;::onKeydown(";")
+*$; up::onKeyup(";")
+*$'::onKeydown("'")
+*$' up::onKeyup("'")
+*~$rctrl::onKeydown("rctrl") ; Don't suppress native "ctrl" function
+*~$rctrl up::onKeyup("rctrl") ; Don't suppress native "ctrl" function
+
+*$lshift::onKeydown("lshift")
+*$lshift up::onKeyup("lshift")
+*$z::onKeydown("z")
+*$z up::onKeyup("z")
+*$x::onKeydown("x")
+*$x up::onKeyup("x")
+*$c::onKeydown("c")
+*$c up::onKeyup("c")
+*$v::onKeydown("v")
+*$v up::onKeyup("v")
+*$b::onKeydown("b")
+*$b up::onKeyup("b")
+*$n::onKeydown("n")
+*$n up::onKeyup("n")
+*$m::onKeydown("m")
+*$m up::onKeyup("m")
+*$,::onKeydown(",")
+*$, up::onKeyup(",")
+*$.::onKeydown(".")
+*$. up::onKeyup(".")
+*$/::onKeydown("/")
+*$/ up::onKeyup("/")
+*$rshift::onKeydown("rshift")
+*$rshift up::onKeyup("rshift")
+
+*$esc::onKeydown("esc") ; (lalt)
+*$esc up::onKeyup("esc") ; (lalt)
+*$space::onKeydown("space")
+*$space up::onKeyup("space")
+*$enter::onKeydown("enter") ; (ralt)
+*$enter up::onKeyup("enter") ; (ralt)
+
+
+; caps lock to meta-1
+addRemap("vked", [], ["meta", "m1"])
+
+addRemap("esc", ["always"], ["meta", "m2"])
 ;;  Single esc (lalt) press => esc
 addRemap("esc", ["alone"], "esc")
-;;  m2 if not alone
-addRemap("esc", ["together"], ["nothing"])
 ;;  m2 + shift for holding esc
-;; TODO: not working right now due to inability to correctly detect
-;; "alone" semantic via A_PriorKey
 addRemap("esc", ["shift"], "esc")
-*$esc::onKeydown("esc")
-*$esc up::onKeyup("esc")
 
-;;  Single enter (ralt) press => enter, otherwise it's m3
-*$enter up:: {
-  if (A_PriorKey == "Enter") {
-    send "{enter}"
-  }
-}
+addRemap("enter", ["always"], ["meta", "m3"])
+;;  Single enter (ralt) press => enter
+addRemap("enter", ["alone"], "enter")
 
-;;  Single tab press => tab
-~$lctrl up:: {
-  if (A_PriorKey == "LControl") {
-    send "{tab}"
-  }
-  else if (GetKeyState("rctrl", "P")) {
-    send "^{tab}"
-  }
-}
+;;  Single rctrl (enter) press => enter (with mods)
+addRemap("rctrl", ["alone", "ctrl"], "enter", ["ctrl"])
+addRemap("rctrl", ["alone", "shift"], "enter", ["shift"])
+addRemap("rctrl", ["alone"], "enter")
 
-;;  'Enter' up
-~$rctrl up:: {
-  if (A_PriorKey == "RControl") {
-    send "{enter}"
-  }
-  else if (GetKeyState("lctrl", "P")) {
-    send "^{enter}"
-  }
-  else if (GetKeyState("lshift", "P")) {
-    send "+{enter}"
-  }
-}
+;;  Single lctrl (tab) press => tab (with mods)
+addRemap("lctrl", ["alone", "ctrl"], "tab", ["ctrl"])
+addRemap("lctrl", ["alone"], "tab")
 
 ;;  ==========================================================================
 ;;  Keys and combinations remap
 ;;  ==========================================================================
 
 ;;  'm1-open-bracket' for escape (vim-like).
-addRemap("vkdb", ["m1"], "esc")
-*$[::onKeydown("vkdb")
-*$[ up::onKeyup("vkdb")
+addRemap("[", ["m1"], "esc")
 
-;;  'm1-m2-.' => move window top 1/2 display
-addRemap("vkbe", ["m1", "m2"], ["winpos", "top"])
+;;  'm1-m2-.' => move window top 1/2 screen
+addRemap(".", ["m1", "m2"], ["winpos", "top"])
 ;;  'm1-.' for mouse button 4 (scroll)
-addRemap("vkbe", ["m1"], "xbutton1")
-*$.::onKeydown("vkbe")
-*$. up::onKeyup("vkbe")
+addRemap([".", "norepeat"], ["m1"], "xbutton1")
 
 ;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
-addRemap("vk48", ["m1", "shift"], "left", ["shift"])
+addRemap("h", ["m1", "shift"], "left", ["shift"])
 ;;  'm1-h' for left arrow (vim-like).
-addRemap("vk48", ["m1"], "left")
-*$h::onKeydown("vk48")
-*$h up::onKeyup("vk48")
+addRemap("h", ["m1"], "left")
 
 ;;  'm1-m2-j' move window one monitor down
-addRemap("vk4a", ["m1", "m2"], ["winmon", "down"])
+addRemap("j", ["m1", "m2"], ["winmon", "down"])
 ;;  'm1-shift-j' for shift-down-arrow (vim-like + selection modify).
-addRemap("vk4a", ["m1", "shift"], "down", ["shift"])
+addRemap("j", ["m1", "shift"], "down", ["shift"])
 ;;  'm1-j' for down arrow (vim-like).
-addRemap("vk4a", ["m1"], "down")
-*$j::onKeydown("vk4a")
-*$j up::onKeyup("vk4a")
+addRemap("j", ["m1"], "down")
 
 ;;  'm1-m2-k' move window one monitor up
-addRemap("vk4b", ["m1", "m2"], ["winmon", "up"])
+addRemap("k", ["m1", "m2"], ["winmon", "up"])
 ;;  'm1-shift-k' for shift-up-arrow (vim-like + selection modify).
-addRemap("vk4b", ["m1", "shift"], "up", ["shift"])
+addRemap("k", ["m1", "shift"], "up", ["shift"])
 ;;  'm1-k' for up arrow (vim-like).
-addRemap("vk4b", ["m1"], "up")
-*$k::onKeydown("vk4b")
-*$k up::onKeyup("vk4b")
+addRemap("k", ["m1"], "up")
 
 ;;  'm1-shift-l' for shift-right-arrow (vim-like + selection modify).
-addRemap("vk4c", ["m1", "shift"], "right", ["shift"])
+addRemap("l", ["m1", "shift"], "right", ["shift"])
 ;;  'm1-l' for right arrow (vim-like).
-addRemap("vk4c", ["m1"], "right")
-*$l::onKeydown("vk4c")
-*$l up::onKeyup("vk4c")
+addRemap("l", ["m1"], "right")
 
 ;;  'm1-w' for home.
-addRemap("vk57", ["m1"], "home")
-*$w::onKeydown("vk57")
-*$w up::onKeyup("vk57")
+addRemap("w", ["m1"], "home")
 
 ;;  'm1-e' for page down.
-addRemap("vk45", ["m1"], "pgdn")
+addRemap("e", ["m1"], "pgdn")
 ;;  'm2-e' for email
-addRemap("vk45", ["m2"], ["send", "grigoryvp{@}gmail.com"])
-*$e::onKeydown("vk45")
-*$e up::onKeyup("vk45")
+addRemap("e", ["m2"], ["send", "grigoryvp{@}gmail.com"])
 
 ;;  'm1-r' for page up.
-addRemap("vk52", ["m1"], "pgup")
-*$r::onKeydown("vk52")
-*$r up::onKeyup("vk52")
+addRemap("r", ["m1"], "pgup")
 
 ;;  'm1-t' for end.
-addRemap("vk54", ["m1"], "end")
-*$t::onKeydown("vk54")
-*$t up::onKeyup("vk54")
+addRemap("t", ["m1"], "end")
 
 ;;  'm1-x' for F5.
-addRemap("vk58", ["m1"], "f5")
-*$x::onKeydown("vk58")
-*$x up::onKeyup("vk58")
+addRemap("x", ["m1"], "f5")
 
 ;;  'm1-c' for F6.
-addRemap("vk43", ["m1"], "f6")
-*$c::onKeydown("vk43")
-*$c up::onKeyup("vk43")
+addRemap("c", ["m1"], "f6")
 
 ;;  'm1-v' for F7.
-addRemap("vk56", ["m1"], "f7")
-*$v::onKeydown("vk56")
-*$v up::onKeyup("vk56")
+addRemap("v", ["m1"], "f7")
 
 ;;  'm1-b' for F8.
-addRemap("vk42", ["m1"], "f8")
-*$b::onKeydown("vk42")
-*$b up::onKeyup("vk42")
+addRemap("b", ["m1"], "f8")
 
 ;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
-addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
+addRemap("\", ["m1", "ctrl"], "tab", ["shift"])
 ;;  'm1-s-backslash' for notifications.
-addRemap("vkdc", ["m1", "shift"], "a", ["win"])
+;;  TODO: sending "#{a down}" and "#{a up}" doesn't work
+addRemap("\", ["m1", "shift"], "a", ["win"])
 ;;  'm1-backslash' for launchpad.
-addRemap("vkdc", ["m1"], "lwin")
-*$\::onKeydown("vkdc")
-*$\ up::onKeyup("vkdc")
+addRemap("\", ["m1"], "lwin")
 
 ;;  ==========================================================================
 ;;  App launcher
 ;;  ==========================================================================
 
 ;;  'm1-2' fo 1st app
-addRemap("vk32", ["m1"], "1", ["win", "ctrl"])
-*$2::onKeydown("vk32")
-*$2 up::onKeyup("vk32")
+addRemap("2", ["m1"], "1", ["win", "ctrl"])
 
 ;;  'm1-3' fo 2nd app
-addRemap("vk33", ["m1"], "2", ["win", "ctrl"])
-*$3::onKeydown("vk33")
-*$3 up::onKeyup("vk33")
+addRemap("3", ["m1"], "2", ["win", "ctrl"])
 
 ;;  'm1-4' fo 3rd app
-addRemap("vk34", ["m1"], "3", ["win", "ctrl"])
-*$4::onKeydown("vk34")
-*$4 up::onKeyup("vk34")
+addRemap("4", ["m1"], "3", ["win", "ctrl"])
 
 ;;  'm1-5' fo 4th app
-addRemap("vk35", ["m1"], "4", ["win", "ctrl"])
-*$5::onKeydown("vk35")
-*$5 up::onKeyup("vk35")
+addRemap("5", ["m1"], "4", ["win", "ctrl"])
 
 ;;  'm1-6' fo 5th app
-addRemap("vk36", ["m1"], "5", ["win", "ctrl"])
-*$6::onKeydown("vk36")
-*$6 up::onKeyup("vk36")
+addRemap("6", ["m1"], "5", ["win", "ctrl"])
 
 ;;  'm1-7' fo 6th app
-addRemap("vk37", ["m1"], "6", ["win", "ctrl"])
-*$7::onKeydown("vk37")
-*$7 up::onKeyup("vk37")
+addRemap("7", ["m1"], "6", ["win", "ctrl"])
 
 ;;  'm1-8' fo 7th app
-addRemap("vk38", ["m1"], "7", ["win", "ctrl"])
-*$8::onKeydown("vk38")
-*$8 up::onKeyup("vk38")
+addRemap("8", ["m1"], "7", ["win", "ctrl"])
 
 ;;  'm1-9' fo 8th app
-addRemap("vk39", ["m1"], "8", ["win", "ctrl"])
-*$9::onKeydown("vk39")
-*$9 up::onKeyup("vk39")
+addRemap("9", ["m1"], "8", ["win", "ctrl"])
 
 ;;  'm1-0' for 9th app
-addRemap("vk30", ["m1"], "9", ["win", "ctrl"])
-*$0::onKeydown("vk30")
-*$0 up::onKeyup("vk30")
+addRemap("0", ["m1"], "9", ["win", "ctrl"])
 
 ;;  'm1-minus' for 10th app
-addRemap("vkbd", ["m1"], "0", ["win", "ctrl"])
+addRemap("-", ["m1"], "0", ["win", "ctrl"])
 ;;  'm2-minus' for em-dash
-addRemap("vkbd", ["m2"], ["send", "—"])
-*$-::onKeydown("vkbd")
-*$- up::onKeyup("vkbd")
+addRemap("-", ["m2"], ["send", "—"])
 
 ;;  ==========================================================================
 ;;  Language switch
 ;;  ==========================================================================
 
 ;;  m1-m2-g for S-F4
-addRemap("vk47", ["m1", "m2"], "vk73", ["shift"])
+addRemap("g", ["m1", "m2"], "vk73", ["shift"])
 ;;  m1-shift-g for emoji selector
-addRemap("vk47", ["m1", "shift"], "vkbe", ["win"])
+addRemap("g", ["m1", "shift"], "vkbe", ["win"])
 ;;  m1-g for F4
-addRemap("vk47", ["m1"], "vk73")
-*$g::onKeydown("vk47")
-*$g up::onKeyup("vk47")
+addRemap("g", ["m1"], "vk73")
 
 ;;  m1-m2-f for S-F3
-addRemap("vk46", ["m1", "m2"], "vk72", ["shift"])
+addRemap("f", ["m1", "m2"], "vk72", ["shift"])
 ;;  m1-shift-f switch to 1st language
-addRemap("vk46", ["m1", "shift"], ["lang", "en"])
+addRemap("f", ["m1", "shift"], ["lang", "en"])
 ;;  m1-f for F3
-addRemap("vk46", ["m1"], "vk72")
+addRemap("f", ["m1"], "vk72")
 ;;  m2-f for game command
-addRemap("vk46", ["m2"], ["send", "{enter}/exit{enter}"])
-*$f::onKeydown("vk46")
-*$f up::onKeyup("vk46")
+addRemap("f", ["m2"], ["send", "{enter}/exit{enter}"])
 
 ;;  m1-m2-d for S-F2
-addRemap("vk44", ["m1", "m2"], "vk71", ["shift"])
+addRemap("d", ["m1", "m2"], "vk71", ["shift"])
 ;;  m1-shift-d switch to 2nd language
-addRemap("vk44", ["m1", "shift"], ["lang", "ru"])
+addRemap("d", ["m1", "shift"], ["lang", "ru"])
 ;;  m1-d for F2
-addRemap("vk44", ["m1"], "vk71")
+addRemap("d", ["m1"], "vk71")
 ;;  m2-d for game command
-addRemap("vk44", ["m2"], ["send", "{enter}/hideout{enter}"])
-*$d::onKeydown("vk44")
-*$d up::onKeyup("vk44")
+addRemap("d", ["m2"], ["send", "{enter}/hideout{enter}"])
 
 ;;  m1-m2-s for S-F1
-addRemap("vk53", ["m1", "m2"], "vk70", ["shift"])
+addRemap("s", ["m1", "m2"], "vk70", ["shift"])
 ;;  m1-shift-s switch to 3nd language
-addRemap("vk53", ["m1", "shift"], ["lang", "jp"])
+addRemap("s", ["m1", "shift"], ["lang", "jp"])
 ;;  m1-s for F1
-addRemap("vk53", ["m1"], "vk70")
+addRemap("s", ["m1"], "vk70")
 ;;  m2-s for english signature
-addRemap("vk53", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"])
-*$s::onKeydown("vk53")
-*$s up::onKeyup("vk53")
+addRemap("s", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"])
 
 ;;  ==========================================================================
 ;;  Fast text entry
@@ -843,146 +864,59 @@ addRemap("vk53", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+
 
 ;;  m2-1 for game text 1
 addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
-*$1::onKeydown("1")
-*$1 up::onKeyup("1")
 
 ;;  m2-q for game text 2
 addRemap("q", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])
-*$q::onKeydown("q")
-*$q up::onKeyup("q")
 
 ;; ===========================================================================
 ;; Multi-key combinations
 ;; ===========================================================================
 
 ;;  'm1-m2-u' => top left
-addRemap("vk55", ["m1", "m2"], ["winpos", "topleft"])
-*$u::onKeydown("vk55")
-*$u up::onKeyup("vk55")
+addRemap("u", ["m1", "m2"], ["winpos", "topleft"])
 
 ;;  'm1-m2-i' => top right
-addRemap("vk49", ["m1", "m2"], ["winpos", "topright"])
-*$i::onKeydown("vk49")
-*$i up::onKeyup("vk49")
+addRemap("i", ["m1", "m2"], ["winpos", "topright"])
 
 ;;  'm1-m2-o' => botom right
-addRemap("vk4f", ["m1", "m2"], ["winpos", "bottomleft"])
-*$o::onKeydown("vk4f")
-*$o up::onKeyup("vk4f")
+addRemap("o", ["m1", "m2"], ["winpos", "bottomleft"])
 
 ;;  'm1-m2-p' => bottom right
-addRemap("vk50", ["m1", "m2"], ["winpos", "bottomright"])
+addRemap("p", ["m1", "m2"], ["winpos", "bottomright"])
 ;;  'm1-m3-p' for deleting things.
-addRemap("vk50", ["m1", "m3"], ["delete"])
+addRemap("p", ["m1", "m3"], ["delete"])
 ;;  'm1-p' for backspace
-addRemap("vk50", ["m1"], "backspace")
-*$p::onKeydown("vk50")
-*$p up::onKeyup("vk50")
+addRemap("p", ["m1"], "backspace")
 
 ;; m1-m3-n => close window
-addRemap("vk4e", ["m1", "m3"], ["winclose"])
-*$n::onKeydown("vk4e")
-*$n up::onKeyup("vk4e")
+addRemap("n", ["m1", "m3"], ["winclose"])
 
 ;; m1-m2-space => fullscreen
-addRemap("vk20", ["m1", "m2"], ["winpos", "max"])
-*$space::onKeydown("vk20")
-*$space up::onKeyup("vk20")
+addRemap("space", ["m1", "m2"], ["winpos", "max"])
 
 ;;  'm1-m2-m' => left 1/2 screen
-addRemap("vk4d", ["m1", "m2"], ["winpos", "left"])
-*$m::onKeydown("vk4d")
-*$m up::onKeyup("vk4d")
+addRemap("m", ["m1", "m2"], ["winpos", "left"])
 
 ;;  'm1-m2-comma' => right 1/2 screen
-addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
-*$,::onKeydown("vkbc")
-*$, up::onKeyup("vkbc")
+addRemap(",", ["m1", "m2"], ["winpos", "right"])
 
 ;; ===========================================================================
 ;; Left, right and middle mouse buttons
 ;; ===========================================================================
 
 ;;  'm1-semicolon' for left mouse button.
-*$;:: {
-  if (GetKeyState("vked", "P")) {
-    if (GetKeyState("lctrl", "P") && GetKeyState("shift", "P")) {
-      send "^+{lbutton down}"
-    }
-    else if (GetKeyState("lctrl", "P")) {
-      send "^{lbutton down}"
-    }
-    else if (GetKeyState("shift", "P")) {
-      send "+{lbutton down}"
-    }
-    else if (GetKeyState("escape", "P")) {
-      send "!{lbutton down}"
-    }
-    else {
-      send "{lbutton down}"
-    }
-
-    ;;  For games where holding mouse button moves something and caps can
-    ;;  be released and pressed back while still holding key).
-    while (GetKeyState("vked", "P") && GetKeyState(";", "P")) {
-      Sleep 10
-    }
-
-    ;;! Sending button up with modifier key requires for apps like
-    ;;  mspaint to correctly detect shift+drag followed by release and
-    ;;  for chrome to correctly detect shift-click
-    if (GetKeyState("lctrl", "P") && GetKeyState("shift", "P")) {
-      send "^+{lbutton up}"
-    }
-    if (GetKeyState("lctrl", "P")) {
-      send "^{lbutton up}"
-    }
-    else if (GetKeyState("shift", "P")) {
-      send "+{lbutton up}"
-    }
-    else if (GetKeyState("escape", "P")) {
-      send "!{lbutton up}"
-    }
-    else {
-      send "{lbutton up}"
-    }
-  }
-  else {
-    send "{blind}{vkba}"
-  }
-}
+addRemap([";", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
+addRemap([";", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
+addRemap([";", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])
+addRemap([";", "norepeat"], ["m1"], "lbutton")
 
 ;;  'm1-quote' for right mouse button.
-*$':: {
-  if (GetKeyState("vked", "P")) {
-    send "{rbutton down}"
-    ;;  For games where holding mouse button moves something and caps can
-    ;;  be released and pressed back while still holding key).
-    while (GetKeyState("vked", "P") && GetKeyState("'", "P")) {
-      Sleep 10
-    }
-    send "{rbutton up}"
-  }
-  else {
-    send "{blind}{vkde}"
-  }
-}
+addRemap(["'", "norepeat"], ["m1"], "rbutton")
 
+;;  'm1-m2-slash' => move window bottom 1/2 screen
+addRemap("/", ["m1", "m2"], ["winpos", "bottom"])
 ;;  'm1-slash' for middle mouse button.
-*$/:: {
-  if (GetKeyState("vked", "P")) {
-    send "{mbutton down}"
-    ;;  For games where holding mouse button moves something and caps can
-    ;;  be released and pressed back while still holding key).
-    while (GetKeyState("vked", "P") && GetKeyState("/", "P")) {
-      Sleep 10
-    }
-    send "{mbutton up}"
-  }
-  else {
-    send "{blind}{vkbf}"
-  }
-}
+addRemap(["/", "norepeat"], ["m1"], "mbutton")
 
 ;; ===========================================================================
 ;; Misc
@@ -1047,3 +981,10 @@ SetTimer(OnTimer, 500)
 
 ;; TODO: url shortener on context menu
 ;; TODO: debug mode for context menu
+;; TODO: For games like WoW right buttons hold are used for movement, so
+;; sometimes caps lock is released while holding tick or semicolon. Holding
+;; caps lock again should enter button hold (ex pressing m1 while holding
+;; the corresponding key should emit keydown again)
+;; TODO: Supress rshift+caps that produces char codes in chrome and erases
+;; cell content in spreadsheets while switching language via m1-s-f.
+;; TODO: periodic scan keydowns (especially meta)?

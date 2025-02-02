@@ -117,7 +117,7 @@ addRemap(from, fromMods, to, toMods := []) {
 
 ;;  Receives the list of modifiers like ["m1", "shift"] and evaluates to
 ;;  true if the corresponding keys are pressed
-modsPressed(mods) {
+modsPressedForKey(mods, key) {
   for i, modName in mods {
     if (modName == "m1") {
       if (not GetKeyState("vked", "P")) {
@@ -134,6 +134,25 @@ modsPressed(mods) {
       ;;  right alt, which is remapped to return
       if (not GetKeyState("enter", "P")) {
         return false
+      }
+    }
+    else if (modName == "alone") {
+      if (key == "esc") {
+        ;; todo: use native keydown-keyup detection within script
+        if (A_PriorKey != "Escape") {
+          return false
+        }
+      }
+      else {
+        ; assert
+      }
+    }
+    else if (modName == "together") {
+      if (key == "esc") {
+        ;; todo: use native keydown-keyup detection within script
+        if (A_PriorKey == "Escape") {
+          return false
+        }
       }
     }
     ;;  keys like "shift" etc
@@ -429,6 +448,9 @@ switchToLang(lang) {
 
 onKeyCommand(items) {
   command := items.RemoveAt(1)
+  if (command == "nothing") {
+    return
+  }
   if (command == "winclose") {
     winclose "A"
   }
@@ -466,14 +488,31 @@ onKeyCommand(items) {
 
 ; TODO: enable debug mode to OutputDebug()
 onKey(key, dir) {
+  isAlone := false
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
       fromMods := config["from_mods"]
-      if (modsPressed(fromMods)) {
+      if (modsPressedForKey(fromMods, key)) {
         to := config["to"]
         if (Type(to) == "String") {
           mods := modsToStr(config["to_mods"])
-          send mods . "{" . to . " " . dir . "}"
+          ;; "alone" can be detected and triggers only on keyup, so send
+          ;; "keypress" instead of "key up"
+          if (includes(fromMods, "alone")) {
+            ;; TODO: temporary fix until "modsPressedForKey()" is able
+            ;; to detect alone keydown and following return will work
+            isAlone := true
+            if (dir == "up") {
+              Send(mods . "{" . to . "}")
+            }
+            else {
+              ;;  TODO: not working right now, see comment above
+              return
+            }
+          }
+          else {
+            Send(mods . "{" . to . " " . dir . "}")
+          }
           return
         }
         else if (Type(to) == "Array") {
@@ -489,7 +528,10 @@ onKey(key, dir) {
       }
     }
   }
-  send "{blind}{" . key . " " . dir . "}"
+  ;; TODO: temporary fix, see comments above
+  if (not isAlone) {
+    Send("{blind}{" . key . " " . dir . "}")
+  }
 }
 
 onKeydown(key) {
@@ -552,23 +594,16 @@ $+vked up:: {
   appLeaderUpTick := A_TickCount
 }
 
-*$esc:: {
-  ;;  m2 + shift for holding esc
-  if (GetKeyState("lshift", "P")) {
-    send "{esc down}"
-  }
-}
-
-;;  Single esc (lalt) press => esc, otherwise it's m2
-*$esc up:: {
-  ;;  m2+shift for holding esc
-  if (GetKeyState("lshift", "P")) {
-    send "{esc up}"
-  }
-  else if (A_PriorKey == "Escape") {
-    send "{esc}"
-  }
-}
+;;  Single esc (lalt) press => esc
+addRemap("esc", ["alone"], "esc")
+;;  m2 if not alone
+addRemap("esc", ["together"], ["nothing"])
+;;  m2 + shift for holding esc
+;; TODO: not working right now due to inability to correctly detect
+;; "alone" semantic via A_PriorKey
+addRemap("esc", ["shift"], "esc")
+*$esc::onKeydown("esc")
+*$esc up::onKeyup("esc")
 
 ;;  Single enter (ralt) press => enter, otherwise it's m3
 *$enter up:: {

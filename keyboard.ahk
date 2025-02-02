@@ -959,10 +959,7 @@ appIconMain := LoadPicture(appIconPath . "\ahk.ico",, &image_type)
 appIconDebug := LoadPicture(appIconPath . "\ahk_d.ico",, &image_type)
 appShowDebugIcon := false
 
-;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
-;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
-OnTimer() {
-
+OnSlowTimer() {
   global appShowDebugIcon
   if (appShowDebugIcon) {
     ;;  Use '*' to copy icon and don't destroy original on change
@@ -973,10 +970,23 @@ OnTimer() {
     TraySetIcon("HICON:*" . appIconMain)
     appShowDebugIcon := true
   }
-
 }
 
-SetTimer(OnTimer, 500)
+OnFastTimer() {
+  ; Check that no keys are "stuck"
+  toRemove := []
+  for key, keyInfo in appKeysPressed {
+    if (not GetKeyState(key, "P")) {
+      toRemove.Push(key)
+    }
+  }
+  for _, key in toRemove {
+    appKeysPressed.Delete(key)
+  }
+}
+
+SetTimer(OnSlowTimer, 500)
+SetTimer(OnFastTimer, 100)
 
 ;; TODO: url shortener on context menu
 ;; TODO: debug mode for context menu
@@ -986,4 +996,5 @@ SetTimer(OnTimer, 500)
 ;; the corresponding key should emit keydown again)
 ;; TODO: Supress rshift+caps that produces char codes in chrome and erases
 ;; cell content in spreadsheets while switching language via m1-s-f.
-;; TODO: periodic scan keydowns (especially meta)?
+;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
+;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath

@@ -573,8 +573,8 @@ onKeyup(key) {
 
 *$lalt::onKeydown("lalt") ; (esc)
 *$lalt up::onKeyup("lalt") ; (esc)
-*$vkc0::onKeydown("~")
-*$vkc0 up::onKeyup("~")
+*$vkc0::onKeydown("vkc0") ; "~"
+*$vkc0 up::onKeyup("vkc0") ; "~"
 *$1::onKeydown("1")
 *$1 up::onKeyup("1")
 *$2::onKeydown("2")
@@ -624,15 +624,15 @@ onKeyup(key) {
 *$o up::onKeyup("o")
 *$p::onKeydown("p")
 *$p up::onKeyup("p")
-*$[::onKeydown("[")
-*$[ up::onKeyup("[")
-*$]::onKeydown("]")
-*$] up::onKeyup("]")
-*$\::onKeydown("\")
-*$\ up::onKeyup("\")
+*$[::onKeydown("vkdb") ; "[", vk codes for lang layouts
+*$[ up::onKeyup("vkdb") ; "["
+*$]::onKeydown("vkdd") ; "]"
+*$] up::onKeyup("vkdd") ; "]"
+*$\::onKeydown("vkdc") ; "\"
+*$\ up::onKeyup("vkdc") ; "\"
 
-*$vked::onKeydown("vked") ; caps lock
-*$vked up::onKeyup("vked") ; caps lock
+*$vked::onKeydown("vked") ; "caps lock"
+*$vked up::onKeyup("vked") ; "caps lock"
 *$a::onKeydown("a")
 *$a up::onKeyup("a")
 *$s::onKeydown("s")
@@ -651,10 +651,10 @@ onKeyup(key) {
 *$k up::onKeyup("k")
 *$l::onKeydown("l")
 *$l up::onKeyup("l")
-*$;::onKeydown(";")
-*$; up::onKeyup(";")
-*$'::onKeydown("'")
-*$' up::onKeyup("'")
+*$;::onKeydown("vkba") ; ";"
+*$; up::onKeyup("vkba") ; ";"
+*$'::onKeydown("vkde") ; "'"
+*$' up::onKeyup("vkde") ; "'"
 *~$rctrl::onKeydown("rctrl") ; Don't suppress native "ctrl" function
 *~$rctrl up::onKeyup("rctrl") ; Don't suppress native "ctrl" function
 
@@ -674,12 +674,12 @@ onKeyup(key) {
 *$n up::onKeyup("n")
 *$m::onKeydown("m")
 *$m up::onKeyup("m")
-*$,::onKeydown(",")
-*$, up::onKeyup(",")
-*$.::onKeydown(".")
-*$. up::onKeyup(".")
-*$/::onKeydown("/")
-*$/ up::onKeyup("/")
+*$,::onKeydown("vkbc") ; ","
+*$, up::onKeyup("vkbc") ; ","
+*$.::onKeydown("vkbe") ; "."
+*$. up::onKeyup("vkbe") ; "."
+*$/::onKeydown("vkbf") ; "/"
+*$/ up::onKeyup("vkbf") ; "/"
 *$rshift::onKeydown("rshift")
 *$rshift up::onKeyup("rshift")
 
@@ -689,7 +689,6 @@ onKeyup(key) {
 *$space up::onKeyup("space")
 *$enter::onKeydown("enter") ; (ralt)
 *$enter up::onKeyup("enter") ; (ralt)
-
 
 ; caps lock to meta-1
 addRemap("vked", [], ["meta", "m1"])
@@ -718,12 +717,12 @@ addRemap("lctrl", ["alone"], "tab")
 ;;  ==========================================================================
 
 ;;  'm1-open-bracket' for escape (vim-like).
-addRemap("[", ["m1"], "esc")
+addRemap("vkdb", ["m1"], "esc")
 
 ;;  'm1-m2-.' => move window top 1/2 screen
-addRemap(".", ["m1", "m2"], ["winpos", "top"])
+addRemap("vkbe", ["m1", "m2"], ["winpos", "top"])
 ;;  'm1-.' for mouse button 4 (scroll)
-addRemap([".", "norepeat"], ["m1"], "xbutton1")
+addRemap(["vkbe", "norepeat"], ["m1"], "xbutton1")
 
 ;;  'm1-shift-h' for shift-left-arrow (vim-like + selection modify).
 addRemap("h", ["m1", "shift"], "left", ["shift"])
@@ -776,12 +775,12 @@ addRemap("v", ["m1"], "f7")
 addRemap("b", ["m1"], "f8")
 
 ;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
-addRemap("\", ["m1", "ctrl"], "tab", ["shift"])
+addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
 ;;  'm1-s-backslash' for notifications.
 ;;  TODO: sending "#{a down}" and "#{a up}" doesn't work
-addRemap("\", ["m1", "shift"], "a", ["win"])
+addRemap("vkdc", ["m1", "shift"], "a", ["win"])
 ;;  'm1-backslash' for launchpad.
-addRemap("\", ["m1"], "lwin")
+addRemap("vkdc", ["m1"], "lwin")
 
 ;;  ==========================================================================
 ;;  App launcher
@@ -898,25 +897,25 @@ addRemap("space", ["m1", "m2"], ["winpos", "max"])
 addRemap("m", ["m1", "m2"], ["winpos", "left"])
 
 ;;  'm1-m2-comma' => right 1/2 screen
-addRemap(",", ["m1", "m2"], ["winpos", "right"])
+addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
 ;; ===========================================================================
 ;; Left, right and middle mouse buttons
 ;; ===========================================================================
 
 ;;  'm1-semicolon' for left mouse button.
-addRemap([";", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
-addRemap([";", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
-addRemap([";", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])
-addRemap([";", "norepeat"], ["m1"], "lbutton")
+addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
+addRemap(["vkba", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
+addRemap(["vkba", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])
+addRemap(["vkba", "norepeat"], ["m1"], "lbutton")
 
 ;;  'm1-quote' for right mouse button.
-addRemap(["'", "norepeat"], ["m1"], "rbutton")
+addRemap(["vkde", "norepeat"], ["m1"], "rbutton")
 
 ;;  'm1-m2-slash' => move window bottom 1/2 screen
-addRemap("/", ["m1", "m2"], ["winpos", "bottom"])
+addRemap("vkbf", ["m1", "m2"], ["winpos", "bottom"])
 ;;  'm1-slash' for middle mouse button.
-addRemap(["/", "norepeat"], ["m1"], "mbutton")
+addRemap(["vkbf", "norepeat"], ["m1"], "mbutton")
 
 ;; ===========================================================================
 ;; Misc

@@ -1110,7 +1110,7 @@ function App:createMenu()
     end
     -- TODO: correctly get home dir
 
-    local db = "/Users/user/dotfiles/passwords.kdbx"
+    local db = "/Users/user/dotfiles/auth/passwords.kdbx"
     local app = "/opt/homebrew/bin/keepassxc-cli"
     local args = {
       "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "notes"

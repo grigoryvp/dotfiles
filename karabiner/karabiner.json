@@ -802,6 +802,24 @@
                                         "value": 1
                                     }
                                 ],
+                                "description": "'m3-period' for shift-command-5 (area capture)",
+                                "from": { "key_code": "period" },
+                                "to": [
+                                    {
+                                        "key_code": "5",
+                                        "modifiers": ["command", "shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
                                 "description": "'m3-slash' for shift-command-4 (screenshot)",
                                 "from": { "key_code": "slash" },
                                 "to": [

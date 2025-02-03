@@ -1115,8 +1115,12 @@ function App:createMenu()
     local args = {
       "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "notes"
     }
-    local onTaskExit = function(exitCode, stdOut, _)
+    local onTaskExit = function(exitCode, stdOut, stdErr)
       if exitCode ~= 0 then
+        print("keepass stdout")
+        print(stdOut)
+        print("keepass stderr")
+        print(stdErr)
         return hs.alert.show("Error executing keepassxc")
       end
       self.vkToken = stdOut

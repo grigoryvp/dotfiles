@@ -41,6 +41,7 @@ appRemap := Map()
 appMeta := Map()
 appKeysPressed := Map()
 appLastLang := ""
+appLastDebug := ""
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -51,9 +52,9 @@ if (!A_IsAdmin) {
 A_MaxHotkeysPerInterval := 500
 
 ;;  F5 (meata-x) for game bar
-f5::send "#g"
+f5::Send("#g")
 ;;  F6 (m1-c) for "record last 30 seconds" game bar function
-f6::send "#!g"
+f6::Send("#!g")
 
 repeatStr(times, str) {
   res := ""
@@ -96,9 +97,9 @@ remove(container, needle) {
   }
 }
 
-mapToStr(map, indent := 0) {
+mapToStr(container, indent := 0) {
   res := "{`n"
-  for key, val in map {
+  for key, val in container {
     padding := repeatStr(indent + 2, " ")
     if (IsObject(val)) {
       res .= padding . key . ": " . mapToStr(val, indent + 2) . ",`n"
@@ -111,6 +112,50 @@ mapToStr(map, indent := 0) {
     }
   }
   return res . repeatStr(indent, " ") . "}"
+}
+
+arrayToStr(container) {
+  res := "["
+  for idx, val in container {
+    if (idx > 1) {
+      res .= ", "
+    }
+    if (Type(val) == "String") {
+      res .= "`"" . val . "`""
+    }
+    else {
+      res .= val
+    }
+  }
+  res .= "]"
+  return res
+}
+
+
+DebugDebounce(params*) {
+  msg := ""
+  for idx, param in params {
+    if (idx > 1) {
+      msg .= " "
+    }
+    if (Type(param) == "String") {
+      msg .= "`"" . param . "`""
+    }
+    else if (Type(param) == "Array") {
+      msg .= arrayToStr(param)
+    }
+    else if (Type(param) == "Map") {
+      msg .= mapToStr(param)
+    }
+    else {
+      msg .= param
+    }
+  }
+  global appLastDebug
+  if (msg != appLastDebug) {
+    OutputDebug(msg)
+    appLastDebug := msg
+  }
 }
 
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
@@ -155,6 +200,29 @@ modsPressedForKey(mods, key) {
           return false
         }
         if (not keyInfo["alone"]) {
+          return false
+        }
+      }
+    }
+    ; left and right controls are dual-mode from tab and enter, so treat
+    ; them specially
+    else if (modName == "ctrl") {
+      if (key == "lctrl") {
+        ; Prevent lctrl (tab) to reat it's own state as ctrl mod, rctrl
+        ; (enter) is used to trigger ctrl-tab
+        if (not GetKeyState("rctrl", "P")) {
+          return false
+        }
+      }
+      else if (key == "rctrl") {
+        ; Prevent rctrl (enter) to reat it's own state as ctrl mod, lctrl
+        ; (tab) is used to trigger ctrl-enter
+        if (not GetKeyState("lctrl", "P")) {
+          return false
+        }
+      }
+      else {
+        if (not GetKeyState("ctrl", "P")) {
           return false
         }
       }
@@ -432,18 +500,18 @@ setCurWinMon(dir) {
 
 switchToLang(lang) {
   if (lang == "en") {
-    send("^+4")
+    Send("^+4")
   }
   else if (lang == "ru") {
-    send("^+5")
+    Send("^+5")
   }
   else if (lang == "jp") {
     if (appLastLang == "jp") {
       ;;  Switch between Hiragana and Latin input for Japanese keyboard
-      send "!``"
+      Send("!``")
     }
     else {
-      send("^+6")
+      Send("^+6")
     }
   }
   global appLastLang
@@ -478,10 +546,10 @@ onKeyCommand(items, dir) {
         ;;  Explorer monitors physical 'shift' key, so sending 'delete'
         ;;  will trigger whift-delete, which is "permanently delete", while
         ;;  ctrl-d key combination is just 'delte' in most apps.
-        send "^d"
+        Send("^d")
       }
       else {
-        send "{delete}"
+        Send("{delete}")
       }
       return
     }
@@ -511,15 +579,22 @@ onKeyCommand(items, dir) {
 
 ; TODO: enable debug mode to OutputDebug()
 onKey(key, dir) {
+  hasAloneMappings := false
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
       fromMods := config["from_mods"]
-      if (modsPressedForKey(fromMods, key)) {
+      if (includes(fromMods, "alone")) {
+        hasAloneMappings := true
+      }
+      modsPressed := modsPressedForKey(fromMods, key)
+      if (modsPressed) {
         to := config["to"]
         if (Type(to) == "String") {
           mods := modsToStr(config["to_mods"])
-          if (includes(fromMods, "alone")) {
-            ;; "alone" has meaning only on key up
+          ;; "alone" has meaning only on key up
+          isAlone := includes(fromMods, "alone")
+          isUponly := includes(config["options"], "uponly")
+          if (isAlone or isUponly) {
             if (dir == "up") {
               Send(mods . "{" . to . "}")
             }
@@ -547,7 +622,19 @@ onKey(key, dir) {
       }
     }
   }
-  Send("{blind}{" . key . " " . dir . "}")
+  ; If key has at least one "alone" mapping (that triggers ONLY on
+  ; "key up") then it should not be triggered on key down if no mapping
+  ; is detected.
+  if (not hasAloneMappings) {
+    ; Native function is not suppressed, sending them breaks things like #a
+    if (key == "lshift" or key == "rshift") {
+      return
+    }
+    if (key == "lctrl" or key == "rctrl") {
+      return
+    }
+    Send("{blind}{" . key . " " . dir . "}")
+  }
 }
 
 onKeydown(key) {
@@ -658,8 +745,8 @@ onKeyup(key) {
 *~$rctrl::onKeydown("rctrl") ; Don't suppress native "ctrl" function
 *~$rctrl up::onKeyup("rctrl") ; Don't suppress native "ctrl" function
 
-*$lshift::onKeydown("lshift")
-*$lshift up::onKeyup("lshift")
+*~$lshift::onKeydown("lshift") ; Don't suppress native "shift" function
+*~$lshift up::onKeyup("lshift") ; Don't suppress native "shift" function
 *$z::onKeydown("z")
 *$z up::onKeyup("z")
 *$x::onKeydown("x")
@@ -680,8 +767,8 @@ onKeyup(key) {
 *$. up::onKeyup("vkbe") ; "."
 *$/::onKeydown("vkbf") ; "/"
 *$/ up::onKeyup("vkbf") ; "/"
-*$rshift::onKeydown("rshift")
-*$rshift up::onKeyup("rshift")
+*~$rshift::onKeydown("rshift") ; Don't suppress native "shift" function
+*~$rshift up::onKeyup("rshift") ; Don't suppress native "shift" function
 
 *$esc::onKeydown("esc") ; (lalt)
 *$esc up::onKeyup("esc") ; (lalt)
@@ -704,12 +791,12 @@ addRemap("enter", ["always"], ["meta", "m3"])
 addRemap("enter", ["alone"], "enter")
 
 ;;  Single rctrl (enter) press => enter (with mods)
-addRemap("rctrl", ["alone", "ctrl"], "enter", ["ctrl"])
-addRemap("rctrl", ["alone", "shift"], "enter", ["shift"])
+addRemap("rctrl", ["ctrl"], "enter", ["ctrl"])
+addRemap("rctrl", ["shift"], "enter", ["shift"])
 addRemap("rctrl", ["alone"], "enter")
 
 ;;  Single lctrl (tab) press => tab (with mods)
-addRemap("lctrl", ["alone", "ctrl"], "tab", ["ctrl"])
+addRemap("lctrl", ["ctrl"], "tab", ["ctrl"])
 addRemap("lctrl", ["alone"], "tab")
 
 ;;  ==========================================================================
@@ -777,7 +864,6 @@ addRemap("b", ["m1"], "f8")
 ;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
 addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
 ;;  'm1-s-backslash' for notifications.
-;;  TODO: sending "#{a down}" and "#{a up}" doesn't work
 addRemap("vkdc", ["m1", "shift"], "a", ["win"])
 ;;  'm1-backslash' for launchpad.
 addRemap("vkdc", ["m1"], "lwin")
@@ -970,6 +1056,7 @@ OnSlowTimer() {
     TraySetIcon("HICON:*" . appIconMain)
     appShowDebugIcon := true
   }
+  A_IconTip := mapToStr(appKeysPressed)
 }
 
 OnFastTimer() {
@@ -998,3 +1085,5 @@ SetTimer(OnFastTimer, 100)
 ;; cell content in spreadsheets while switching language via m1-s-f.
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
 ;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
+;; Todo: normalize both configs and find missed bindings like "lock" and
+;; "screenshot"

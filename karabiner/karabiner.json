@@ -721,7 +721,7 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m2-j => command-down_arrow (google spreadsheets hotkey)",
+                                "description": "'m2-j' for command-down_arrow (google spreadsheets hotkey)",
                                 "from": { "key_code": "j" },
                                 "to": [
                                     {

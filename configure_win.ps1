@@ -613,9 +613,9 @@ class App {
 
     Write-Host "remapping keyboard";
     # caps to F24 (m1)
+    # esc to alt (alt availability for left-hand keypad gaming)
     # left alt to esc (m2 and left-hand keypad gaming)
     # right alt for enter (m3, enter key for login screen and w/o ahk)
-    # esc to alt (alt availability for left-hand keypad gaming)
     # tab to lctrl (ahk changes single key back to tab)
     # enter to rctrl (autohotkey change single key back to enter)
     # left ctrl to left win for left-hand keypad gaming (no win key)

@@ -36,6 +36,8 @@
 ;;  for 11-th app is not easy.
 
 codepage := 65001 ; utf-8
+;;  Reliable key state detection
+InstallKeybdHook
 ;;  Map of all remap configurations
 appRemap := Map()
 appMeta := Map()
@@ -50,11 +52,6 @@ if (!A_IsAdmin) {
 
 ;;  No warning if key is hold for 2 seconds (HotkeyInterval)
 A_MaxHotkeysPerInterval := 500
-
-;;  F5 (meata-x) for game bar
-f5::Send("#g")
-;;  F6 (m1-c) for "record last 30 seconds" game bar function
-f6::Send("#!g")
 
 repeatStr(times, str) {
   res := ""
@@ -573,6 +570,14 @@ onKeyCommand(items, dir) {
       switchToLang(lang)
       return
     }
+    if (command == "lock") {
+      DllCall("LockWorkStation")
+      return
+    }
+    if (command == "shorten") {
+      ; TODO
+      return
+    }
   }
   ;;  assert
 }
@@ -800,11 +805,27 @@ addRemap("lctrl", ["ctrl"], "tab", ["ctrl"])
 addRemap("lctrl", ["alone"], "tab")
 
 ;;  ==========================================================================
-;;  Keys and combinations remap
+;;  General keyboard mods
 ;;  ==========================================================================
 
-;;  'm1-open-bracket' for escape (vim-like).
+;;  m1-open-bracket for escape (vim-like)
 addRemap("vkdb", ["m1"], "esc")
+
+;;  'm1-m2-p' => bottom right
+addRemap("p", ["m1", "m2"], ["winpos", "bottomright"])
+;;  m1-m3-p for deleting things
+addRemap("p", ["m1", "m3"], ["delete"])
+;;  m1-p for backspace
+addRemap("p", ["m1"], "backspace")
+
+;;  'm1-semicolon' for left mouse button.
+addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
+addRemap(["vkba", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
+addRemap(["vkba", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])
+addRemap(["vkba", "norepeat"], ["m1"], "lbutton")
+
+;;  'm1-quote' for right mouse button.
+addRemap(["vkde", "norepeat"], ["m1"], "rbutton")
 
 ;;  'm1-m2-.' => move window top 1/2 screen
 addRemap("vkbe", ["m1", "m2"], ["winpos", "top"])
@@ -816,12 +837,22 @@ addRemap("h", ["m1", "shift"], "left", ["shift"])
 ;;  'm1-h' for left arrow (vim-like).
 addRemap("h", ["m1"], "left")
 
+;;  'm1-w' for home.
+addRemap("w", ["m1"], "home")
+
 ;;  'm1-m2-j' move window one monitor down
 addRemap("j", ["m1", "m2"], ["winmon", "down"])
 ;;  'm1-shift-j' for shift-down-arrow (vim-like + selection modify).
 addRemap("j", ["m1", "shift"], "down", ["shift"])
 ;;  'm1-j' for down arrow (vim-like).
 addRemap("j", ["m1"], "down")
+;;  'm2-j' for command-down_arrow (google spreadsheets hotkey)
+addRemap("j", ["m2"], "down", ["win"])
+
+;;  'm1-e' for page down.
+addRemap("e", ["m1"], "pgdn")
+;;  'm2-e' for email
+addRemap("e", ["m2"], ["send", "grigoryvp{@}gmail.com"])
 
 ;;  'm1-m2-k' move window one monitor up
 addRemap("k", ["m1", "m2"], ["winmon", "up"])
@@ -830,47 +861,29 @@ addRemap("k", ["m1", "shift"], "up", ["shift"])
 ;;  'm1-k' for up arrow (vim-like).
 addRemap("k", ["m1"], "up")
 
+;;  'm1-r' for page up.
+addRemap("r", ["m1"], "pgup")
+
 ;;  'm1-shift-l' for shift-right-arrow (vim-like + selection modify).
 addRemap("l", ["m1", "shift"], "right", ["shift"])
 ;;  'm1-l' for right arrow (vim-like).
 addRemap("l", ["m1"], "right")
 
-;;  'm1-w' for home.
-addRemap("w", ["m1"], "home")
-
-;;  'm1-e' for page down.
-addRemap("e", ["m1"], "pgdn")
-;;  'm2-e' for email
-addRemap("e", ["m2"], ["send", "grigoryvp{@}gmail.com"])
-
-;;  'm1-r' for page up.
-addRemap("r", ["m1"], "pgup")
-
 ;;  'm1-t' for end.
 addRemap("t", ["m1"], "end")
+;;  'm2-t' for phone
+addRemap("t", ["m2"], ["send", "{+}31681345854"])
 
-;;  'm1-x' for F5.
-addRemap("x", ["m1"], "f5")
-
-;;  'm1-c' for F6.
-addRemap("c", ["m1"], "f6")
-
-;;  'm1-v' for F7.
-addRemap("v", ["m1"], "f7")
-
-;;  'm1-b' for F8.
-addRemap("b", ["m1"], "f8")
-
-;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
-addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
-;;  'm1-s-backslash' for notifications.
-addRemap("vkdc", ["m1", "shift"], "a", ["win"])
-;;  'm1-backslash' for launchpad.
-addRemap("vkdc", ["m1"], "lwin")
-
-;;  ==========================================================================
-;;  App launcher
-;;  ==========================================================================
+;;  m1-m2-s for S-F1
+addRemap("s", ["m1", "m2"], "vk70", ["shift"])
+;;  m1-shift-s switch to 3nd language
+addRemap("s", ["m1", "shift"], ["lang", "jp"])
+;;  m1-s for F1
+addRemap("s", ["m1"], "vk70")
+;;  m2-s for english signature
+addRemap("s", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"])
+;;  m3-s for short url
+addRemap("s", ["m2"], ["shorten"])
 
 ;;  'm1-2' fo 1st app
 addRemap("2", ["m1"], "1", ["win", "ctrl"])
@@ -904,9 +917,14 @@ addRemap("-", ["m1"], "0", ["win", "ctrl"])
 ;;  'm2-minus' for em-dash
 addRemap("-", ["m2"], ["send", "—"])
 
-;;  ==========================================================================
-;;  Language switch
-;;  ==========================================================================
+;;  'm1-c-backslash' for game HUD's (GOG, steam etc)
+addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
+;;  'm1-s-backslash' for notifications.
+addRemap("vkdc", ["m1", "shift"], "a", ["win"])
+;;  'm1-backslash' for launchpad.
+addRemap("vkdc", ["m1"], "lwin")
+;;  'm3-backslash' for screen lock
+addRemap("vkdc", ["m3"], ["lock"])
 
 ;;  m1-m2-g for S-F4
 addRemap("g", ["m1", "m2"], "vk73", ["shift"])
@@ -933,29 +951,24 @@ addRemap("d", ["m1"], "vk71")
 ;;  m2-d for game command
 addRemap("d", ["m2"], ["send", "{enter}/hideout{enter}"])
 
-;;  m1-m2-s for S-F1
-addRemap("s", ["m1", "m2"], "vk70", ["shift"])
-;;  m1-shift-s switch to 3nd language
-addRemap("s", ["m1", "shift"], ["lang", "jp"])
-;;  m1-s for F1
-addRemap("s", ["m1"], "vk70")
-;;  m2-s for english signature
-addRemap("s", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"])
+;;  'm1-m2-slash' => move window bottom 1/2 screen
+addRemap("vkbf", ["m1", "m2"], ["winpos", "bottom"])
+;;  'm3-slash' for shift-command-4 (screenshot)
+addRemap("vkbf", ["m3"], "s", ["win", "shift"])
+;;  'm1-slash' for middle mouse button.
+addRemap(["vkbf", "norepeat"], ["m1"], "mbutton")
 
-;;  ==========================================================================
-;;  Fast text entry
-;;  TODO: check if game is foreground for "send"
-;;  ==========================================================================
+;;  'm1-b' for F8.
+addRemap("b", ["m1"], "f8")
 
-;;  m2-1 for game text 1
-addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
+;;  'm1-v' for F7.
+addRemap("v", ["m1"], "f7")
 
-;;  m2-q for game text 2
-addRemap("q", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])
+;;  'm1-c' for F6.
+addRemap("c", ["m1"], "f6")
 
-;; ===========================================================================
-;; Multi-key combinations
-;; ===========================================================================
+;;  'm1-x' for F5.
+addRemap("x", ["m1"], "f5")
 
 ;;  'm1-m2-u' => top left
 addRemap("u", ["m1", "m2"], ["winpos", "topleft"])
@@ -965,13 +978,6 @@ addRemap("i", ["m1", "m2"], ["winpos", "topright"])
 
 ;;  'm1-m2-o' => botom right
 addRemap("o", ["m1", "m2"], ["winpos", "bottomleft"])
-
-;;  'm1-m2-p' => bottom right
-addRemap("p", ["m1", "m2"], ["winpos", "bottomright"])
-;;  'm1-m3-p' for deleting things.
-addRemap("p", ["m1", "m3"], ["delete"])
-;;  'm1-p' for backspace
-addRemap("p", ["m1"], "backspace")
 
 ;; m1-m3-n => close window
 addRemap("n", ["m1", "m3"], ["winclose"])
@@ -985,36 +991,17 @@ addRemap("m", ["m1", "m2"], ["winpos", "left"])
 ;;  'm1-m2-comma' => right 1/2 screen
 addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
-;; ===========================================================================
-;; Left, right and middle mouse buttons
-;; ===========================================================================
+;;  m2-1 for game text 1
+addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
 
-;;  'm1-semicolon' for left mouse button.
-addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
-addRemap(["vkba", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
-addRemap(["vkba", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])
-addRemap(["vkba", "norepeat"], ["m1"], "lbutton")
+;;  m2-q for game text 2
+addRemap("q", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])
 
-;;  'm1-quote' for right mouse button.
-addRemap(["vkde", "norepeat"], ["m1"], "rbutton")
+;;  F5 (meata-x) for game bar
+f5::Send("#g")
 
-;;  'm1-m2-slash' => move window bottom 1/2 screen
-addRemap("vkbf", ["m1", "m2"], ["winpos", "bottom"])
-;;  'm1-slash' for middle mouse button.
-addRemap(["vkbf", "norepeat"], ["m1"], "mbutton")
-
-;; ===========================================================================
-;; Misc
-;; ===========================================================================
-
-;;  Some keyboards emulate "edge swipes" by sending these key combonations
-$#a:: {
-}
-$#down:: {
-}
-$#tab:: {
-}
-
+;;  F6 (m1-c) for "record last 30 seconds" game bar function
+f6::Send("#!g")
 
 ;;  Used for remote debug purpose
 SendMqtt() {
@@ -1056,6 +1043,10 @@ OnSlowTimer() {
     TraySetIcon("HICON:*" . appIconMain)
     appShowDebugIcon := true
   }
+  for key, keyInfo in appKeysPressed {
+    ; This allows to debug "sticky key" problems
+    keyInfo["pressed"] := GetKeyState(key, "P")
+  }
   A_IconTip := mapToStr(appKeysPressed)
 }
 
@@ -1063,6 +1054,7 @@ OnFastTimer() {
   ; Check that no keys are "stuck"
   toRemove := []
   for key, keyInfo in appKeysPressed {
+    ; TODO: not reliable, use Dll to get physical state
     if (not GetKeyState(key, "P")) {
       toRemove.Push(key)
     }
@@ -1075,8 +1067,13 @@ OnFastTimer() {
 SetTimer(OnSlowTimer, 500)
 SetTimer(OnFastTimer, 100)
 
+onLoadPasswords(*) {
+}
+
+A_TrayMenu.Add("Load passwords", onLoadPasswords)
+
 ;; TODO: url shortener on context menu
-;; TODO: debug mode for context menu
+;; TODO: debug mode for context menu with ability to copy log to clipboard
 ;; TODO: For games like WoW right buttons hold are used for movement, so
 ;; sometimes caps lock is released while holding tick or semicolon. Holding
 ;; caps lock again should enter button hold (ex pressing m1 while holding
@@ -1085,5 +1082,4 @@ SetTimer(OnFastTimer, 100)
 ;; cell content in spreadsheets while switching language via m1-s-f.
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
 ;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
-;; Todo: normalize both configs and find missed bindings like "lock" and
-;; "screenshot"
+;;  Some keyboards emulate "edge swipes" by sending $#a, $#down, $#tab

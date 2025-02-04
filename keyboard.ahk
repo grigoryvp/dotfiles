@@ -668,17 +668,17 @@ onKeyCommand(items, dir) {
       clipboard := A_Clipboard
       if (not RegExMatch(clipboard, "^https?://")) {
         TrayTip("Error", "No URL in clipboard", ERR_ICON := 3)
-        SetTimer(TrayTip, ONCE_AFTER_MS := -1000)
+        SetTimer(TrayTip, ONCE_AFTER_MS := -2000)
         return
       }
       if (RegExMatch(clipboard, "^https?://vk.cc")) {
         TrayTip("Error", "Short URL in clipboard", ERR_ICON := 3)
-        SetTimer(TrayTip, ONCE_AFTER_MS := -1000)
+        SetTimer(TrayTip, ONCE_AFTER_MS := -2000)
         return
       }
       if (RegExMatch(clipboard, "^https?://bit.ly")) {
         TrayTip("Error", "Short URL in clipboard", ERR_ICON := 3)
-        SetTimer(TrayTip, ONCE_AFTER_MS := -1000)
+        SetTimer(TrayTip, ONCE_AFTER_MS := -2000)
         return
       }
       token := EnvGet("VK_CC_TOKEN")
@@ -699,7 +699,7 @@ onKeyCommand(items, dir) {
       if (match and match.Count) {
         A_Clipboard := StrReplace(match[1], "\/", "/")
         TrayTip("Success", A_Clipboard, INFO_ICON := 1)
-        SetTimer(TrayTip, ONCE_AFTER_MS := -1000)
+        SetTimer(TrayTip, ONCE_AFTER_MS := -2000)
       }
       else {
         TrayTip("Error", "Failed", ERR_ICON := 3)

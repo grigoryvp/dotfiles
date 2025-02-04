@@ -788,7 +788,8 @@ onKeydown(key) {
   global appIsDebug
   isPressed := appKeysPressed.Has(key)
   if (appIsDebug and not isPressed) {
-    appDebugLog.Push(getReadableKeyName(key) . " down")
+    name := getReadableKeyName(key)
+    appDebugLog.Push(name . " down")
     if (appDebugLog.Length > MAX_DEBUG_LOG) {
       appDebugLog.RemoveAt(1)
     }
@@ -811,7 +812,12 @@ onKeydown(key) {
 onKeyup(key) {
   global appIsDebug
   if (appIsDebug) {
-    appDebugLog.Push(getReadableKeyName(key) . " up")
+    name := getReadableKeyName(key)
+    alone := "unknown"
+    if (appKeysPressed.Has(key)) {
+      alone := appKeysPressed[key]["alone"]
+    }
+    appDebugLog.Push(name . " up [alone=" . alone . "]")
     if (appDebugLog.Length > MAX_DEBUG_LOG) {
       appDebugLog.RemoveAt(1)
     }
@@ -1213,10 +1219,10 @@ OnSlowTimer() {
     keyInfo["pressed"] := GetKeyState(key, "P")
   }
   A_IconTip := mapToStr(appKeysPressed)
-}
 
-OnFastTimer() {
-  ; Check that no keys are "stuck"
+  ; Check that no keys are "stuck". Don't do that too often since in that
+  ; case "up" event may not find the corresponding key in the table and
+  ; incorrectly trigger "alone" status
   toRemove := []
   for key, keyInfo in appKeysPressed {
     if (not GetKeyState(key, "P")) {
@@ -1229,7 +1235,6 @@ OnFastTimer() {
 }
 
 SetTimer(OnSlowTimer, 500)
-SetTimer(OnFastTimer, 100)
 
 onDebugModeToggle(name, _, menu) {
   global appIsDebug

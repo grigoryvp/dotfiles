@@ -1230,6 +1230,12 @@ OnSlowTimer() {
   ; incorrectly trigger "alone" status
   toRemove := []
   for key, keyInfo in appKeysPressed {
+    ; TODO: not reliable. Record key down time and then check how many
+    ; keys was pressed since that instead. It's unlikely that key is pressed
+    ; for long while other keys are being pressed too (except for mouse
+    ; emulation, but it's impossible for ";" to be pressed while "rctrl"
+    ; is being pressed, so count in finger poition of "possible" and
+    ; "impossible" combinations?).
     if (not GetKeyState(key, "P")) {
       toRemove.Push(key)
     }

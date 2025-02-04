@@ -219,6 +219,25 @@ getReadableKeyName(key) {
   }
 }
 
+getLocale() {
+  hwnd := WinGetID("A")
+  threadId := DllCall("GetWindowThreadProcessId", "Ptr", hwnd, "Ptr", 0)
+  locale := DllCall("GetKeyboardLayout", "Ptr", threadId, "Ptr")
+  return locale
+}
+
+setLocale(locale) {
+  hwnd := WinGetID("A")
+  loop 10 {
+    if (getLocale() == locale) {
+      break
+    }
+    ; Not always set from the first try
+    PostMessage(WM_INPUTLANGCHANGEREQUEST := 0x50, 0, locale, hwnd)
+    Sleep(100)
+  }
+}
+
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
 addRemap(from, fromMods, to, toMods := []) {
   config := Map(
@@ -561,10 +580,10 @@ setCurWinMon(dir) {
 
 switchToLang(lang) {
   if (lang == "en") {
-    Send("^+4")
+    setLocale(0x04090409)
   }
   else if (lang == "ru") {
-    Send("^+5")
+    setLocale(0x04190419)
   }
   else if (lang == "jp") {
     if (appLastLang == "jp") {
@@ -572,7 +591,7 @@ switchToLang(lang) {
       Send("!``")
     }
     else {
-      Send("^+6")
+      setLocale(0x04110411)
     }
   }
   global appLastLang
@@ -596,6 +615,17 @@ onKeyCommand(items, dir) {
       ; assert
     }
     return
+  }
+  if (dir == "down") {
+    ; Switch language on key down: since chord is very fast, switching it
+    ; on key up will result in situations where modifier is released before
+    ; the langauge switch key and key release will miss some modifier and
+    ; will not be triggered.
+    if (command == "lang") {
+      lang := items.RemoveAt(1)
+      switchToLang(lang)
+      return
+    }
   }
   if (dir == "up") {
     if (command == "winclose") {
@@ -627,11 +657,6 @@ onKeyCommand(items, dir) {
     if (command == "winmon") {
       dir := items.RemoveAt(1)
       setCurWinMon(dir)
-      return
-    }
-    if (command == "lang") {
-      lang := items.RemoveAt(1)
-      switchToLang(lang)
       return
     }
     if (command == "lock") {

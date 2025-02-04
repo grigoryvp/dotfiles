@@ -1045,6 +1045,8 @@ OnSlowTimer() {
   }
   for key, keyInfo in appKeysPressed {
     ; This allows to debug "sticky key" problems
+    ; TODO: KeyboardStateView shows correct key state, while GetKeyState()
+    ;       does not
     keyInfo["pressed"] := GetKeyState(key, "P")
   }
   A_IconTip := mapToStr(appKeysPressed)

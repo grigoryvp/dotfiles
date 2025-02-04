@@ -1074,6 +1074,9 @@ function App:shortenUrlInClipboard()
   if clipboard:match("^https?://vk.cc") then
     return hs.alert.show("Short URL in clipboard")
   end
+  if clipboard:match("^https?://bit.ly") then
+    return hs.alert.show("Short URL in clipboard")
+  end
   self:_shortenUrl(clipboard)
 end
 
@@ -1084,6 +1087,9 @@ function App:shortenAndTrimUrlInClipboard()
     return hs.alert.show("No URL in clipboard")
   end
   if clipboard:match("^https?://vk.cc") then
+    return hs.alert.show("Short URL in clipboard")
+  end
+  if clipboard:match("^https?://bit.ly") then
     return hs.alert.show("Short URL in clipboard")
   end
   -- Remove query string before shortening.
@@ -1113,7 +1119,7 @@ function App:createMenu()
     local db = "/Users/user/dotfiles/auth/passwords.kdbx"
     local app = "/opt/homebrew/bin/keepassxc-cli"
     local args = {
-      "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "notes"
+      "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "token"
     }
     local onTaskExit = function(exitCode, stdOut, stdErr)
       if exitCode ~= 0 then

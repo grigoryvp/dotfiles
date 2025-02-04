@@ -667,15 +667,15 @@ onKeyCommand(items, dir) {
       ; Suppress linter error
       clipboard := A_Clipboard
       if (not RegExMatch(clipboard, "^https?://")) {
-        TrayTip("Error", "No URL in clipboard", 2)
+        TrayTip("Error", "No URL in clipboard", ERR_ICON := 3)
         return
       }
       if (RegExMatch(clipboard, "^https?://vk.cc")) {
-        TrayTip("Error", "Short URL in clipboard", 2)
+        TrayTip("Error", "Short URL in clipboard", ERR_ICON := 3)
         return
       }
       if (RegExMatch(clipboard, "^https?://bit.ly")) {
-        TrayTip("Error", "Short URL in clipboard", 2)
+        TrayTip("Error", "Short URL in clipboard", ERR_ICON := 3)
         return
       }
       token := EnvGet("VK_CC_TOKEN")
@@ -695,10 +695,10 @@ onKeyCommand(items, dir) {
       RegExMatch(text, pattern, &match)
       if (match and match.Count) {
         A_Clipboard := StrReplace(match[1], "\/", "/")
-        TrayTip("Success", A_Clipboard, 2)
+        TrayTip("Success", A_Clipboard, INFO_ICON := 1)
       }
       else {
-        TrayTip("Error", "Failed", 2)
+        TrayTip("Error", "Failed", ERR_ICON := 3)
       }
       return
     }

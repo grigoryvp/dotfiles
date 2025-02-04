@@ -9,6 +9,7 @@ class App {
   $_ver = "1.0.25";
   $_isTest = $false;
   $_isFull = $false;
+  $_isUpdateEnv = $false;
   $_isPublic = $false;
   $_POST_INSTALL_MSG = "";
   $_keepassdb = $null;
@@ -27,6 +28,9 @@ class App {
     user = $null;
     pass = $null;
   };
+  $_vk = @{
+    cc_token = $null;
+  };
   #endregion
 
 
@@ -34,6 +38,7 @@ class App {
     $this._pathIntrinsics = $pathIntrinsics;
     $this._isTest = ($argList.Contains("--test"));
     $this._isFull = ($argList.Contains("--full"));
+    $this._isUpdateEnv = ($argList.Contains("--update-env"));
     # Do not touch private info like passwords, personal kb etc.
     $this._isPublic = ($argList.Contains("--public"));
     # Version-controlled dir with scripts, powershell config, passwords etc.
@@ -167,12 +172,16 @@ class App {
  
     if (-not $this._isPublic) {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+      $sshUploaded = (Test-Path -Path "$markerPath");
       # Interactive.
-      if (-not (Test-Path -Path "$markerPath")) {
+      if (-not $sshUploaded -or $this._isUpdateEnv) {
         $this._askForCredentials();
         $this._setEnv("MQTT_URL", $this._mqtt.url);
         $this._setEnv("MQTT_USER", $this._mqtt.user);
         $this._setEnv("MQTT_PASS", $this._mqtt.pass);
+        $this._setEnv("VK_CC_TOKEN", $this._vk.cc_token);
+      }
+      if (-not $sshUploaded) {
         $this._uploadSshKey();
       }
       # Re-clone with SSH keys
@@ -674,9 +683,19 @@ class App {
 
 
   [String] _attrFromKeepass($record, $attr) {
+    #! keepassxc-cli displays the "enter password" promt into stderr and
+    #  powershell throws the NativeCommandError exception if program output
+    #  to stderr (redirect does not help).
+    $ErrorActionPreference = "SilentlyContinue";
+    $ret = $null;
     # -s to show protected attribute (password) as clear text.
-    $ret = & Write-Output $this._pass | keepassxc-cli `
-      show -s $this._keepassdb $record --attributes $attr;
+    $ret = $(
+      Write-Output $this._pass |
+      keepassxc-cli show -s $this._keepassdb $record --attributes $attr
+      2>$null
+    );
+    $ErrorActionPreference = "Stop";
+    if (-not $?) { throw "keepassxc-cli failed" }
     return $ret;
   }
 
@@ -687,7 +706,7 @@ class App {
     $ptr = [Security.SecureStringMarshal]::SecureStringToCoTaskMemAnsi($pass);
     $pass = [Runtime.InteropServices.Marshal]::PtrToStringAnsi($ptr);
     $this._pass = $pass;
-    $this._keepassdb = $this._path(@($this._cfgDir, "passwords.kdbx"));
+    $this._keepassdb = $this._path(@($this._cfgDir, "auth/passwords.kdbx"));
 
     $this._github.user = $this._attrFromKeepass("github", "username");
     $this._github.pass = $this._attrFromKeepass("github", "password");
@@ -696,6 +715,9 @@ class App {
     $this._mqtt.url = $this._attrFromKeepass("hivemq", "login_url");
     $this._mqtt.user = $this._attrFromKeepass("hivemq", "login_user");
     $this._mqtt.pass = $this._attrFromKeepass("hivemq", "login_pass");
+
+    $record = "vk.gvp-url-shortener";
+    $this._vk.cc_token = $this._attrFromKeepass($record, "token");
   }
 
 

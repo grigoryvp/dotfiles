@@ -144,6 +144,9 @@ DebugDebounce(params*) {
     else if (Type(param) == "Map") {
       msg .= mapToStr(param)
     }
+    else if (Type(param) == "RegExMatchInfo") {
+      msg .= "RegExMatchInfo(count=" . param.Count . ")"
+    }
     else {
       msg .= param
     }
@@ -153,6 +156,40 @@ DebugDebounce(params*) {
     OutputDebug(msg)
     appLastDebug := msg
   }
+}
+
+urlEncode(url) {
+  flags := 0x000C3000
+	cc := 4096
+  esc := ""
+  res := ""
+  E_POINTER := 0x80004003
+	loop {
+		VarSetStrCapacity(&esc, cc)
+		res := DllCall(
+      "Shlwapi.dll\UrlEscapeW",
+      "Str", url,
+      "Str", &esc,
+      "UIntP", &cc,
+      "UInt", flags,
+      "UInt")
+	} until (res != E_POINTER)
+	return esc
+}
+
+urlDecode(url) {
+  flags := 0x00140000
+  res := DllCall(
+    "Shlwapi.dll\UrlUnescape",
+    "Ptr", StrPtr(url),
+    "Ptr", 0,
+    "UInt", 0,
+    "UInt", flags,
+    "UInt")
+  if (res == 0) {
+    return ""
+  }
+  return url
 }
 
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
@@ -575,7 +612,42 @@ onKeyCommand(items, dir) {
       return
     }
     if (command == "shorten") {
-      ; TODO
+      ; Suppress linter error
+      clipboard := A_Clipboard
+      if (not RegExMatch(clipboard, "^https?://")) {
+        TrayTip("Error", "No URL in clipboard", 2)
+        return
+      }
+      if (RegExMatch(clipboard, "^https?://vk.cc")) {
+        TrayTip("Error", "Short URL in clipboard", 2)
+        return
+      }
+      if (RegExMatch(clipboard, "^https?://bit.ly")) {
+        TrayTip("Error", "Short URL in clipboard", 2)
+        return
+      }
+      token := EnvGet("VK_CC_TOKEN")
+      ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
+      web := ComObject('WinHttp.WinHttpRequest.5.1')
+      url := "https://api.vk.com/method/utils.getShortLink"
+      url .= "?" . "url=" . urlEncode(clipboard)
+      url .= "&" . "private=1"
+      url .= "&" . "access_token=" . urlEncode(token)
+      url .= "&" . "v=5.199"
+      web.Open("GET", url)
+      web.Send()
+      web.WaitForResponse()
+      text := web.ResponseText
+      ; "short_url":"https:\/\/vk.cc\/cIdqeg"
+      pattern := "`"short_url`":`"([^`"]+)`""
+      RegExMatch(text, pattern, &match)
+      if (match and match.Count) {
+        A_Clipboard := StrReplace(match[1], "\/", "/")
+        TrayTip("Success", A_Clipboard, 2)
+      }
+      else {
+        TrayTip("Error", "Failed", 2)
+      }
       return
     }
   }
@@ -883,7 +955,7 @@ addRemap("s", ["m1"], "vk70")
 ;;  m2-s for english signature
 addRemap("s", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31681345854{enter}{@}grigoryvp"])
 ;;  m3-s for short url
-addRemap("s", ["m2"], ["shorten"])
+addRemap("s", ["m3"], ["shorten"])
 
 ;;  'm1-2' fo 1st app
 addRemap("2", ["m1"], "1", ["win", "ctrl"])
@@ -1046,7 +1118,7 @@ OnSlowTimer() {
   for key, keyInfo in appKeysPressed {
     ; This allows to debug "sticky key" problems
     ; TODO: KeyboardStateView shows correct key state, while GetKeyState()
-    ;       does not
+    ;       does not (in some cases even KeyboardStateView fails).
     keyInfo["pressed"] := GetKeyState(key, "P")
   }
   A_IconTip := mapToStr(appKeysPressed)
@@ -1056,7 +1128,6 @@ OnFastTimer() {
   ; Check that no keys are "stuck"
   toRemove := []
   for key, keyInfo in appKeysPressed {
-    ; TODO: not reliable, use Dll to get physical state
     if (not GetKeyState(key, "P")) {
       toRemove.Push(key)
     }
@@ -1069,10 +1140,11 @@ OnFastTimer() {
 SetTimer(OnSlowTimer, 500)
 SetTimer(OnFastTimer, 100)
 
-onLoadPasswords(*) {
+onTest(*) {
+  OutputDebug("==> TEST <==")
 }
 
-A_TrayMenu.Add("Load passwords", onLoadPasswords)
+A_TrayMenu.Add("Test", onTest)
 
 ;; TODO: url shortener on context menu
 ;; TODO: debug mode for context menu with ability to copy log to clipboard

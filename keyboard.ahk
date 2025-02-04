@@ -38,12 +38,29 @@
 codepage := 65001 ; utf-8
 ;;  Reliable key state detection
 InstallKeybdHook
+
 ;;  Map of all remap configurations
 appRemap := Map()
 appMeta := Map()
 appKeysPressed := Map()
 appLastLang := ""
 appLastDebug := ""
+appIsDebug := false
+appDebugLog := []
+MAX_DEBUG_LOG := 50
+KEY_NAMES := Map(
+  "vkc0", "~",
+  "vk8", "backspace",
+  "vkdb", "[",
+  "vkdd", "]",
+  "vkdc", "\",
+  "vked", "caps",
+  "vkba", ";",
+  "vkde", "'",
+  "vkbc", ",",
+  "vkbe", ".",
+  "vkbf", "/"
+)
 
 if (!A_IsAdmin) {
   Run "*RunAs" A_ScriptFullPath
@@ -192,6 +209,16 @@ urlDecode(url) {
   return url
 }
 
+getReadableKeyName(key) {
+  name := StrLower(key)
+  if (KEY_NAMES.Has(name)) {
+    return KEY_NAMES.Get(name)
+  }
+  else {
+    return name
+  }
+}
+
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")
 addRemap(from, fromMods, to, toMods := []) {
   config := Map(
@@ -204,7 +231,7 @@ addRemap(from, fromMods, to, toMods := []) {
     from := options.RemoveAt(1)
     config["options"] := options
   }
-  if (appRemap.has(from)) {
+  if (appRemap.Has(from)) {
     appRemap[from].Push(config)
   }
   else {
@@ -650,12 +677,15 @@ onKeyCommand(items, dir) {
       }
       return
     }
+    if (command == "debugcopy") {
+      onDebugCopy()
+    }
   }
   ;;  assert
 }
 
-; TODO: enable debug mode to OutputDebug()
 onKey(key, dir) {
+  global appIsDebug
   hasAloneMappings := false
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
@@ -673,6 +703,10 @@ onKey(key, dir) {
           isUponly := includes(config["options"], "uponly")
           if (isAlone or isUponly) {
             if (dir == "up") {
+              if (appIsDebug) {
+                name := getReadableKeyName(to)
+                appDebugLog.Push("=> " . mods . "{" . name . "}")
+              }
               Send(mods . "{" . to . "}")
             }
           }
@@ -682,11 +716,18 @@ onKey(key, dir) {
             ; Don't send some buttons like left mouse button repeatedly
             ; if configured so (ex they are "hold type")
             if (dir == "up" or not isNorepeat or not isPressed) {
+              if (appIsDebug) {
+                name := getReadableKeyName(to)
+                appDebugLog.Push("=> " . mods . "{" . name . " " . dir . "}")
+              }
               Send(mods . "{" . to . " " . dir . "}")
             }
           }
         }
         else if (Type(to) == "Array") {
+          if (appIsDebug) {
+            appDebugLog.Push("=> " . arrayToStr(to))
+          }
           onKeyCommand(to.Clone(), dir)
         }
         else {
@@ -710,13 +751,27 @@ onKey(key, dir) {
     if (key == "lctrl" or key == "rctrl") {
       return
     }
+    if (appIsDebug) {
+      name := getReadableKeyName(key)
+      appDebugLog.Push("=> {blind}{" . name . " " . dir . "}")
+    }
     Send("{blind}{" . key . " " . dir . "}")
   }
 }
 
 onKeydown(key) {
+  global appIsDebug
+  isPressed := appKeysPressed.Has(key)
+  if (appIsDebug and not isPressed) {
+    appDebugLog.Push(getReadableKeyName(key) . " down")
+    if (appDebugLog.Length > MAX_DEBUG_LOG) {
+      appDebugLog.RemoveAt(1)
+    }
+  }
+
   onKey(key, "down")
-  if (not appKeysPressed.Has(key)) {
+
+  if (not isPressed) {
     alone := true
     if (appKeysPressed.Count > 0) {
       alone := false
@@ -729,7 +784,16 @@ onKeydown(key) {
 }
 
 onKeyup(key) {
+  global appIsDebug
+  if (appIsDebug) {
+    appDebugLog.Push(getReadableKeyName(key) . " up")
+    if (appDebugLog.Length > MAX_DEBUG_LOG) {
+      appDebugLog.RemoveAt(1)
+    }
+  }
+
   onKey(key, "up")
+
   if (appKeysPressed.Has(key)) {
     appKeysPressed.Delete(key)
   }
@@ -1022,6 +1086,8 @@ addRemap("d", ["m1", "shift"], ["lang", "ru"])
 addRemap("d", ["m1"], "vk71")
 ;;  m2-d for game command
 addRemap("d", ["m2"], ["send", "{enter}/hideout{enter}"])
+;;  m3-d for "copy debug to clipboard"
+addRemap("d", ["m3"], ["debugcopy"])
 
 ;;  'm1-m2-slash' => move window bottom 1/2 screen
 addRemap("vkbf", ["m1", "m2"], ["winpos", "bottom"])
@@ -1140,14 +1206,33 @@ OnFastTimer() {
 SetTimer(OnSlowTimer, 500)
 SetTimer(OnFastTimer, 100)
 
-onTest(*) {
-  OutputDebug("==> TEST <==")
+onDebugModeToggle(name, _, menu) {
+  global appIsDebug
+  appIsDebug := not appIsDebug
+  if (appIsDebug) {
+    menu.Check(name)
+  }
+  else {
+    appDebugLog.Length := 0
+    menu.Uncheck(name)
+  }
 }
 
-A_TrayMenu.Add("Test", onTest)
+onDebugCopy(*) {
+  text := ""
+  for idx, record in appDebugLog {
+    if (idx > 1) {
+      text .= "`n"
+    }
+    text .= record
+  }
+  A_Clipboard := text
+}
+
+A_TrayMenu.Add("Debug mode", onDebugModeToggle)
+A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 
 ;; TODO: url shortener on context menu
-;; TODO: debug mode for context menu with ability to copy log to clipboard
 ;; TODO: For games like WoW right buttons hold are used for movement, so
 ;; sometimes caps lock is released while holding tick or semicolon. Holding
 ;; caps lock again should enter button hold (ex pressing m1 while holding

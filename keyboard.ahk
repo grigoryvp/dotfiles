@@ -865,9 +865,17 @@ onKeydown(key) {
       ; Used to detect if no other key was pressed between this key press
       ; and release
       "alone", alone,
-      ; Used to detect keys which are stuck in "pressed state
+      ; Used to detect keys which are stuck in "pressed" state
       "stuck_counter", 0
     )
+  }
+  else {
+    ; Keys recive constant "keydown" events while pressed. "keyup" event
+    ; can be missed, so "stuck counter" is always incremented by a background
+    ; thred, while receiving "keydown" event resets it. If counter overflows,
+    ; this means that no "keydown" was received for this key recently,
+    ; but no "keyup" either and it's "stuck".
+    appKeysPressed[key]["stuck_counter"] := 0
   }
 }
 
@@ -1279,28 +1287,7 @@ appIconDebug := LoadPicture(appIconPath . "\ahk_d.ico",, &image_type)
 appIconDebugRed := LoadPicture(appIconPath . "\ahk_d_r.ico",, &image_type)
 appShowDebugIcon := false
 
-OnSlowTimer() {
-  for key, keyInfo in appKeysPressed {
-    ; This allows to debug "sticky key" problems
-    ; TODO: KeyboardStateView shows correct key state, while GetKeyState()
-    ;       does not (in some cases even KeyboardStateView fails).
-    keyInfo["pressed"] := GetKeyState(key, "P")
-  }
-
-  ; Check that no keys are "stuck"
-  toRemove := []
-  for key, keyInfo in appKeysPressed {
-    if (not keyInfo["pressed"]) {
-      keyInfo["stuck_counter"] += 1
-    }
-    if (keyInfo["stuck_counter"] > 4) {
-      toRemove.Push(key)
-    }
-  }
-  for _, key in toRemove {
-    appKeysPressed.Delete(key)
-  }
-
+onSlowTimer() {
   global appShowDebugIcon
   if (appShowDebugIcon) {
     ;;  Use '*' to copy icon and don't destroy original on change
@@ -1320,7 +1307,27 @@ OnSlowTimer() {
   A_IconTip := mapToStr(appKeysPressed)
 }
 
-SetTimer(OnSlowTimer, 500)
+onFastTimer() {
+
+  ; Check that no keys are "stuck"
+  ;! Using GetKeyState() is not realiable
+  toRemove := []
+  for key, keyInfo in appKeysPressed {
+    keyInfo["stuck_counter"] += 1
+    ; No "keydown" events for 1sec - they are being received periodically
+    ; if key is actually pressed down. This means that "key up" event was
+    ; missed.
+    if (keyInfo["stuck_counter"] > 10) {
+      toRemove.Push(key)
+    }
+  }
+  for _, key in toRemove {
+    appKeysPressed.Delete(key)
+  }
+}
+
+SetTimer(onSlowTimer, 500)
+SetTimer(onFastTimer, 100)
 
 onDebugModeToggle(name, _, menu) {
   global appIsDebug

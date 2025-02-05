@@ -1264,7 +1264,7 @@ OnSlowTimer() {
       toRemove.Push(key)
     }
     ; Logically impossible
-    else if (keyInfo["alone"] and appKeysPressed.Count == 1) {
+    else if (not keyInfo["alone"] and appKeysPressed.Count == 1) {
       toRemove.Push(key)
     }
   }

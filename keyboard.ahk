@@ -1252,10 +1252,6 @@ OnSlowTimer() {
   ; Check that no keys are "stuck"
   toRemove := []
   for key, keyInfo in appKeysPressed {
-    ; Logically impossible
-    if (not keyInfo["alone"] and appKeysPressed.Count == 1) {
-      toRemove.Push(key)
-    }
   }
   for _, key in toRemove {
     appKeysPressed.Delete(key)

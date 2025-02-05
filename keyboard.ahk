@@ -843,9 +843,15 @@ onKeydown(key) {
   remappedTo := onKey(key, "down")
 
   if (not isPressed) {
+    ; Pressing rctrl (enter) or lectrl (tab) AFTER dome other keys are
+    ; presset doesn't make it itself "alone". Otherwise "enter" will not
+    ; work after entering some text due to lingering keys reported as
+    ; still pressed down.
     alone := true
     if (appKeysPressed.Count > 0) {
-      alone := false
+      if (key != "rctrl" and key != "lctrl") {
+        alone := false
+      }
       for curKey, keyInfo in appKeysPressed {
         keyInfo["alone"] := false
       }

@@ -844,7 +844,18 @@ onKeydown(key) {
         keyInfo["alone"] := false
       }
     }
-    appKeysPressed[key] := Map("remap_to", remappedTo, "alone", alone)
+    appKeysPressed[key] := Map(
+      ; Key and it's mods can be released in a different sequence. This
+      ; ensures that if remap happened on keydown, the same key will be
+      ; released regardless on the individual keys release order (ex mod key
+      ; released before key being remapped)
+      "remap_to", remappedTo,
+      ; Used to detect if no other key was pressed between this key press
+      ; and release
+      "alone", alone,
+      ; Used to detect keys which are stuck in "pressed state
+      "stuck_counter", 0
+    )
   }
 }
 
@@ -1252,6 +1263,12 @@ OnSlowTimer() {
   ; Check that no keys are "stuck"
   toRemove := []
   for key, keyInfo in appKeysPressed {
+    if (not keyInfo["pressed"]) {
+      keyInfo["stuck_counter"] += 1
+    }
+    if (keyInfo["stuck_counter"] > 4) {
+      toRemove.Push(key)
+    }
   }
   for _, key in toRemove {
     appKeysPressed.Delete(key)

@@ -34,6 +34,11 @@
 ;;. Unlike MacOS where hammerspoon can click any dock item, Windows
 ;;  can switch only between 10 taskbar apps by itself, so mapping m1-plus
 ;;  for 11-th app is not easy.
+;;. For games like WoW right buttons hold are used for movement, so
+;;  sometimes caps lock is released while holding tick or semicolon. Holding
+;;  caps lock again should enter button hold (ex pressing m1 while holding
+;;  the corresponding key should emit keydown again). Current implementation
+;;  simply does not release mouse button while releasing mod.
 
 codepage := 65001 ; utf-8
 ;;  Reliable key state detection
@@ -275,8 +280,8 @@ modsPressedForKey(mods, key) {
       }
     }
     else if (modName == "alone") {
-      for key, keyInfo in appKeysPressed {
-        if (keyInfo["key"] != key) {
+      for curKey, keyInfo in appKeysPressed {
+        if (curKey != key) {
           return false
         }
         if (not keyInfo["alone"]) {
@@ -714,9 +719,28 @@ onKeyCommand(items, dir) {
   ;;  assert
 }
 
+; returns key this was remapped to or empty string
 onKey(key, dir) {
   global appIsDebug
+
+  ; If key was remapped on keydown, use the same remap on keyup, otherwise
+  ; {; down}{caps down}{caps up}{; up} will result in {mouse down}{; up}
+  if (dir == "up" and appKeysPressed.Has(key)) {
+    remappedKey := appKeysPressed[key]["remap_to"]
+    if (remappedKey) {
+      if (appIsDebug) {
+        name := getReadableKeyName(key)
+        remappedName := getReadableKeyName(remappedKey)
+        appDebugLog.Push("=> from " . name . " {" . remappedName . " up}")
+      }
+      Send("{" . remappedKey . " up}")
+      return remappedKey
+    }
+  }
+
   hasAloneMappings := false
+  remappedTo := ""
+
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
       fromMods := config["from_mods"]
@@ -737,6 +761,7 @@ onKey(key, dir) {
                 name := getReadableKeyName(to)
                 appDebugLog.Push("=> " . mods . "{" . name . "}")
               }
+              remappedTo := to
               Send(mods . "{" . to . "}")
             }
           }
@@ -750,6 +775,11 @@ onKey(key, dir) {
                 name := getReadableKeyName(to)
                 appDebugLog.Push("=> " . mods . "{" . name . " " . dir . "}")
               }
+              ; remember remap so it can be released on keyup
+              if (appKeysPressed.Has(key)) {
+                appKeysPressed[key]["remap_to"] := to
+              }
+              remappedTo := to
               Send(mods . "{" . to . " " . dir . "}")
             }
           }
@@ -765,11 +795,15 @@ onKey(key, dir) {
         }
         if (not includes(fromMods, "always")) {
           ;; skip original key behaviour
-          return
+          if (appIsDebug) {
+            appDebugLog.Push("=> skipped")
+          }
+          return remappedTo
         }
       }
     }
   }
+
   ; If key has at least one "alone" mapping (that triggers ONLY on
   ; "key up") then it should not be triggered on key down if no mapping
   ; is detected.
@@ -800,7 +834,7 @@ onKeydown(key) {
     }
   }
 
-  onKey(key, "down")
+  remappedTo := onKey(key, "down")
 
   if (not isPressed) {
     alone := true
@@ -810,7 +844,7 @@ onKeydown(key) {
         keyInfo["alone"] := false
       }
     }
-    appKeysPressed[key] := Map("key", key, "alone", alone)
+    appKeysPressed[key] := Map("remap_to", remappedTo, "alone", alone)
   }
 }
 
@@ -1204,26 +1238,16 @@ appIconPath := appHomePath . "\dotfiles\icons"
 image_type := 1
 appIconMain := LoadPicture(appIconPath . "\ahk.ico",, &image_type)
 appIconDebug := LoadPicture(appIconPath . "\ahk_d.ico",, &image_type)
+appIconDebugRed := LoadPicture(appIconPath . "\ahk_d_r.ico",, &image_type)
 appShowDebugIcon := false
 
 OnSlowTimer() {
-  global appShowDebugIcon
-  if (appShowDebugIcon) {
-    ;;  Use '*' to copy icon and don't destroy original on change
-    TraySetIcon("HICON:*" . appIconDebug)
-    appShowDebugIcon := false
-  }
-  else {
-    TraySetIcon("HICON:*" . appIconMain)
-    appShowDebugIcon := true
-  }
   for key, keyInfo in appKeysPressed {
     ; This allows to debug "sticky key" problems
     ; TODO: KeyboardStateView shows correct key state, while GetKeyState()
     ;       does not (in some cases even KeyboardStateView fails).
     keyInfo["pressed"] := GetKeyState(key, "P")
   }
-  A_IconTip := mapToStr(appKeysPressed)
 
   ; Check that no keys are "stuck". Don't do that too often since in that
   ; case "up" event may not find the corresponding key in the table and
@@ -1239,10 +1263,32 @@ OnSlowTimer() {
     if (not GetKeyState(key, "P")) {
       toRemove.Push(key)
     }
+    ; Logically impossible
+    else if (keyInfo["alone"] and appKeysPressed.Count == 1) {
+      toRemove.Push(key)
+    }
   }
   for _, key in toRemove {
     appKeysPressed.Delete(key)
   }
+
+  global appShowDebugIcon
+  if (appShowDebugIcon) {
+    ;;  Use '*' to copy icon and don't destroy original on change
+    if (appKeysPressed.Count) {
+      TraySetIcon("HICON:*" . appIconDebugRed)
+    }
+    else {
+      TraySetIcon("HICON:*" . appIconDebug)
+    }
+    appShowDebugIcon := false
+  }
+  else {
+    TraySetIcon("HICON:*" . appIconMain)
+    appShowDebugIcon := true
+  }
+
+  A_IconTip := mapToStr(appKeysPressed)
 }
 
 SetTimer(OnSlowTimer, 500)
@@ -1273,11 +1319,6 @@ onDebugCopy(*) {
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 
-;; TODO: url shortener on context menu
-;; TODO: For games like WoW right buttons hold are used for movement, so
-;; sometimes caps lock is released while holding tick or semicolon. Holding
-;; caps lock again should enter button hold (ex pressing m1 while holding
-;; the corresponding key should emit keydown again)
 ;; TODO: Supress rshift+caps that produces char codes in chrome and erases
 ;; cell content in spreadsheets while switching language via m1-s-f.
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'

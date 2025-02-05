@@ -1321,7 +1321,4 @@ onDebugCopy(*) {
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 
-;; cell content in spreadsheets while switching language via m1-s-f.
-;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
-;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath
 ;;  Some keyboards emulate "edge swipes" by sending $#a, $#down, $#tab

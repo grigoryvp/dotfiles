@@ -26,6 +26,8 @@ $env:PIPENV_SKIP_LOCK = 1
 $env:PIPENV_SKIP_LOCK = 1
 # Enable Python 2.7 apps to write into PowerShell console.
 $env:PYTHONIOENCODING = "UTF-8"
+# Don't collect Next.js telemetry data
+$env:NEXT_TELEMETRY_DISABLED = 1
 
 $COLOR_DGRAY = ([ConsoleColor]::DarkGray);
 $COLOR_DYELLOW = ([ConsoleColor]::DarkYellow);

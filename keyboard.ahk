@@ -1249,22 +1249,11 @@ OnSlowTimer() {
     keyInfo["pressed"] := GetKeyState(key, "P")
   }
 
-  ; Check that no keys are "stuck". Don't do that too often since in that
-  ; case "up" event may not find the corresponding key in the table and
-  ; incorrectly trigger "alone" status
+  ; Check that no keys are "stuck"
   toRemove := []
   for key, keyInfo in appKeysPressed {
-    ; TODO: not reliable. Record key down time and then check how many
-    ; keys was pressed since that instead. It's unlikely that key is pressed
-    ; for long while other keys are being pressed too (except for mouse
-    ; emulation, but it's impossible for ";" to be pressed while "rctrl"
-    ; is being pressed, so count in finger poition of "possible" and
-    ; "impossible" combinations?).
-    if (not GetKeyState(key, "P")) {
-      toRemove.Push(key)
-    }
     ; Logically impossible
-    else if (not keyInfo["alone"] and appKeysPressed.Count == 1) {
+    if (not keyInfo["alone"] and appKeysPressed.Count == 1) {
       toRemove.Push(key)
     }
   }

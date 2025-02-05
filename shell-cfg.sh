@@ -70,6 +70,8 @@ fi
 stty -ixon
 ##  Don't create |.pyc| files while executing python code from console.
 export PYTHONDONTWRITEBYTECODE=1
+##  Dont' collect Next.js telemetry data
+export NEXT_TELEMETRY_DISABLED=1
 
 ##  Rust 'install' places binaries here
 start_path_with ~/.cargo/bin

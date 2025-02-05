@@ -1321,7 +1321,6 @@ onDebugCopy(*) {
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 
-;; TODO: Supress rshift+caps that produces char codes in chrome and erases
 ;; cell content in spreadsheets while switching language via m1-s-f.
 ;;  The AutoHotkey interpreter does not exist, re-specify in'Settings-AutoHotkey2.InterpreterPath'
 ;;  TODO: PR for https://github.com/thqby/vscode-autohotkey2-lsp to support ${userHome} for InterpreterPath

@@ -295,6 +295,8 @@ class App {
         @($env:ProgramFiles, "mosquitto")));
       # for keylight control
       $this._installApp("Elgato.ControlCenter");
+      # ChatGPT
+      $this._installApp("9NT1R1C2HH7J");
     }
 
     if ($this._isTest) {

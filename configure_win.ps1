@@ -156,6 +156,7 @@ class App {
     $this._uninstallApp("Copilot");
     # TODO: Need version 2.20.4, in 2.20.5 "{WAITMS:100}{LMB}" does not work.
     # https://dvps.highrez.co.uk/downloads/XMouseButtonControlSetup.2.20.4.exe
+    # Auto registers to run on startup
     $this._installApp("Highresolution.X-MouseButtonControl");
     $this._installBinApp("KeePassXCTeam.KeePassXC", $this._path(
       @($env:ProgramFiles, "KeePassXC")));
@@ -198,7 +199,6 @@ class App {
     # starting apps like autohotkey blocks config files
     $this._registerPingometerStartup();
     $this._registerAutohotkeyStartup();
-    $this._registerXMouseButtonControlStartup();
     # TODO: wait for BatteryInfoView install
     # $this._registerBatteryInfoViewStartup();
 
@@ -995,19 +995,6 @@ class App {
     $content += " -WindowStyle Hidden";
     $name = "battery-info-view.bat"
     New-File -Path $startDir -Name $name -Value "$content";
-  }
-
-
-  _registerXMouseButtonControlStartup() {
-    if ($this._isTest) { return; }
-    $startDir = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
-    if (Test-Path -Path "$startDir\x-mouse-button-control.bat") {
-      Remove-Item "$startDir\x-mouse-button-control.bat" -Recurse -Force;
-    }
-    $content = "pwsh -Command Start-Process XMouseButtonControl.exe";
-    $content += " -WindowStyle Hidden";
-    $name = "x-mouse-button-control.bat";
-    New-File -path $startDir -Name $name -Value "$content" `
   }
 
 

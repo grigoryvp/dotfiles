@@ -1326,8 +1326,10 @@ onFastTimer() {
   }
 }
 
-SetTimer(onSlowTimer, 500)
-SetTimer(onFastTimer, 100)
+; High priority, make sure hotkey threads do not interrupt these and
+; change global state mid-flight
+SetTimer(onSlowTimer, 500, priority := 100)
+SetTimer(onFastTimer, 100, priority := 200)
 
 onDebugModeToggle(name, _, menu) {
   global appIsDebug

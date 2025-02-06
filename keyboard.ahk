@@ -748,15 +748,15 @@ onKey(key, dir) {
   ; If key was remapped on keydown, use the same remap on keyup, otherwise
   ; {; down}{caps down}{caps up}{; up} will result in {mouse down}{; up}
   if (dir == "up" and appKeysPressed.Has(key)) {
-    remappedKey := appKeysPressed[key]["remap_to"]
-    if (remappedKey) {
+    remapInfo := appKeysPressed[key]["remap_to"]
+    if (remapInfo) {
       if (appIsDebug) {
         name := getReadableKeyName(key)
-        remappedName := getReadableKeyName(remappedKey)
+        remappedName := getReadableKeyName(remapInfo["key"])
         appDebugLog.Push("=> from " . name . " {" . remappedName . " up}")
       }
-      Send("{" . remappedKey . " up}")
-      return remappedKey
+      Send(remapInfo["mods"] . "{" . remapInfo["key"] . " up}")
+      return remapInfo
     }
   }
 
@@ -797,11 +797,11 @@ onKey(key, dir) {
                 name := getReadableKeyName(to)
                 appDebugLog.Push("=> " . mods . "{" . name . " " . dir . "}")
               }
-              ; remember remap so it can be released on keyup
+              ; remember remap so it can be released on key up
+              remappedTo := Map("key", to, "mods", mods)
               if (appKeysPressed.Has(key)) {
-                appKeysPressed[key]["remap_to"] := to
+                appKeysPressed[key]["remap_to"] := remappedTo
               }
-              remappedTo := to
               Send(mods . "{" . to . " " . dir . "}")
             }
           }

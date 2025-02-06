@@ -63,7 +63,6 @@ sudo defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically
 sudo defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically false
 
 brew update --verbose
-brew tap homebrew/cask-fonts
 # For Python 3.10.0 on Apple Silicon
 brew install readline openssl
 # For Ruby 3.2

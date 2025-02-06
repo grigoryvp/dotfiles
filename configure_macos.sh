@@ -84,7 +84,12 @@ else
   echo "Press enter to confirm KeePassXC and view GitHub password"
   read -s
   open /Applications/KeePassXC.app ~/dotfiles/auth/passwords.kdbx
-  keepassxc-cli show -s ~/dotfiles/auth/passwords.kdbx github
+  while true; do
+    keepassxc-cli show -s ~/dotfiles/auth/passwords.kdbx github
+    if [ $? -eq 0 ]; then
+      break
+    fi
+  done
   cat ~/.ssh/id_rsa.pub
   echo "Add ssh to GitHub and press enter"
   read -s

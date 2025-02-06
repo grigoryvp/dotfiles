@@ -86,8 +86,6 @@ ln -fs ~/dotfiles/vscode_snippets $VSCODE_DIR/snippets
 mkdir -p ~/.config/mpv
 echo "save-position-on-quit" > ~/.config/mpv/mpv.conf
 echo "loop-file=inf" >> ~/.config/mpv/mpv.conf
-# Disable spotlight for better battery and SSD life:
-sudo mdutil -a -i off
 open /Applications/Karabiner-Elements.app
 echo "1) Add 'karabiner_grabber', 'karabiner_observer' for 'Input Monitoring'"
 echo "2) Allow '.Karabiner-...Manager.app' in 'Security & Privacy'"
@@ -120,6 +118,31 @@ cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
 hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
 rm "./HEY-arm64.dmg"
 
+# Input method name lookup for debug purpose
+curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
+git clone https://github.com/nodenv/nodenv.git ~/.nodenv
+git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
+git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
+git clone https://github.com/phpenv/phpenv.git ~/.phpenv
+git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
+git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
+git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.nodenv/bin:$PATH"
+export PATH="$HOME/.phpenv/bin:$PATH"
+export PATH="$HOME/.swiftenv/bin:$PATH"
+uv python install 3.13
+rbenv install 3.2.0
+rbenv global 3.2.0
+nodenv install 22.2.0
+nodenv global 22.2.0
+
+# Disable spotlight for better battery and SSD life:
+sudo mdutil -a -i off
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.
@@ -221,25 +244,5 @@ defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 defaults write com.apple.dock autohide-delay -float 999999
 # Tends to hang with 100% cpu load
 launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
-# Input method name lookup for debug purpose
-curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
-git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
-git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
-git clone https://github.com/phpenv/phpenv.git ~/.phpenv
-git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
-git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
-git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.nodenv/bin:$PATH"
-export PATH="$HOME/.phpenv/bin:$PATH"
-export PATH="$HOME/.swiftenv/bin:$PATH"
-uv python install 3.13
-rbenv install 3.2.0
-rbenv global 3.2.0
-nodenv install 22.2.0
-nodenv global 22.2.0 
+
 echo "Disable caps via Settings/Keyboard/Shortcuts/Modifier"

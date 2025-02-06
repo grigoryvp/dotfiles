@@ -632,8 +632,8 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "left_arrow",
-                                        "modifiers": ["right_command"]
+                                        "key_code": "a",
+                                        "modifiers": ["left_control"]
                                     }
                                 ],
                                 "type": "basic"
@@ -935,8 +935,8 @@
                                 },
                                 "to": [
                                     {
-                                        "key_code": "right_arrow",
-                                        "modifiers": ["right_command"]
+                                        "key_code": "e",
+                                        "modifiers": ["left_control"]
                                     }
                                 ],
                                 "type": "basic"

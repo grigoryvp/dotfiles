@@ -226,6 +226,10 @@ getReadableKeyName(key) {
 
 getLocale() {
   hwnd := WinGetID("A")
+  if (not hwnd) {
+    return ""
+  }
+
   threadId := DllCall("GetWindowThreadProcessId", "Ptr", hwnd, "Ptr", 0)
   locale := DllCall("GetKeyboardLayout", "Ptr", threadId, "Ptr")
   return locale
@@ -233,6 +237,9 @@ getLocale() {
 
 setLocale(locale) {
   hwnd := WinGetID("A")
+  if (not hwnd) {
+    return ""
+  }
   loop 10 {
     if (getLocale() == locale) {
       break
@@ -640,7 +647,16 @@ onKeyCommand(items, dir) {
   }
   if (dir == "up") {
     if (command == "winclose") {
-      winclose "A"
+      hwnd := WinGetID("A")
+      if (hwnd) {
+        if (WinGetTitle("A") == "Zoom Workplace") {
+          Run("taskkill /f /im zCefAgent.exe")
+          Run("taskkill /f /im Zoom.exe")
+        }
+        else {
+          winclose "A"
+        }
+      }
       return
     }
     if (command == "delete") {

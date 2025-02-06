@@ -348,7 +348,7 @@ alias rmf='rm -rf'
 my_list() {
   if [ -e /opt/homebrew/bin/lsd ]; then
     /opt/homebrew/bin/lsd "$@"
-  elif [ -e /usr/local/bin/exa ]; then
+  elif [ -e /usr/local/bin/eza ]; then
     /usr/local/bin/exa \
       -l \
       -a \

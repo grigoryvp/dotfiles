@@ -257,18 +257,25 @@ getLocale() {
 }
 
 setLocale(locale) {
-  hwnd := WinGetID("A")
-  if (not hwnd) {
-    return ""
-  }
-  loop 10 {
-    if (getLocale() == locale) {
-      break
+  setLocaleAsync() {
+    hwnd := WinGetID("A")
+    if (not hwnd) {
+      return ""
     }
-    ; Not always set from the first try
-    PostMessage(WM_INPUTLANGCHANGEREQUEST := 0x50, 0, locale, hwnd)
-    Sleep(100)
+    loop 10 {
+      if (getLocale() == locale) {
+        break
+      }
+      ; Not always set from the first try
+      PostMessage(WM_INPUTLANGCHANGEREQUEST := 0x50, 0, locale, hwnd)
+      Sleep(100)
+    }
   }
+  ; Don't block current thread and make it interruptable, this can mess
+  ; with the state and result in "alone" keys not correctly triggering
+  ; after switching language since language switch keys are not correctly
+  ; put in / removed from the appKeysPressed map.
+  SetTimer(setLocaleAsync, -10)
 }
 
 ;;  TODO: add in correct order (ex "m1" + "shift" before "m1")

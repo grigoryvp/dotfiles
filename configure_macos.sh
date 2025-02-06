@@ -124,6 +124,7 @@ code --install-extension emmanuelbeziat.vscode-great-icons
 code --install-extension esbenp.prettier-vscode
 code --install-extension formulahendry.auto-close-tag
 VSCODE_DIR=~/Library/Application\ Support/Code/User
+mkdir -p $VSCODE_DIR
 ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json
 ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json
 ln -fs ~/dotfiles/vscode_tasks.json $VSCODE_DIR/tasks.json

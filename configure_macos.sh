@@ -209,7 +209,7 @@ defaults write com.apple.dock show-recents false
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 # Don't send search queries to Apple
-defaults write com.apple.Safari UniversalSearchEnabled false
+sudo defaults write com.apple.Safari UniversalSearchEnabled false
 defaults write com.apple.Safari SuppressSearchSuggestions true
 # Show full URL in Safari address bar
 defaults write com.apple.Safari ShowFullURLInSmartSearchField true

@@ -893,6 +893,16 @@ onKeyup(key) {
     }
   }
 
+  if (not appKeysPressed.Has(key)) {
+    if (key == "lctrl" or key == "rctrl") {
+      ; {rctrl down}{w down} starts generating repeats for "w", but
+      ; stops generating repeats for "rctrl". After releasing "w", not
+      ; repeats are generated for "rctrl" and key is considered "stuck".
+      ; ignore it's key up so not "enter" and "tab" events are generated
+      return
+    }
+  }
+
   onKey(key, "up")
 
   if (appKeysPressed.Has(key)) {

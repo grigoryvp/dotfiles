@@ -16,8 +16,9 @@ if [ -e /opt/homebrew/bin/brew ]; then
 else
   # This will require sudo access and waits for confirmation
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+# Add homebrew to path for the rest of the script
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Group settings that require sudo together
 
@@ -34,8 +35,33 @@ sudo systemsetup -setrestartfreeze on
 sudo pmset -a displaysleep 0
 sudo pmset -a sleep 0
 
-# Add homebrew to path for the rest of the script
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Don't send search queries to Apple
+sudo defaults write com.apple.Safari UniversalSearchEnabled false
+sudo defaults write com.apple.Safari SuppressSearchSuggestions true
+# Show full URL in Safari address bar
+sudo defaults write com.apple.Safari ShowFullURLInSmartSearchField true
+# Safari home page
+sudo defaults write com.apple.Safari HomePage -string "about:blank"
+# Do not open files after downloading in Safari
+sudo defaults write com.apple.Safari AutoOpenSafeDownloads false
+# Hide Safari bookmarks bar
+sudo defaults write com.apple.Safari ShowFavoritesBar false
+# Enable Safari debug and develop menus.
+sudo defaults write com.apple.Safari IncludeInternalDebugMenu true
+sudo defaults write com.apple.Safari IncludeDevelopMenu true
+# Safari search on page with "contains"
+sudo defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly false
+# Disable Safari auto correct
+sudo defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled false
+# Disable Safari auto fill
+sudo defaults write com.apple.Safari AutoFillFromAddressBook false
+sudo defaults write com.apple.Safari AutoFillPasswords false
+sudo defaults write com.apple.Safari AutoFillCreditCardData false
+sudo defaults write com.apple.Safari AutoFillMiscellaneousForms false
+# Block pop-ups in Safari
+sudo defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically false
+sudo defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically false
+
 brew update --verbose
 brew tap homebrew/cask-fonts
 # For Python 3.10.0 on Apple Silicon
@@ -208,32 +234,6 @@ defaults write com.apple.dock show-recents false
 # Require password
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
-# Don't send search queries to Apple
-sudo defaults write com.apple.Safari UniversalSearchEnabled false
-defaults write com.apple.Safari SuppressSearchSuggestions true
-# Show full URL in Safari address bar
-defaults write com.apple.Safari ShowFullURLInSmartSearchField true
-# Safari home page
-defaults write com.apple.Safari HomePage -string "about:blank"
-# Do not open files after downloading in Safari
-defaults write com.apple.Safari AutoOpenSafeDownloads false
-# Hide Safari bookmarks bar
-defaults write com.apple.Safari ShowFavoritesBar false
-# Enable Safari debug and develop menus.
-defaults write com.apple.Safari IncludeInternalDebugMenu true
-defaults write com.apple.Safari IncludeDevelopMenu true
-# Safari search on page with "contains"
-defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly false
-# Disable Safari auto correct
-defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled false
-# Disable Safari auto fill
-defaults write com.apple.Safari AutoFillFromAddressBook false
-defaults write com.apple.Safari AutoFillPasswords false
-defaults write com.apple.Safari AutoFillCreditCardData false
-defaults write com.apple.Safari AutoFillMiscellaneousForms false
-# Block pop-ups in Safari
-defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically false
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically false
 # Copy email without name in Mail
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard false
 # Disable inline attachments in Mail
@@ -243,6 +243,6 @@ defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 # Don't auto-show dock on mouse hover (m1-slash instead)
 defaults write com.apple.dock autohide-delay -float 999999
 # Tends to hang with 100% cpu load
-launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
+launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist 2>/devl/null
 
 echo "Disable caps via Settings/Keyboard/Shortcuts/Modifier"

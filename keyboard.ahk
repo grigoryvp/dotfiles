@@ -464,6 +464,11 @@ getMonitors() {
 }
 
 setCurWinPos(pos) {
+  hwnd := WinGetID("A")
+  if (not hwnd) {
+    return
+  }
+
   wndInfo := getCurWinPos()
   monitors := getMonitors()
   monIdx := monitorFromWnd(monitors, wndInfo)
@@ -552,6 +557,11 @@ setCurWinPos(pos) {
 }
 
 setCurWinMon(dir) {
+  hwnd := WinGetID("A")
+  if (not hwnd) {
+    return
+  }
+
   wndInfo := getCurWinPos()
   monitors := getMonitors()
   monIdx := monitorFromWnd(monitors, wndInfo)

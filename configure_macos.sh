@@ -26,7 +26,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 sudo mdutil -a -i off
 # Time zone from "sudo systemsetup -listtimezones"
 #! This crashes AFTER setting time zone, this is normal
-sudo systemsetup -settimezone "Europe/Amsterdam" > 2>/dev/null
+sudo systemsetup -settimezone "Europe/Amsterdam" 2>/dev/null
 # Wake on lid open
 sudo pmset -a lidwake 1
 # Restart on freeze

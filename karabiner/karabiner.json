@@ -583,6 +583,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "'m1-shift-h' for shift-left-arrow (vim-like + selection modify)",
@@ -604,6 +614,46 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "'m1-m2-w' for command-left-arrow (line begin)",
+                                "from": {
+                                    "key_code": "w"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_arrow",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "'m1-w' for home",
@@ -836,6 +886,16 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "'m1-shift-l' for shift-right-arrow (vim-like + selection modify)",
@@ -857,6 +917,46 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "'m1-m2-t' for command-right-arrow (line end)",
+                                "from": {
+                                    "key_code": "t"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_arrow",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "'m1-t' for end",

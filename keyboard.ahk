@@ -1108,6 +1108,8 @@ addRemap("h", ["m1", "shift"], "left", ["shift"])
 ;;  'm1-h' for left arrow (vim-like).
 addRemap("h", ["m1"], "left")
 
+;;  'm1-m2-w' for home (line begin)
+addRemap("w", ["m1", "m2"], "home")
 ;;  'm1-w' for home.
 addRemap("w", ["m1"], "home")
 
@@ -1140,6 +1142,8 @@ addRemap("l", ["m1", "shift"], "right", ["shift"])
 ;;  'm1-l' for right arrow (vim-like).
 addRemap("l", ["m1"], "right")
 
+;;  'm1-m2-t' for end (line end)
+addRemap("t", ["m1", "m2"], "end")
 ;;  'm1-t' for end.
 addRemap("t", ["m1"], "end")
 ;;  'm2-t' for phone
@@ -1343,7 +1347,7 @@ onFastTimer() {
     ; No "keydown" events for 1sec - they are being received periodically
     ; if key is actually pressed down. This means that "key up" event was
     ; missed.
-    if (keyInfo["stuck_counter"] > 8) {
+    if (keyInfo["stuck_counter"] > 7) {
       toRemove.Push(key)
     }
   }

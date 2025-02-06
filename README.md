@@ -42,13 +42,10 @@ pip install --upgrade pip
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
-# phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
-# phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
-# Install https://macos.telegram.org/
 # Menu: command-drag out "spotlight", "wifi"
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Drop "/System/Library/CoreServices/Finder.app" into dock
-# Add "gmail" (or use "mimestream"), "google cal", "trello" as chrome apps
+# Add "gmail" (or use "mimestream"), "trello" as chrome apps
 # Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # In "Preferences/Keyboard/Input Sources":
@@ -74,7 +71,7 @@ pip install --upgrade pip
 # Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
 # Disable iTerm2 Settings/General/Selection/Clicking
-# Enable add noTunes in Settings/General/Login
+# Add noTunes in Settings/General/Login
 # Configure hammerspoon for autostart
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.
@@ -87,6 +84,7 @@ pip install --upgrade pip
 # Import OBS Scenes
 # Install https://onekey.so/download/
 # Install https://tonkeeper.com/pro
+# Install https://macos.telegram.org/
 # Install Parallels Desktop
 # Install Microsoft PowerPoint
 # Install Pixelmator Pro from App Store
@@ -96,6 +94,8 @@ pip install --upgrade pip
 # mas install 937984704
 # Install Windows App (RDP client)
 # mas install 1295203466
+# phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
+# phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # For old macOS versions:
 # * Disable welcome screen guest user in "Preferences/Users & Groups"
 # * Add 'karabiner_grabber', 'karabiner_observer',

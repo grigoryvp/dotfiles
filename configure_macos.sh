@@ -18,6 +18,22 @@ else
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+# Group settings that require sudo together
+
+# Disable spotlight for better battery and SSD life:
+sudo mdutil -a -i off
+# Time zone from "sudo systemsetup -listtimezones"
+#! This crashes AFTER setting time zone, this is normal
+sudo systemsetup -settimezone "Europe/Amsterdam" > 2>/dev/null
+# Wake on lid open
+sudo pmset -a lidwake 1
+# Restart on freeze
+sudo systemsetup -setrestartfreeze on
+# No sleep if not explicitly instructed to do so
+sudo pmset -a displaysleep 0
+sudo pmset -a sleep 0
+
 # Add homebrew to path for the rest of the script
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew update --verbose
@@ -90,19 +106,11 @@ mkdir -p ~/.config/mpv
 echo "save-position-on-quit" > ~/.config/mpv/mpv.conf
 echo "loop-file=inf" >> ~/.config/mpv/mpv.conf
 open /Applications/Karabiner-Elements.app
-echo "1) Add 'karabiner_grabber', 'karabiner_observer' for 'Input Monitoring'"
-echo "2) Allow '.Karabiner-...Manager.app' in 'Security & Privacy'"
-echo "3) Complete the 'Keyboard Setup Assistant'"
-echo "4) Press enter"
+echo "Add Karabiner to accessability and press enter"
 read -s
 # Entire config dir should be symlinked
 rm -rf ~/.config/karabiner 
 ln -fs ~/dotfiles/karabiner ~/.config/karabiner
-
-# Amphetamine
-mas install 937984704
-# Windows App (RDP client)
-mas install 1295203466
 
 echo "Installing uvc-util..."
 git clone https://github.com/jtfrey/uvc-util.git
@@ -144,8 +152,6 @@ rbenv global 3.2.0
 nodenv install 22.2.0
 nodenv global 22.2.0
 
-# Disable spotlight for better battery and SSD life:
-sudo mdutil -a -i off
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.
@@ -199,15 +205,6 @@ defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0
 # No recent apps in dock
 defaults write com.apple.dock show-recents false
-# Time zone from "sudo systemsetup -listtimezones"
-sudo systemsetup -settimezone "Europe/Moscow" > /dev/null
-# Wake on lid open
-sudo pmset -a lidwake 1
-# Restart on freeze
-sudo systemsetup -setrestartfreeze on
-# No sleep
-sudo pmset -a displaysleep 0
-sudo pmset -a sleep 0
 # Require password
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0

@@ -29,27 +29,6 @@ brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install mpv --cask
 brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar exa lsd bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar tailscale docker double-commander elgato-control-center rode-central mimestream vlc zoom
-# Amphetamine
-mas install 937984704
-# Windows App (RDP client)
-mas install 1295203466
-
-echo "Installing uvc-util..."
-git clone https://github.com/jtfrey/uvc-util.git
-cd uvc-util/src
-gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
-chmod +x uvc-util
-cp uvc-util /Users/user/.local/bin/
-
-# Download and install HEY.com mail app
-echo "Downloading HEY.com client..."
-curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
-hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
-vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
-echo "Installing ${vol_name} ..."
-cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
-hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
-rm "./HEY-arm64.dmg"
 
 # Need to check for network issues
 # brew install orbstack
@@ -118,6 +97,29 @@ read -s
 # Entire config dir should be symlinked
 rm -rf ~/.config/karabiner 
 ln -fs ~/dotfiles/karabiner ~/.config/karabiner
+
+# Amphetamine
+mas install 937984704
+# Windows App (RDP client)
+mas install 1295203466
+
+echo "Installing uvc-util..."
+git clone https://github.com/jtfrey/uvc-util.git
+cd uvc-util/src
+gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
+chmod +x uvc-util
+cp uvc-util /Users/user/.local/bin/
+
+# Download and install HEY.com mail app
+echo "Downloading HEY.com client..."
+curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
+hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
+vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
+echo "Installing ${vol_name} ..."
+cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
+hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
+rm "./HEY-arm64.dmg"
+
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.

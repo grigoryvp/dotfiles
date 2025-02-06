@@ -150,33 +150,54 @@ arrayToStr(container) {
   return res
 }
 
-
-DebugDebounce(params*) {
-  msg := ""
-  for idx, param in params {
+joinToStr(array, quote := false) {
+  res := ""
+  for idx, param in array {
     if (idx > 1) {
-      msg .= " "
+      res .= " "
     }
     if (Type(param) == "String") {
-      msg .= "`"" . param . "`""
+      if (quote) {
+        res .= "`"" . param . "`""
+      }
+      else {
+        res .= param
+      }
     }
     else if (Type(param) == "Array") {
-      msg .= arrayToStr(param)
+      res .= arrayToStr(param)
     }
     else if (Type(param) == "Map") {
-      msg .= mapToStr(param)
+      res .= mapToStr(param)
     }
     else if (Type(param) == "RegExMatchInfo") {
-      msg .= "RegExMatchInfo(count=" . param.Count . ")"
+      res .= "RegExMatchInfo(count=" . param.Count . ")"
     }
     else {
-      msg .= param
+      res .= param
     }
   }
+  return res
+}
+
+debugDebounce(params*) {
   global appLastDebug
+  msg := joinToStr(params, quote := true)
   if (msg != appLastDebug) {
     OutputDebug(msg)
     appLastDebug := msg
+  }
+}
+
+debugLogDebounce(params*) {
+  msg := joinToStr(params)
+  if (appDebugLog.Length and appDebugLog[appDebugLog.Length] == msg) {
+    ; debounce
+    return
+  }
+  appDebugLog.Push(msg)
+  if (appDebugLog.Length > MAX_DEBUG_LOG) {
+    appDebugLog.RemoveAt(1)
   }
 }
 
@@ -291,7 +312,7 @@ modsPressedForKey(mods, key) {
         if (curKey != key) {
           return false
         }
-        if (not keyInfo["alone"]) {
+        else if (not keyInfo["alone"]) {
           return false
         }
       }
@@ -753,7 +774,7 @@ onKey(key, dir) {
       if (appIsDebug) {
         name := getReadableKeyName(key)
         remappedName := getReadableKeyName(remapInfo["key"])
-        appDebugLog.Push("=> from " . name . " {" . remappedName . " up}")
+        debugLogDebounce("=> from " . name . " {" . remappedName . " up}")
       }
       Send(remapInfo["mods"] . "{" . remapInfo["key"] . " up}")
       return remapInfo
@@ -781,7 +802,7 @@ onKey(key, dir) {
             if (dir == "up") {
               if (appIsDebug) {
                 name := getReadableKeyName(to)
-                appDebugLog.Push("=> " . mods . "{" . name . "}")
+                debugLogDebounce("=> " . mods . "{" . name . "}")
               }
               remappedTo := to
               Send(mods . "{" . to . "}")
@@ -793,14 +814,14 @@ onKey(key, dir) {
             ; Don't send some buttons like left mouse button repeatedly
             ; if configured so (ex they are "hold type")
             if (dir == "up" or not isNorepeat or not isPressed) {
-              if (appIsDebug) {
-                name := getReadableKeyName(to)
-                appDebugLog.Push("=> " . mods . "{" . name . " " . dir . "}")
-              }
               ; remember remap so it can be released on key up
               remappedTo := Map("key", to, "mods", mods)
               if (appKeysPressed.Has(key)) {
                 appKeysPressed[key]["remap_to"] := remappedTo
+              }
+              if (appIsDebug) {
+                name := getReadableKeyName(to)
+                debugLogDebounce("=> " . mods . "{" . name . " " . dir . "}")
               }
               Send(mods . "{" . to . " " . dir . "}")
             }
@@ -808,7 +829,7 @@ onKey(key, dir) {
         }
         else if (Type(to) == "Array") {
           if (appIsDebug) {
-            appDebugLog.Push("=> " . arrayToStr(to))
+            debugLogDebounce("=> " . arrayToStr(to))
           }
           onKeyCommand(to.Clone(), dir)
         }
@@ -816,9 +837,9 @@ onKey(key, dir) {
           ;; assertion
         }
         if (not includes(fromMods, "always")) {
-          ;; skip original key behaviour
+          ;; skip original key behavior
           if (appIsDebug) {
-            appDebugLog.Push("=> skipped")
+            debugLogDebounce("=> original skipped")
           }
           return remappedTo
         }
@@ -839,7 +860,7 @@ onKey(key, dir) {
     }
     if (appIsDebug) {
       name := getReadableKeyName(key)
-      appDebugLog.Push("=> {blind}{" . name . " " . dir . "}")
+      debugLogDebounce("=> {blind}{" . name . " " . dir . "}")
     }
     Send("{blind}{" . key . " " . dir . "}")
   }
@@ -850,10 +871,7 @@ onKeydown(key) {
   isPressed := appKeysPressed.Has(key)
   if (appIsDebug and not isPressed) {
     name := getReadableKeyName(key)
-    appDebugLog.Push(name . " down")
-    if (appDebugLog.Length > MAX_DEBUG_LOG) {
-      appDebugLog.RemoveAt(1)
-    }
+    debugLogDebounce(name . " down")
   }
 
   remappedTo := onKey(key, "down")
@@ -903,18 +921,18 @@ onKeyup(key) {
     if (appKeysPressed.Has(key)) {
       alone := appKeysPressed[key]["alone"]
     }
-    appDebugLog.Push(name . " up [alone=" . alone . "]")
-    if (appDebugLog.Length > MAX_DEBUG_LOG) {
-      appDebugLog.RemoveAt(1)
-    }
+    debugLogDebounce(name . " up [alone=" . alone . "]")
   }
 
   if (not appKeysPressed.Has(key)) {
     if (key == "lctrl" or key == "rctrl") {
       ; {rctrl down}{w down} starts generating repeats for "w", but
-      ; stops generating repeats for "rctrl". After releasing "w", not
+      ; stops generating repeats for "rctrl". After releasing "w", no
       ; repeats are generated for "rctrl" and key is considered "stuck".
-      ; ignore it's key up so not "enter" and "tab" events are generated
+      ; ignore it's key up so no "enter" and "tab" events are generated
+      if (appIsDebug) {
+        debugLogDebounce("not in list, mod, skipping")
+      }
       return
     }
   }
@@ -1347,7 +1365,7 @@ onFastTimer() {
     ; No "keydown" events for 1sec - they are being received periodically
     ; if key is actually pressed down. This means that "key up" event was
     ; missed.
-    if (keyInfo["stuck_counter"] > 7) {
+    if (keyInfo["stuck_counter"] > 6) {
       toRemove.Push(key)
     }
   }

@@ -91,6 +91,10 @@ pip install --upgrade pip
 # Install Pixelmator Pro from App Store
 # Install Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
+# Install Amphetamine
+# mas install 937984704
+# Install Windows App (RDP client)
+# mas install 1295203466
 # For old macOS versions:
 # * Disable welcome screen guest user in "Preferences/Users & Groups"
 # * Add 'karabiner_grabber', 'karabiner_observer',

@@ -69,6 +69,7 @@ pip install --upgrade pip
 # Remove all widgets and add notes as widget
 # Disable sleep in "Preferences/Energy Saver"
 # Disable sound effects in "Preferences/Sound/Effects"
+# Disable caps via "Settings/Keyboard/Shortcuts/Modifier"
 # Enable password lock in "Preferences/Security/General/Require password"
 # Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"

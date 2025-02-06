@@ -14,8 +14,8 @@ read -s
 if [ -e /opt/homebrew/bin/brew ]; then
   echo "Homebrew already installed"
 else
-  yes "" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  # This will require sudo access and waits for confirmation
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 # Add homebrew to path for the rest of the script
 eval "$(/opt/homebrew/bin/brew shellenv)"

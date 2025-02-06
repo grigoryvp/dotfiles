@@ -5,15 +5,6 @@ if ! [ -e ~/.ssh/known_hosts ]; then
   # Allows git clone without fingerprint confirmation
   ssh-keyscan github.com >> ~/.ssh/known_hosts
 fi
-# Download and install HEY.com mail app
-echo "Downloading HEY.com client..."
-curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
-hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
-vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
-echo "Installing ${vol_name} ..."
-cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
-hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
-rm "./HEY-arm64.dmg"
 # For Apple Silicon
 softwareupdate --install-rosetta --agree-to-license
 # XCode command-line tools
@@ -49,6 +40,16 @@ cd uvc-util/src
 gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
 chmod +x uvc-util
 cp uvc-util /Users/user/.local/bin/
+
+# Download and install HEY.com mail app
+echo "Downloading HEY.com client..."
+curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
+hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
+vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
+echo "Installing ${vol_name} ..."
+cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
+hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
+rm "./HEY-arm64.dmg"
 
 # Need to check for network issues
 # brew install orbstack

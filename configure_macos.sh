@@ -174,10 +174,10 @@ export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.phpenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
 uv python install 3.13
-rbenv install 3.2.0
-rbenv global 3.2.0
-nodenv install 22.2.0
-nodenv global 22.2.0
+rbenv install 3.4.1
+rbenv global 3.4.1
+nodenv install 23.7.0
+nodenv global 23.7.0
 
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
@@ -245,5 +245,3 @@ defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 defaults write com.apple.dock autohide-delay -float 999999
 # Tends to hang with 100% cpu load
 launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist 2>/devl/null
-
-echo "Disable caps via Settings/Keyboard/Shortcuts/Modifier"

@@ -79,9 +79,6 @@ if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else
   git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
-  echo "Press enter to confirm KeePassXC and view GitHub password"
-  read -s
-  open /Applications/KeePassXC.app ~/dotfiles/auth/passwords.kdbx
   while true; do
     keepassxc-cli show -s ~/dotfiles/auth/passwords.kdbx github
     if [ $? -eq 0 ]; then

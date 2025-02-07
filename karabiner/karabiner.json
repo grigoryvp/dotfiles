@@ -2805,7 +2805,7 @@
                     }
                 ]
             },
-            "name": "grigoryvp profile",
+            "name": "main",
             "selected": true,
             "simple_modifications": [
                 {
@@ -2833,6 +2833,9 @@
                 "country_code": 0,
                 "keyboard_type_v2": "ansi"
             }
+        }, {
+            "name": "empty",
+            "selected": false
         }
     ]
 }

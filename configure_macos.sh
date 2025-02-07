@@ -165,14 +165,15 @@ git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
 git clone https://github.com/nodenv/nodenv.git ~/.nodenv
 git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
 git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
+git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+# Seems not working on macOS, maybe switch to phpvm?
 git clone https://github.com/phpenv/phpenv.git ~/.phpenv
 git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
 git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
-git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
-export PATH="$HOME/.phpenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
+export PATH="$HOME/.phpenv/bin:$PATH"
 uv python install 3.13
 rbenv install 3.4.1
 rbenv global 3.4.1

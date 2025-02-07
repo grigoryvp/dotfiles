@@ -627,9 +627,7 @@
                                     }
                                 ],
                                 "description": "'m1-m2-w' for command-left-arrow (line begin)",
-                                "from": {
-                                    "key_code": "w"
-                                },
+                                "from": { "key_code": "w" },
                                 "to": [
                                     {
                                         "key_code": "a",
@@ -930,9 +928,7 @@
                                     }
                                 ],
                                 "description": "'m1-m2-t' for command-right-arrow (line end)",
-                                "from": {
-                                    "key_code": "t"
-                                },
+                                "from": { "key_code": "t" },
                                 "to": [
                                     {
                                         "key_code": "e",
@@ -1040,15 +1036,13 @@
                                     }
                                 ],
                                 "description": "m1-m2-backslash for expose",
-                                "from": {
-                                    "key_code": "backslash"
-                                },
-                                "to": [{
-                                    "key_code": "up_arrow",
-                                    "modifiers": [
-                                        "left_control"
-                                    ]
-                                }],
+                                "from": { "key_code": "backslash" },
+                                "to": [
+                                    {
+                                        "key_code": "up_arrow",
+                                        "modifiers": ["left_control"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -2711,8 +2705,8 @@
                             {
                                 "description": "alt-space for main ChatGPT window",
                                 "from": {
-                                  "key_code": "spacebar",
-                                  "modifiers": { "mandatory": ["left_option"] }
+                                    "key_code": "spacebar",
+                                    "modifiers": { "mandatory": ["left_option"] }
                                 },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}'" }],
                                 "type": "basic"
@@ -2833,9 +2827,10 @@
                 "country_code": 0,
                 "keyboard_type_v2": "ansi"
             }
-        }, {
+        },
+        {
             "name": "empty",
-            "selected": false
+            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
         }
     ]
 }

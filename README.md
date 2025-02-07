@@ -42,25 +42,27 @@ pip install --upgrade pip
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
-# Menu: command-drag out "spotlight", "wifi"
-# Menu: hammerspoon, lunar, tailscale, command center, time
-# Drop "/System/Library/CoreServices/Finder.app" into dock
-# Add "gmail" (or use "mimestream"), "trello" as chrome apps
-# Dock: iTerm2, vscode, browser, Finder, Keepass, Telegram, Mail, Cal, Trello
+# Configure hammerspoon for autostart
+# Command-drag-out menu icons except clock (until the "x" mark appears)
+# Remove all dock icons except launchpad, calendar, settings
+# Add "trello" as chrome app
+# Install https://macos.telegram.org/
+# Dock: iTerm2, VSCode, Chrome, Double, Keepass, Telegram, Mail, Cal, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
+# In "Settings/Desktop and Dock":
+# * Disable animation and suggested items
+# * Enable dock auto-hide
+# Menu: hammerspoon, lunar, tailscale, command center, time
 # In "Preferences/Keyboard/Input Sources":
 # * Add "Russian-PC", "Japanese-Romaji"
 # In "Preferences/Keyboard/Shortcuts":
 # * Remove "input sources" ^-space shortcuts
-# * Remove "⇧⌘/" app shortcut
+# * Remove "⇧⌘/" app shortcut from "All Applications"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
 # In "Preferences/Keyboard/Shortcuts/Mission Control":
 # * Add "⇧⌘\" to "Notification Center"
 # Disable all in "Preferences/Trackpad/More Gestures":
-# In "Preferences/Dock & Menu Bar":
-# * Remove all icons except 24h clock
-# * Enable dock auto-hide
 # In "Preferences/Mission Control/Hot Corners" disable quick notes
 # In "Preferences/Keyboard/Shortcuts/Function Keys" enable F-keys.
 # Remove all widgets and add notes as widget
@@ -72,7 +74,6 @@ pip install --upgrade pip
 # Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
 # Disable iTerm2 Settings/General/Selection/Clicking
 # Add noTunes in Settings/General/Login
-# Configure hammerspoon for autostart
 # Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.
 # Configure ChatGPT for autostart and "dock only" icon.
@@ -84,7 +85,6 @@ pip install --upgrade pip
 # Import OBS Scenes
 # Install https://onekey.so/download/
 # Install https://tonkeeper.com/pro
-# Install https://macos.telegram.org/
 # Install Parallels Desktop
 # Install Microsoft PowerPoint
 # Install Pixelmator Pro from App Store

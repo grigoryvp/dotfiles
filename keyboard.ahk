@@ -1424,3 +1424,5 @@ onDebugCopy(*) {
 
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
+
+; TODO: custom emoji picker

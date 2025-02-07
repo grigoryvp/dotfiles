@@ -725,6 +725,9 @@ onKeyCommand(items, dir) {
       return
     }
     if (command == "lock") {
+      ; Locking workstation prevents "key up" events and results in
+      ; "stuck" meta.
+      appMeta.Clear()
       DllCall("LockWorkStation")
       return
     }

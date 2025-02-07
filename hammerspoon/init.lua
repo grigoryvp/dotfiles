@@ -1,6 +1,6 @@
--- TODO: control elgato lights: 
 -- TODO: change ICMP to TCP since ICMP works while TCP may fail with
 --       the "no buffer space available" error.
+-- TODO: add "karabiner start/stop" commands for initial setup
 -- See ./.vscode/settings.json for linter configuration
 
 -- "hs" cli tool for remote communication

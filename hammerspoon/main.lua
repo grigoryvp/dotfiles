@@ -1230,10 +1230,25 @@ function App:createMenu()
     elgato:switch(true)
   end, self.MENU_LIGHTS_ON)
 
-  local name = "Turn off lights"
-  self.menuItem:addSubmenuItem(name, function()
+  self.menuItem:addSubmenuItem("Turn off lights", function()
     elgato:switch(false)
   end, self.MENU_LIGHTS_OFF)
+
+  self.menuItem:addSubmenuItem("Enable Karabiner", function()
+    local appDir = "/Library/Application Support/org.pqrs/Karabiner-Elements"
+    local appBin = appDir .. "/bin/karabiner_cli"
+    local args = {"--select-profile", "main"}
+    local task = hs.task.new(appBin, function() end, args)
+    task:start()
+  end)
+
+  self.menuItem:addSubmenuItem("Disable Karabiner", function()
+    local appDir = "/Library/Application Support/org.pqrs/Karabiner-Elements"
+    local appBin = appDir .. "/bin/karabiner_cli"
+    local args = {"--select-profile", "empty"}
+    local task = hs.task.new(appBin, function() end, args)
+    task:start()
+  end)
 end
 
 function App:showCharPicker()

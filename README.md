@@ -49,51 +49,53 @@ pip install --upgrade pip
 # Install https://macos.telegram.org/
 # Dock: iTerm2, VSCode, Chrome, Double, Keepass, Telegram, Mail, Cal, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
+# Menu: hammerspoon, lunar, tailscale, command center, time
+# Add noTunes.app in Settings/General/Login
 # In "Settings/Desktop and Dock":
 # * Disable animation and suggested items
+# * Disable mission control hot corners
 # * Enable dock auto-hide
-# Menu: hammerspoon, lunar, tailscale, command center, time
-# In "Preferences/Keyboard/Input Sources":
-# * Add "Russian-PC", "Japanese-Romaji"
-# In "Preferences/Keyboard/Shortcuts":
+# Disable sound effects in "Settings/Sound/Effects"
+# In "Settings/Lock Screen"
+# * Disable Screen Saver
+# * Set "require password" to "Immediately"
+# Disable Music access to bluetooth in /Preferences/Privacy/Bluetooth"
+# In "Settings/Keyboard" disable brightness
+# In "Settings/Keyboard/Shortcuts":
 # * Remove "input sources" ^-space shortcuts
 # * Remove "⇧⌘/" app shortcut from "All Applications"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
-# In "Preferences/Keyboard/Shortcuts/Mission Control":
-# * Add "⇧⌘\" to "Notification Center"
-# Disable all in "Preferences/Trackpad/More Gestures":
-# In "Preferences/Mission Control/Hot Corners" disable quick notes
-# In "Preferences/Keyboard/Shortcuts/Function Keys" enable F-keys.
+# * Add "⇧⌘\" for "Mission Control/Notification Center"
+# * Enable F-keys in "Function keys"
+# * Disable caps in "Modifier Keys"
+# In "Settings/Keyboard/Input Sources":
+# * Add "Russian-PC", "Japanese-Romaji"
+# Disable all in "Settings/Trackpad/More Gestures":
 # Remove all widgets and add notes as widget
-# Disable sleep in "Preferences/Energy Saver"
-# Disable sound effects in "Preferences/Sound/Effects"
-# Disable caps via "Settings/Keyboard/Shortcuts/Modifier"
-# Enable password lock in "Preferences/Security/General/Require password"
-# Configure max "tracking speed" in "Preferences/Trackpad/Point & Click"
-# Configure iTerm2 theme, set "JetBrainsMono Nerd Font"
-# Disable iTerm2 Settings/General/Selection/Clicking
-# Add noTunes in Settings/General/Login
-# Configure KeePass
 # Configure default email reader in the "Apple Mail" app settings.
+# For iTerm2 settings
+# * Disable /General/Selection/Clicking
+# * Set Appearance/General/Theme to "Dark"
+# * Set Appearance/Windows/Hide scrollbars
+# * Set Profiles/Colors/Color presets to "Solarized Dark"
+# * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
+# Configure KeePass
 # Configure ChatGPT for autostart and "dock only" icon.
-# Configure Amphetamine auto session on start and wake.
 # Configure F2 to cm_HorizontalFilePanels for Double Commander
 # Add KeyLights, blue temp, 90% back, 40% front
-# Disable keyboard backlight in the control center
-# Disable Music access to bluetooth in /Preferences/Privacy/Bluetooth"
 # Import OBS Scenes
-# Install https://onekey.so/download/
-# Install https://tonkeeper.com/pro
-# Install Parallels Desktop
-# Install Microsoft PowerPoint
-# Install Pixelmator Pro from App Store
 # Install Xcode (this may take HOURS, better to do with App Store):
 # mas install 497799835
 # Install Amphetamine
 # mas install 937984704
 # Install Windows App (RDP client)
 # mas install 1295203466
+# Install https://onekey.so/download/
+# Install https://tonkeeper.com/pro
+# Install Parallels Desktop
+# Install Microsoft PowerPoint
+# Install Pixelmator Pro from App Store
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # For old macOS versions:

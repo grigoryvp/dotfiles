@@ -63,8 +63,8 @@ class App {
       - Disable autostart in Task Scheduler
       - Disable snap assist
       - Disable touchpad click and set maximum speed
-      - Add "gmail", "google calendar", "trello" as chrome apps and pin
-      - Pin pwsh, vscode, web, files, keepass, telegram, mail, cal, slack
+      - Add "gmail", "trello" as chrome apps and pin
+      - Pin term, vscode, web, double, keepass, telegram, mail, notionc, slack
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
       - Switch nVidia display mode to "optimus" and drag gpu activity icon
@@ -297,6 +297,12 @@ class App {
       $this._installApp("Elgato.ControlCenter");
       # ChatGPT
       $this._installApp("9NT1R1C2HH7J");
+      # Notion Calendar
+      $this._installApp("Notion.NotionCalendar");
+      # Torrent client
+      $this._installApp("qBittorrent.qBittorrent");
+      # Video player
+      $this._installApp("VideoLAN.VLC");
     }
 
     if ($this._isTest) {

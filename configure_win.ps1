@@ -63,8 +63,7 @@ class App {
       - Disable autostart in Task Scheduler
       - Disable snap assist
       - Disable touchpad click and set maximum speed
-      - Add "gmail", "trello" as chrome apps and pin
-      - Pin term, vscode, web, double, keepass, telegram, mail, notionc, slack
+      - Pin term, vscode, web, double, pass, telegram, spark, notionc, trello
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
       - Switch nVidia display mode to "optimus" and drag gpu activity icon
@@ -303,6 +302,10 @@ class App {
       $this._installApp("qBittorrent.qBittorrent");
       # Video player
       $this._installApp("VideoLAN.VLC");
+      # Spark Mail
+      $this._installApp("XPFCS9QJBKTHVZ");
+      # Trello client
+      $this._installApp("9NBLGGH4XXVW");
     }
 
     if ($this._isTest) {

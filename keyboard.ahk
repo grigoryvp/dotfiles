@@ -246,7 +246,7 @@ getReadableKeyName(key) {
 }
 
 getLocale() {
-  hwnd := WinGetID("A")
+  hwnd := WinExist("A")
   if (not hwnd) {
     return ""
   }
@@ -258,7 +258,7 @@ getLocale() {
 
 setLocale(locale) {
   setLocaleAsync() {
-    hwnd := WinGetID("A")
+    hwnd := WinExist("A")
     if (not hwnd) {
       return ""
     }
@@ -464,7 +464,7 @@ getMonitors() {
 }
 
 setCurWinPos(pos) {
-  hwnd := WinGetID("A")
+  hwnd := WinExist("A")
   if (not hwnd) {
     return
   }
@@ -557,7 +557,7 @@ setCurWinPos(pos) {
 }
 
 setCurWinMon(dir) {
-  hwnd := WinGetID("A")
+  hwnd := WinExist("A")
   if (not hwnd) {
     return
   }
@@ -685,7 +685,7 @@ onKeyCommand(items, dir) {
   }
   if (dir == "up") {
     if (command == "winclose") {
-      hwnd := WinGetID("A")
+      hwnd := WinExist("A")
       if (hwnd) {
         if (WinGetTitle("A") == "Zoom Workplace") {
           Run("taskkill /f /im zCefAgent.exe")

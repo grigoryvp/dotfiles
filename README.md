@@ -63,7 +63,6 @@ pip install --upgrade pip
 # * Add "Russian-PC", "Japanese-Romaji"
 # Disable all in "Settings/Trackpad/More Gestures":
 # Remove all widgets and add notes as widget
-# Configure default email reader in the "Apple Mail" app settings.
 # For iTerm2 settings
 # * Disable /General/Selection/Clicking
 # * Set Appearance/General/Theme to "Dark"

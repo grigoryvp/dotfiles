@@ -272,6 +272,8 @@ defaults -currentHost write com.apple.screensaver idleTime -int 0
 # Ask for password immediately after screen is locked
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
+# Disable keyboard backlight (blind typing)
+sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Keyboard Backlight" -int 0
 
 # Restart Dock to apply change
 killall Dock

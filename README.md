@@ -51,9 +51,6 @@ pip install --upgrade pip
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login
-# In "Settings/Lock Screen"
-# * Disable Screen Saver
-# * Set "require password" to "Immediately"
 # Disable Music access to bluetooth in /Preferences/Privacy/Bluetooth"
 # In "Settings/Keyboard" disable brightness
 # In "Settings/Keyboard/Shortcuts":

@@ -267,6 +267,11 @@ sudo nvram SystemAudioVolume=" "
 defaults write com.apple.systemsound "com.apple.sound.uiaudio.enabled" -int 0
 # Mute volume change feedback
 defaults write -g "com.apple.sound.beep.feedback" -bool false
+# Disable screen saver (manually turn off screen by locking the laptop)
+defaults -currentHost write com.apple.screensaver idleTime -int 0
+# Ask for password immediately after screen is locked
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Restart Dock to apply change
 killall Dock

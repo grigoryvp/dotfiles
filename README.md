@@ -47,7 +47,7 @@ pip install --upgrade pip
 # Remove all dock icons except launchpad, calendar, settings
 # Add "trello" as chrome app
 # Install https://macos.telegram.org/
-# Dock: iTerm2, VSCode, Chrome, Double, Keepass, Telegram, Mail, Cal, Trello
+# Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login

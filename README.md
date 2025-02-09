@@ -51,7 +51,6 @@ pip install --upgrade pip
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login
-# In "Settings/Keyboard" disable brightness
 # In "Settings/Keyboard/Shortcuts":
 # * Remove "input sources" ^-space shortcuts
 # * Remove "⇧⌘/" app shortcut from "All Applications"

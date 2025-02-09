@@ -257,3 +257,8 @@ defaults write com.apple.dock wvous-tl-corner -int 0
 defaults write com.apple.dock wvous-tr-corner -int 0
 defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-br-corner -int 0
+# Auto-hide dock to get more vertical space (everything is on hotkeys)
+defaults write com.apple.dock autohide -bool true
+
+# Restart Dock to apply change
+killall Dock

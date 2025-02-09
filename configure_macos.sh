@@ -252,3 +252,8 @@ defaults write com.apple.dock "mineffect" -string "scale" && killall Dock
 defaults write com.apple.dock launchanim -bool false
 # Disable "show suggested and recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
+# Disable Mission Control "hot corners" (they trigger accidently a lot)
+defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tr-corner -int 0
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 0

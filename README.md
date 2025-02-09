@@ -61,7 +61,6 @@ pip install --upgrade pip
 # * Disable caps in "Modifier Keys"
 # In "Settings/Keyboard/Input Sources":
 # * Add "Russian-PC", "Japanese-Romaji"
-# Disable all in "Settings/Trackpad/More Gestures":
 # Remove all widgets and add notes as widget
 # For iTerm2 settings
 # * Disable /General/Selection/Clicking

@@ -274,6 +274,19 @@ defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 # Disable keyboard backlight (blind typing)
 sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Keyboard Backlight" -int 0
+# Disable trackpad gestures (controlled by hotkeys, trigger accidently)
+defaults write com.apple.AppleMultitouchTrackpad trackpadThreeFingerVertSwipeGesture -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadThreeFingerVertSwipeGesture -int 0
+defaults write com.apple.AppleMultitouchTrackpad trackpadThreeFingerHorizSwipeGesture -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadThreeFingerHorizSwipeGesture -int 0
+defaults write com.apple.AppleMultitouchTrackpad trackpadTwoFingerFromRightEdgeSwipeGesture -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadTwoFingerFromRightEdgeSwipeGesture -int 0
+defaults write com.apple.AppleMultitouchTrackpad trackpadPinch -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadPinch -int 0
+defaults write com.apple.AppleMultitouchTrackpad trackpadRotate -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadRotate -int 0
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
 
-# Restart Dock to apply change
+# Apply changes
 killall Dock
+killall SystemUIServer

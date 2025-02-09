@@ -51,8 +51,6 @@ pip install --upgrade pip
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login
-# In "Settings/Desktop and Dock":
-# * Enable dock auto-hide
 # Disable sound effects in "Settings/Sound/Effects"
 # In "Settings/Lock Screen"
 # * Disable Screen Saver

@@ -248,3 +248,7 @@ defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 defaults write com.apple.dock autohide-delay -float 999999
 # Change slow "Genie" dock minimize animation to fast "Scale"
 defaults write com.apple.dock "mineffect" -string "scale" && killall Dock
+# Disable "animate opening applications"
+defaults write com.apple.dock launchanim -bool false
+# Disable "show suggested and recent applications in Dock"
+defaults write com.apple.dock show-recents -bool false

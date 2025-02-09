@@ -259,6 +259,14 @@ defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-br-corner -int 0
 # Auto-hide dock to get more vertical space (everything is on hotkeys)
 defaults write com.apple.dock autohide -bool true
+# Mute alerts
+osascript -e "set volume alert volume 0"
+# Don't play any sounds on startup
+sudo nvram SystemAudioVolume=" "
+# Mute user interface sound effects
+defaults write com.apple.systemsound "com.apple.sound.uiaudio.enabled" -int 0
+# Mute volume change feedback
+defaults write -g "com.apple.sound.beep.feedback" -bool false
 
 # Restart Dock to apply change
 killall Dock

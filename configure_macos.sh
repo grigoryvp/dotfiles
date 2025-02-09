@@ -24,6 +24,8 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Disable spotlight for better battery and SSD life:
 sudo mdutil -a -i off
+# Tends to hang with 100% cpu load
+launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist 2>/dev/null
 # Time zone from "sudo systemsetup -listtimezones"
 #! This crashes AFTER setting time zone, this is normal
 sudo systemsetup -settimezone "Europe/Amsterdam" 2>/dev/null
@@ -244,5 +246,5 @@ defaults write com.apple.mail DisableInlineAttachmentViewing true
 defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
 # Don't auto-show dock on mouse hover (m1-slash instead)
 defaults write com.apple.dock autohide-delay -float 999999
-# Tends to hang with 100% cpu load
-launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist 2>/dev/null
+# Change slow "Genie" dock minimize animation to fast "Scale"
+defaults write com.apple.dock "mineffect" -string "scale" && killall Dock

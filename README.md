@@ -52,7 +52,6 @@ pip install --upgrade pip
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login
 # In "Settings/Desktop and Dock":
-# * Disable mission control hot corners
 # * Enable dock auto-hide
 # Disable sound effects in "Settings/Sound/Effects"
 # In "Settings/Lock Screen"

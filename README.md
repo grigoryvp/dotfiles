@@ -57,7 +57,6 @@ pip install --upgrade pip
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
 # * Add "⇧⌘\" for "Mission Control/Notification Center"
-# * Enable F-keys in "Function keys"
 # * Disable caps in "Modifier Keys"
 # In "Settings/Keyboard/Input Sources":
 # * Add "Russian-PC", "Japanese-Romaji"

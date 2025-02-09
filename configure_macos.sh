@@ -286,6 +286,8 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadPinch 
 defaults write com.apple.AppleMultitouchTrackpad trackpadRotate -int 0
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadRotate -int 0
 defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
+# Make F-keys act as F-keys for VSCode and Double Commander
+defaults write -g com.apple.keyboard.fnState -bool false
 
 # Apply changes
 killall Dock

@@ -1158,7 +1158,7 @@ addRemap("j", ["m1", "shift"], "down", ["shift"])
 ;;  'm1-j' for down arrow (vim-like).
 addRemap("j", ["m1"], "down")
 ;;  'm2-j' for command-down_arrow (google spreadsheets hotkey)
-addRemap("j", ["m2"], "down", ["win"])
+addRemap("j", ["m2"], "down", ["ctrl"])
 
 ;;  'm1-e' for page down.
 addRemap("e", ["m1"], "pgdn")

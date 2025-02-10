@@ -261,36 +261,10 @@ defaults write com.apple.dock wvous-br-corner -int 0
 defaults write com.apple.dock autohide -bool true
 # Mute alerts
 osascript -e "set volume alert volume 0"
-# Don't play any sounds on startup
-sudo nvram SystemAudioVolume=" "
-# Mute user interface sound effects
-defaults write com.apple.systemsound "com.apple.sound.uiaudio.enabled" -int 0
 # Mute volume change feedback
 defaults write -g "com.apple.sound.beep.feedback" -bool false
 # Disable screen saver (manually turn off screen by locking the laptop)
 defaults -currentHost write com.apple.screensaver idleTime -int 0
-# Ask for password immediately after screen is locked
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
-# Disable keyboard backlight (blind typing)
-sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Keyboard Backlight" -int 0
-# Disable trackpad gestures (controlled by hotkeys, trigger accidently)
-defaults write com.apple.AppleMultitouchTrackpad trackpadThreeFingerVertSwipeGesture -int 0
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadThreeFingerVertSwipeGesture -int 0
-defaults write com.apple.AppleMultitouchTrackpad trackpadThreeFingerHorizSwipeGesture -int 0
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadThreeFingerHorizSwipeGesture -int 0
-defaults write com.apple.AppleMultitouchTrackpad trackpadTwoFingerFromRightEdgeSwipeGesture -int 0
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadTwoFingerFromRightEdgeSwipeGesture -int 0
-defaults write com.apple.AppleMultitouchTrackpad trackpadPinch -int 0
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadPinch -int 0
-defaults write com.apple.AppleMultitouchTrackpad trackpadRotate -int 0
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadRotate -int 0
-defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
-# Make F-keys act as F-keys for VSCode and Double Commander
-defaults write -g com.apple.keyboard.fnState -bool false
-# Remove "select previous/next input source" shortcuts
-defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 "{enabled = 0;}"
-defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 "{enabled = 0;}"
 
 # Apply changes
 killall Dock

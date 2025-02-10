@@ -53,6 +53,8 @@ pip install --upgrade pip
 # Add noTunes.app, hammerspoon to Settings/General/Login
 # In "Settings/Dock":
 # * Minimize windows into application icon
+# In "Settings/Wallpaper":
+# * Set black wallpaper
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects

@@ -1676,7 +1676,7 @@
                                     },
                                     {
                                         "bundle_identifiers": [
-                                            "com.company.doublecmd"
+                                            "^com.company.doublecmd$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }

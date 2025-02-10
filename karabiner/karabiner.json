@@ -297,6 +297,33 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com.tinyspeck.slackmacgap$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "ctrl-enter to shift-enter for Slack for consistency; before dual mode",
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": { "mandatory": ["left_control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "return_or_enter",
+                                        "modifiers": ["shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "ctrl-enter (command-enter); before dual mode",

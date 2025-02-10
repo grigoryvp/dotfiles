@@ -77,7 +77,7 @@ pip install --upgrade pip
 # * Set Appearance/Windows/Hide scrollbars
 # * Set Profiles/Colors/Color presets to "Solarized Dark"
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
-# Configure KeePass
+# Configure KeePass with browser integration and passkeys
 # Configure ChatGPT for autostart and "dock only" icon.
 # Configure F2 to cm_HorizontalFilePanels for Double Commander
 # Add KeyLights, blue temp, 90% back, 40% front

@@ -708,8 +708,11 @@ function App:getDockItems()
   -- Use exact name since there are "Dock Extra" etc.
   self.dock = hs.application.find("^Dock$")
   local dockElement = hs.axuielement.applicationElement(self.dock)
-  -- Re-read dock items for clicking them
-  self.dockItems = dockElement.AXChildren[1].AXChildren
+  -- Fail if accessability access is not enabled
+  if dockElement.AXChildren then
+    -- Re-read dock items for clicking them
+    self.dockItems = dockElement.AXChildren[1].AXChildren
+  end
 end
 
 

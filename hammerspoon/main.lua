@@ -1252,6 +1252,30 @@ function App:createMenu()
     local task = hs.task.new(appBin, function() end, args)
     task:start()
   end)
+
+  self.menuItem:addSubmenuItem("Show Dock", function()
+    local appBin = "/usr/bin/defaults"
+    local args = {"write", "com.apple.dock", "autohide", "-bool", "false"}
+    local task = hs.task.new(appBin, function()
+      local appBin = "/usr/bin/killall"
+      local args = {"Dock"}
+      local task = hs.task.new(appBin, function() end, args)
+      task:start()
+    end, args)
+    task:start()
+  end)
+
+  self.menuItem:addSubmenuItem("Hide Dock", function()
+    local appBin = "/usr/bin/defaults"
+    local args = {"write", "com.apple.dock", "autohide", "-bool", "true"}
+    local task = hs.task.new(appBin, function()
+      local appBin = "/usr/bin/killall"
+      local args = {"Dock"}
+      local task = hs.task.new(appBin, function() end, args)
+      task:start()
+    end, args)
+    task:start()
+  end)
 end
 
 function App:showCharPicker()

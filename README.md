@@ -42,15 +42,14 @@ pip install --upgrade pip
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
-# Configure hammerspoon for autostart
+# Install https://macos.telegram.org/
 # Command-drag-out menu icons except clock (until the "x" mark appears)
 # Remove all dock icons except launchpad, calendar, settings
 # Add "trello" as chrome app
-# Install https://macos.telegram.org/
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
-# Add noTunes.app and Karabiner-Elements to Settings/General/Login
+# Add noTunes.app, hammerspoon, Karabiner-Elements to Settings/General/Login
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects

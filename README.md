@@ -49,7 +49,7 @@ pip install --upgrade pip
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
-# Add noTunes.app, hammerspoon, Karabiner-Elements to Settings/General/Login
+# Add noTunes.app, hammerspoon to Settings/General/Login
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects

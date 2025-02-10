@@ -51,14 +51,24 @@ pip install --upgrade pip
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login
+# In "Settings/Sound":
+# * Disable startup sound
+# * Mute interface sound effects
+# In "Settings/Lock Screen":
+# * Require password immediately after screen is locked
+# In "Settings/Keyboard":
+# * Disable backlit
+# * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/Keyboard/Shortcuts":
+# * Disable input source shortcuts in "Input sources"
 # * Remove "⇧⌘/" app shortcut from "All Applications"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
 # * Add "⇧⌘\" for "Mission Control/Notification Center"
+# * Enable F-keys in "Function Keys"
 # * Disable caps in "Modifier Keys"
-# In "Settings/Keyboard/Input Sources":
-# * Add "Russian-PC", "Japanese-Romaji"
+# In "Settings/Trackpad/More gestures":
+# * Disable gestures
 # Remove all widgets and add notes as widget
 # For iTerm2 settings
 # * Disable /General/Selection/Clicking

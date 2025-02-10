@@ -1253,28 +1253,8 @@ function App:createMenu()
     task:start()
   end)
 
-  self.menuItem:addSubmenuItem("Show Dock", function()
-    local appBin = "/usr/bin/defaults"
-    local args = {"write", "com.apple.dock", "autohide", "-bool", "false"}
-    local task = hs.task.new(appBin, function()
-      local appBin = "/usr/bin/killall"
-      local args = {"Dock"}
-      local task = hs.task.new(appBin, function() end, args)
-      task:start()
-    end, args)
-    task:start()
-  end)
-
-  self.menuItem:addSubmenuItem("Hide Dock", function()
-    local appBin = "/usr/bin/defaults"
-    local args = {"write", "com.apple.dock", "autohide", "-bool", "true"}
-    local task = hs.task.new(appBin, function()
-      local appBin = "/usr/bin/killall"
-      local args = {"Dock"}
-      local task = hs.task.new(appBin, function() end, args)
-      task:start()
-    end, args)
-    task:start()
+  self.menuItem:addSubmenuItem("Toggle Dock", function()
+    hs.eventtap.keyStroke({"option", "cmd"}, "d")
   end)
 end
 

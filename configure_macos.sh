@@ -72,8 +72,8 @@ brew install libyaml
 # For keepassxc-cli
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
-brew install mpv --cask
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar tailscale docker double-commander elgato-control-center rode-central mimestream vlc zoom notion-calendar
+brew install --cask mpv docker
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar tailscale double-commander elgato-control-center rode-central mimestream vlc zoom notion-calendar
 
 # Need to check for network issues
 # brew install orbstack

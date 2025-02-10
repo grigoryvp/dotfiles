@@ -227,8 +227,6 @@ defaults write com.apple.LaunchServices LSQuarantine false
 # Input langauges and locale
 defaults write -g AppleLanguages -array "en" "ru" "ja"
 defaults write -g AppleLocale -string "en_RU"
-# Minimize windows into apps
-defaults write com.apple.dock minimize-to-application true
 # Instant dock auto hiding
 defaults write com.apple.dock autohide true
 defaults write com.apple.dock autohide-delay -float 0

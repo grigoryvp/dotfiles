@@ -50,6 +50,8 @@ pip install --upgrade pip
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app, hammerspoon to Settings/General/Login
+# In "Settings/Dock":
+# * Minimize windows into application icon
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects

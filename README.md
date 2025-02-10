@@ -81,12 +81,10 @@ pip install --upgrade pip
 # Configure ChatGPT for autostart and "dock only" icon.
 # Add KeyLights, blue temp, 90% back, 40% front
 # Import OBS Scenes
-# Install Xcode, Amphetamine, Windows App from app store
+# App Store: Xcode, Amphetamine, Windows App, PowerPoint, Pixelmator
+# Install Parallels Desktop
 # Install https://onekey.so/download/
 # Install https://tonkeeper.com/pro
-# Install Parallels Desktop
-# Install Microsoft PowerPoint
-# Install Pixelmator Pro from App Store
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # For old macOS versions:

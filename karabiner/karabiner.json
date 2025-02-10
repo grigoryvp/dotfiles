@@ -1689,7 +1689,7 @@
                                 "to": [
                                     {
                                         "key_code": "h",
-                                        "modifiers": ["ctrl", "shift"]
+                                        "modifiers": ["control", "shift"]
                                     }
                                 ],
                                 "type": "basic"

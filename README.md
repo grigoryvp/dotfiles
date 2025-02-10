@@ -43,8 +43,7 @@ pip install --upgrade pip
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # Install https://macos.telegram.org/
-# Install Trello
-#   mas install 1278508951
+# Install Trello from App Store
 # Command-drag-out menu icons except clock (until the "x" mark appears)
 # Remove all dock icons except launchpad, calendar, settings
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
@@ -81,12 +80,7 @@ pip install --upgrade pip
 # Configure F2 to cm_HorizontalFilePanels for Double Commander
 # Add KeyLights, blue temp, 90% back, 40% front
 # Import OBS Scenes
-# Install Xcode (this may take HOURS, better to do with App Store):
-#   mas install 497799835
-# Install Amphetamine
-#   mas install 937984704
-# Install Windows App (RDP client)
-#   mas install 1295203466
+# Install Xcode, Amphetamine, Windows App from app store
 # Install https://onekey.so/download/
 # Install https://tonkeeper.com/pro
 # Install Parallels Desktop

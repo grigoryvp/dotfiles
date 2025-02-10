@@ -49,6 +49,7 @@ pip install --upgrade pip
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
+# Remove all widgets and add "Note" as widget
 # Add noTunes.app, hammerspoon to Settings/General/Login
 # In "Settings/Dock":
 # * Minimize windows into application icon
@@ -61,16 +62,15 @@ pip install --upgrade pip
 # * Disable backlit
 # * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/Keyboard/Shortcuts":
+# * Add "⇧⌘\" for "Mission Control/Notification Center"
 # * Disable input source shortcuts in "Input sources"
 # * Remove "⇧⌘/" app shortcut from "All Applications"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
-# * Add "⇧⌘\" for "Mission Control/Notification Center"
 # * Enable F-keys in "Function Keys"
 # * Disable caps in "Modifier Keys"
 # In "Settings/Trackpad/More gestures":
 # * Disable gestures
-# Remove all widgets and add notes as widget
 # For iTerm2 settings
 # * Disable /General/Selection/Clicking
 # * Set Appearance/General/Theme to "Dark"
@@ -79,7 +79,6 @@ pip install --upgrade pip
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
 # Configure KeePass with browser integration and passkeys
 # Configure ChatGPT for autostart and "dock only" icon.
-# Configure F2 to cm_HorizontalFilePanels for Double Commander
 # Add KeyLights, blue temp, 90% back, 40% front
 # Import OBS Scenes
 # Install Xcode, Amphetamine, Windows App from app store

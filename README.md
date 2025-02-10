@@ -79,6 +79,7 @@ pip install --upgrade pip
 # * Set Appearance/Windows/Hide scrollbars
 # * Set Profiles/Colors/Color presets to "Solarized Dark"
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
+# Login all chrome profiles and name them 01, 02, 03 etc
 # Configure KeePass with browser integration and passkeys
 # Configure ChatGPT for autostart and "dock only" icon.
 # Add KeyLights, blue temp, 90% back, 40% front

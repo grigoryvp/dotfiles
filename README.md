@@ -52,7 +52,6 @@ pip install --upgrade pip
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app in Settings/General/Login
 # In "Settings/Keyboard/Shortcuts":
-# * Remove "input sources" ^-space shortcuts
 # * Remove "⇧⌘/" app shortcut from "All Applications"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut

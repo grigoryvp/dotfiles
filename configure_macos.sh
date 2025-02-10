@@ -288,6 +288,9 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad trackpadRotate
 defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool false
 # Make F-keys act as F-keys for VSCode and Double Commander
 defaults write -g com.apple.keyboard.fnState -bool false
+# Remove "select previous/next input source" shortcuts
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 60 "{enabled = 0;}"
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 61 "{enabled = 0;}"
 
 # Apply changes
 killall Dock

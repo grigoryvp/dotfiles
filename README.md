@@ -55,8 +55,6 @@ pip install --upgrade pip
 # * Minimize windows into application icon
 # In "Settings/Wallpaper":
 # * Set black wallpaper
-# In "Settings/Notifications":
-# * Disable everything for FaceTime
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects
@@ -86,6 +84,9 @@ pip install --upgrade pip
 # * In /Files views/Columns/Custom columns
 #   * Change GETFILENAMENOEXT to GETFILENAME
 #   * Delete the "ext" and "attr" columns
+# For Zoom settings:
+# * Enable "Always show controls" in "/General"
+# * Enable "copy link" in "/General"
 # * In /File operations/confirmation disable all confirmations
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
@@ -100,6 +101,7 @@ pip install --upgrade pip
 # Install https://tonkeeper.com/pro
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
+# Start zoom, enable green menubar ractions, disable them and reboot
 # For old macOS versions:
 # * Disable welcome screen guest user in "Preferences/Users & Groups"
 # * Add 'karabiner_grabber', 'karabiner_observer',

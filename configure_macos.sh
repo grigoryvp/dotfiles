@@ -142,11 +142,15 @@ rm -rf ~/.config/karabiner
 ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 
 echo "Installing uvc-util..."
+CUR_DIR=$(pwd)
 git clone https://github.com/jtfrey/uvc-util.git
 cd uvc-util/src
 gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
 chmod +x uvc-util
-cp uvc-util /Users/user/.local/bin/
+mkdir -p ~/.local/bin/
+cp uvc-util ~/.local/bin/
+cd $CUR_DIR
+rm -rf uvc-util
 
 # Download and install HEY.com mail app
 echo "Downloading HEY.com client..."

@@ -163,55 +163,29 @@ if [ "$(uname)" = "Darwin" ]; then
   camera() {
     # Front camera
     echo "\nFRONT"
-    uvc-util -L 0x00240000 -g brightness
-    uvc-util -L 0x00240000 -g sharpness
-    uvc-util -L 0x00240000 -g contrast
-    uvc-util -L 0x00240000 -g saturation
-    uvc-util -L 0x00240000 -s auto-focus=false
+    uvc-util -V 0x046d:0x0893 -g brightness
+    uvc-util -V 0x046d:0x0893 -g sharpness
+    uvc-util -V 0x046d:0x0893 -g contrast
+    uvc-util -V 0x046d:0x0893 -g saturation
+    uvc-util -V 0x046d:0x0893 -s auto-focus=false
     #./uvc-util -L 0x00240000 -g auto-focus
-    uvc-util -L 0x00240000 -s focus-abs=0
+    uvc-util -V 0x046d:0x0893 -s focus-abs=0
     #./uvc-util -L 0x00240000 -g focus-abs
-    uvc-util -L 0x00240000 -s auto-white-balance-temp=false
+    uvc-util -V 0x046d:0x0893 -s auto-white-balance-temp=false
     #./uvc-util -L 0x00240000 -g auto-white-balance-temp
-    uvc-util -L 0x00240000 -s white-balance-temp=6000
+    uvc-util -V 0x046d:0x0893 -s white-balance-temp=6000
     #./uvc-util -L 0x00240000 -g white-balance-temp
-    uvc-util -L 0x00240000 -s auto-exposure-mode=1
+    uvc-util -V 0x046d:0x0893 -s auto-exposure-mode=1
     #./uvc-util -L 0x00240000 -g auto-exposure-mode
-    uvc-util -L 0x00240000 -s exposure-time-abs=400
+    uvc-util -V 0x046d:0x0893 -s exposure-time-abs=400
     #./uvc-util -L 0x00240000 -g exposure-time-abs
-    uvc-util -L 0x00240000 -s gain=20
+    uvc-util -V 0x046d:0x0893 -s gain=20
     #./uvc-util -L 0x00240000 -g gain
-    uvc-util -L 0x00240000 -g backlight-compensation
-    uvc-util -L 0x00240000 -g zoom-abs
-    uvc-util -L 0x00240000 -g power-line-frequency
-    uvc-util -L 0x00240000 -g auto-exposure-priority
-    uvc-util -L 0x00240000 -g roll-abs
-
-    # Side camera
-    echo "\nSIDE"
-    uvc-util -L 0x00210000 -g brightness
-    uvc-util -L 0x00210000 -g sharpness
-    uvc-util -L 0x00210000 -g contrast
-    uvc-util -L 0x00210000 -g saturation
-    uvc-util -L 0x00210000 -s auto-focus=false
-    #./uvc-util -L 0x00210000 -g auto-focus
-    uvc-util -L 0x00210000 -s focus-abs=0
-    #./uvc-util -L 0x00210000 -g focus-abs
-    uvc-util -L 0x00210000 -s auto-white-balance-temp=false
-    #./uvc-util -L 0x00210000 -g auto-white-balance-temp
-    uvc-util -L 0x00210000 -s white-balance-temp=6000
-    #./uvc-util -L 0x00210000 -g white-balance-temp
-    uvc-util -L 0x00210000 -s auto-exposure-mode=1
-    #./uvc-util -L 0x00210000 -g auto-exposure-mode
-    uvc-util -L 0x00210000 -s exposure-time-abs=400
-    #./uvc-util -L 0x00210000 -g exposure-time-abs
-    uvc-util -L 0x00210000 -s gain=20
-    #./uvc-util -L 0x00210000 -g gain
-    uvc-util -L 0x00210000 -g backlight-compensation
-    uvc-util -L 0x00210000 -g zoom-abs
-    uvc-util -L 0x00210000 -g power-line-frequency
-    uvc-util -L 0x00210000 -g auto-exposure-priority
-    uvc-util -L 0x00210000 -g roll-abs
+    uvc-util -V 0x046d:0x0893 -g backlight-compensation
+    uvc-util -V 0x046d:0x0893 -g zoom-abs
+    uvc-util -V 0x046d:0x0893 -g power-line-frequency
+    uvc-util -V 0x046d:0x0893 -g auto-exposure-priority
+    uvc-util -V 0x046d:0x0893 -g roll-abs
   }
 
 else

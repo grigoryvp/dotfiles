@@ -55,6 +55,8 @@ pip install --upgrade pip
 # * Minimize windows into application icon
 # In "Settings/Wallpaper":
 # * Set black wallpaper
+# In "Settings/Notifications":
+# * Disable everything for FaceTime
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects
@@ -74,11 +76,18 @@ pip install --upgrade pip
 # In "Settings/Trackpad/More gestures":
 # * Disable gestures
 # For iTerm2 settings
+# * Disable /General/Closing/Confirm
 # * Disable /General/Selection/Clicking
 # * Set Appearance/General/Theme to "Dark"
 # * Set Appearance/Windows/Hide scrollbars
 # * Set Profiles/Colors/Color presets to "Solarized Dark"
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
+# For DoubleCommander settings
+# * Files views/Columns/Custom columns
+# *   Change GETFILENAMENOEXT to GETFILENAME
+# *   Delete the "ext" and "attr" columns
+# For OBS settings
+# * Turn off Advanced/General/Show warning on exit
 # Login all chrome profiles and name them 01, 02, 03 etc
 # Configure KeePass with browser integration and passkeys
 # Configure ChatGPT for autostart and "dock only" icon.

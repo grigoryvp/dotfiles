@@ -83,9 +83,10 @@ pip install --upgrade pip
 # * Set Profiles/Colors/Color presets to "Solarized Dark"
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
 # For DoubleCommander settings
-# * Files views/Columns/Custom columns
-# *   Change GETFILENAMENOEXT to GETFILENAME
-# *   Delete the "ext" and "attr" columns
+# * In /Files views/Columns/Custom columns
+#   * Change GETFILENAMENOEXT to GETFILENAME
+#   * Delete the "ext" and "attr" columns
+# * In /File operations/confirmation disable all confirmations
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
 # Login all chrome profiles and name them 01, 02, 03 etc

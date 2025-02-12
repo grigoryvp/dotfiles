@@ -47,7 +47,7 @@ pip install --upgrade pip
 # Command-drag-out menu icons except clock (until the "x" mark appears)
 # Remove all dock icons except launchpad, calendar, settings
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
-# Dock left: ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
+# Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Remove all widgets and add "Note" as widget
 # Add noTunes.app, hammerspoon to Settings/General/Login

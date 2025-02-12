@@ -36,6 +36,7 @@ function App:new()
   inst.discordDockItem = nil
   inst.whatsappDockItem = nil
   inst.heyDockItem = nil
+  inst.notionDockItem = nil
   inst.vkToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
@@ -145,6 +146,12 @@ function App:startHttpServer()
             return "HEY not found in dock", 400, {}
           end
           self.heyDockItem:doAXPress()
+          return "", 200, {}
+        elseif json.app_id == "notion" then
+          if not self.notionDockItem then
+            return "Notion not found in dock", 400, {}
+          end
+          self.notionDockItem:doAXPress()
           return "", 200, {}
         elseif json.app_id == "gpt" then
           self:clickDockItemByName("ChatGPT")
@@ -812,7 +819,8 @@ function App:onHeartbeat()
      or not self.slackDockItem
      or not self.discordDockItem
      or not self.whatsappDockItem
-     or not self.heyDockItem then
+     or not self.heyDockItem
+     or not self.notionDockItem then
     -- Do not check too often, CPU expensive
     if isBigTimeout then
       for _, item in ipairs(self.dockItems) do
@@ -833,6 +841,9 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "HEY" then
           self.heyDockItem = item
+        end
+        if item.AXTitle == "Notion" then
+          self.notionDockItem = item
         end
       end
     end
@@ -912,6 +923,9 @@ function App:onHeartbeat()
   end
   if self.heyDockItem and self.heyDockItem.AXStatusLabel then
     table.insert(notifications, "H")
+  end
+  if self.notionDockItem and self.notionDockItem.AXStatusLabel then
+    table.insert(notifications, "N")
   end
 
   self.menuItem:clear()

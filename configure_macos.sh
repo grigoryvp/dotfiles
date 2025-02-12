@@ -129,6 +129,8 @@ code --install-extension emmanuelbeziat.vscode-great-icons
 code --install-extension esbenp.prettier-vscode
 code --install-extension formulahendry.auto-close-tag
 code --install-extension dnut.rewrap-revived
+code --install-extension streetsidesoftware.code-spell-checker
+code --install-extension streetsidesoftware.code-spell-checker-russian
 VSCODE_DIR=~/Library/Application\ Support/Code/User
 mkdir -p $VSCODE_DIR
 ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json

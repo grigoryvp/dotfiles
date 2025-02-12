@@ -128,8 +128,8 @@ function App:startHttpServer()
         if not appIndex then
           return "switch_app without app_index", 400, {}
         end
-        if appIndex < 0 or appIndex > 9 then
-          return "switch_app.app_index not in 0..9 range", 400, {}
+        if appIndex < 0 or appIndex > 10 then
+          return "switch_app.app_index not in 0..10 range", 400, {}
         end
         self:clickDockItemByNum(appIndex + 1)
         return "", 200, {}

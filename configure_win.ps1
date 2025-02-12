@@ -909,6 +909,18 @@ class App {
       & code --install-extension "grigoryvp.goto-link-provider";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
+    if (-not $extList.Contains("markdown-inline-fence")) {
+      & code --install-extension "markdown-inline-fence";
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
+    if (-not $extList.Contains("grigoryvp.markdown-python-repl-syntax")) {
+      & code --install-extension "grigoryvp.markdown-python-repl-syntax";
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
+    if (-not $extList.Contains("grigoryvp.markdown-pandoc-rawattr")) {
+      & code --install-extension "grigoryvp.markdown-pandoc-rawattr";
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
     if (-not $extList.Contains("vscodevim.vim")) {
       & code --install-extension "vscodevim.vim";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
@@ -923,6 +935,10 @@ class App {
     }
     if (-not $extList.Contains("formulahendry.auto-close-tag")) {
       & code --install-extension "formulahendry.auto-close-tag";
+      if ($LASTEXITCODE -ne 0) { throw "Failed" }
+    }
+    if (-not $extList.Contains("dnut.rewrap-revived")) {
+      & code --install-extension "dnut.rewrap-revived";
       if ($LASTEXITCODE -ne 0) { throw "Failed" }
     }
 

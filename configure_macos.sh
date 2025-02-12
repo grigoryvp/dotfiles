@@ -120,11 +120,15 @@ ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension grigoryvp.goto-link-provider
+code --install-extension grigoryvp.markdown-inline-fence
+code --install-extension grigoryvp.markdown-python-repl-syntax
+code --install-extension grigoryvp.markdown-pandoc-rawattr
 code --install-extension vscodevim.vim
 code --install-extension EditorConfig.EditorConfig
 code --install-extension emmanuelbeziat.vscode-great-icons
 code --install-extension esbenp.prettier-vscode
 code --install-extension formulahendry.auto-close-tag
+code --install-extension dnut.rewrap-revived
 VSCODE_DIR=~/Library/Application\ Support/Code/User
 mkdir -p $VSCODE_DIR
 ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json

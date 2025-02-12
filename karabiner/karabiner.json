@@ -1465,14 +1465,9 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-plus for 11th app",
+                                "description": "m1-equal for 11th app",
                                 "from": { "key_code": "equal_sign" },
-                                "to": [
-                                    {
-                                        "key_code": "equal_sign",
-                                        "modifiers": ["right_command", "left_option", "control"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 10}'" }],
                                 "type": "basic"
                             },
                             {

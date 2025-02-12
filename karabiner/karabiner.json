@@ -2184,6 +2184,14 @@
                             },
                             {
                                 "description": "control-a => command-a for mac-win consistency",
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com.company.doublecmd$"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "a",
                                     "modifiers": { "mandatory": ["right_control"] }

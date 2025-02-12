@@ -872,6 +872,15 @@ class App {
   }
 
 
+  _installVscodeExt($extId) {
+    $extList = @(& code --list-extensions);
+    if (-not $extList.Contains($extId)) {
+      & code --install-extension "$extId";
+      if ($LASTEXITCODE -ne 0) { throw "Failed to install $extId" }
+    }
+  }
+
+
   _configureVscode() {
     if ($this._isTest) { return; }
     $dstDir = $this._path(@($env:APPDATA, "Code", "User"));
@@ -896,51 +905,17 @@ class App {
     }
     New-Softlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
 
-    $extList = @(& code --list-extensions);
-    if (-not $extList.Contains("grigoryvp.language-xi")) {
-      & code --install-extension "grigoryvp.language-xi";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("grigoryvp.memory-theme")) {
-      & code --install-extension "grigoryvp.memory-theme";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("grigoryvp.goto-link-provider")) {
-      & code --install-extension "grigoryvp.goto-link-provider";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("markdown-inline-fence")) {
-      & code --install-extension "markdown-inline-fence";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("grigoryvp.markdown-python-repl-syntax")) {
-      & code --install-extension "grigoryvp.markdown-python-repl-syntax";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("grigoryvp.markdown-pandoc-rawattr")) {
-      & code --install-extension "grigoryvp.markdown-pandoc-rawattr";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("vscodevim.vim")) {
-      & code --install-extension "vscodevim.vim";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("EditorConfig.EditorConfig")) {
-      & code --install-extension "editorConfig.editorConfig";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("esbenp.prettier-vscode")) {
-      & code --install-extension "esbenp.prettier-vscode";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("formulahendry.auto-close-tag")) {
-      & code --install-extension "formulahendry.auto-close-tag";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
-    if (-not $extList.Contains("dnut.rewrap-revived")) {
-      & code --install-extension "dnut.rewrap-revived";
-      if ($LASTEXITCODE -ne 0) { throw "Failed" }
-    }
+    $this._installVscodeExt("grigoryvp.language-xi");
+    $this._installVscodeExt("grigoryvp.memory-theme");
+    $this._installVscodeExt("grigoryvp.goto-link-provider");
+    $this._installVscodeExt("markdown-inline-fence");
+    $this._installVscodeExt("grigoryvp.markdown-python-repl-syntax");
+    $this._installVscodeExt("grigoryvp.markdown-pandoc-rawattr");
+    $this._installVscodeExt("vscodevim.vim");
+    $this._installVscodeExt("EditorConfig.EditorConfig");
+    $this._installVscodeExt("esbenp.prettier-vscode");
+    $this._installVscodeExt("formulahendry.auto-close-tag");
+    $this._installVscodeExt("dnut.rewrap-revived");
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {

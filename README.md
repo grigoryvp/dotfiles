@@ -90,6 +90,7 @@ pip install --upgrade pip
 # * In /File operations/confirmation disable all confirmations
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
+# Switch Lunar to "manual mode" so it will not mess with brightness
 # Login all chrome profiles and name them 01, 02, 03 etc
 # Configure KeePass with browser integration and passkeys
 # Configure ChatGPT for autostart and "dock only" icon.

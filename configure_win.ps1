@@ -916,6 +916,8 @@ class App {
     $this._installVscodeExt("esbenp.prettier-vscode");
     $this._installVscodeExt("formulahendry.auto-close-tag");
     $this._installVscodeExt("dnut.rewrap-revived");
+    $this._installVscodeExt("streetsidesoftware.code-spell-checker");
+    $this._installVscodeExt("streetsidesoftware.code-spell-checker-russian");
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {

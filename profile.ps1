@@ -85,6 +85,16 @@ function ahk() {
     -Verb RunAs;
 }
 
+function camera() {
+  uvcc set auto_focus 0
+  uvcc set absolute_focus 0
+  uvcc set auto_white_balance_temperature 0
+  uvcc set white_balance_temperature 6000
+  uvcc set auto_exposure_mode 1
+  uvcc set absolute_exposure_time 400
+  uvcc set gain 20
+}
+
 # ============================================================================
 # Windows-OSX-Linux consistency
 # ============================================================================

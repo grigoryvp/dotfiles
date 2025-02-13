@@ -87,7 +87,8 @@ pip install --upgrade pip
 # For Zoom settings:
 # * Enable "Always show controls" in "/General"
 # * Enable "copy link" in "/General"
-# * In /File operations/confirmation disable all confirmations
+# * Enable HD, set 49 participants, disable mirror in "/Video"
+# * Disable all confirmations in "/File operations/confirmation"
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
 # Switch Lunar to "manual mode" so it will not mess with brightness

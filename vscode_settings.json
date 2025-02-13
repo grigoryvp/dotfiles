@@ -245,6 +245,7 @@
     "bindgen",
     "charfrom",
     "Classpath",
+    "convolutional",
     "cpython",
     "createdb",
     "Cython",

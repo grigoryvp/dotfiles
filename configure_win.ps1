@@ -269,6 +269,8 @@ class App {
       & npm install -g npm@latest
       # Better diff
       & npm install -g diff-so-fancy
+      # USB camera control
+      & npm install -g uvcc
       # General-purpose messaging.
       $this._installApp("Telegram.TelegramDesktop");
       # "Offline" google apps support and no telemetry delays line in "Edge".

@@ -300,7 +300,7 @@
                                     },
                                     {
                                         "bundle_identifiers": [
-                                            "^com.tinyspeck.slackmacgap$"
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -455,7 +455,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com.company.doublecmd$"
+                                            "^com\\.company\\.doublecmd$"
                                         ],
                                         "type": "frontmost_application_if"
                                     },
@@ -1733,7 +1733,7 @@
                                     },
                                     {
                                         "bundle_identifiers": [
-                                            "^com.company.doublecmd$"
+                                            "^com\\.company\\.doublecmd$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -2187,7 +2187,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com.company.doublecmd$"
+                                            "^com\\.company\\.doublecmd$"
                                         ],
                                         "type": "frontmost_application_unless"
                                     }
@@ -2449,7 +2449,8 @@
                                             "^com\\.apple\\.Safari$",
                                             "^org\\.chromium\\.Chromium$",
                                             "^com\\.google\\.Chrome$",
-                                            "^ru\\.keepcoder\\.Telegram$"
+                                            "^ru\\.keepcoder\\.Telegram$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }

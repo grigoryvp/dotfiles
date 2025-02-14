@@ -387,7 +387,6 @@ assert(
   table.concat({192, 168, 0, 1}))
 app:getDockItems()
 app:clickDockItem(1)
-app:registerHotkeys()
 app:registerMouse()
 history = {}
 app:icmpPingToHistory(history, "didStart")

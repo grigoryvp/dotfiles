@@ -339,12 +339,22 @@ function App:startHttpServer()
         return "unknown direction", 400, {}
       end
 
+    elseif json.command == "wnd_close" then
+      self:_wndClose()
+      return "", 200, {}
+
+    elseif json.command == "raw_paste" then
+      self:_rawPaste()
+      return "", 200, {}
+
     elseif json.command == "show_char_picker" then
       self:showCharPicker()
       return "", 200, {}
+
     elseif json.command == "shorten_url" then
       self:shortenUrlInClipboard()
       return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end
@@ -391,83 +401,81 @@ function App:_moveWndToScreen(wnd, screen)
 end
 
 
-function App:registerHotkeys()
+function App:_wndClose()
+  local delay = 50000
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local app = wnd:application()
 
-  hs.hotkey.bind("⌃", "w", function()
-    local delay = 50000
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local app = wnd:application()
-
-    if app:bundleID() == "com.apple.Safari" then
-      local menuItem = app:findMenuItem("Close Tab")
-      -- Not the last tab?
-      if menuItem.enabled then
-        -- Close active tab
-        app:selectMenuItem("Close Tab")
-      else
-        local menuItem = app:findMenuItem("Save As...")
-        -- Current tab has some page open?
-        if menuItem.enabled then
-          -- Safari can't close last tab
-          app:selectMenuItem("New Tab")
-          app:selectMenuItem("Show Previous Tab")
-          app:selectMenuItem("Close Tab")
-        end
-      end
-      return
-    end
-
-    -- Sometimes "Close Editor" menu item is disabled while there are available
-    -- tabs, incorrectly closing VSCode instead of closing tab. Also,
-    -- triggering "Close Editor" stops working if VSCode is moved between
-    -- desktops.
-    if app:bundleID() == "com.microsoft.VSCode" then
-      -- ctrl-w to close editor
-      hs.eventtap.keyStroke({"⌃"}, "w", delay, app)
-      return
-    end
-
-    -- Speed optimization to close tabs fast if they are exposed like in
-    -- Safari or iTerm2 (searching for app menu items takes some time)
-    if wnd:tabCount() > 0 then
-      hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
-      return
-    end
-
-    local menu = app:findMenuItem("Close Editor")
-    if menu and menu.enabled then
-      app:selectMenuItem("Close Editor")
-      return
-    end
-
-    local menu = app:findMenuItem("Close Tab")
-    if menu and menu.enabled then
+  if app:bundleID() == "com.apple.Safari" then
+    local menuItem = app:findMenuItem("Close Tab")
+    -- Not the last tab?
+    if menuItem.enabled then
+      -- Close active tab
       app:selectMenuItem("Close Tab")
-      return
+    else
+      local menuItem = app:findMenuItem("Save As...")
+      -- Current tab has some page open?
+      if menuItem.enabled then
+        -- Safari can't close last tab
+        app:selectMenuItem("New Tab")
+        app:selectMenuItem("Show Previous Tab")
+        app:selectMenuItem("Close Tab")
+      end
     end
+    return
+  end
 
-    wnd:close()
-  end)
+  -- Sometimes "Close Editor" menu item is disabled while there are available
+  -- tabs, incorrectly closing VSCode instead of closing tab. Also,
+  -- triggering "Close Editor" stops working if VSCode is moved between
+  -- desktops.
+  if app:bundleID() == "com.microsoft.VSCode" then
+    -- ctrl-w to close editor
+    hs.eventtap.keyStroke({"⌃"}, "w", delay, app)
+    return
+  end
 
-  hs.hotkey.bind("⌃⇧", "v", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local app = wnd:application()
+  -- Speed optimization to close tabs fast if they are exposed like in
+  -- Safari or iTerm2 (searching for app menu items takes some time)
+  if wnd:tabCount() > 0 then
+    hs.eventtap.keyStroke({"⌘"}, "w", delay, app)
+    return
+  end
 
-    local oldClipboard = hs.pasteboard.uniquePasteboard()
-    hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
+  local menu = app:findMenuItem("Close Editor")
+  if menu and menu.enabled then
+    app:selectMenuItem("Close Editor")
+    return
+  end
 
-    hs.pasteboard.setContents(hs.pasteboard.readString())
-    -- command-v may not work due to focus issues
-    app:selectMenuItem("Paste")
+  local menu = app:findMenuItem("Close Tab")
+  if menu and menu.enabled then
+    app:selectMenuItem("Close Tab")
+    return
+  end
 
-    hs.timer.doAfter(0.01, function()
-      -- If not delayed in will replace the clipboard content BEFORE
-      -- it's pasted
-      hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
-      hs.pasteboard.deletePasteboard(oldClipboard)
-    end)
+  wnd:close()
+end
+
+
+function App:_rawPaste()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local app = wnd:application()
+
+  local oldClipboard = hs.pasteboard.uniquePasteboard()
+  hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
+
+  hs.pasteboard.setContents(hs.pasteboard.readString())
+  -- command-v may not work due to focus issues
+  app:selectMenuItem("Paste")
+
+  hs.timer.doAfter(0.01, function()
+    -- If not delayed in will replace the clipboard content BEFORE
+    -- it's pasted
+    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+    hs.pasteboard.deletePasteboard(oldClipboard)
   end)
 end
 

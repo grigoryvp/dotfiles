@@ -2104,6 +2104,15 @@
                         "description": "mac specific keyboard mods",
                         "manipulators": [
                             {
+                                "description": "control-w => close window for mac-win consistency",
+                                "from": {
+                                    "key_code": "w",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_close\"}'" }],
+                                "type": "basic"
+                            },
+                            {
                                 "description": "control-t => command-t for mac-win consistency",
                                 "from": {
                                     "key_code": "t",
@@ -2157,6 +2166,15 @@
                                         "modifiers": ["right_command"]
                                     }
                                 ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "control-shift-v => raw paste for mac-win consistency",
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": { "mandatory": ["right_control", "left_shift"] }
+                                },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"raw_paste\"}'" }],
                                 "type": "basic"
                             },
                             {

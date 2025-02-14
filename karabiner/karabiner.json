@@ -287,8 +287,38 @@
                                     "key_code": "left_control",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "key_code": "left_control" }],
-                                "to_if_alone": [{ "key_code": "tab" }],
+                                "to": [
+                                    {
+                                        "key_code": "left_control"
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "_c1",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "tab"
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "_c1",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "to_if_held_down": [
+                                    {
+                                        "set_variable": {
+                                            "name": "_c1",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -631,11 +661,23 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_c1",
+                                        "type": "variable_if",
+                                        "value": 1
                                     }
                                 ],
-                                "description": "m1-period for 6th mouse button (scroll)",
-                                "from": { "key_code": "period" },
-                                "to": [{ "pointing_button": "button6" }],
+                                "description": "m1-ctrl-period for 6th mouse button + command (zoom in Figma, mac-win consistency)",
+                                "from": {
+                                    "key_code": "period"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "button6",
+                                        "modifiers": ["left_command"]
+                                    }
+                                  ],
                                 "type": "basic"
                             },
                             {
@@ -648,7 +690,7 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     },
                                     {
                                         "name": "_m3",
@@ -656,14 +698,9 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-m2-period for 6th mouse button + command (zoom in Figma)",
+                                "description": "m1-period for 6th mouse button (scroll)",
                                 "from": { "key_code": "period" },
-                                "to": [
-                                    {
-                                        "key_code": "button6",
-                                        "modifiers": ["command"]
-                                    }
-                                  ],
+                                "to": [{ "pointing_button": "button6" }],
                                 "type": "basic"
                             },
                             {

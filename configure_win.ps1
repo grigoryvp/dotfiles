@@ -920,6 +920,7 @@ class App {
     $this._installVscodeExt("dnut.rewrap-revived");
     $this._installVscodeExt("streetsidesoftware.code-spell-checker");
     $this._installVscodeExt("streetsidesoftware.code-spell-checker-russian");
+    $this._installVscodeExt("mark-wiemer.vscode-autohotkey-plus-plus");
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {

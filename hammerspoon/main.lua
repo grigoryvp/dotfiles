@@ -193,7 +193,35 @@ function App:startHttpServer()
 
     elseif json.command == "wnd_move" then
 
-      if json.dir == "top" then
+      if json.dir == "left" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x
+        frame.y = screenFrame.y
+        frame.w = screenFrame.w / 2
+        frame.h = screenFrame.h
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "right" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x + screenFrame.w / 2
+        frame.y = screenFrame.y
+        frame.w = screenFrame.w / 2
+        frame.h = screenFrame.h
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "top" then
         local wnd = hs.window.frontmostWindow()
         if not wnd then return "no wnd", 400, {} end
         local frame = wnd:frame()
@@ -396,34 +424,6 @@ function App:registerHotkeys()
     ---@type table
     local screenFrame = wnd:screen():frame()
     self:_setWndFrame(wnd, screenFrame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "m", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h
-    self:_setWndFrame(wnd, frame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", ",", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x + screenFrame.w / 2
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h
-    self:_setWndFrame(wnd, frame)
   end)
 
   hs.hotkey.bind("⌘⇧", "u", function()

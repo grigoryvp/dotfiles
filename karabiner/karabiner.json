@@ -626,11 +626,44 @@
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-period for 6th mouse button (scroll)",
                                 "from": { "key_code": "period" },
                                 "to": [{ "pointing_button": "button6" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-m2-period for 6th mouse button + command (zoom in Figma)",
+                                "from": { "key_code": "period" },
+                                "to": [
+                                    {
+                                        "key_code": "button6",
+                                        "modifiers": ["command"]
+                                    }
+                                  ],
                                 "type": "basic"
                             },
                             {
@@ -2779,16 +2812,16 @@
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 1
-                                    }
-                                ],
-                                "description": "m1-m2-period => top 1/2, 1/3, 2/3",
-                                "from": { "key_code": "period" },
-                                "to": [
+                                    },
                                     {
-                                        "key_code": "period",
-                                        "modifiers": ["right_command", "right_shift"]
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
+                                "description": "m1-m2-y => top 1/2",
+                                "from": { "key_code": "y" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2802,16 +2835,16 @@
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 1
-                                    }
-                                ],
-                                "description": "m1-m2-slash => bottom 1/2, 1/3, 2/3",
-                                "from": { "key_code": "slash" },
-                                "to": [
+                                    },
                                     {
-                                        "key_code": "slash",
-                                        "modifiers": ["right_command", "right_shift"]
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
+                                "description": "m1-m2-n => bottom 1/2",
+                                "from": { "key_code": "n" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom\"}'" }],
                                 "type": "basic"
                             },
                             {

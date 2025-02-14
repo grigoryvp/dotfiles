@@ -1136,8 +1136,8 @@ addRemap(["vkba", "norepeat"], ["m1"], "lbutton")
 ;;  'm1-quote' for right mouse button.
 addRemap(["vkde", "norepeat"], ["m1"], "rbutton")
 
-;;  'm1-m2-.' => move window top 1/2 screen
-addRemap("vkbe", ["m1", "m2"], ["winpos", "top"])
+;;  'm1-ctrl-.' for mouse button 4 + ctrl (zoom in Figma)
+addRemap(["vkbe", "norepeat"], ["m1", "ctrl"], "xbutton1", ["ctrl"])
 ;;  'm1-.' for mouse button 4 (scroll)
 addRemap(["vkbe", "norepeat"], ["m1"], "xbutton1")
 
@@ -1269,8 +1269,6 @@ addRemap("d", ["m2"], ["send", "{enter}/hideout{enter}"])
 ;;  m3-d for "copy debug to clipboard"
 addRemap("d", ["m3"], ["debugcopy"])
 
-;;  'm1-m2-slash' => move window bottom 1/2 screen
-addRemap("vkbf", ["m1", "m2"], ["winpos", "bottom"])
 ;;  'm3-slash' for shift-command-4 (screenshot)
 addRemap("vkbf", ["m3"], "s", ["win", "shift"])
 ;;  'm1-slash' for middle mouse button.
@@ -1302,6 +1300,12 @@ addRemap("i", ["m1", "m2"], ["winpos", "topright"])
 
 ;;  'm1-m2-o' => botom right
 addRemap("o", ["m1", "m2"], ["winpos", "bottomleft"])
+
+;;  'm1-m2-y' => move window top 1/2 screen
+addRemap("y", ["m1", "m2"], ["winpos", "top"])
+
+;;  'm1-m2-n' => move window bottom 1/2 screen
+addRemap("n", ["m1", "m2"], ["winpos", "bottom"])
 
 ;; m1-m3-n => close window
 addRemap("n", ["m1", "m3"], ["winclose"])

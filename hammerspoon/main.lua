@@ -191,6 +191,40 @@ function App:startHttpServer()
       end
       return "profile with index " .. profileIndex .. " not found", 400, {}
 
+    elseif json.command == "wnd_move" then
+
+      if json.dir == "top" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x
+        frame.y = screenFrame.y
+        frame.w = screenFrame.w
+        frame.h = screenFrame.h / 2
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "bottom" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x
+        frame.y = screenFrame.y + screenFrame.h / 2
+        frame.w = screenFrame.w
+        frame.h = screenFrame.h / 2
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      else
+        return "unknown direction", 400, {}
+      end
+
     elseif json.command == "show_char_picker" then
       self:showCharPicker()
       return "", 200, {}
@@ -389,34 +423,6 @@ function App:registerHotkeys()
     frame.y = screenFrame.y
     frame.w = screenFrame.w / 2
     frame.h = screenFrame.h
-    self:_setWndFrame(wnd, frame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", ".", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w
-    frame.h = screenFrame.h / 2
-    self:_setWndFrame(wnd, frame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "/", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y + screenFrame.h / 2
-    frame.w = screenFrame.w
-    frame.h = screenFrame.h / 2
     self:_setWndFrame(wnd, frame)
   end)
 

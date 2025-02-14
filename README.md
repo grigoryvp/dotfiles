@@ -53,6 +53,8 @@ pip install --upgrade pip
 # Add noTunes.app, hammerspoon to Settings/General/Login
 # In "Settings/Dock":
 # * Minimize windows into application icon
+# In "Settings/Displays":
+# * Turn off "automatically adjust brightness"
 # In "Settings/Wallpaper":
 # * Set black wallpaper
 # In "Settings/Sound":
@@ -81,6 +83,7 @@ pip install --upgrade pip
 # * Set Profiles/Colors/Color presets to "Solarized Dark"
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
 # For DoubleCommander settings
+# * Disable all confirmations in "/File operations/confirmation"
 # * In /Files views/Columns/Custom columns
 #   * Change GETFILENAMENOEXT to GETFILENAME
 #   * Delete the "ext" and "attr" columns
@@ -88,7 +91,6 @@ pip install --upgrade pip
 # * Enable "Always show controls" in "/General"
 # * Enable "copy link" in "/General"
 # * Enable HD, set 49 participants, disable mirror in "/Video"
-# * Disable all confirmations in "/File operations/confirmation"
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
 # Switch Lunar to "manual mode" so it will not mess with brightness

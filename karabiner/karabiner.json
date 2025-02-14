@@ -2640,12 +2640,7 @@
                                 ],
                                 "description": "m1-m2-u => top left",
                                 "from": { "key_code": "u" },
-                                "to": [
-                                    {
-                                        "key_code": "u",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top_left\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2668,12 +2663,7 @@
                                 ],
                                 "description": "m1-m2-i => top right",
                                 "from": { "key_code": "i" },
-                                "to": [
-                                    {
-                                        "key_code": "i",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top_right\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2691,12 +2681,7 @@
                                 ],
                                 "description": "m1-m2-o => bottom left",
                                 "from": { "key_code": "o" },
-                                "to": [
-                                    {
-                                        "key_code": "o",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom_left\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2714,12 +2699,7 @@
                                 ],
                                 "description": "m1-m2-p => bottom right",
                                 "from": { "key_code": "p" },
-                                "to": [
-                                    {
-                                        "key_code": "p",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom_right\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2824,12 +2804,7 @@
                                 ],
                                 "description": "m1-m2-space => maximize",
                                 "from": { "key_code": "spacebar" },
-                                "to": [
-                                    {
-                                        "key_code": "spacebar",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"full\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2861,12 +2836,7 @@
                                 ],
                                 "description": "m1-m2-j => move window screen down",
                                 "from": { "key_code": "j" },
-                                "to": [
-                                    {
-                                        "key_code": "j",
-                                        "modifiers": ["right_command", "right_alt"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_down\"}'" }],
                                 "type": "basic"
                             },
                             {
@@ -2889,12 +2859,7 @@
                                 ],
                                 "description": "m1-m2-k => move window screen up",
                                 "from": { "key_code": "k" },
-                                "to": [
-                                    {
-                                        "key_code": "k",
-                                        "modifiers": ["right_command", "right_alt"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_up\"}'" }],
                                 "type": "basic"
                             },
                             {

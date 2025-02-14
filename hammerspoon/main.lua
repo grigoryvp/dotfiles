@@ -193,7 +193,17 @@ function App:startHttpServer()
 
     elseif json.command == "wnd_move" then
 
-      if json.dir == "left" then
+      if json.dir == "full" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        self:_setWndFrame(wnd, screenFrame)
+        return "", 200, {}
+
+      elseif json.dir == "left" then
         local wnd = hs.window.frontmostWindow()
         if not wnd then return "no wnd", 400, {} end
         local frame = wnd:frame()
@@ -248,6 +258,82 @@ function App:startHttpServer()
         frame.h = screenFrame.h / 2
         self:_setWndFrame(wnd, frame)
         return "", 200, {}
+
+      elseif json.dir == "top_left" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x
+        frame.y = screenFrame.y
+        frame.w = screenFrame.w / 2
+        frame.h = screenFrame.h / 2
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "top_right" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x + screenFrame.w / 2
+        frame.y = screenFrame.y
+        frame.w = screenFrame.w / 2
+        frame.h = screenFrame.h / 2
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "bottom_left" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x
+        frame.y = screenFrame.y + screenFrame.h / 2
+        frame.w = screenFrame.w / 2
+        frame.h = screenFrame.h / 2
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "bottom_right" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return "no wnd", 400, {} end
+        local frame = wnd:frame()
+        ---@type table
+        local screenFrame = wnd:screen():frame()
+
+        frame.x = screenFrame.x + screenFrame.w / 2
+        frame.y = screenFrame.y + screenFrame.h / 2
+        frame.w = screenFrame.w / 2
+        frame.h = screenFrame.h / 2
+        self:_setWndFrame(wnd, frame)
+        return "", 200, {}
+
+      elseif json.dir == "screen_down" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return end
+        ---@type table
+        self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
+
+      elseif json.dir == "screen_up" then
+        local wnd = hs.window.frontmostWindow()
+        if not wnd then return end
+        ---@type table
+        local primaryScreen = hs.screen.primaryScreen()
+        local nonprimaryScreen = primaryScreen
+        for _, curScreen in ipairs(hs.screen.allScreens()) do
+          if curScreen ~= primaryScreen then
+            nonprimaryScreen = curScreen
+            break
+          end
+        end
+        self:_moveWndToScreen(wnd, nonprimaryScreen)
 
       else
         return "unknown direction", 400, {}
@@ -382,104 +468,6 @@ function App:registerHotkeys()
       hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
       hs.pasteboard.deletePasteboard(oldClipboard)
     end)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "space", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-    local duration = 0
-    wnd:setFrame(screenFrame, duration)
-  end)
-
-  -- move window screen down
-  hs.hotkey.bind("⌘⌥", "j", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    ---@type table
-    self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
-  end)
-
-  -- move window screen up
-  hs.hotkey.bind("⌘⌥", "k", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    ---@type table
-    local primaryScreen = hs.screen.primaryScreen()
-    local nonprimaryScreen = primaryScreen
-    for _, curScreen in ipairs(hs.screen.allScreens()) do
-      if curScreen ~= primaryScreen then
-        nonprimaryScreen = curScreen
-        break
-      end
-    end
-    self:_moveWndToScreen(wnd, nonprimaryScreen)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "space", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-    self:_setWndFrame(wnd, screenFrame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "u", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h / 2
-    self:_setWndFrame(wnd, frame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "i", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x + screenFrame.w / 2
-    frame.y = screenFrame.y
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h / 2
-    self:_setWndFrame(wnd, frame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "o", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x
-    frame.y = screenFrame.y + screenFrame.h / 2
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h / 2
-    self:_setWndFrame(wnd, frame)
-  end)
-
-  hs.hotkey.bind("⌘⇧", "p", function()
-    local wnd = hs.window.frontmostWindow()
-    if not wnd then return end
-    local frame = wnd:frame()
-    ---@type table
-    local screenFrame = wnd:screen():frame()
-
-    frame.x = screenFrame.x + screenFrame.w / 2
-    frame.y = screenFrame.y + screenFrame.h / 2
-    frame.w = screenFrame.w / 2
-    frame.h = screenFrame.h / 2
-    self:_setWndFrame(wnd, frame)
   end)
 end
 

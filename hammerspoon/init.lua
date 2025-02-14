@@ -23,7 +23,6 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "main"
 
   app = App:new()
-  app:registerHotkeys()
   app:registerMouse()
   app:loadSettings()
   app:createMenu()

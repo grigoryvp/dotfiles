@@ -1126,7 +1126,7 @@
                                 ],
                                 "description": "'m3-s' for short url",
                                 "from": { "key_code": "s" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"shorten_url\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"shorten_url\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1149,7 +1149,7 @@
                                 ],
                                 "description": "m1-2 for 1st app",
                                 "from": { "key_code": "2" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 0}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 0}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1172,7 +1172,7 @@
                                 ],
                                 "description": "m1-m2-2 for 3-rd browser profile",
                                 "from": { "key_code": "2" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_web_profile\", \"profile_index\": 2}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_web_profile\", \"profile_index\": 2}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1195,7 +1195,7 @@
                                 ],
                                 "description": "m1-3 for 2nd app",
                                 "from": { "key_code": "3" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 1}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 1}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1218,7 +1218,7 @@
                                 ],
                                 "description": "m1-m2-3 for 2-nd browser profile",
                                 "from": { "key_code": "3" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_web_profile\", \"profile_index\": 1}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_web_profile\", \"profile_index\": 1}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1241,7 +1241,7 @@
                                 ],
                                 "description": "m1-4 for 3nd app",
                                 "from": { "key_code": "4" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 2}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 2}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1264,7 +1264,7 @@
                                 ],
                                 "description": "m1-m2-4 for 1-st browser profile",
                                 "from": { "key_code": "4" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_web_profile\", \"profile_index\": 0}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_web_profile\", \"profile_index\": 0}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1277,7 +1277,7 @@
                                 ],
                                 "description": "m1-5 for 4th app",
                                 "from": { "key_code": "5" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 3}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 3}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1290,7 +1290,7 @@
                                 ],
                                 "description": "m1-6 for 5th app",
                                 "from": { "key_code": "6" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 4}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 4}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1313,7 +1313,7 @@
                                 ],
                                 "description": "m1-7 for 6th app",
                                 "from": { "key_code": "7" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 5}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 5}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1336,7 +1336,7 @@
                                 ],
                                 "description": "m1-m2-7 for Slack",
                                 "from": { "key_code": "7" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"slack\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"slack\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1359,7 +1359,7 @@
                                 ],
                                 "description": "m1-8 for 7th app",
                                 "from": { "key_code": "8" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 6}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 6}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1382,7 +1382,7 @@
                                 ],
                                 "description": "m1-m2-8 for HEY.com",
                                 "from": { "key_code": "8" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"hey\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"hey\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1395,7 +1395,7 @@
                                 ],
                                 "description": "m1-9 for 8th app",
                                 "from": { "key_code": "9" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 7}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 7}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1418,7 +1418,7 @@
                                 ],
                                 "description": "m1-m2-0 for Notion",
                                 "from": { "key_code": "0" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"notion\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"notion\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1441,7 +1441,7 @@
                                 ],
                                 "description": "m1-0 for 9th app",
                                 "from": { "key_code": "0" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 8}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 8}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1464,7 +1464,7 @@
                                 ],
                                 "description": "m1-minus for 10th app",
                                 "from": { "key_code": "hyphen" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 9}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 9}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1505,7 +1505,7 @@
                                 ],
                                 "description": "m1-equal for 11th app",
                                 "from": { "key_code": "equal_sign" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 10}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 10}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -1580,7 +1580,7 @@
                                     "key_code": "g",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"show_char_picker\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"show_char_picker\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2109,7 +2109,7 @@
                                     "key_code": "w",
                                     "modifiers": { "mandatory": ["control"] }
                                 },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_close\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_close\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2174,7 +2174,7 @@
                                     "key_code": "v",
                                     "modifiers": { "mandatory": ["right_control", "left_shift"] }
                                 },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"raw_paste\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"raw_paste\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2658,7 +2658,7 @@
                                 ],
                                 "description": "m1-m2-u => top left",
                                 "from": { "key_code": "u" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top_left\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top_left\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2681,7 +2681,7 @@
                                 ],
                                 "description": "m1-m2-i => top right",
                                 "from": { "key_code": "i" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top_right\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top_right\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2699,7 +2699,7 @@
                                 ],
                                 "description": "m1-m2-o => bottom left",
                                 "from": { "key_code": "o" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom_left\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom_left\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2717,7 +2717,7 @@
                                 ],
                                 "description": "m1-m2-p => bottom right",
                                 "from": { "key_code": "p" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom_right\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom_right\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2735,7 +2735,7 @@
                                 ],
                                 "description": "m1-m2-m => left 1/2",
                                 "from": { "key_code": "m" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"left\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"left\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2758,7 +2758,7 @@
                                 ],
                                 "description": "m1-m2-comma => right 1/2",
                                 "from": { "key_code": "comma" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"right\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"right\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2781,7 +2781,7 @@
                                 ],
                                 "description": "m1-m2-y => top 1/2",
                                 "from": { "key_code": "y" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"top\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2804,7 +2804,7 @@
                                 ],
                                 "description": "m1-m2-n => bottom 1/2",
                                 "from": { "key_code": "n" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"bottom\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2822,7 +2822,7 @@
                                 ],
                                 "description": "m1-m2-space => maximize",
                                 "from": { "key_code": "spacebar" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"full\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"full\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2831,7 +2831,7 @@
                                     "key_code": "spacebar",
                                     "modifiers": { "mandatory": ["left_option"] }
                                 },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2854,7 +2854,7 @@
                                 ],
                                 "description": "m1-m2-j => move window screen down",
                                 "from": { "key_code": "j" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_down\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_down\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2877,7 +2877,7 @@
                                 ],
                                 "description": "m1-m2-k => move window screen up",
                                 "from": { "key_code": "k" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_up\"}'" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_up\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

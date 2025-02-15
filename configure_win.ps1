@@ -74,6 +74,7 @@ class App {
       - Disable G-Sync in the nVidia settings
       - Disable the "SSDP Discovery" service
       - Disable Battle.net launcher "gpu acceleration"
+      - Configure Win11 for top taskbar with small icons
 "@;
   }
 
@@ -169,6 +170,7 @@ class App {
     # this._installLocationApp("NirSoft.BatteryInfoView", "")
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
+    $this._installApp("Stardock.Start11");
  
     if (-not $this._isPublic) {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
@@ -236,7 +238,7 @@ class App {
         Copy-Item -Path "$src" -Destination . -Force;
     }
 
-    # Hide seach in the taskbar
+    # Hide search in the taskbar
     $path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"
     Set-ItemProperty -Path $path -Name SearchboxTaskbarMode -Value 0
 

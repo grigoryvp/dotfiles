@@ -300,12 +300,13 @@
                                     },
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^com\\.tinyspeck\\.slackmacgap$",
+                                            "^com\\.openai\\.chat$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
                                 ],
-                                "description": "ctrl-enter to shift-enter for Slack for consistency; before dual mode",
+                                "description": "ctrl-enter to shift-enter for consistency; before dual mode",
                                 "from": {
                                     "key_code": "right_control",
                                     "modifiers": { "mandatory": ["left_control"] }

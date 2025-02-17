@@ -2,6 +2,7 @@ App = {}
 function App:new()
   local inst = setmetatable({
   }, {__index = self})
+  inst.srcDir = nil
   inst.menuItem = menuitem:new()
   inst.MENU_LIGHTS_ON = 2
   inst.MENU_LIGHTS_OFF = 3
@@ -48,6 +49,7 @@ function App:new()
   inst.pingInetInt = false
   inst.pingInetExt = false
   inst.karabinerState = {}
+  inst.symbols = {}
   return inst
 end
 
@@ -59,6 +61,15 @@ function App:loadSettings()
   self.pingInetExt = hs.settings.get("pingInetExt")
   self.showBatteryTime = hs.settings.get("showBatteryTime")
   self.keepBrightness = hs.settings.get("keepBrightness")
+end
+
+
+function App:setSrcDir(srcDir)
+  self.srcDir = srcDir
+end
+
+
+function App:loadSymbols()
 end
 
 

@@ -1,5 +1,6 @@
 -- TODO: change ICMP to TCP since ICMP works while TCP may fail with
 --       the "no buffer space available" error.
+-- TODO: read symbols from symbols.csv
 -- See ./.vscode/settings.json for linter configuration
 
 -- "hs" cli tool for remote communication
@@ -23,8 +24,10 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "main"
 
   app = App:new()
+  app:setSecDir(srcDir)
   app:registerMouse()
   app:loadSettings()
+  app:loadSymbols()
   app:createMenu()
   app:restartInetPingInt()
   app:restartInetPingExt()

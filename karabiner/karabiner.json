@@ -1576,12 +1576,12 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-shift-g for emoji selector",
+                                "description": "m1-shift-g for symbol selector",
                                 "from": {
                                     "key_code": "g",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"show_char_picker\"}' 2>/dev/null" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"show_symbol_picker\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

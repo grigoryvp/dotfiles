@@ -375,8 +375,8 @@ function App:startHttpServer()
       self:_rawPaste()
       return "", 200, {}
 
-    elseif json.command == "show_char_picker" then
-      self:showCharPicker()
+    elseif json.command == "show_symbol_picker" then
+      self:ShowSymbolPicker()
       return "", 200, {}
 
     elseif json.command == "shorten_url" then
@@ -1302,7 +1302,7 @@ function App:createMenu()
   end)
 end
 
-function App:showCharPicker()
+function App:showSymbolPicker()
   local oldLayout = hs.keycodes.currentLayout()
   hs.keycodes.setLayout("ABC")
   local chooser = hs.chooser.new(function(choice)
@@ -1315,7 +1315,7 @@ function App:showCharPicker()
     local oldClipboard = hs.pasteboard.uniquePasteboard()
     hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
-    hs.pasteboard.setContents(choice["emoji"])
+    hs.pasteboard.setContents(choice["symbol"])
     hs.eventtap.keyStroke({"cmd"}, "v")
 
     hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
@@ -1329,7 +1329,7 @@ function App:showCharPicker()
     name = pair[2]
     table.insert(choices, {
       text = symbol .. " " .. name,
-      emoji = symbol
+      symbol = symbol
     })
   end
   chooser:choices(choices)

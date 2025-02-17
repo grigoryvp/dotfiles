@@ -127,6 +127,34 @@ function ver() {
   Remove-Item .venv -Recurse -Force -ErrorAction SilentlyContinue
 }
 
+function uvc() {
+  uv init
+}
+
+function uvc() {
+  uv sync
+}
+
+function uva() {
+  uv add $Args
+}
+
+function uvr() {
+  uv run $Args
+}
+
+function uvp() {
+  uv run python $Args
+}
+
+function uvm() {
+  uv run python manage.py $Args
+}
+
+function uvs() {
+  uv run python manage.py runserver $Args
+}
+
 # ============================================================================
 # Tools
 # ============================================================================

@@ -218,8 +218,9 @@ class App {
       if (Test-Path -Path "$dst") {
         Remove-Item "$dst" -Recurse -Force;
       }
-      Write-Host "Creating hardlink $src => $dst";
-      New-Hardlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
+      Write-Host "Creating softlink $src => $dst";
+      # Hardlink is overwritten by powershell
+      New-Softlink -Path "$($this._psDir)" -Name "profile.ps1" -Value "$src";
     }
 
     # Create git config with link to the git-cfg.toml
@@ -330,9 +331,8 @@ class App {
 
   [Boolean] _isAppStatusInstalled($appName) {
     if ($this._isTest) { return $false; }
-    $res = & winget list
-    if ($LASTEXITCODE -ne 0) { return $false; }
-    return ($res | Out-String).Contains($appName);
+    & winget list $appName;
+    return ($LASTEXITCODE -eq 0);
   }
 
 
@@ -893,26 +893,37 @@ class App {
       New-Dir -Path "$dstDir";
     }
 
+    # Use softlinks since VSCode rewrites hardlinks:
+    # https://github.com/microsoft/vscode/issues/194856
+
     $srcPath = $this._path(@($this._cfgDir, "vscode_settings.json"));
-    New-Hardlink -Path "$dstDir" -Name "settings.json" -Value "$srcPath";
+    $name = "settings.json"
+    Write-Host "Creating softlink $srcPath => $dstDir\$name";
+    New-Softlink -Path "$dstDir" -Name $name -Value "$srcPath";
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_keybindings.json"));
-    New-Hardlink -Path "$dstDir" -Name "keybindings.json" -Value "$srcPath";
+    $name = "keybindings.json"
+    Write-Host "Creating softlink $srcPath => $dstDir\$name";
+    New-SoftLink -Path "$dstDir" -Name $name -Value "$srcPath";
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_tasks.json"));
-    New-Hardlink -Path "$dstDir" -Name "tasks.json" -Value "$srcPath";
+    $name = "tasks.json"
+    Write-Host "Creating softlink $srcPath => $dstDir\$name";
+    New-SoftLink -Path "$dstDir" -Name $name -Value "$srcPath";
 
     $srcPath = $this._path(@($this._cfgDir, "vscode_snippets/"));
     $dstPath = $this._path(@($dstDir, "vscode_snippets/"));
+    $name = "vscode_snippets/"
     if (Test-Path -Path "$dstPath") {
         Remove-Item "$dstPath" -Recurse -Force;
     }
-    New-Softlink -Path "$dstDir" -Name "vscode_snippets/" -Value "$srcPath";
+    Write-Host "Creating dir softlink $srcPath => $dstDir\$name";
+    New-Softlink -Path "$dstDir" -Name $name -Value "$srcPath";
 
     $this._installVscodeExt("grigoryvp.language-xi");
     $this._installVscodeExt("grigoryvp.memory-theme");
     $this._installVscodeExt("grigoryvp.goto-link-provider");
-    $this._installVscodeExt("markdown-inline-fence");
+    $this._installVscodeExt("grigoryvp.markdown-inline-fence");
     $this._installVscodeExt("grigoryvp.markdown-python-repl-syntax");
     $this._installVscodeExt("grigoryvp.markdown-pandoc-rawattr");
     $this._installVscodeExt("vscodevim.vim");

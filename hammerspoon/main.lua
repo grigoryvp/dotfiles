@@ -70,6 +70,23 @@ end
 
 
 function App:loadSymbols()
+  file = io.open(self.srcDir .. "../symbols.csv", "r")
+  data = file:read("*all")
+  for line in data:gmatch("[^\r\n]+") do
+    if not line:find("^%s*#") then
+      symbol = nil
+      name = nil
+      for sub in line:gmatch("[^,]+") do
+        if not symbol then
+          symbol = sub:match("^%s*(.-)%s*$")
+        else
+          name = sub:match("^%s*(.-)%s*$")
+          break
+        end
+      end
+      table.insert(self.symbols, {symbol, name})
+    end
+  end
 end
 
 
@@ -1306,71 +1323,15 @@ function App:showCharPicker()
     hs.keycodes.setLayout(oldLayout)
   end)
 
-  chooser:choices({
-    -- Emoji
-    {["text"] = "😊 smile", ["emoji"] = "😊"},
-    {["text"] = "😜 crazy", ["emoji"] = "😜"},
-    {["text"] = "😇 halo", ["emoji"] = "😇"},
-    {["text"] = "😳 eyes", ["emoji"] = "😳"},
-    {["text"] = "🤔 think", ["emoji"] = "🤔"},
-    {["text"] = "😂 lol", ["emoji"] = "😂"},
-    {["text"] = "😥 sad", ["emoji"] = "😥"},
-    {["text"] = "😘 kiss", ["emoji"] = "😘"},
-    {["text"] = "😍 love", ["emoji"] = "😍"},
-    {["text"] = "❤️ heart", ["emoji"] = "❤️"},
-    {["text"] = "🔥 fire", ["emoji"] = "🔥"},
-    {["text"] = "🙏 hands", ["emoji"] = "🙏"},
-    {["text"] = "🤝 shake", ["emoji"] = "🤝"},
-    {["text"] = "👉 point", ["emoji"] = "👉"},
-    {["text"] = "👍 yes", ["emoji"] = "👍"},
-    {["text"] = "👎 no", ["emoji"] = "👎"},
-    {["text"] = "👌 ok", ["emoji"] = "👌"},
-    {["text"] = "👋 wave", ["emoji"] = "👋"},
-    {["text"] = "🚕 car", ["emoji"] = "🚕"},
-    {["text"] = "✈️ airplane", ["emoji"] = "✈️"},
-    {["text"] = "€ euro", ["emoji"] = "€"},
-    -- Keyboard
-    {["text"] = "⌘ command", ["emoji"] = "⌘"},
-    {["text"] = "⇧ shift", ["emoji"] = "⇧"},
-    {["text"] = "⌥ alt", ["emoji"] = "⌥"},
-    {["text"] = "↩ return", ["emoji"] = "↩"},
-    {["text"] = "← left", ["emoji"] = "←"},
-    {["text"] = "→ right", ["emoji"] = "→"},
-    {["text"] = "↑ up", ["emoji"] = "↑"},
-    {["text"] = "↓ down", ["emoji"] = "↓"},
-    -- Languages
-    {["text"] = "🇷🇺 Russian", ["emoji"] = "🇷🇺"},
-    {["text"] = "🇬🇧 English", ["emoji"] = "🇬🇧"},
-    {["text"] = "🇳🇱 Dutch", ["emoji"] = "🇳🇱"},
-    -- Tags
-    {["text"] = "侵 mark", ["emoji"] = "侵"},
-    {["text"] = "教 speaker", ["emoji"] = "教"},
-    {["text"] = "技 skilled", ["emoji"] = "技"},
-    {["text"] = "力 influencer", ["emoji"] = "力"},
-    {["text"] = "大 boss", ["emoji"] = "大"},
-    {["text"] = "死 dead", ["emoji"] = "死"},
-    -- Relations
-    {["text"] = "郎 son", ["emoji"] = "郎"},
-    {["text"] = "娘 daughter", ["emoji"] = "娘"},
-    {["text"] = "相 partner", ["emoji"] = "相"},
-    {["text"] = "友 friend", ["emoji"] = "友"},
-    {["text"] = "僚 colleague", ["emoji"] = "僚"},
-    -- Job or company suffixes
-    {["text"] = "元 ex", ["emoji"] = "元"},
-    {["text"] = "政 head", ["emoji"] = "政"},
-    {["text"] = "主 organizer", ["emoji"] = "主"},
-    {["text"] = "委 committee", ["emoji"] = "委"},
-    {["text"] = "音 podcast", ["emoji"] = "音"},
-    -- Language learning
-    {["text"] = "去 past", ["emoji"] = "去"},
-    {["text"] = "完 perfect", ["emoji"] = "完"},
-    {["text"] = "多 plural", ["emoji"] = "多"},
-    -- Utility tags
-    {["text"] = "会 meet", ["emoji"] = "会"},
-    {["text"] = "✉️ mail", ["emoji"] = "✉️"},
-    {["text"] = "業 LFE", ["emoji"] = "業"},
-    {["text"] = "員 LFW", ["emoji"] = "員"},
-  })
-
+  choices = {}
+  for _, pair in pairs(self.symbols) do
+    symbol = pair[1]
+    name = pair[2]
+    table.insert(choices, {
+      text = symbol .. " " .. name,
+      emoji = symbol
+    })
+  end
+  chooser:choices(choices)
   chooser:show()
 end

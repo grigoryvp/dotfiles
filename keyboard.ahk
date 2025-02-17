@@ -52,7 +52,7 @@ appLastLang := ""
 appLastDebug := ""
 appIsDebug := false
 appDebugLog := []
-appSymbols := Map()
+appSymbols := []
 MAX_DEBUG_LOG := 50
 KEY_NAMES := Map(
   "vkc0", "~",
@@ -683,9 +683,11 @@ showSymbolPicker() {
 
   symbolsByFilter(filter) {
     filtered := []
-    for name, symbol in appSymbols {
+    for _, pair in appSymbols {
+      symbol := pair[1]
+      name := pair[2]
       if (not filter or InStr(StrLower(name), StrLower(filter)) == 1) {
-        filtered.Push(name)
+        filtered.Push(pair)
       }
     }
     return filtered
@@ -694,8 +696,10 @@ showSymbolPicker() {
   onUpdateSymbols(filter) {
     filtered := symbolsByFilter(filter)
     lines := []
-    for _, name in filtered {
-      lines.Push(appSymbols[name] . " " . name)
+    for _, pair in filtered {
+      symbol := pair[1]
+      name := pair[2]
+      lines.Push(symbol . " " . name)
     }
     ControlSetText(JoinWithSep(lines, "`r`n"), textBox)
   }
@@ -708,9 +712,11 @@ showSymbolPicker() {
       OnMessage(WM_KEYDOWN := 0x100, onSymbolPickerKeydown, 0)
       OnMessage(WM_KEYUP := 0x101, onSymbolPickerKeyup, 0)
       wnd.Destroy()
-      symbols := symbolsByFilter(filter)
-      if (symbols) {
-        Send(appSymbols[symbols[1]])
+      pairs := symbolsByFilter(filter)
+      if (pairs) {
+        pair := pairs[1]
+        symbol := pair[1]
+        Send(symbol)
       }
       return
     }
@@ -1513,18 +1519,18 @@ readSymolbs() {
   content := FileOpen(path, "r", "UTF-8").Read()
   for _, line in StrSplit(content, ["`r", "`n"]) {
     if (not RegExMatch(line, "^\s*#")) {
+      symbol := ""
       name := ""
-      val := ""
       for pos, sub in StrSplit(line, ",") {
         if (pos == 1) {
-          val := Trim(sub)
+          symbol := Trim(sub)
         }
         if (pos == 2) {
           name := Trim(sub)
         }
       }
-      if (name) {
-        appSymbols[name] := val
+      if (symbol and name) {
+        appSymbols.Push([symbol, name])
       }
     }
   }

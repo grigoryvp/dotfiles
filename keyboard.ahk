@@ -695,8 +695,8 @@ showSymbolPicker() {
   wnd := Gui()
   editBox := wnd.Add("Edit", "w300 h32 r1")
   textBox := wnd.Add("Edit", "w300 h200 Disabled")
-  wnd.OnEvent("Escape", wnd.Destroy)
-  wnd.OnEvent("Close", wnd.Destroy)
+  wnd.OnEvent("Escape", closeSymbolPicker)
+  wnd.OnEvent("Close", closeSymbolPicker)
 
   symbolsByFilter(filter) {
     filtered := []
@@ -725,10 +725,7 @@ showSymbolPicker() {
     keyName := GetKeyName(Format('vk{:X}', wParam))
     filter := ControlGetText(editBox)
     if (keyName == "Enter") {
-      ; OnMessage keeps a list of all registered functions
-      OnMessage(WM_KEYDOWN := 0x100, onSymbolPickerKeydown, 0)
-      OnMessage(WM_KEYUP := 0x101, onSymbolPickerKeyup, 0)
-      wnd.Destroy()
+      closeSymbolPicker()
       pairs := symbolsByFilter(filter)
       if (pairs) {
         pair := pairs[1]
@@ -739,6 +736,13 @@ showSymbolPicker() {
     }
   }
   OnMessage(WM_KEYDOWN := 0x100, onSymbolPickerKeydown)
+
+  closeSymbolPicker(*) {
+    ; OnMessage keeps a list of all registered functions
+    OnMessage(WM_KEYDOWN := 0x100, onSymbolPickerKeydown, 0)
+    OnMessage(WM_KEYUP := 0x101, onSymbolPickerKeyup, 0)
+    wnd.Destroy()
+  }
 
   onSymbolPickerKeyup(wParam, lParam, *) {
     keyName := GetKeyName(Format('vk{:X}', wParam))

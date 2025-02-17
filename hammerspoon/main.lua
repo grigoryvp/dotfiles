@@ -376,7 +376,7 @@ function App:startHttpServer()
       return "", 200, {}
 
     elseif json.command == "show_symbol_picker" then
-      self:ShowSymbolPicker()
+      self:showSymbolPicker()
       return "", 200, {}
 
     elseif json.command == "shorten_url" then

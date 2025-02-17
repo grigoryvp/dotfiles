@@ -898,12 +898,14 @@ onKey(key, dir) {
   if (dir == "up" and appKeysPressed.Has(key)) {
     remapInfo := appKeysPressed[key]["remap_to"]
     if (remapInfo) {
+      command := remapInfo["mods"] . "{" . remapInfo["key"] . " up}"
       if (appIsDebug) {
         name := getReadableKeyName(key)
         remappedName := getReadableKeyName(remapInfo["key"])
         debugLogDebounce("=> from " . name . " {" . remappedName . " up}")
+        appLastKeyup := [command, Map()]
       }
-      Send(remapInfo["mods"] . "{" . remapInfo["key"] . " up}")
+      Send(command)
       return remapInfo
     }
   }
@@ -1307,11 +1309,10 @@ addRemap("l", ["m1"], "right")
 
 ;;  'm1-m2-t' for end (line end)
 addRemap("t", ["m1", "m2"], "end")
+;;  'm1-shift-t' for shift-end.
+addRemap("t", ["m1", "shift"], "end", ["shift"])
 ;;  'm1-t' for end.
 addRemap("t", ["m1"], "end")
-;;  'm1-shift-t' for shift-end.
-;; TODO: not working
-addRemap("t", ["m1", "shift"], "end", ["shift"])
 ;;  'm2-t' for phone
 addRemap("t", ["m2"], ["send", "{+}31681345854"])
 

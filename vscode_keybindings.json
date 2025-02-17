@@ -89,9 +89,20 @@
   "key": "ctrl+n",
   "command": "explorer.newFile",
   "when": "explorerViewletFocus"
-},
-{
+}, {
   "key": "shift+end",
   "command": "cSpell.goToNextSpellingIssueAndSuggest"
-}
-]
+}, {
+  "key": "enter",
+  "when": "hasSearchResult && searchViewletFocus",
+  "command": "runCommands",
+  "comment": "VSCode starts vim in insert mode by default",
+  "args": {
+    "commands": [{
+      "command": "workbench.action.focusActiveEditorGroup"
+    }, {
+      "command": "vim.remap",
+      "args": {"after": ["<Esc>"]}
+    }]
+  }
+}]

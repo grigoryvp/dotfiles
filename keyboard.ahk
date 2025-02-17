@@ -53,6 +53,9 @@ appLastDebug := ""
 appIsDebug := false
 appDebugLog := []
 appSymbols := []
+appLastKeydown := ["", Map()]
+appLastKeyup := ["", Map()]
+appLastCfg := ""
 MAX_DEBUG_LOG := 50
 KEY_NAMES := Map(
   "vkc0", "~",
@@ -83,7 +86,7 @@ repeatStr(times, str) {
   return res
 }
 
-joinWithSep(collection, sep) {
+joinWithSep(sep, collection) {
   res := ""
   for _, item in collection {
     if (res) {
@@ -128,18 +131,32 @@ remove(container, needle) {
   }
 }
 
-mapToStr(container, indent := 0) {
-  res := "{`n"
+mapToStr(container, oneline := false, indent := 0) {
+  res := "{"
+  if (not oneline) {
+    res .= "`n"
+  }
   for key, val in container {
-    padding := repeatStr(indent + 2, " ")
+    if (oneline) {
+      padding := ""
+    }
+    else {
+      padding := repeatStr(indent + 2, " ")
+    }
     if (IsObject(val)) {
-      res .= padding . key . ": " . mapToStr(val, indent + 2) . ",`n"
+      res .= padding . key . ": " . mapToStr(val, oneline, indent + 2) . ","
     } else {
       if (Type(val) == "String") {
-        res .= padding . key . ": `"" . val . "`",`n"
+        res .= padding . key . ": `"" . val . "`","
       } else {
-        res .= padding . key . ": " . val . ",`n"
+        res .= padding . key . ": " . val . ","
       }
+    }
+    if (oneline) {
+      res .= " "
+    }
+    else {
+      res .= "`n"
     }
   }
   return res . repeatStr(indent, " ") . "}"
@@ -701,7 +718,7 @@ showSymbolPicker() {
       name := pair[2]
       lines.Push(symbol . " " . name)
     }
-    ControlSetText(JoinWithSep(lines, "`r`n"), textBox)
+    ControlSetText(joinWithSep("`r`n", lines), textBox)
   }
 
   onSymbolPickerKeydown(wParam, lParam, *) {
@@ -873,6 +890,8 @@ onKeyCommand(items, dir) {
 ; returns key this was remapped to or empty string
 onKey(key, dir) {
   global appIsDebug
+  global appLastKeydown
+  global appLastKeyup
 
   ; If key was remapped on keydown, use the same remap on keyup, otherwise
   ; {; down}{caps down}{caps up}{; up} will result in {mouse down}{; up}
@@ -908,12 +927,14 @@ onKey(key, dir) {
           isUponly := includes(config["options"], "uponly")
           if (isAlone or isUponly) {
             if (dir == "up") {
+              remappedTo := to
+              command := mods . "{" . to . "}"
               if (appIsDebug) {
                 name := getReadableKeyName(to)
+                appLastKeyup := [command, config]
                 debugLogDebounce("=> " . mods . "{" . name . "}")
               }
-              remappedTo := to
-              Send(mods . "{" . to . "}")
+              Send(command)
             }
           }
           else {
@@ -924,14 +945,22 @@ onKey(key, dir) {
             if (dir == "up" or not isNorepeat or not isPressed) {
               ; remember remap so it can be released on key up
               remappedTo := Map("key", to, "mods", mods)
+              command := mods . "{" . to . " " . dir . "}"
               if (appKeysPressed.Has(key)) {
                 appKeysPressed[key]["remap_to"] := remappedTo
               }
               if (appIsDebug) {
                 name := getReadableKeyName(to)
                 debugLogDebounce("=> " . mods . "{" . name . " " . dir . "}")
+                if (dir == "down") {
+                  appLastKeydown := [command, config]
+                  appLastKeyup := ["", Map()]
+                }
+                else {
+                  appLastKeyup := [command, config]
+                }
               }
-              Send(mods . "{" . to . " " . dir . "}")
+              Send(command)
             }
           }
         }
@@ -966,11 +995,19 @@ onKey(key, dir) {
     if (key == "lctrl" or key == "rctrl") {
       return
     }
+    command := "{blind}{" . key . " " . dir . "}"
     if (appIsDebug) {
       name := getReadableKeyName(key)
       debugLogDebounce("=> {blind}{" . name . " " . dir . "}")
+      if (dir == "down") {
+        appLastKeydown := [command, Map()]
+        appLastKeyup := ["", Map()]
+      }
+      else {
+        appLastKeyup := [command, Map()]
+      }
     }
-    Send("{blind}{" . key . " " . dir . "}")
+    Send(command)
   }
 }
 
@@ -1272,6 +1309,9 @@ addRemap("l", ["m1"], "right")
 addRemap("t", ["m1", "m2"], "end")
 ;;  'm1-t' for end.
 addRemap("t", ["m1"], "end")
+;;  'm1-shift-t' for shift-end.
+;; TODO: not working
+addRemap("t", ["m1", "shift"], "end", ["shift"])
 ;;  'm2-t' for phone
 addRemap("t", ["m2"], ["send", "{+}31681345854"])
 
@@ -1464,7 +1504,23 @@ onSlowTimer() {
     appShowDebugIcon := true
   }
 
-  A_IconTip := mapToStr(appKeysPressed)
+  if (appIsDebug) {
+    A_IconTip := joinWithSep("`n", [
+      "↓",
+      appLastKeydown[1],
+      mapToStr(appLastKeydown[2], oneline := true),
+      "↑",
+      appLastKeyup[1],
+      mapToStr(appLastKeyup[2], oneline := true),
+      mapToStr(appKeysPressed, oneline := true)
+    ])
+  }
+  else {
+    A_IconTip := joinWithSep("`n", [
+      "enable debug mode to see more",
+      "keys state:`n" .  mapToStr(appKeysPressed)
+    ])
+  }
 }
 
 onFastTimer() {

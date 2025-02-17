@@ -1,4 +1,4 @@
-﻿#Requires AutoHotkey v2
+﻿#Requires AutoHotkey v2.0
 #SingleInstance force ;; Auto-reload
 #Warn ;; Enable warnings, show message box.
 
@@ -52,6 +52,7 @@ appLastLang := ""
 appLastDebug := ""
 appIsDebug := false
 appDebugLog := []
+appSymbols := Map()
 MAX_DEBUG_LOG := 50
 KEY_NAMES := Map(
   "vkc0", "~",
@@ -79,6 +80,17 @@ repeatStr(times, str) {
   res := ""
   loop times
     res .= str
+  return res
+}
+
+joinWithSep(collection, sep) {
+  res := ""
+  for _, item in collection {
+    if (res) {
+      res .= sep
+    }
+    res .= item
+  }
   return res
 }
 
@@ -654,6 +666,73 @@ switchToLang(lang) {
   appLastLang := lang
 }
 
+showSymbolPicker() {
+  wndInfo := getCurWinPos()
+  monitors := getMonitors()
+  monIdx := monitorFromWnd(monitors, wndInfo)
+  if (not monIdx) {
+    return
+  }
+  monInfo := monitors[monIdx]
+
+  wnd := Gui()
+  editBox := wnd.Add("Edit", "w300 h32 r1")
+  textBox := wnd.Add("Edit", "w300 h200 Disabled")
+  wnd.OnEvent("Escape", wnd.Destroy)
+  wnd.OnEvent("Close", wnd.Destroy)
+
+  symbolsByFilter(filter) {
+    filtered := []
+    for name, symbol in appSymbols {
+      if (not filter or InStr(StrLower(name), StrLower(filter)) == 1) {
+        filtered.Push(name)
+      }
+    }
+    return filtered
+  }
+
+  onUpdateSymbols(filter) {
+    filtered := symbolsByFilter(filter)
+    lines := []
+    for _, name in filtered {
+      lines.Push(appSymbols[name] . " " . name)
+    }
+    ControlSetText(JoinWithSep(lines, "`r`n"), textBox)
+  }
+
+  onSymbolPickerKeydown(wParam, lParam, *) {
+    keyName := GetKeyName(Format('vk{:X}', wParam))
+    filter := ControlGetText(editBox)
+    if (keyName == "Enter") {
+      ; OnMessage keeps a list of all registered functions
+      OnMessage(WM_KEYDOWN := 0x100, onSymbolPickerKeydown, 0)
+      OnMessage(WM_KEYUP := 0x101, onSymbolPickerKeyup, 0)
+      wnd.Destroy()
+      symbols := symbolsByFilter(filter)
+      if (symbols) {
+        Send(appSymbols[symbols[1]])
+      }
+      return
+    }
+  }
+  OnMessage(WM_KEYDOWN := 0x100, onSymbolPickerKeydown)
+
+  onSymbolPickerKeyup(wParam, lParam, *) {
+    keyName := GetKeyName(Format('vk{:X}', wParam))
+    filter := ControlGetText(editBox)
+    onUpdateSymbols(filter)
+  }
+  OnMessage(WM_KEYUP := 0x101, onSymbolPickerKeyup)
+
+  width := 320
+  height := 240
+  x := monInfo["left"] + (monInfo["width"] - width) / 2
+  y := monInfo["top"] + (monInfo["height"] - height) / 2
+  ; Show initial unfiltered list of symbols
+  onUpdateSymbols("")
+  wnd.Show("x" . x . " y" . y . " w" . width . " h" . height)
+}
+
 onKeyCommand(items, dir) {
   command := items.RemoveAt(1)
   if (command == "nothing") {
@@ -681,6 +760,9 @@ onKeyCommand(items, dir) {
       lang := items.RemoveAt(1)
       switchToLang(lang)
       return
+    }
+    else if (command == "symbols") {
+      showSymbolPicker()
     }
   }
   if (dir == "up") {
@@ -1245,7 +1327,7 @@ addRemap("vkdc", ["m3"], ["lock"])
 ;;  m1-m2-g for S-F4
 addRemap("g", ["m1", "m2"], "vk73", ["shift"])
 ;;  m1-shift-g for emoji selector
-addRemap("g", ["m1", "shift"], "vkbe", ["win"])
+addRemap("g", ["m1", "shift"], ["symbols"])
 ;;  m1-g for F4
 addRemap("g", ["m1"], "vk73")
 
@@ -1426,7 +1508,29 @@ onDebugCopy(*) {
   A_Clipboard := text
 }
 
+readSymolbs() {
+  path := A_ScriptDir . "\symbols.csv"
+  content := FileOpen(path, "r", "UTF-8").Read()
+  for _, line in StrSplit(content, ["`r", "`n"]) {
+    if (not RegExMatch(line, "^\s*#")) {
+      name := ""
+      val := ""
+      for pos, sub in StrSplit(line, ",") {
+        if (pos == 1) {
+          val := Trim(sub)
+        }
+        if (pos == 2) {
+          name := Trim(sub)
+        }
+      }
+      if (name) {
+        appSymbols[name] := val
+      }
+    }
+  }
+  OutputDebug(mapToStr(appSymbols))
+}
+
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
-
-; TODO: custom emoji picker
+readSymolbs()

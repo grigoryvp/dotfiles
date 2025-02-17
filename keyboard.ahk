@@ -793,8 +793,8 @@ onKeyCommand(items, dir) {
       hwnd := WinExist("A")
       if (hwnd) {
         if (WinGetTitle("A") == "Zoom Workplace") {
-          Run("taskkill /f /im zCefAgent.exe")
-          Run("taskkill /f /im Zoom.exe")
+          Run("taskkill /f /im zCefAgent.exe",, "Hide")
+          Run("taskkill /f /im Zoom.exe",, "Hide")
         }
         else {
           winclose "A"

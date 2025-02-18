@@ -63,6 +63,7 @@ class App {
       - Disable autostart in Task Scheduler
       - Disable snap assist
       - Disable touchpad click and set maximum speed
+      - Pin trello to taskbar in Edge (not in Chrome due to wnd switch)
       - Pin term, vscode, web, double, pass, telegram, wino, notionc, trello
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
@@ -309,8 +310,6 @@ class App {
       $this._installApp("VideoLAN.VLC");
       # Wino Mail
       $this._installApp("9NCRCVJC50WL");
-      # Trello client
-      $this._installApp("9NBLGGH4XXVW");
     }
 
     if ($this._isTest) {

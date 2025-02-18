@@ -79,6 +79,12 @@ if (!A_IsAdmin) {
 ;;  No warning if key is hold for 2 seconds (HotkeyInterval)
 A_MaxHotkeysPerInterval := 500
 
+assert(condition, msg) {
+  if (not condition) {
+    OutputDebug("ahk assert: " . msg)
+  }
+}
+
 repeatStr(times, str) {
   res := ""
   loop times
@@ -207,6 +213,42 @@ joinToStr(array, quote := false) {
     }
   }
   return res
+}
+
+sortArray(&items) {
+  left := 1
+  right := items.Length
+  while (left < right) {
+    minIdx := left
+    search := left + 1
+    while (search <= right) {
+      if (items[search] < items[minIdx]) {
+        minIdx := search
+      }
+      search += 1
+    }
+    if (minIdx != left) {
+      tmp := items[left]
+      items[left] := items[minIdx]
+      items[minIdx] := tmp
+    }
+    left += 1
+  }
+}
+
+compareArray(left, right) {
+  if (left.Length != right.Length) {
+    return false
+  }
+
+  i := 1
+  while (i <= left.Length) {
+    if (left[i] != right[i]) {
+      return false
+    }
+  }
+
+  return true
 }
 
 debugDebounce(params*) {
@@ -408,7 +450,7 @@ modsToStr(mods) {
       res .= "+"
     }
     else {
-      ;;  TODO: assertion
+      assert(false, "unknown mod in " . arrayToStr(mods))
     }
   }
   return res
@@ -581,7 +623,7 @@ setCurWinPos(pos) {
     moveActiveWnd(wndInfo)
   }
   else {
-    ;;  assert
+    assert(false, "unknown pos " . pos)
   }
 }
 
@@ -661,6 +703,60 @@ setCurWinMon(dir) {
   }
   recalculateGeometry(wndInfo, "width", "height")
   moveActiveWnd(wndInfo)
+}
+
+cycleCurWin(dir) {
+  hwnd := WinExist("A")
+  if (not hwnd) {
+    return
+  }
+
+  pid := WinGetPID("A")
+  process := WinGetProcessName("A")
+
+  windows := WinGetList()
+  sortArray(&windows)
+  activeWndFound := false
+  firstWnd := ""
+  prevWnd := ""
+  nextWnd := ""
+  lastWnd := ""
+
+  for win in windows {
+    if (WinGetProcessName(win) == process) {
+      if (not firstWnd) {
+        firstWnd := win
+      }
+      if (win == hwnd) {
+        activeWndFound := true
+      }
+      else {
+        if (not activeWndFound) {
+          prevWnd := win
+        }
+        else if(not nextWnd) {
+          nextWnd := win
+        }
+      }
+      lastWnd := win
+    }
+  }
+
+  ; active wnd is first?
+  if (not prevWnd) {
+    prevWnd := lastWnd
+  }
+  ; active wnd is last?
+  if (not nextWnd) {
+    nextWnd := firstWnd
+  }
+
+  if (dir == "prev") {
+    WinActivate(prevWnd)
+  }
+  else {
+    WinActivate(nextWnd)
+  }
 }
 
 switchToLang(lang) {
@@ -774,7 +870,7 @@ onKeyCommand(items, dir) {
       appMeta[name] := false
     }
     else {
-      ; assert
+      assert(false, "unknown dir " . dir)
     }
     return
   }
@@ -833,6 +929,11 @@ onKeyCommand(items, dir) {
       setCurWinMon(dir)
       return
     }
+    if (command == "wincycle") {
+      dir := items.RemoveAt(1)
+      cycleCurWin(dir)
+      return
+    }
     if (command == "lock") {
       ; Locking workstation prevents "key up" events and results in
       ; "stuck" meta.
@@ -888,7 +989,7 @@ onKeyCommand(items, dir) {
       onDebugCopy()
     }
   }
-  ;;  assert
+  assert(false, "unknown command " . arrayToStr(items))
 }
 
 ; returns key this was remapped to or empty string
@@ -977,7 +1078,7 @@ onKey(key, dir) {
           onKeyCommand(to.Clone(), dir)
         }
         else {
-          ;; assertion
+          assert(false, "unknown 'to' type " . Type(to))
         }
         if (not includes(fromMods, "always")) {
           ;; skip original key behavior
@@ -1237,6 +1338,7 @@ addRemap("enter", ["alone"], "enter")
 
 ;;  Single rctrl (enter) press => enter (with mods)
 addRemap("rctrl", ["ctrl"], "enter", ["ctrl"])
+;;  TODO: ctrl-enter to shift-enter if ChatGPT is foremost
 addRemap("rctrl", ["shift"], "enter", ["shift"])
 addRemap("rctrl", ["alone"], "enter")
 
@@ -1248,8 +1350,13 @@ addRemap("lctrl", ["alone"], "tab")
 ;;  General keyboard mods
 ;;  ==========================================================================
 
-;;  m1-open-bracket for escape (vim-like)
+;;  m1-m2-open-bracket for switching to previous app window
+addRemap("vkdb", ["m1", "m2"], ["wincycle", "prev"])
+;;  m1-open-open-bracket for escape (vim-like)
 addRemap("vkdb", ["m1"], "esc")
+
+;;  m1-m2-close-bracket for switching to next app window
+addRemap("vkdd", ["m1", "m2"], ["wincycle", "next"])
 
 ;;  'm1-m2-p' => bottom right
 addRemap("p", ["m1", "m2"], ["winpos", "bottomright"])
@@ -1595,9 +1702,29 @@ readSymolbs() {
       }
     }
   }
-  OutputDebug(mapToStr(appSymbols))
+}
+
+onTests(*) {
+  items := []
+  sortArray(&items)
+  assert(compareArray(items, []), "empty array sort")
+  items := [1]
+  sortArray(&items)
+  assert(compareArray(items, [1]), "single array sort")
+  items := [1, 2]
+  sortArray(&items)
+  assert(compareArray(items, [1, 2]), "sorted array re-sort")
+  items := [2, 1]
+  sortArray(&items)
+  assert(compareArray(items, [1, 2]), "2-array sort")
+  items := [3, 2, 1]
+  sortArray(&items)
+  assert(compareArray(items, [1, 2, 3]), "3-array sort")
 }
 
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
+A_TrayMenu.Add("Run tests", onTests)
 readSymolbs()
+
+;; TODO make m1-m2-[] for prev/next app window

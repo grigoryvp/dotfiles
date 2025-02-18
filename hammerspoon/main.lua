@@ -348,6 +348,7 @@ function App:startHttpServer()
         if not wnd then return end
         ---@type table
         self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
+        return "", 200, {}
 
       elseif json.dir == "screen_up" then
         local wnd = hs.window.frontmostWindow()
@@ -362,6 +363,7 @@ function App:startHttpServer()
           end
         end
         self:_moveWndToScreen(wnd, nonprimaryScreen)
+        return "", 200, {}
 
       else
         return "unknown direction", 400, {}

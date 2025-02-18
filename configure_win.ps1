@@ -280,8 +280,8 @@ class App {
       $this._installApp("Google.Chrome");
       # file management
       $this._installApp("alexx2000.DoubleCommander");
-      # PDF view.
-      $this._installApp("Foxit.FoxitReader");
+      # PDF view, this is the last version that supports bookmarks save
+      $this._installAppWithVer("Foxit.FoxitReader", "2023.2.0.21408");
       # Better process maangement
       $this._installApp("Microsoft.Sysinternals.ProcessExplorer");
       # Desktop recording.
@@ -350,6 +350,18 @@ class App {
     }
     Write-Host "Installing $appName"
     & winget install --silent $appName;
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
+  }
+
+
+  _installAppWithVer($appName, $ver) {
+    if ($this._isTest) { return; }
+    if ($this._isAppStatusInstalled($appName)) {
+      Write-Host "$appName is already installed";
+      return;
+    }
+    Write-Host "Installing $appName, version $ver"
+    & winget install --silent $appName --version $ver;
     if ($LASTEXITCODE -ne 0) { throw "Failed to install $appName" }
   }
 

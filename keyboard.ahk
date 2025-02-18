@@ -1391,6 +1391,8 @@ addRemap("vkdd", ["m1", "m2"], ["wincycle", "next"])
 
 ;;  'm1-m2-p' => bottom right
 addRemap("p", ["m1", "m2"], ["winpos", "bottomright"])
+;;  m1-m3-p for Double Commander 'delete'
+addRemap(["d", "app", "doublecmd.exe"], ["m1", "m3"], "f8")
 ;;  m1-m3-p for deleting things
 addRemap("p", ["m1", "m3"], ["delete"])
 ;;  m1-p for backspace
@@ -1540,6 +1542,8 @@ addRemap("f", ["m2"], ["send", "{enter}/exit{enter}"])
 addRemap("d", ["m1", "m2"], "vk71", ["shift"])
 ;;  m1-shift-d switch to 2nd language
 addRemap("d", ["m1", "shift"], ["lang", "ru"])
+;;  m1-d for Double Commander 'horizontal panels mode'
+addRemap(["d", "app", "doublecmd.exe"], ["m1"], "h", ["ctrl", "shift"])
 ;;  m1-d for F2
 addRemap("d", ["m1"], "vk71")
 ;;  m2-d for game command

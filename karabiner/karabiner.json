@@ -423,7 +423,7 @@
                                 "description": "m1-m2-open-bracket for previous app window",
                                 "from": {"key_code": "open_bracket"},
                                 "to": [{
-                                    "key_code": "backtick",
+                                    "key_code": "grave_accent_and_tilde",
                                     "modifiers": ["left_command"]
                                 }],
                                 "type": "basic"
@@ -449,7 +449,7 @@
                                 "description": "m1-m2-close-bracket for previous app window",
                                 "from": {"key_code": "close_bracket"},
                                 "to": [{
-                                    "key_code": "backtick",
+                                    "key_code": "grave_accent_and_tilde",
                                     "modifiers": ["left_command"]
                                 }],
                                 "type": "basic"

@@ -934,6 +934,13 @@ onKeyCommand(items, dir) {
       cycleCurWin(dir)
       return
     }
+    if (command == "winactivate") {
+      name := items.RemoveAt(1)
+      if (WinExist(name)) {
+        WinActivate(name)
+      }
+      return
+    }
     if (command == "lock") {
       ; Locking workstation prevents "key up" events and results in
       ; "stuck" meta.
@@ -1456,6 +1463,8 @@ addRemap("5", ["m1"], "4", ["win", "ctrl"])
 ;;  'm1-6' fo 5th app
 addRemap("6", ["m1"], "5", ["win", "ctrl"])
 
+;; m1-m2-7 => Slack
+addRemap("7", ["m1", "m2"], ["winactivate", "Slack"])
 ;;  'm1-7' fo 6th app
 addRemap("7", ["m1"], "6", ["win", "ctrl"])
 
@@ -1552,6 +1561,8 @@ addRemap("n", ["m1", "m3"], ["winclose"])
 
 ;; m1-m2-space => fullscreen
 addRemap("space", ["m1", "m2"], ["winpos", "max"])
+;; m1-m2-space => chatGPT
+addRemap("space", ["m2"], ["winactivate", "ChatGPT"])
 
 ;;  'm1-m2-m' => left 1/2 screen
 addRemap("m", ["m1", "m2"], ["winpos", "left"])

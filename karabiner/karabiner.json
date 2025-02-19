@@ -2889,10 +2889,26 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "alt-space for main ChatGPT window",
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-space for main ChatGPT window",
                                 "from": {
-                                    "key_code": "spacebar",
-                                    "modifiers": { "mandatory": ["left_option"] }
+                                    "key_code": "spacebar"
                                 },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}' 2>/dev/null" }],
                                 "type": "basic"

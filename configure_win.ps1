@@ -302,6 +302,8 @@ class App {
       $this._installApp("Elgato.ControlCenter");
       # ChatGPT
       $this._installApp("9NT1R1C2HH7J");
+      # Notion App
+      $this._installApp("Notion.Notion");
       # Notion Calendar
       $this._installApp("Notion.NotionCalendar");
       # Torrent client

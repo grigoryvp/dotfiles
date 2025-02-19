@@ -1505,6 +1505,8 @@ addRemap("8", ["m1"], "7", ["win", "ctrl"])
 ;;  'm1-9' fo 8th app
 addRemap("9", ["m1"], "8", ["win", "ctrl"])
 
+;;  'm1-m2-0' for Notion
+addRemap("0", ["m1", "m2"], ["appactivate", "Notion.exe"])
 ;;  'm1-0' for 9th app
 addRemap("0", ["m1"], "9", ["win", "ctrl"])
 

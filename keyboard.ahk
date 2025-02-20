@@ -246,6 +246,7 @@ compareArray(left, right) {
     if (left[i] != right[i]) {
       return false
     }
+    i += 1
   }
 
   return true
@@ -486,8 +487,6 @@ monitorFromWnd(monitors, wnd) {
     top := Max(wnd["top"], monitor["top"])
     bottom := Min(wnd["bottom"], monitor["bottom"])
     area := (right - left) * (bottom - top)
-
-    debugDebounce("monitor", monitor, "area", area)
 
     if (area > maxArea) {
       maxArea := area
@@ -1790,5 +1789,3 @@ A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 A_TrayMenu.Add("Run tests", onTests)
 readSymolbs()
-
-;; TODO make m1-m2-[] for prev/next app window

@@ -1000,11 +1000,11 @@ onKeyCommand(items, dir) {
       if (match and match.Count) {
         A_Clipboard := StrReplace(match[1], "\/", "/")
         TrayTip("Success", A_Clipboard, INFO_ICON := 1)
-        SetTimer(TrayTip, ONCE_AFTER_MS := -2000)
+        SetTimer(TrayTip, ONCE_AFTER_MS := -1000)
       }
       else {
         TrayTip("Error", "Failed", ERR_ICON := 3)
-        SetTimer(TrayTip, ONCE_AFTER_MS := -1000)
+        SetTimer(TrayTip, ONCE_AFTER_MS := -2000)
       }
       return
     }

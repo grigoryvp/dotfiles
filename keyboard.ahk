@@ -468,16 +468,34 @@ modsToStr(mods) {
 ;;  Given list of maps describing monitors evaluate to the index in that
 ;;  list where the window specified by the description is located
 monitorFromWnd(monitors, wnd) {
+  maxArea := 0
+  maxMonitorIdx := ""
+
   for monitorIdx, monitor in monitors {
     if (
-      wnd["right"] > monitor["left"] and
-      wnd["left"] < monitor["right"] and
-      wnd["top"] < monitor["bottom"] and
-      wnd["bottom"] > monitor["top"]
+      wnd["right"] <= monitor["left"] or
+      wnd["left"] >= monitor["right"] or
+      wnd["top"] >= monitor["bottom"] or
+      wnd["bottom"] <= monitor["top"]
     ) {
-      return monitorIdx
+      continue
+    }
+
+    left := Max(wnd["left"], monitor["left"])
+    right := Min(wnd["right"], monitor["right"])
+    top := Max(wnd["top"], monitor["top"])
+    bottom := Min(wnd["bottom"], monitor["bottom"])
+    area := (right - left) * (bottom - top)
+
+    debugDebounce("monitor", monitor, "area", area)
+
+    if (area > maxArea) {
+      maxArea := area
+      maxMonitorIdx := monitorIdx
     }
   }
+
+  return maxMonitorIdx
 }
 
 ;;  Takes map of "left", "right", "top", "bottom", "width", "height"
@@ -589,7 +607,7 @@ setCurWinPos(pos) {
     recalculateGeometry(wndInfo, "right", "top")
     moveActiveWnd(wndInfo)
   }
-  if (pos == "topleft") {
+  else if (pos == "topleft") {
     wndInfo["left"] := monInfo["left"]
     wndInfo["top"] := monInfo["top"]
     wndInfo["width"] := monInfo["width"] / 2

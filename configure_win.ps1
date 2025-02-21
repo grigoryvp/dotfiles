@@ -63,7 +63,7 @@ class App {
       - Disable autostart in Task Scheduler
       - Disable snap assist
       - Disable touchpad click and set maximum speed
-      - Pin term, vscode, web, double, pass, telegram, wino, notionc, trello
+      - Pin Term, VSCode, Web, Double, Pass, Tg, Spark, NotionC, Trello
       - Uninstall 'OneDrive' and other software
       - Login and sync browser
       - Switch nVidia display mode to "optimus" and drag gpu activity icon
@@ -311,8 +311,8 @@ class App {
       $this._installApp("VideoLAN.VLC");
       # Trello
       $this._installApp("9NBLGGH4XXVW");
-      # Wino Mail
-      $this._installApp("9NCRCVJC50WL");
+      # Spark email client
+      $this._installApp("XPFCS9QJBKTHVZ");
     }
 
     if ($this._isTest) {

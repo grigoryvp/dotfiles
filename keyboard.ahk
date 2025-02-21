@@ -1789,3 +1789,5 @@ A_TrayMenu.Add("Debug mode", onDebugModeToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 A_TrayMenu.Add("Run tests", onTests)
 readSymolbs()
+
+; TODO: native C++ COM dll that can press taskbar buttons by index and name

@@ -131,7 +131,7 @@ function uvc() {
   uv init
 }
 
-function uvc() {
+function uvi() {
   uv sync
 }
 

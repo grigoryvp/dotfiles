@@ -1242,6 +1242,21 @@ onKeyup(key) {
   }
 }
 
+appLastKeyTick := A_TickCount
+
+onCtrlWheelDown() {
+  global appLastKeyTick
+  if (WinActive("ahk_exe PathOfExileSteam.exe")) {
+    if (A_TickCount > appLastKeyTick + 100) {
+      appLastKeyTick := A_TickCount
+      Send("{blind}{lbutton}")
+    }
+  }
+  else {
+    Send("{bling}{WheelDown}")
+  }
+}
+
 *$lalt::onKeydown("lalt") ; (esc)
 *$lalt up::onKeyup("lalt") ; (esc)
 *$vkc0::onKeydown("vkc0") ; "~"
@@ -1368,6 +1383,8 @@ onKeyup(key) {
 *$up up::onKeyup("up")
 *$right::onKeydown("right")
 *$right up::onKeyup("right")
+
+^$WheelDown::onCtrlWheelDown()
 
 ; caps lock to meta-1
 addRemap("vked", [], ["meta", "m1"])

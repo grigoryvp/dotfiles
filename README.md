@@ -45,7 +45,6 @@ pip install --upgrade pip
 # Install https://macos.telegram.org/
 # Install Trello from App Store
 # Command-drag-out menu icons except clock (until the "x" mark appears)
-# Remove all dock icons except launchpad, calendar, settings
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time

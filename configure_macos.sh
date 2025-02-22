@@ -78,45 +78,69 @@ brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code fon
 # Need to check for network issues
 # brew install orbstack
 
-echo "Installing uvc-util..."
-CUR_DIR=$(pwd)
-git clone https://github.com/jtfrey/uvc-util.git
-cd uvc-util/src
-gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
-chmod +x uvc-util
-mkdir -p ~/.local/bin/
-cp uvc-util ~/.local/bin/
-cd $CUR_DIR
-rm -rf uvc-util
+if [ -e ~/.local/bin/uvc-util ]; then
+  echo "uvc-util already installed"
+else
+  echo "Installing uvc-util..."
+  CUR_DIR=$(pwd)
+  git clone https://github.com/jtfrey/uvc-util.git
+  cd uvc-util/src
+  gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
+  chmod +x uvc-util
+  mkdir -p ~/.local/bin/
+  cp uvc-util ~/.local/bin/
+  cd $CUR_DIR
+  rm -rf uvc-util
+fi
 
-# Download and install HEY.com mail app
-echo "Downloading HEY.com client..."
-curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
-hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
-vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
-echo "Installing ${vol_name} ..."
-cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
-hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
-rm "./HEY-arm64.dmg"
+if [ -e /Applications/HEY.app ]; then
+  echo "HEY.com already installed"
+else
+  # Download and install HEY.com mail app
+  echo "Downloading HEY.com client..."
+  curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
+  hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
+  vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
+  echo "Installing ${vol_name} ..."
+  cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
+  hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
+  rm "./HEY-arm64.dmg"
+fi
 
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
-git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
-git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
-git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+if [ -e ~/.rbenv ]; then
+  echo "rbenv already installed"
+else
+  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+  git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+  git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
+fi
+
+if [ -e ~/.nodenv ]; then
+  echo "nodenv already installed"
+else
+  git clone https://github.com/nodenv/nodenv.git ~/.nodenv
+  git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
+  git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
+fi
+
+if [ -e ~/.swiftenv ]; then
+  echo "swiftenv already installed"
+else
+  git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+fi
+
 # Seems not working on macOS, maybe switch to phpvm?
-git clone https://github.com/phpenv/phpenv.git ~/.phpenv
-git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
-git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
+# git clone https://github.com/phpenv/phpenv.git ~/.phpenv
+# git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
+# git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
+# export PATH="$HOME/.phpenv/bin:$PATH"
+
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
-export PATH="$HOME/.phpenv/bin:$PATH"
 uv python install 3.13
 rbenv install 3.4.1
 rbenv global 3.4.1
@@ -139,11 +163,13 @@ else
   rm -rf ~/dotfiles
   git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
 fi
+
 if [ -e ~/xi ]; then
   echo "Knowledge base already cloned"
 else
   git clone git@github.com:grigoryvp/xi.git ~/.xi
 fi
+
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
 printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
@@ -163,6 +189,7 @@ if ! [ -e ~/.config/powershell ]; then
   mkdir -p ~/.config/powershell
 fi
 ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
+
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension grigoryvp.goto-link-provider
@@ -184,6 +211,7 @@ ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json
 ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json
 ln -fs ~/dotfiles/vscode_tasks.json $VSCODE_DIR/tasks.json
 ln -fs ~/dotfiles/vscode_snippets $VSCODE_DIR/snippets
+
 mkdir -p ~/.config/mpv
 echo "save-position-on-quit" > ~/.config/mpv/mpv.conf
 echo "loop-file=inf" >> ~/.config/mpv/mpv.conf

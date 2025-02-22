@@ -77,6 +77,52 @@ brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code fon
 
 # Need to check for network issues
 # brew install orbstack
+
+echo "Installing uvc-util..."
+CUR_DIR=$(pwd)
+git clone https://github.com/jtfrey/uvc-util.git
+cd uvc-util/src
+gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
+chmod +x uvc-util
+mkdir -p ~/.local/bin/
+cp uvc-util ~/.local/bin/
+cd $CUR_DIR
+rm -rf uvc-util
+
+# Download and install HEY.com mail app
+echo "Downloading HEY.com client..."
+curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
+hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
+vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
+echo "Installing ${vol_name} ..."
+cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
+hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
+rm "./HEY-arm64.dmg"
+
+# Input method name lookup for debug purpose
+curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
+git clone https://github.com/nodenv/nodenv.git ~/.nodenv
+git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
+git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
+git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+# Seems not working on macOS, maybe switch to phpvm?
+git clone https://github.com/phpenv/phpenv.git ~/.phpenv
+git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
+git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
+export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.nodenv/bin:$PATH"
+export PATH="$HOME/.swiftenv/bin:$PATH"
+export PATH="$HOME/.phpenv/bin:$PATH"
+uv python install 3.13
+rbenv install 3.4.1
+rbenv global 3.4.1
+nodenv install 23.7.0
+nodenv global 23.7.0
+
 if [ -e ~/dotfiles ]; then
   echo "Dotfiles already cloned"
 else
@@ -147,51 +193,6 @@ read -s
 # Entire config dir should be symlinked
 rm -rf ~/.config/karabiner 
 ln -fs ~/dotfiles/karabiner ~/.config/karabiner
-
-echo "Installing uvc-util..."
-CUR_DIR=$(pwd)
-git clone https://github.com/jtfrey/uvc-util.git
-cd uvc-util/src
-gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
-chmod +x uvc-util
-mkdir -p ~/.local/bin/
-cp uvc-util ~/.local/bin/
-cd $CUR_DIR
-rm -rf uvc-util
-
-# Download and install HEY.com mail app
-echo "Downloading HEY.com client..."
-curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
-hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
-vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
-echo "Installing ${vol_name} ..."
-cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
-hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
-rm "./HEY-arm64.dmg"
-
-# Input method name lookup for debug purpose
-curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
-
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
-git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
-git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
-git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
-# Seems not working on macOS, maybe switch to phpvm?
-git clone https://github.com/phpenv/phpenv.git ~/.phpenv
-git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
-git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.nodenv/bin:$PATH"
-export PATH="$HOME/.swiftenv/bin:$PATH"
-export PATH="$HOME/.phpenv/bin:$PATH"
-uv python install 3.13
-rbenv install 3.4.1
-rbenv global 3.4.1
-nodenv install 23.7.0
-nodenv global 23.7.0
 
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
@@ -274,6 +275,9 @@ osascript -e "set volume alert volume 0"
 defaults write -g "com.apple.sound.beep.feedback" -bool false
 # Disable screen saver (manually turn off screen by locking the laptop)
 defaults -currentHost write com.apple.screensaver idleTime -int 0
+
+# Remove all dock icons
+defaults write com.apple.dock persistent-apps -array ""
 
 # Apply changes
 killall Dock

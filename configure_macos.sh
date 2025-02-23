@@ -142,7 +142,8 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
 uv python install 3.13
-rbenv install 3.4.1
+# Answer "no" to "already installed, continue?"
+echo "n" | rbenv install 3.4.1
 rbenv global 3.4.1
 nodenv install 23.7.0
 nodenv global 23.7.0
@@ -152,7 +153,17 @@ if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
 else
   git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
   while true; do
-    keepassxc-cli show -s ~/dotfiles/auth/passwords.kdbx github
+    keepassxc-cli show --show-protected \
+      ~/dotfiles/auth/passwords.kdbx github \
+      --show-protected username password
+    if [ $? -eq 0 ]; then
+      break
+    fi
+  done
+  echo "Login to GitHub and press enter for TOTP code"
+  read -s
+  while true; do
+    keepassxc-cli show --totp ~/dotfiles/auth/passwords.kdbx github
     if [ $? -eq 0 ]; then
       break
     fi
@@ -208,11 +219,11 @@ code --install-extension dnut.rewrap-revived
 code --install-extension streetsidesoftware.code-spell-checker
 code --install-extension streetsidesoftware.code-spell-checker-russian
 code --install-extension mark-wiemer.vscode-autohotkey-plus-plus
+VSCODE_DIR=~/Library/Application\ Support/Code/User
 if [ -e "$VSCODE_DIR" ]; then
   echo "'$VSCODE_DIR' already exists"
 else
   echo "Creating '$VSCODE_DIR' ..."
-  VSCODE_DIR=~/Library/Application\ Support/Code/User
   mkdir -p $VSCODE_DIR
 fi
 ln -fs ~/dotfiles/vscode_keybindings.json "$VSCODE_DIR/keybindings.json"

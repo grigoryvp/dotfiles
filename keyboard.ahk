@@ -1725,7 +1725,7 @@ onFastTimer() {
     ; No "keydown" events for 1sec - they are being received periodically
     ; if key is actually pressed down. This means that "key up" event was
     ; missed.
-    if (keyInfo["stuck_counter"] > 5) {
+    if (keyInfo["stuck_counter"] > 6) {
       toRemove.Push(key)
     }
   }

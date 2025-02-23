@@ -288,7 +288,7 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "to": [{ "key_code": "left_control" }],
-                                "to_if_alone": [ { "key_code": "tab" } ],
+                                "to_if_alone": [{ "key_code": "tab" }],
                                 "type": "basic"
                             },
                             {
@@ -421,11 +421,13 @@
                                     }
                                 ],
                                 "description": "m1-m2-open-bracket for previous app window",
-                                "from": {"key_code": "open_bracket"},
-                                "to": [{
-                                    "key_code": "grave_accent_and_tilde",
-                                    "modifiers": ["left_command"]
-                                }],
+                                "from": { "key_code": "open_bracket" },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -447,11 +449,13 @@
                                     }
                                 ],
                                 "description": "m1-m2-close-bracket for previous app window",
-                                "from": {"key_code": "close_bracket"},
-                                "to": [{
-                                    "key_code": "grave_accent_and_tilde",
-                                    "modifiers": ["left_command"]
-                                }],
+                                "from": { "key_code": "close_bracket" },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -539,8 +543,8 @@
                                     }
                                 ],
                                 "description": "m1-m3-p for deleting things (F8 deletes files in double commander)",
-                                "from": {"key_code": "p"},
-                                "to": [{"key_code": "f8"}],
+                                "from": { "key_code": "p" },
+                                "to": [{ "key_code": "f8" }],
                                 "type": "basic"
                             },
                             {
@@ -2269,7 +2273,6 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "control-a => command-a for mac-win consistency",
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
@@ -2278,6 +2281,7 @@
                                         "type": "frontmost_application_unless"
                                     }
                                 ],
+                                "description": "control-a => command-a for mac-win consistency",
                                 "from": {
                                     "key_code": "a",
                                     "modifiers": { "mandatory": ["right_control"] }
@@ -2907,9 +2911,7 @@
                                     }
                                 ],
                                 "description": "m1-space for main ChatGPT window",
-                                "from": {
-                                    "key_code": "spacebar"
-                                },
+                                "from": { "key_code": "spacebar" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },

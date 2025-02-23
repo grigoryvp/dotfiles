@@ -155,7 +155,8 @@ else
   git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
   while true; do
     keepassxc-cli show --show-protected \
-      --attributes username password \
+      --attributes username \
+      --attributes password \
       ~/dotfiles/auth/passwords.kdbx github
     if [ $? -eq 0 ]; then
       break

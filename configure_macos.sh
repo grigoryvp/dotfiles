@@ -156,7 +156,7 @@ else
   while true; do
     keepassxc-cli show --show-protected \
       ~/dotfiles/auth/passwords.kdbx github \
-      --show-protected username password
+      --attributes username password
     if [ $? -eq 0 ]; then
       break
     fi

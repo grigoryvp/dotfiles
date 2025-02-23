@@ -205,6 +205,10 @@ if ! [ -e ~/.config/powershell ]; then
 fi
 ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
 
+open -a Hammerspoon
+echo "Configure Hammerspoon and press enter"
+read -s
+
 code --install-extension grigoryvp.language-xi
 code --install-extension grigoryvp.memory-theme
 code --install-extension grigoryvp.goto-link-provider

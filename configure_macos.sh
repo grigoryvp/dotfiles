@@ -145,7 +145,8 @@ uv python install 3.13
 # Answer "no" to "already installed, continue?"
 echo "n" | rbenv install 3.4.1
 rbenv global 3.4.1
-nodenv install 23.7.0
+# Answer "no" to "already installed, continue?"
+echo "n" | nodenv install 23.7.0
 nodenv global 23.7.0
 
 if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then

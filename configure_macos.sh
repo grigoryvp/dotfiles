@@ -162,7 +162,7 @@ else
       break
     fi
   done
-  echo "Login to GitHub and press enter for TOTP code"
+  echo "Sign in to GitHub and press enter for TOTP code"
   read -s
   while true; do
     keepassxc-cli show --totp ~/dotfiles/auth/passwords.kdbx github

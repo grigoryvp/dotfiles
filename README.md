@@ -49,7 +49,6 @@ pip install --upgrade pip
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
-# Remove all widgets and add "Note" as widget
 # Add noTunes.app, hammerspoon to Settings/General/Login
 # In "Settings/Dock":
 # * Minimize windows into application icon
@@ -93,6 +92,7 @@ pip install --upgrade pip
 # * Enable HD, set 49 participants, disable mirror in "/Video"
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
+# Remove all widgets and add "Note" as widget
 # Switch Lunar to "manual mode" so it will not mess with brightness
 # Login all chrome profiles and name them 01, 02, 03 etc
 # Configure KeePass with browser integration and passkeys

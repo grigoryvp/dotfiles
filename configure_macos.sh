@@ -1,4 +1,4 @@
-f ! [ -e ~/.ssh/id_rsa.pub ]; then
+if ! [ -e ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -f "$HOME/.ssh/id_rsa" -N ""
 fi
 if ! [ -e ~/.ssh/known_hosts ]; then

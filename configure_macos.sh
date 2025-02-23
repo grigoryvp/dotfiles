@@ -1,4 +1,4 @@
-if ! [ -e ~/.ssh/id_rsa.pub ]; then
+f ! [ -e ~/.ssh/id_rsa.pub ]; then
   ssh-keygen -t rsa -f "$HOME/.ssh/id_rsa" -N ""
 fi
 if ! [ -e ~/.ssh/known_hosts ]; then
@@ -147,7 +147,7 @@ rbenv global 3.4.1
 nodenv install 23.7.0
 nodenv global 23.7.0
 
-if [ -e ~/dotfiles ]; then
+if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
   echo "Dotfiles already cloned"
 else
   git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
@@ -162,12 +162,15 @@ else
   read -s
   rm -rf ~/dotfiles
   git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
+  touch ~/.ssh/.uploaded_to_github
 fi
 
 if [ -e ~/xi ]; then
   echo "Knowledge base already cloned"
-else
+elif [ -e ~/.ssh/.uploaded_to_github ]; then
   git clone git@github.com:grigoryvp/xi.git ~/.xi
+else
+  echo "Not cloning knowledge base since ssh keys are not uploaded"
 fi
 
 printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
@@ -205,12 +208,17 @@ code --install-extension dnut.rewrap-revived
 code --install-extension streetsidesoftware.code-spell-checker
 code --install-extension streetsidesoftware.code-spell-checker-russian
 code --install-extension mark-wiemer.vscode-autohotkey-plus-plus
-VSCODE_DIR=~/Library/Application\ Support/Code/User
-mkdir -p $VSCODE_DIR
-ln -fs ~/dotfiles/vscode_keybindings.json $VSCODE_DIR/keybindings.json
-ln -fs ~/dotfiles/vscode_settings.json $VSCODE_DIR/settings.json
-ln -fs ~/dotfiles/vscode_tasks.json $VSCODE_DIR/tasks.json
-ln -fs ~/dotfiles/vscode_snippets $VSCODE_DIR/snippets
+if [ -e "$VSCODE_DIR" ]; then
+  echo "'$VSCODE_DIR' already exists"
+else
+  echo "Creating '$VSCODE_DIR' ..."
+  VSCODE_DIR=~/Library/Application\ Support/Code/User
+  mkdir -p $VSCODE_DIR
+fi
+ln -fs ~/dotfiles/vscode_keybindings.json "$VSCODE_DIR/keybindings.json"
+ln -fs ~/dotfiles/vscode_settings.json "$VSCODE_DIR/settings.json"
+ln -fs ~/dotfiles/vscode_tasks.json "$VSCODE_DIR/tasks.json"
+ln -fs ~/dotfiles/vscode_snippets "$VSCODE_DIR/snippets"
 
 mkdir -p ~/.config/mpv
 echo "save-position-on-quit" > ~/.config/mpv/mpv.conf

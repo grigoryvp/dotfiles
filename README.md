@@ -90,22 +90,22 @@ pip install --upgrade pip
 # * Enable "Always show controls" in "/General"
 # * Enable "copy link" in "/General"
 # * Enable HD, set 49 participants, disable mirror in "/Video"
+# * Start meeting, share screen, allow screen sharing, enable green
+#   menubar reactions and disable them (requires reboot)
 # For OBS settings
 # * Turn off Advanced/General/Show warning on exit
 # Remove all widgets and add "Note" as widget
 # Switch Lunar to "manual mode" so it will not mess with brightness
 # Login all chrome profiles and name them 01, 02, 03 etc
-# Configure KeePass with browser integration and passkeys
 # Configure ChatGPT for autostart and "dock only" icon.
 # Add KeyLights, blue temp, 90% back, 40% front
 # Import OBS Scenes
-# App Store: Xcode, Amphetamine, Windows App, PowerPoint, Pixelmator
+# Store: Xcode, Amphetamine, Windows App, PowerPoint, Pixelmator
 # Install Parallels Desktop
 # Install https://onekey.so/download/
 # Install https://tonkeeper.com/pro
 # phpenv install 8.0.9 # https://github.com/phpenv/phpenv/issues/90
 # phpenv global 8.0.9 # https://github.com/phpenv/phpenv/issues/90
-# Start zoom, enable green menubar ractions, disable them and reboot
 # For old macOS versions:
 # * Disable welcome screen guest user in "Preferences/Users & Groups"
 # * Add 'karabiner_grabber', 'karabiner_observer',

@@ -1244,7 +1244,7 @@ onKeyup(key) {
 
 appLastKeyTick := A_TickCount
 
-onCtrlWheelDown() {
+onGameWheelDown() {
   global appLastKeyTick
   if (WinActive("ahk_exe PathOfExileSteam.exe")) {
     if (A_TickCount > appLastKeyTick + 100) {
@@ -1384,7 +1384,8 @@ onCtrlWheelDown() {
 *$right::onKeydown("right")
 *$right up::onKeyup("right")
 
-^$WheelDown::onCtrlWheelDown()
+^$WheelDown::onGameWheelDown()
++$WheelDown::onGameWheelDown()
 
 ; caps lock to meta-1
 addRemap("vked", [], ["meta", "m1"])

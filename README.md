@@ -88,12 +88,14 @@ pip install --upgrade pip
 #   * Delete the "ext" and "attr" columns
 # For Zoom settings:
 # * Enable "Always show controls" in "/General"
+# * Disable "Add to menu bar" in "/General"
 # * Enable "copy link" in "/General"
 # * Enable HD, set 49 participants, disable mirror in "/Video"
 # * Start meeting, share screen, allow screen sharing, enable green
 #   menubar reactions and disable them (requires reboot)
 # For OBS settings
-# * Turn off Advanced/General/Show warning on exit
+# * Turn off /Advanced/General/Show warning on exit
+# * Set output as "fragmented mp4" in /Output/Recording
 # Remove all widgets and add "Note" as widget
 # Switch Lunar to "manual mode" so it will not mess with brightness
 # Login all chrome profiles and name them 01, 02, 03 etc

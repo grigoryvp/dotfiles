@@ -2962,6 +2962,29 @@
                                         "value": 0
                                     }
                                 ],
+                                "description": "m1-m2-k => move window screen up",
+                                "from": { "key_code": "k" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_up\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
                                 "description": "m1-m2-j => move window screen down",
                                 "from": { "key_code": "j" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_down\"}' 2>/dev/null" }],
@@ -2985,9 +3008,32 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-m2-k => move window screen up",
-                                "from": { "key_code": "k" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_up\"}' 2>/dev/null" }],
+                                "description": "m1-m2-h => move window screen left",
+                                "from": { "key_code": "h" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_left\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-m2-l => move window screen right",
+                                "from": { "key_code": "l" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"screen_right\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

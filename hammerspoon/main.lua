@@ -343,26 +343,46 @@ function App:startHttpServer()
         self:_setWndFrame(wnd, frame)
         return "", 200, {}
 
-      elseif json.dir == "screen_down" then
-        local wnd = hs.window.frontmostWindow()
-        if not wnd then return end
-        ---@type table
-        self:_moveWndToScreen(wnd, hs.screen.primaryScreen())
-        return "", 200, {}
+      elseif (
+        json.dir == "screen_up" or
+        json.dir == "screen_down" or
+        json.dir == "screen_left" or
+        json.dir == "screen_right"
+      ) then
 
-      elseif json.dir == "screen_up" then
         local wnd = hs.window.frontmostWindow()
         if not wnd then return end
+
         ---@type table
-        local primaryScreen = hs.screen.primaryScreen()
-        local nonprimaryScreen = primaryScreen
+        -- local primaryScreen = hs.screen.primaryScreen()
+        -- local nonprimaryScreen = primaryScreen
+        wndScreen = wnd:screen()
+        wndScreenFrame = wndScreen:frame()
         for _, curScreen in ipairs(hs.screen.allScreens()) do
-          if curScreen ~= primaryScreen then
-            nonprimaryScreen = curScreen
-            break
+          curScreenFrame = curScreen:frame()
+          if json.dir == "screen_up" then
+            if curScreenFrame.y + curScreenFrame.h <= wndScreenFrame.y then
+              self:_moveWndToScreen(wnd, curScreen)
+              return "", 200, {}
+            end
+          elseif json.dir == "screen_down" then
+            if curScreenFrame.y >= wndScreenFrame.y + wndScreenFrame.h then
+              self:_moveWndToScreen(wnd, curScreen)
+              return "", 200, {}
+            end
+          elseif json.dir == "screen_left" then
+            if curScreenFrame.x + curScreenFrame.w <= wndScreenFrame.x then
+              self:_moveWndToScreen(wnd, curScreen)
+              return "", 200, {}
+            end
+          elseif json.dir == "screen_right" then
+            if curScreenFrame.x >= wndScreenFrame.x + wndScreenFrame.w then
+              self:_moveWndToScreen(wnd, curScreen)
+              return "", 200, {}
+            end
           end
         end
-        self:_moveWndToScreen(wnd, nonprimaryScreen)
+        -- No screen found in that direction
         return "", 200, {}
 
       else

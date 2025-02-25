@@ -83,6 +83,9 @@ pip install --upgrade pip
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"
+# * In /Files views/extra
+#   * Enable "move down"
+#   * Disable "square brackets"
 # * In /Files views/Columns/Custom columns
 #   * Change GETFILENAMENOEXT to GETFILENAME
 #   * Delete the "ext" and "attr" columns

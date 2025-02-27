@@ -1523,6 +1523,8 @@ addRemap("3", ["m1"], "2", ["win", "ctrl"])
 ;;  'm1-4' fo 3rd app
 addRemap("4", ["m1"], "3", ["win", "ctrl"])
 
+;; m1-m2-5 => chatGPT
+addRemap("5", ["m1", "m2"], ["appactivate", "ChatGPT.exe"])
 ;;  'm1-5' fo 4th app
 addRemap("5", ["m1"], "4", ["win", "ctrl"])
 
@@ -1631,8 +1633,6 @@ addRemap("n", ["m1", "m3"], ["winclose"])
 
 ;; m1-m2-space => fullscreen
 addRemap("space", ["m1", "m2"], ["winpos", "max"])
-;; m1-m2-space => chatGPT
-addRemap("space", ["m2"], ["appactivate", "ChatGPT.exe"])
 
 ;;  'm1-m2-m' => left 1/2 screen
 addRemap("m", ["m1", "m2"], ["winpos", "left"])

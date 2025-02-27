@@ -167,7 +167,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam$",
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -182,7 +182,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam$",
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -197,7 +197,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam$",
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -217,7 +217,7 @@
                                     },
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam$",
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -245,7 +245,7 @@
                                     },
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam$",
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -1408,6 +1408,39 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-m2-5 for main ChatGPT window",
+                                "from": { "key_code": "5" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-5 for 4th app",
@@ -2958,29 +2991,6 @@
                                 "description": "m1-m2-space => maximize",
                                 "from": { "key_code": "spacebar" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"wnd_move\", \"dir\": \"full\"}' 2>/dev/null" }],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m1",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    },
-                                    {
-                                        "name": "_m2",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    },
-                                    {
-                                        "name": "_m3",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    }
-                                ],
-                                "description": "m1-space for main ChatGPT window",
-                                "from": { "key_code": "spacebar" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

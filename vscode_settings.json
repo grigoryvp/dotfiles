@@ -512,5 +512,10 @@
     "plaintext": false,
     "markdown": false,
     "scminput": false
+  },
+  "redhat.telemetry.enabled": false,
+  "vs-kubernetes": {
+    "vscode-kubernetes.helm-path-mac": "/Users/user/.vs-kubernetes/tools/helm/darwin-arm64/helm",
+    "vscode-kubernetes.minikube-path-mac": "/Users/user/.vs-kubernetes/tools/minikube/darwin-arm64/minikube"
   }
 }

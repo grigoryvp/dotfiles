@@ -218,6 +218,9 @@ fi
 ##  git aliases
 alias g=git
 
+##  kubernetes aliases
+alias k=kubectl
+
 ##  svn aliases
 alias svl='svn log'
 alias svs='svn stat'

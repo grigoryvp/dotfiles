@@ -58,7 +58,8 @@ class App {
       - Add C-S-4-5-6 as en-ru-js hotkeys in Time/Lang/Typing/Advanced/Keys
       - Unassign switch between languages in Time/Lang/Typing/Advanced/Keys
       - copy lang settings via Time/Lang/Administrative"
-      - Disable spam in System/Notification/Additional
+      - Disable spam in /System/Notification/Additional
+      - Disable autostart in /Apps
       - Disable autostart in Task Manager
       - Disable autostart in Task Scheduler
       - Disable snap assist

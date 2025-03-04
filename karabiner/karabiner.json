@@ -2641,6 +2641,7 @@
                                             "^org\\.chromium\\.Chromium$",
                                             "^com\\.google\\.Chrome$",
                                             "^ru\\.keepcoder\\.Telegram$",
+                                            "^com\\.tdesktop\\.Telegram$",
                                             "^com\\.tinyspeck\\.slackmacgap$"
                                         ],
                                         "type": "frontmost_application_if"

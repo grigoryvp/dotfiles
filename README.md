@@ -50,6 +50,8 @@ pip install --upgrade pip
 # Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # Add noTunes.app, hammerspoon to Settings/General/Login
+# IN "Settings/Battery":
+# * Disable "dim screen" in "Options".
 # In "Settings/Dock":
 # * Minimize windows into application icon
 # In "Settings/Displays":

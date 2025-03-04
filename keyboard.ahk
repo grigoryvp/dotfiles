@@ -1386,6 +1386,7 @@ onGameWheelDown() {
 
 ^$WheelDown::onGameWheelDown()
 +$WheelDown::onGameWheelDown()
+^+$WheelDown::onGameWheelDown()
 
 ; caps lock to meta-1
 addRemap("vked", [], ["meta", "m1"])

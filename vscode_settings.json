@@ -247,6 +247,7 @@
     "cardano",
     "charfrom",
     "Classpath",
+    "contextmanager",
     "convolutional",
     "cpython",
     "createdb",

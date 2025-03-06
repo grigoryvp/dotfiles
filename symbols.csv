@@ -42,7 +42,7 @@
 会,meet
 ✉️,mail
 業,LFE
-員,LFW
+事,LFW
 
 # Relations
 郎,son
@@ -53,6 +53,7 @@
 
 # Job or company suffixes
 元,ex
+員,employee
 政,head
 主,organizer
 委,committee

@@ -101,6 +101,9 @@ pip install --upgrade pip
 # For OBS settings
 # * Turn off /Advanced/General/Show warning on exit
 # * Set output as "fragmented mp4" in /Output/Recording
+# For mimestream settings
+# * Set delete key to "trash" in /General
+# * Disable "play sounds" in /General
 # Remove all widgets and add "Note" as widget
 # Switch Lunar to "manual mode" so it will not mess with brightness
 # Login all chrome profiles and name them 01, 02, 03 etc

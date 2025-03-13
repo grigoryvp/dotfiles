@@ -61,6 +61,8 @@ pip install --upgrade pip
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects
+# In "Settings/Privacy & Security"
+# * Add iTerm2 to "App Management" (for brew to update apps)
 # In "Settings/Lock Screen":
 # * Require password immediately after screen is locked
 # In "Settings/Keyboard":
@@ -101,9 +103,11 @@ pip install --upgrade pip
 # For OBS settings
 # * Turn off /Advanced/General/Show warning on exit
 # * Set output as "fragmented mp4" in /Output/Recording
-# For mimestream settings
+# For Mimestream settings
 # * Set delete key to "trash" in /General
 # * Disable "play sounds" in /General
+# For Discord settings
+# * Disable all notification sounds in /Notifications
 # Remove all widgets and add "Note" as widget
 # Switch Lunar to "manual mode" so it will not mess with brightness
 # Login all chrome profiles and name them 01, 02, 03 etc

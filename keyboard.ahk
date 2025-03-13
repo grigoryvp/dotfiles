@@ -1584,6 +1584,8 @@ addRemap("d", ["m1", "m2"], "vk71", ["shift"])
 addRemap("d", ["m1", "shift"], ["lang", "ru"])
 ;;  m1-d for Double Commander 'horizontal panels mode'
 addRemap(["d", "app", "doublecmd.exe"], ["m1"], "h", ["ctrl", "shift"])
+;;  m1-d for Chrome Bookmarks Bar
+addRemap(["d", "app", "chrome.exe"], ["m1"], "b", ["ctrl", "shift"])
 ;;  m1-d for F2
 addRemap("d", ["m1"], "vk71")
 ;;  m2-d for game command

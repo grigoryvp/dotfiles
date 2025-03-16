@@ -53,6 +53,7 @@ class App {
         * Map Mouse4 => 'change movement to scroll' with setings:
           * Sensitivity 1
           * Invert axis
+      - Install "taskbar on top" via WindHawk
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys in Time/Lang/Typing/Advanced/Keys
@@ -171,7 +172,7 @@ class App {
     # this._installLocationApp("NirSoft.BatteryInfoView", "")
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
-    $this._installApp("Stardock.Start11");
+    $this._installApp("windhawk");
  
     if (-not $this._isPublic) {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));

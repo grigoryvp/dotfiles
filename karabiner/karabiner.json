@@ -1195,6 +1195,34 @@
                                     {
                                         "name": "_m2",
                                         "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "'m2-backslash' for cmd-/ (clear formatting in Google Spreadsheet)",
+                                "from": { "key_code": "backslash" },
+                                "to": [
+                                    {
+                                        "key_code": "backslash",
+                                        "modifiers": ["command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
                                         "value": 0
                                     },
                                     {

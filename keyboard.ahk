@@ -1559,6 +1559,8 @@ addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
 addRemap("vkdc", ["m1", "shift"], "a", ["win"])
 ;;  'm1-backslash' for launchpad.
 addRemap("vkdc", ["m1"], "lwin")
+;;  'm2-backslash' for clear formatting in Google Spreadsheet
+addRemap("vkdc", ["m2"], "vkdc", ["ctrl"])
 ;;  'm3-backslash' for screen lock
 addRemap("vkdc", ["m3"], ["lock"])
 

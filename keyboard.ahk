@@ -56,6 +56,10 @@ appSymbols := []
 appLastKeydown := ["", Map()]
 appLastKeyup := ["", Map()]
 appLastCfg := ""
+appSettings := Map(
+  ; PoE remaps
+  "s-poe", false
+)
 MAX_DEBUG_LOG := 50
 KEY_NAMES := Map(
   "vkc0", "~",
@@ -404,6 +408,10 @@ modsPressedForKey(mods, key) {
           return false
         }
       }
+    }
+    ; Setting name?
+    else if (SubStr(modName, 1, StrLen("s-")) == "s-") {
+      return appSettings[modName]
     }
     ; left and right controls are dual-mode from tab and enter, so treat
     ; them specially
@@ -1123,6 +1131,12 @@ onKey(key, dir) {
           }
           onKeyCommand(to.Clone(), dir)
         }
+        else if (Type(to) == "Func") {
+          if (dir == "up") {
+            to.Call(key)
+          }
+          return
+        }
         else {
           assert(false, "unknown 'to' type " . Type(to))
         }
@@ -1600,8 +1614,32 @@ addRemap("vkbf", ["m3"], "s", ["win", "shift"])
 ;;  'm1-slash' for middle mouse button.
 addRemap(["vkbf", "norepeat"], ["m1"], "mbutton")
 
+poeFlasks(key) {
+  Send(key)
+  Sleep(50)
+  ; also trigger guard if life flask ("panic button") is used
+  if (key == "b") {
+    Send("x")
+    Sleep(50)
+  }
+  Send("+w")
+  Sleep(50)
+  Send("+e")
+  Sleep(50)
+  Send("+r")
+  Sleep(50)
+  Send("+t")
+  ; also trigger convocation if life flask ("panic button") is used
+  if (key == "b") {
+    Sleep(50)
+    Send("c")
+  }
+}
+
 ;;  'm1-b' for F8.
 addRemap("b", ["m1"], "f8")
+;;  "b" triggers flasks in PoE if enabled
+addRemap("b", ["s-poe"], poeFlasks)
 
 ;;  'm1-v' for F7.
 addRemap("v", ["m1"], "f7")
@@ -1611,12 +1649,12 @@ addRemap("c", ["m1"], "f6")
 ; 'm2-c' for "record last 30 seconds" game bar function
 addRemap("c", ["m2"], "g", ["win", "alt"])
 
-
 ;;  'm1-x' for F5.
 addRemap("x", ["m1"], "f5")
 ;;  "m2-x" for game bar
 addRemap("x", ["m2"], "g", ["win"])
-
+;;  "x" triggers flasks in PoE if enabled
+addRemap("x", ["s-poe"], poeFlasks)
 
 ;;  'm1-m2-u' => top left
 addRemap("u", ["m1", "m2"], ["winpos", "topleft"])
@@ -1757,6 +1795,16 @@ onDebugModeToggle(name, _, menu) {
   }
 }
 
+onPoeModsToggle(name, _, menu) {
+  appSettings["s-poe"] := not appSettings["s-poe"]
+  if (appSettings["s-poe"]) {
+    menu.Check(name)
+  }
+  else {
+    menu.Uncheck(name)
+  }
+}
+
 onDebugCopy(*) {
   text := ""
   for idx, record in appDebugLog {
@@ -1809,6 +1857,7 @@ onTests(*) {
 }
 
 A_TrayMenu.Add("Debug mode", onDebugModeToggle)
+A_TrayMenu.Add("PoE modifications", onPoeModsToggle)
 A_TrayMenu.Add("Copy debug to clipboard", onDebugCopy)
 A_TrayMenu.Add("Run tests", onTests)
 readSymolbs()

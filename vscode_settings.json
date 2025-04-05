@@ -242,6 +242,7 @@
     "asyncio",
     "autohotkey",
     "autoreplace",
+    "backoffice",
     "bindgen",
     "blobstorage",
     "Brinerot",

@@ -1437,11 +1437,15 @@ addRemap("lctrl", ["alone"], "tab")
 
 ;;  m1-m2-open-bracket for switching to previous app window
 addRemap("vkdb", ["m1", "m2"], ["wincycle", "prev"])
-;;  m1-open-open-bracket for escape (vim-like)
+;;  m1-open-bracket for escape (vim-like)
 addRemap("vkdb", ["m1"], "esc")
+;;  m1-open-bracket for «
+addRemap("vkdb", ["m2"], ["send", "«"])
 
 ;;  m1-m2-close-bracket for switching to next app window
 addRemap("vkdd", ["m1", "m2"], ["wincycle", "next"])
+;;  m2-close-bracket for »
+addRemap("vkdd", ["m2"], ["send", "»"])
 
 ;;  'm1-m2-p' => bottom right
 addRemap("p", ["m1", "m2"], ["winpos", "bottomright"])

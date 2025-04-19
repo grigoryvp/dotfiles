@@ -229,6 +229,9 @@
     "checkLimit": 10000,
     "minWordLength": 2,
     "language": "en,ru",
+    "ignoreRegExpList": [
+      "\\\\x[0-9a-fA-F]{2}"
+    ],
     "customDictionaries": {
       "personal": {
         "name": "personal",

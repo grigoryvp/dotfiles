@@ -227,6 +227,7 @@
   "xi.debug": false,
   "cSpell": {
     "checkLimit": 10000,
+    "minWordLength": 2,
     "language": "en,ru",
     "customDictionaries": {
       "personal": {

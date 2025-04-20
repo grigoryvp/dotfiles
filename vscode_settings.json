@@ -235,8 +235,7 @@
     "customDictionaries": {
       "personal": {
         "name": "personal",
-        "path": "~/dotfiles/dictionary.txt",
-        "addWords": true
+        "path": "~/dotfiles/dictionary.txt"
       }
     }
   },

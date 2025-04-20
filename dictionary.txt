@@ -80,6 +80,7 @@ ipynb
 ipython
 itertools
 jailbreaking
+JDBC
 Jewellery
 karabiner
 Keepass
@@ -87,6 +88,8 @@ keygen
 KEYUP
 koi8-r
 kwargs
+LFE
+LFW
 libbz
 libncursesw
 libreadline
@@ -94,6 +97,8 @@ libsqlite
 libui
 libxmlsec
 Lich's
+LLM
+lol
 lookaround
 lualatex
 malloc
@@ -192,6 +197,7 @@ viewsets
 virtualenv
 vsicons
 Warbands
+webrtc
 Wi-Fi
 winapi
 winget
@@ -207,6 +213,7 @@ Yudkowsky
 байткод
 баристы
 Бартунова
+бенчмарки
 би
 блобы
 булевого
@@ -320,6 +327,7 @@ Yudkowsky
 сериализаторов
 скилл
 скопироваться
+спеллчекеров
 стагнируют
 таба
 тимлид

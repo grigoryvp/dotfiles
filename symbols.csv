@@ -31,13 +31,11 @@
 ↓,down
 
 # Tags
-侵,mark
 教,speaker
 技,skilled
 力,influencer
 大,boss
 死,dead
-宗,religion
 
 # Utility tags
 会,meet
@@ -51,6 +49,11 @@
 相,partner
 友,friend
 僚,colleague
+
+# Personality
+侵,mark
+宗,religion
+軍,army background
 
 # Job or company suffixes
 元,ex

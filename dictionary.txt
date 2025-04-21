@@ -2,6 +2,7 @@ Accor
 ADHD
 aiomonitor
 Alexa
+AMQP
 anki
 anychar
 applescript
@@ -14,6 +15,7 @@ autoreplace
 backoffice
 bindgen
 blobstorage
+Borland
 BPF
 Brinerot
 cardano
@@ -56,6 +58,7 @@ Gbit
 GDI
 getattr
 getsizeof
+Gevent
 Glassdoor
 grigory
 grigoryvp
@@ -64,12 +67,14 @@ gunicorn
 hammerspoon
 hashlib
 hexdigest
+HN
 hotstrings
 Hotwire
 HRESULT
 HTAP
 htmx
 httpx
+idl
 ignorecase
 ilvl
 implicits
@@ -88,6 +93,7 @@ keygen
 KEYUP
 koi8-r
 kwargs
+kyc
 LFE
 LFW
 libbz
@@ -147,6 +153,7 @@ Rebar
 regen
 remappable
 respawn
+résumé
 Runed
 Ryzen
 scikit
@@ -164,6 +171,7 @@ subclassing
 subcomponents
 subkey
 subshell
+sumsub
 Superintelligence
 syncdb
 syscall
@@ -218,6 +226,7 @@ Yudkowsky
 блобы
 булевого
 векторизация
+вендоров
 высоконагруженных
 генерализовать
 Грациано

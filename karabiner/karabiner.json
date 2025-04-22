@@ -423,9 +423,47 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_lang",
+                                        "type": "variable_if",
+                                        "value": "en"
                                     }
                                 ],
-                                "description": "m2-open-bracket for left quote",
+                                "description": "m2-open-bracket for English left quote",
+                                "from": {
+                                    "key_code": "open_bracket",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{
+                                    "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"“\"'"
+                                }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_lang",
+                                        "type": "variable_if",
+                                        "value": "ru"
+                                    }
+                                ],
+                                "description": "m2-open-bracket for Russian left quote",
                                 "from": {
                                     "key_code": "open_bracket",
                                     "modifiers": { "optional": ["any"] }
@@ -507,9 +545,47 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_lang",
+                                        "type": "variable_if",
+                                        "value": "en"
                                     }
                                 ],
-                                "description": "m2-close-bracket for right quote",
+                                "description": "m2-close-bracket for English right quote",
+                                "from": {
+                                    "key_code": "close_bracket",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{
+                                    "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"”\"'"
+                                }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_lang",
+                                        "type": "variable_if",
+                                        "value": "ru"
+                                    }
+                                ],
+                                "description": "m2-close-bracket for Russian right quote",
                                 "from": {
                                     "key_code": "close_bracket",
                                     "modifiers": { "optional": ["any"] }
@@ -1900,7 +1976,19 @@
                                     "key_code": "f",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.ABC$" } }],
+                                "to": [
+                                    {
+                                        "select_input_source": {
+                                            "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                                        }
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "_lang",
+                                            "value": "en"
+                                        }
+                                    }
+                                  ],
                                 "type": "basic"
                             },
                             {
@@ -1968,7 +2056,19 @@
                                     "key_code": "d",
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
-                                "to": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$" } }],
+                                "to": [
+                                    {
+                                        "select_input_source": {
+                                            "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
+                                        }
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "_lang",
+                                            "value": "ru"
+                                        }
+                                    }
+                                  ],
                                 "type": "basic"
                             },
                             {

@@ -1871,3 +1871,5 @@ A_TrayMenu.Add("Run tests", onTests)
 readSymolbs()
 
 ; TODO: native C++ COM dll that can press taskbar buttons by index and name
+; TODO: Support for both English and Russian typographic quotes depending on
+;       the layout

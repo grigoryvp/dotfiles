@@ -80,6 +80,7 @@ ilvl
 implicits
 indice
 Infohazards
+Inlines
 IPX
 ipynb
 ipython
@@ -153,6 +154,7 @@ Rebar
 regen
 remappable
 respawn
+respin
 résumé
 Runed
 Ryzen
@@ -192,6 +194,7 @@ userinfo
 USERPROFILE
 userspace
 usr
+utf-8
 uvicorn
 uwsgi
 Varargs
@@ -235,6 +238,7 @@ Yudkowsky
 деструктурирования
 дистрибьюцией
 дистрибьюции
+журналирования
 заморачивались
 Значек
 Иммутабельная
@@ -348,6 +352,7 @@ Yudkowsky
 фикстуру
 фикстуры
 флешек
+фреймворке
 хендл
 Цеттелькастен
 человекочитаемые

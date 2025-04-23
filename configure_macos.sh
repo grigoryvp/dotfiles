@@ -281,7 +281,7 @@ defaults write -g NSAutomaticDashSubstitutionEnabled false
 defaults write -g NSAutomaticPeriodSubstitutionEnabled false
 defaults write -g NSAutomaticQuoteSubstitutionEnabled false
 defaults write -g NSAutomaticSpellingCorrectionEnabled false
-# Max touchpad speed that can be set via GUI, cli can go beyound than.
+# Max touchpad speed that can be set via GUI, cli can go beyond than.
 defaults write -g com.apple.trackpad.scaling 3
 # Switch off typing disable while trackpad is in use.
 defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
@@ -289,7 +289,7 @@ defaults write com.apple.applemultitouchtrackpad TrackpadHandResting -int 0
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud false
 # Disable the app open confirmation.
 defaults write com.apple.LaunchServices LSQuarantine false
-# Input langauges and locale
+# Input languages and locale
 defaults write -g AppleLanguages -array "en" "ru" "ja"
 defaults write -g AppleLocale -string "en_RU"
 # Instant dock auto hiding
@@ -315,7 +315,7 @@ defaults write com.apple.dock "mineffect" -string "scale" && killall Dock
 defaults write com.apple.dock launchanim -bool false
 # Disable "show suggested and recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
-# Disable Mission Control "hot corners" (they trigger accidently a lot)
+# Disable Mission Control "hot corners" (they trigger accidentally a lot)
 defaults write com.apple.dock wvous-tl-corner -int 0
 defaults write com.apple.dock wvous-tr-corner -int 0
 defaults write com.apple.dock wvous-bl-corner -int 0

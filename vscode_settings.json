@@ -95,7 +95,7 @@
   "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
   "editor.semanticHighlighting.enabled": true,
   "editor.fontSize": 16,
-  "editor.fontLigatures": true,
+  "editor.fontLigatures": false,
   "editor.renderControlCharacters": false,
   "editor.cursorStyle": "line",
   "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
@@ -182,9 +182,6 @@
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
   "powershell.integratedConsole.showOnStartup": false,
 
-  "[xi]": {
-    "editor.fontLigatures": false
-  },
   "[python]": {
     "editor.tabSize": 4
   },

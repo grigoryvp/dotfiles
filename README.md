@@ -83,7 +83,8 @@ pip install --upgrade pip
 # * Disable /General/Selection/Clicking
 # * Set Appearance/General/Theme to "Dark"
 # * Set Appearance/Windows/Hide scrollbars
-# * Set Profiles/Colors/Color presets to "Solarized Dark"
+# * Enable Appearance/Dimming "inactive windows" and "affects text", 60%
+# * Set Profiles/Colors/Color presets to "Solarized Dark", background to black
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"

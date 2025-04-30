@@ -53,7 +53,7 @@ class App {
         * Map Mouse4 => 'change movement to scroll' with setings:
           * Sensitivity 1
           * Invert axis
-      - Install "taskbar on top" via WindHawk
+      - Install "taskbar on top" and "taskbar styler" via WindHawk
       - Disable adaptive contrast for the built-in Intel GPU, if any
       - "Change Proxy Settings", Turn off "Automatically Detect Settings"
       - Add C-S-4-5-6 as en-ru-js hotkeys in Time/Lang/Typing/Advanced/Keys
@@ -72,6 +72,7 @@ class App {
       - Set Settings/Accounts/Sign-in/Sign-in to "Every time"
       - Set Settings/System/Power/Saver/Auto to "Never"
       - Uncheck "Sniping tool" in Settings/Accessibility/Keyboard
+      - Set terminal "Color Schemes" default to "Tango Dark"
       - Disable ASUS "lightingservice", if any
       - Disable G-Sync in the nVidia settings
       - Disable the "SSDP Discovery" service

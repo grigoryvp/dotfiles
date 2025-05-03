@@ -1,4 +1,5 @@
 Accor
+activerecord
 ADHD
 aiomonitor
 Alexa
@@ -27,6 +28,7 @@ Classpath
 cli
 clickhouse
 cls
+columnconfigure
 contextmanager
 convolutional
 cooldown
@@ -193,6 +195,7 @@ remappable
 respawn
 respin
 résumé
+rowconfigure
 rubocop
 Runed
 RVM
@@ -227,12 +230,16 @@ tailscale
 Tarantool
 taskkill
 TFS
+Tk
 Tonkeeper
+traceroute
 Trackpad
 ttl
 UCS-2
 udemy
 UDP
+UEFI
+Unaliased
 uncollegiate
 unhashable
 unsequenced

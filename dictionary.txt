@@ -241,6 +241,7 @@ Tk
 Tonkeeper
 traceroute
 Trackpad
+tsc
 ttl
 UCS-2
 udemy

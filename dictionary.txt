@@ -205,6 +205,7 @@ rubocop
 Runed
 RVM
 Ryzen
+sauron
 scikit
 scrollbars
 SDP

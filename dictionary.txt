@@ -16,6 +16,7 @@ autohotkey
 autoreplace
 backoffice
 bindgen
+BIP
 blobstorage
 Borland
 BPF
@@ -109,12 +110,14 @@ itertools
 jailbreaking
 JDBC
 Jewellery
+Johan
 karabiner
 Keepass
 keygen
 KEYUP
 killall
 koi8-r
+Kristian
 kwargs
 kyc
 LFE
@@ -155,6 +158,7 @@ nodenv
 nohidden
 notunes
 numpad
+Nygaard
 octothorp
 OLAP
 OLTP
@@ -168,6 +172,7 @@ osascript
 pagebreak
 pandoc
 Petrov
+Phlex
 phpenv
 phpvm
 PIL
@@ -208,8 +213,10 @@ setrestartfreeze
 settimezone
 setuptools
 sigcheck
+Simula
 skylighting
 smm
+Solana
 Soulbound
 spacebar
 SPX
@@ -395,6 +402,7 @@ Zab
 роутеров
 роутеры
 Сocoa
+Сапольски
 свежесозданного
 сепулек
 Сепуление
@@ -415,6 +423,7 @@ Zab
 у́же
 фан
 фикстур
+фикстурами
 фикстуру
 фикстуры
 фичи

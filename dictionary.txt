@@ -143,6 +143,7 @@ malloc
 mdutil
 memoizations
 memray
+MESI
 metaclass
 metaclasses
 metainformation
@@ -180,6 +181,7 @@ phpenv
 phpvm
 PIL
 pipx
+ppp
 programdata
 psql
 pwsh

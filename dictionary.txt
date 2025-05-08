@@ -46,10 +46,12 @@ Defence
 desktopservices
 desync
 df
+dind
 diskimages
 displaysleep
 distutils
 dmg
+dockerhub
 documentclass
 dont
 dotenv
@@ -98,6 +100,7 @@ httpx
 idl
 ignorecase
 ilvl
+IMG
 implicits
 indice
 Infohazards

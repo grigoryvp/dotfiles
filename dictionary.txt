@@ -6,7 +6,9 @@ Alexa
 AMQP
 anki
 anychar
+appengine
 applescript
+Armin
 asgi
 Asus
 asynccontextmanager
@@ -15,6 +17,7 @@ autohide
 autohotkey
 autoreplace
 backoffice
+bg
 bindgen
 BIP
 blobstorage
@@ -22,8 +25,10 @@ Borland
 BPF
 Brinerot
 cardano
+CAS
 charfrom
 cheatsheet
+Citus
 clangd
 Classpath
 cli
@@ -32,6 +37,7 @@ cls
 columnconfigure
 contextmanager
 convolutional
+cookiecutter
 cooldown
 cpython
 createdb
@@ -89,6 +95,8 @@ gvl
 hammerspoon
 hashability
 hashlib
+HDR
+headscale
 hexdigest
 HN
 hotstrings
@@ -105,6 +113,7 @@ implicits
 indice
 Infohazards
 Inlines
+ioc
 IPX
 ipynb
 ipython
@@ -123,6 +132,7 @@ koi8-r
 Kristian
 kwargs
 kyc
+LDR
 LFE
 LFW
 libbz
@@ -135,6 +145,7 @@ Lich's
 listtimezones
 livejournal
 LLM
+loglevel
 lol
 lookaround
 lsp
@@ -157,6 +168,7 @@ MRO
 MTU
 mul
 nanodjango
+netbird
 Niko
 nodenv
 nohidden
@@ -173,6 +185,7 @@ openwrt
 optimus
 orbstack
 osascript
+OTP
 pagebreak
 pandoc
 Petrov
@@ -182,6 +195,7 @@ phpvm
 PIL
 pipx
 ppp
+prestart
 programdata
 psql
 pwsh
@@ -201,17 +215,21 @@ RDNA
 Rebar
 recents
 regen
+Régime
 remappable
 respawn
 respin
 résumé
+Ronacher
 rowconfigure
+RTT
 rubocop
 Runed
 RVM
 Ryzen
 sauron
 scikit
+scp
 scrollbars
 SDP
 setdefault
@@ -226,6 +244,7 @@ Solana
 Soulbound
 spacebar
 SPX
+srv
 starlette
 Strix
 subclassing
@@ -247,6 +266,7 @@ Tk
 Tonkeeper
 traceroute
 Trackpad
+Trino
 tsc
 ttl
 UCS-2
@@ -265,6 +285,7 @@ userspace
 usr
 utf-8
 uvicorn
+uvx
 uwsgi
 Varargs
 VCS
@@ -278,6 +299,7 @@ viewsets
 virtualenv
 virtualenvs
 vlc
+voximplant
 vsicons
 Warbands
 webrtc
@@ -287,6 +309,7 @@ winget
 wsgi
 WSL
 wx
+YDB
 Yudkowsky
 Zab
 автоконверсии
@@ -363,6 +386,7 @@ Zab
 мутабельные
 мутабельными
 мутабельных
+неаутентифицированному
 нейминга
 неймспейс
 неймспейса
@@ -418,6 +442,7 @@ Zab
 Сепулькариях
 Сепульки
 сериализаторов
+скам
 скилл
 скопироваться
 спеллчекеров
@@ -436,6 +461,9 @@ Zab
 фичи
 флешек
 фреймворке
+Хабра
 хендл
+хостить
 Цеттелькастен
 человекочитаемые
+шардирования

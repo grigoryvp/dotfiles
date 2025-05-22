@@ -87,6 +87,7 @@ getsizeof
 Gevent
 Glassdoor
 GNN
+Goroutines
 grigory
 grigoryvp
 GTK
@@ -114,9 +115,11 @@ indice
 Infohazards
 Inlines
 ioc
+IPFS
 IPX
 ipynb
 ipython
+ISA
 iterm
 itertools
 jailbreaking
@@ -143,6 +146,7 @@ libui
 libxmlsec
 Lich's
 listtimezones
+litestream
 livejournal
 LLM
 loglevel
@@ -173,6 +177,7 @@ Niko
 nodenv
 nohidden
 notunes
+Num
 numpad
 Nygaard
 octothorp
@@ -211,6 +216,7 @@ queryset
 rabbitmq
 Radeon
 Raku
+Rarible
 RDNA
 Rebar
 recents
@@ -228,6 +234,7 @@ Runed
 RVM
 Ryzen
 sauron
+scaffolder
 scikit
 scp
 scrollbars
@@ -238,6 +245,7 @@ settimezone
 setuptools
 sigcheck
 Simula
+Siri
 skylighting
 smm
 Solana
@@ -245,6 +253,7 @@ Soulbound
 spacebar
 SPX
 srv
+stackful
 starlette
 Strix
 subclassing
@@ -261,6 +270,7 @@ tailnet
 tailscale
 Tarantool
 taskkill
+techdocs
 TFS
 Tk
 Tonkeeper
@@ -276,6 +286,7 @@ UEFI
 Unaliased
 uncollegiate
 unhashable
+Unraisable
 unsequenced
 URLCONF
 userdata
@@ -319,6 +330,7 @@ Zab
 акторной
 атомарности
 байткод
+байткода
 баристы
 Бартунова
 бенчмарки

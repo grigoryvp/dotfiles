@@ -435,9 +435,7 @@
                                     "key_code": "open_bracket",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{
-                                    "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"“\"'"
-                                }],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"“\"'" }],
                                 "type": "basic"
                             },
                             {
@@ -468,9 +466,7 @@
                                     "key_code": "open_bracket",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{
-                                    "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"«\"'"
-                                }],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"«\"'" }],
                                 "type": "basic"
                             },
                             {
@@ -557,9 +553,7 @@
                                     "key_code": "close_bracket",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{
-                                    "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"”\"'"
-                                }],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"”\"'" }],
                                 "type": "basic"
                             },
                             {
@@ -590,9 +584,7 @@
                                     "key_code": "close_bracket",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{
-                                    "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"»\"'"
-                                }],
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\" to keystroke \"»\"'" }],
                                 "type": "basic"
                             },
                             {
@@ -1977,18 +1969,14 @@
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "to": [
-                                    {
-                                        "select_input_source": {
-                                            "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
-                                        }
-                                    },
+                                    { "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.ABC$" } },
                                     {
                                         "set_variable": {
                                             "name": "_lang",
                                             "value": "en"
                                         }
                                     }
-                                  ],
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -2057,18 +2045,14 @@
                                     "modifiers": { "mandatory": ["shift"] }
                                 },
                                 "to": [
-                                    {
-                                        "select_input_source": {
-                                            "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$"
-                                        }
-                                    },
+                                    { "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$" } },
                                     {
                                         "set_variable": {
                                             "name": "_lang",
                                             "value": "ru"
                                         }
                                     }
-                                  ],
+                                ],
                                 "type": "basic"
                             },
                             {

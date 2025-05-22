@@ -49,8 +49,11 @@ pip install --upgrade pip
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
-# Add noTunes.app, hammerspoon to Settings/General/Login
-# IN "Settings/Battery":
+# In "Settings/General"
+# * Add noTunes.app, hammerspoon to "Login Items"
+# In "Settings/Accessibility"
+# * Disable "Siri/Settings/Intelligence"
+# In "Settings/Battery":
 # * Disable "dim screen" in "Options".
 # In "Settings/Dock":
 # * Minimize windows into application icon

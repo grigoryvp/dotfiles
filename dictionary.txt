@@ -6,7 +6,9 @@ Alexa
 AMQP
 anki
 anychar
+apk
 appengine
+asg
 applescript
 Armin
 asgi
@@ -27,6 +29,7 @@ Brinerot
 cardano
 CAS
 certbot
+CERTDIR
 charfrom
 cheatsheet
 Citus
@@ -107,6 +110,7 @@ hashability
 hashlib
 HDR
 headscale
+HEALTHCHECK
 hexdigest
 highload
 HN
@@ -198,6 +202,7 @@ nacl
 nanodjango
 netbird
 nic
+neocrypto
 Niko
 nodenv
 nogil
@@ -261,6 +266,7 @@ respawn
 respin
 résumé
 Ronacher
+rmi
 rowconfigure
 RTT
 rubocop
@@ -290,6 +296,7 @@ spacebar
 SPX
 srv
 stackful
+sre
 starlette
 Strix
 subclassing

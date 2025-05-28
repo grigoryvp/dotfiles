@@ -126,9 +126,6 @@ if [ "$(uname)" = "Darwin" ]; then
   export LSCOLORS=Exfxcxdxbxegedabagacad
   ##  For django 'syncdb' command to work.
   export LC_ALL=en_US.UTF-8
-  ##  |PYTHONDONTWRITEBYTECODE| don't work on OSX 10.8, default python is
-  ##  64-bit that is not compatible with wxWidgets.
-  # alias python="arch -i386 /usr/bin/python2.7 -B"
 
   ##  custom svn
   start_path_with /opt/subversion/bin

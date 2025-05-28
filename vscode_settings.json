@@ -6,6 +6,7 @@
 
   "vim.leader": "<space>",
   "vim.ignorecase": true,
+  "vim.textwidth": 78,
   "vim.insertModeKeyBindings": [{
     "before": ["<c-v>"],
     "after": [],
@@ -21,10 +22,12 @@
   "vim.normalModeKeyBindingsNonRecursive": [{
     "before": ["n"],
     "after": ["n", "z", "z"]
-  },
-  {
+  }, {
     "before": ["N"],
     "after": ["N", "z", "z"]
+  }, {
+    "before": ["Q"],
+    "after": ["g", "q", "i", "p"]
   }],
   "vim.otherModesKeyBindingsNonRecursive": [{
     "before": ["Z", "Z"],

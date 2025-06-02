@@ -388,6 +388,7 @@ virtualenvs
 vlc
 voximplant
 vsicons
+walletteam
 Warbands
 webdav
 webrtc

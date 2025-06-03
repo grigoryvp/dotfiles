@@ -34,6 +34,7 @@ cardano
 CAS
 certbot
 CERTDIR
+Chainmail
 charfrom
 cheatsheet
 Citus
@@ -194,6 +195,7 @@ luasocket
 luasodium
 malloc
 mbr
+MCP
 MDM
 mdutil
 memmove
@@ -289,6 +291,7 @@ remappable
 respawn
 respin
 résumé
+RGB
 rmi
 Ronacher
 rowconfigure

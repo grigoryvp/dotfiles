@@ -1906,6 +1906,40 @@
                             {
                                 "conditions": [
                                     {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Preview$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    },
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-g to show notes in preview (no 'toggle' functionality)",
+                                "from": { "key_code": "g" },
+                                "to": [
+                                    {
+                                        "key_code": "4",
+                                        "modifiers": ["right_command", "right_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
@@ -2157,6 +2191,40 @@
                                     {
                                         "key_code": "b",
                                         "modifiers": ["right_command", "right_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Preview$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    },
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-d to hide left menu in preview (no 'toggle' functionality)",
+                                "from": { "key_code": "d" },
+                                "to": [
+                                    {
+                                        "key_code": "1",
+                                        "modifiers": ["right_command", "right_option"]
                                     }
                                 ],
                                 "type": "basic"
@@ -2856,7 +2924,7 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m2-shift-g => alt-command-g for Preview app",
+                                "description": "m2-shift-g => alt-command-g (go to page) for Preview app",
                                 "from": {
                                     "key_code": "g",
                                     "modifiers": { "mandatory": ["shift"] }

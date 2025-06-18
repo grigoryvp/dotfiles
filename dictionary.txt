@@ -8,6 +8,7 @@ aistudio
 alch
 Alexa
 Alivia
+Allflame
 Amanamu
 AMQP
 anki
@@ -39,6 +40,7 @@ backoffice
 Baran
 Barbute
 Basemetal
+benchcraft
 bg
 bindgen
 BIP
@@ -120,6 +122,7 @@ Dramatiq
 Dreamquest
 Drox
 DS
+DSA
 DSL
 Duolingo
 Durov
@@ -247,6 +250,7 @@ Kitava
 koi8-r
 Korell
 Kristian
+Kulemak
 KVM
 kwargs
 kyc
@@ -354,6 +358,7 @@ Oriath
 osascript
 OTP
 pagebreak
+pageless
 Pandemonius
 pandoc
 Paradoxica
@@ -465,6 +470,7 @@ stackful
 Starforge
 starlette
 Steelscale
+stormblast
 Stormcaller
 Stormrider
 Stormshroud
@@ -505,6 +511,7 @@ Trino
 triphosphate
 truecrypt
 tsc
+TSMC
 ttl
 Tujen
 Tul
@@ -585,6 +592,7 @@ xy
 YDB
 Yudkowsky
 Zab
+Zana
 zeroconf
 автоконверсии
 айти
@@ -645,8 +653,12 @@ zeroconf
 когнитома
 коммита
 коммитам
+компактифицированный
 консьюмер
+консьюмера
 консьюмерам
+консьюмеров
+консьюмеры
 контринтуитивен
 коэволюции
 Кре́дит
@@ -717,6 +729,7 @@ zeroconf
 пересборки
 переукажет
 переуказывает
+пессимизаций
 петабайт
 петабайты
 пиксельной

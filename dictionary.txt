@@ -40,6 +40,7 @@ backoffice
 Baran
 Barbute
 Basemetal
+Beastcrafting
 benchcraft
 bg
 bindgen
@@ -502,6 +503,7 @@ tft
 TG
 Tk
 toc
+TONCOIN
 Tonkeeper
 TOTP
 traceroute

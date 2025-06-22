@@ -141,6 +141,17 @@ function App:clickDockItemByName(name)
 end
 
 
+function App:startApplicationWatcher()
+  function handler(appName, eventType, appObj)
+    if eventType == hs.application.watcher.activated then
+    end
+  end
+  -- For future work
+  -- self.applicationWatcher = hs.application.watcher.new(handler)
+  -- self.applicationWatcher:start()
+end
+
+
 function App:startHttpServer()
   self.httpServer = hs.httpserver.new()
   self.httpServer:setInterface("localhost")

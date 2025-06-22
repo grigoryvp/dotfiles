@@ -446,6 +446,7 @@ setdefault
 setrestartfreeze
 settimezone
 setuptools
+Shakari
 sigcheck
 Simula
 Siri
@@ -503,6 +504,7 @@ tft
 TG
 Tk
 toc
+Tolman
 TONCOIN
 Tonkeeper
 TOTP
@@ -569,6 +571,7 @@ Vorici
 voximplant
 vsicons
 walletteam
+Warband
 Warbands
 Warhoards
 Warstaves

@@ -32,6 +32,7 @@ function onReadlinkExit(exitCode, stdOut, _)
   app:restartInetPingExt()
   app:startHeartbeat()
   app:startHttpServer()
+  app:startApplicationWatcher()
 end
 
 srcFile = debug.getinfo(1).source:match("@?(.*)")

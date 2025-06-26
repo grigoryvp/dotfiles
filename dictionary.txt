@@ -86,6 +86,7 @@ cooldown
 cpython
 createdb
 Crystallised
+ctx
 cwd
 Cython
 Dannig
@@ -265,6 +266,7 @@ Leyline
 LFE
 LFW
 libbz
+libexec
 libncursesw
 libreadline
 libsodium

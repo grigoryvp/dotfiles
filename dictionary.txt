@@ -189,11 +189,13 @@ Gevent
 GG
 Giantslayer
 Gigantification
+Gitbeaker
 Glassdoor
 GNN
 Goathide
 Goatmem
 Goroutines
+gpetrov
 GPT
 Gravicius
 Greatwolf

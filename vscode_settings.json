@@ -261,5 +261,6 @@
     "vscode-kubernetes.helm-path-mac": "/Users/user/.vs-kubernetes/tools/helm/darwin-arm64/helm",
     "vscode-kubernetes.minikube-path-mac": "/Users/user/.vs-kubernetes/tools/minikube/darwin-arm64/minikube"
   },
-  "workbench.activityBar.location": "top"
+  "workbench.activityBar.location": "top",
+  "docker.extension.enableComposeLanguageServer": false
 }

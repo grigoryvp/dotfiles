@@ -14,6 +14,7 @@ AMQP
 anki
 anychar
 apk
+APNG
 appengine
 applescript
 Arakaali
@@ -107,6 +108,7 @@ desync
 df
 Dialla
 dind
+discriminare
 Disfavour
 diskimages
 displaysleep
@@ -148,6 +150,7 @@ etl
 eventtap
 evp
 EVT
+EXIF
 eza
 Ezomyte
 fastapi
@@ -255,6 +258,7 @@ KEYUP
 killall
 Kirac
 Kitava
+Kivy
 koi8-r
 Korell
 Kristian
@@ -287,6 +291,7 @@ listtimezones
 litestream
 livejournal
 LLM
+lmb
 loglevel
 lol
 lookaround
@@ -523,6 +528,7 @@ TFS
 tft
 TG
 Tk
+tkinter
 toc
 Tolman
 TONCOIN

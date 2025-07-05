@@ -167,7 +167,6 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -182,7 +181,6 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -197,7 +195,6 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
                                         "type": "frontmost_application_if"
@@ -261,7 +258,7 @@
                                         "type": "frontmost_application_if"
                                     }
                                 ],
-                                "description": "super-f for fast logout",
+                                "description": "m2-f for fast logout",
                                 "from": { "key_code": "f" },
                                 "to": [
                                     { "key_code": "return_or_enter" },
@@ -289,7 +286,7 @@
                                         "type": "frontmost_application_if"
                                     }
                                 ],
-                                "description": "super-d for hideout",
+                                "description": "m2-d for hideout",
                                 "from": { "key_code": "d" },
                                 "to": [
                                     { "key_code": "return_or_enter" },
@@ -1015,6 +1012,13 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "'m1-w' for home",
@@ -1078,6 +1082,23 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "'m1-e' for page down",
@@ -1169,6 +1190,23 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "'m1-r' for page up",
@@ -1316,6 +1354,13 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "'m1-t' for end",
@@ -1991,6 +2036,18 @@
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-g for F4",
@@ -2067,6 +2124,18 @@
                                         "name": "_m2",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-f for F3",
@@ -2288,6 +2357,13 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-d for F2",
@@ -2366,6 +2442,13 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-s for F1",
@@ -2413,6 +2496,23 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-b for F8",
@@ -2426,6 +2526,23 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-v for F7",
@@ -2439,6 +2556,23 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-c for F6",
@@ -2452,6 +2586,23 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.valvesoftware\\.steam\\.streamingclient$",
+                                            "^com\\.GGG\\.PathOfExile$"
+                                        ],
+                                        "type": "frontmost_application_unless"
                                     }
                                 ],
                                 "description": "m1-x for F5",

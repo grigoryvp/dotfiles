@@ -157,6 +157,7 @@ fastapi
 fastfetch
 ffi
 Fishscale
+fn
 Fossilised
 frontmost
 frozenset
@@ -356,6 +357,7 @@ NPC
 Nubuck
 NUC
 Num
+numlock
 numpad
 Nunjucks
 Nygaard
@@ -427,6 +429,7 @@ randombytes
 Rarible
 RDBMS
 RDNA
+RDTSC
 readouterr
 Rebar
 recents
@@ -502,6 +505,7 @@ Stormrider
 Stormshroud
 Stranglegasp
 Strix
+strtolower
 STT
 subclassing
 subcomponents
@@ -517,6 +521,8 @@ Synthesised
 syscall
 sysconfig
 systemsetup
+taildrive
+taildrop
 tailnet
 tailscale
 Tarantool

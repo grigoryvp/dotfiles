@@ -954,11 +954,16 @@ onKeyCommand(items, dir) {
       return
     }
     if (command == "click") {
+      MouseGetPos(&curX, &curY)
       xRelative := items.RemoveAt(1)
       yRelative := items.RemoveAt(1)
-      MouseMove(xRelative, yRelative)
+      x := A_ScreenWidth * xRelative
+      y := A_ScreenHeight * yRelative
+      MouseMove(x, y)
       Sleep(100)
       Click()
+      Sleep(100)
+      MouseMove(curX, curY)
       return
     }
     if (command == "winpos") {
@@ -1515,7 +1520,7 @@ addRemap("k", ["m1"], "up")
 ;;  'm1-r' for page up.
 addRemap("r", ["m1"], "pgup")
 ;;  'm2-r' for game command
-addRemap("r", ["m2"], ["click", 1250, 1300])
+addRemap("r", ["m2"], ["click", 0.488, 0.81])
 
 ;;  'm1-shift-l' for shift-right-arrow (vim-like + selection modify).
 addRemap("l", ["m1", "shift"], "right", ["shift"])

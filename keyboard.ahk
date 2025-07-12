@@ -960,9 +960,9 @@ onKeyCommand(items, dir) {
       x := A_ScreenWidth * xRelative
       y := A_ScreenHeight * yRelative
       MouseMove(x, y)
-      Sleep(100)
+      Sleep(150)
       Click()
-      Sleep(100)
+      Sleep(150)
       MouseMove(curX, curY)
       return
     }

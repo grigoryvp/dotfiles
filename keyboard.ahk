@@ -1419,6 +1419,7 @@ addRemap("vked", [], ["meta", "m1"])
 
 addRemap("esc", ["always"], ["meta", "m2"])
 ;;  Single esc (lalt) press => esc
+;;  TODO: hold "esc", press "4", release "esc" - triggers "esc"
 addRemap("esc", ["alone"], "esc")
 ;;  m2 + shift for holding esc
 addRemap("esc", ["shift"], "esc")

@@ -1,3 +1,4 @@
+Acclimatisation
 Accor
 activerecord
 ADHD
@@ -5,6 +6,7 @@ Aetherwind
 aiomonitor
 Aisling
 aistudio
+Akil
 alch
 Alexa
 Alivia
@@ -22,9 +24,11 @@ Arcanist
 Archdemon
 Archmage
 Armin
+Asenath
 asg
 asgi
 Astragali
+Astromancer
 Asus
 asynccontextmanager
 asyncio
@@ -50,6 +54,7 @@ BIP
 Blaidd
 Blightheart
 blobstorage
+bonechill
 Borland
 BPF
 breachstone
@@ -133,6 +138,7 @@ DSL
 Duolingo
 Durov
 Duskwalk
+Eagon
 Eelskin
 Einhar
 Elderslayers
@@ -181,6 +187,7 @@ Gigantification
 Glassdoor
 GNN
 Goathide
+Goatmem
 Goroutines
 GPT
 Gravicius
@@ -246,6 +253,7 @@ JPA
 jpeek
 Justicar
 JVM
+Jython
 Kalandra
 Kalguuran
 karabiner
@@ -311,12 +319,14 @@ Mageblood
 Mahuxotl
 malloc
 Maraketh
+Matryoshka
 Mawr
 mbr
 MCM
 MCP
 MDM
 mdutil
+MEDS
 memmove
 memoizations
 memray
@@ -328,6 +338,7 @@ Metalsmith
 microcontroller
 mimestream
 mineffect
+Miscreation
 Mojolicious
 Moosh
 movespeed
@@ -366,6 +377,7 @@ octothorp
 offlevel
 OFS
 OLAP
+OLED
 OLTP
 oneof
 oneside
@@ -466,12 +478,14 @@ scp
 scrollbars
 SDP
 Secutor
+Sephirot
 Serpentscale
 setdefault
 setrestartfreeze
 settimezone
 setuptools
 Shakari
+Shieldbearer
 sigcheck
 Simula
 Siri
@@ -507,6 +521,7 @@ Stranglegasp
 Strix
 strtolower
 STT
+Stunlock
 subclassing
 subcomponents
 subkey

@@ -1720,10 +1720,10 @@ addRemap("2", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"
 addRemap("3", ["m2"], ["send", "`"scythe artifact|coin|the sun|medved|vorana|uhtred|olroth`""])
 
 ;;  m2-4 for game text 4
-addRemap("4", ["m2"], ["send", "`"Bone Ring|Vermillion|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|DivineTorturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])
+addRemap("4", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|Divine|Torturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])
 
 ;;  m2-5 for game text 5
-addRemap("5", ["m2"], ["send", "`"vy b|r be|a a|on j|ege a|spine|nt ro|eted b|vir|int'|ved g|sage'|amp`""])
+addRemap("5", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Majestic|Haunted|Torturer'|Velour|Wyvernscale|Phantom`""])
 
 ;;  m2-5 for game text 6
 addRemap("6", ["m2"], ["send", "`"{!}rges|eec|gen|elo|s rec|o al|non`""])

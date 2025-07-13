@@ -1707,8 +1707,8 @@ addRemap("m", ["m1", "m2"], ["winpos", "left"])
 ;;  'm1-m2-comma' => right 1/2 screen
 addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
-;;  m2-1 for game text 0
-addRemap("~", ["m2"], ["send", "`"{!}d en|eec|gen|elo|o al|non`""])
+;;  m2-tilde for game text 0
+addRemap("vkc0", ["m2"], ["send", "`"{!}d en|eec|gen|elo|o al|non`""])
 
 ;;  m2-1 for game text 1
 addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])

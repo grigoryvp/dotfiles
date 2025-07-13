@@ -104,6 +104,7 @@ dataclasses
 Dawnbreaker
 dbname
 debuff
+debuffs
 deepcopy
 defence
 defences
@@ -378,6 +379,7 @@ offlevel
 OFS
 OLAP
 OLED
+Olroth
 OLTP
 oneof
 oneside
@@ -466,6 +468,7 @@ RTX
 rubocop
 Runed
 Runefinding
+rustdesk
 RVM
 Ryzen
 safehouse
@@ -593,6 +596,7 @@ uvx
 uwsgi
 Uzaza
 Vagan
+Valdo
 Varargs
 Vcpkg
 VCS
@@ -849,4 +853,3 @@ zeroconf
 Шард
 шардирования
 эксабайтами
-Valdo

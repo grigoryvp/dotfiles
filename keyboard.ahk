@@ -1723,7 +1723,7 @@ addRemap("3", ["m2"], ["send", "`"scythe artifact|coin|the sun|medved|vorana|uht
 addRemap("4", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|Divine|Torturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])
 
 ;;  m2-5 for game text 5
-addRemap("5", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Majestic|Haunted|Torturer'|Velour|Wyvernscale|Phantom`""])
+addRemap("5", ["m2"], ["send", "`"vine|anci|exal|annu|card|pris|chaos|regr|chis|fos|cata|sco|vaal|glas|crim|blac|opal|silv|gold|taint|refle|prism|envy|dread|scorn|zeal|spite|netol|chayula`""])
 
 ;;  m2-5 for game text 6
 addRemap("6", ["m2"], ["send", "`"{!}rges|eec|gen|elo|s rec|o al|non`""])

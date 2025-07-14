@@ -72,6 +72,7 @@ charfrom
 Chayula
 cheatsheet
 Chestplate
+Chimeral
 Chimerascale
 Citus
 clangd
@@ -91,6 +92,7 @@ convolutional
 cookiecutter
 cooldown
 cpython
+Craicic
 createdb
 Crystallised
 ctx
@@ -162,6 +164,7 @@ eza
 Ezomyte
 fastapi
 fastfetch
+Fenumal
 ffi
 Fishscale
 fn
@@ -349,6 +352,7 @@ MRO
 MTU
 mul
 MVC
+MVCC
 nacl
 nanodjango
 neocrypto
@@ -382,6 +386,7 @@ OLED
 Olroth
 OLTP
 oneof
+oneshot
 oneside
 OOP
 opensearch
@@ -510,6 +515,7 @@ SPX
 sre
 srv
 SSF
+SSFHC
 ssize
 Stackable
 stackful

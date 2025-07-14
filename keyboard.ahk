@@ -1723,7 +1723,7 @@ addRemap("3", ["m2"], ["send", "`"scythe artifact|coin|the sun|medved|vorana|uht
 addRemap("4", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|Divine|Torturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])
 
 ;;  m2-5 for game text 5
-addRemap("5", ["m2"], ["send", "`"{!}(p tier|area l|ires l|ient sha|ent sha|ted sha|cloist)`" `"vine o|anci|exal|annu|deck|pris|chaos|regr|chis|foss|reson|cata|sco|aal or|glas|crim|lack o|cent o|lver o|lden o|nted o|tive o|atic oi|envy|dread|scorn|zeal|spite|netol|chayu`""])
+addRemap("5", ["m2"], ["send", "`"{!}(p tier|area l|quality:|ient sha|ent sha|ted sha|cloist)`" `"vine o|anci|exal|annu|deck|pris|chaos|regr|chis|foss|reson|cata|sco|aal or|glas|crim|lack o|cent o|lver o|lden o|nted o|tive o|atic oi|envy|dread|scorn|zeal|spite|netol|chayu`""])
 
 ;;  m2-5 for game text 6
 addRemap("6", ["m2"], ["send", "`"{!}rges|eec|gen|elo|s rec|o al|non`""])

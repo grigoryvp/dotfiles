@@ -48,6 +48,7 @@ Basemetal
 Beastcrafting
 Beelink
 benchcraft
+benchcrafted
 bg
 bindgen
 BIP

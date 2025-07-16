@@ -455,6 +455,8 @@ RDTSC
 readouterr
 Rebar
 recents
+redacter
+Redactions
 regen
 Régime
 remappable
@@ -485,6 +487,7 @@ Sambodhi
 sauron
 scaffolder
 scikit
+Scm
 scp
 scrollbars
 SDP
@@ -557,6 +560,7 @@ taskkill
 tcbox
 techdocs
 Teradata
+textwidth
 TFS
 tft
 TG

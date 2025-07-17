@@ -1729,7 +1729,7 @@ addRemap("3", ["m2"], ["send", "`"scythe artifact|coin|the sun|medved|vorana|uht
 addRemap("8", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|Divine|Torturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])
 
 ;;  m2-4 for game text
-addRemap("4", ["m2"], ["send", "`"{!}(ap ti|ea le|level:|nt sh|ed sh|r's sh|abys|incu|scar|ch ri)`" `"r of k|ror sh|ine o|ent o|ted o|of ann|deck|r's p|aos o|regr|chis|foss|reson|cata|sco|aal or|glas|on oi|ck oi|ent oi|ver oi|en oi|envy|drea|scor|zeal|spit|chay|tic o|of fu|of ch|of alc|of ho`""])
+addRemap("4", ["m2"], ["send", "`"{!}(ap ti|ea le|level:|nt sh|ed sh|r's sh|abys|incu|scar|ch ri)`" `"mirr|ine o|ent o|ted o|of ann|deck|r's p|aos o|regr|chis|foss|reson|cata|sco|aal or|glas|on oi|ck oi|ent oi|ver oi|en oi|envy|drea|scor|zeal|spit|chay|tic o|of fu|of ch|of alc|of ho`""])
 
 ;;  m2-s-4 for game text
 ;; FIXME: not working with 'shift'

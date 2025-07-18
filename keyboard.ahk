@@ -1722,7 +1722,7 @@ addRemap("2", ["m2"], ["send", "`"{!}d en|eec|gen|elo|o al|non`""])
 addRemap("6", ["m2"], ["send", "`"{!}rges|eec|gen|elo|s rec|o al|non`""])
 
 ;;  m2-3 for game text
-addRemap("3", ["m2"], ["send", "`"scythe artifact|coin|the sun|medved|vorana|uhtred|olroth`""])
+addRemap("3", ["m2"], ["send", "`"grand black|coin|the sun|medved|vorana|uhtred|olroth`""])
 
 ;;  m2-s-3 for game text
 ;; FIXME: not working with 'shift'

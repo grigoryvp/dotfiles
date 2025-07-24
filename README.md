@@ -114,6 +114,7 @@ pip install --upgrade pip
 # * Disable all notification sounds in /Notifications
 # Remove all widgets and add "Note" as widget
 # Switch Lunar to "manual mode" so it will not mess with brightness
+# Add 'block in on en0' for '/etc/pf.conf'
 # Login all chrome profiles and name them 01, 02, 03 etc
 # Configure ChatGPT for autostart and "dock only" icon.
 # Add KeyLights, blue temp, 90% back, 40% front

@@ -316,6 +316,8 @@ class App {
       $this._installApp("9NBLGGH4XXVW");
       # Spark email client
       $this._installApp("XPFCS9QJBKTHVZ");
+      # Remote keyboard and mouse
+      $this._installApp("Deskflow.Deskflow");
     }
 
     if ($this._isTest) {

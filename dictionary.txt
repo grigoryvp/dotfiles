@@ -15,6 +15,7 @@ Amanamu
 AMQP
 anki
 anychar
+aoe
 apk
 APNG
 appengine
@@ -61,11 +62,14 @@ BPF
 breachstone
 Brinerot
 Bronzescale
+Bunq
+Caeserius
 Cameria
 capsys
 cardano
 CAS
 Catalysing
+Catarina
 certbot
 CERTDIR
 Chainmail
@@ -112,6 +116,7 @@ deepcopy
 defence
 defences
 Dementophobia
+Deskflow
 desktopservices
 desync
 df
@@ -120,6 +125,7 @@ dind
 discriminare
 Disfavour
 diskimages
+Displate
 displaysleep
 distutils
 Divinarius
@@ -197,6 +203,7 @@ Goatmem
 Goroutines
 gpetrov
 GPT
+Gravebind
 Gravicius
 Greatwolf
 Greenplum
@@ -216,13 +223,16 @@ Hateforge
 HDR
 headscale
 HEALTHCHECK
+Heretech
 Heterochromia
 hexdigest
 hextouch
 Hezmin
 highload
 HN
+Hom
 homelab
+horticrafting
 hotstrings
 Hotwire
 HRESULT
@@ -277,8 +287,10 @@ Kitava
 Kivy
 koi8-r
 Korell
+Kosis
 Kristian
 Kulemak
+Kurgal
 KVM
 kwargs
 kyc
@@ -353,6 +365,7 @@ mpv
 MQTT
 MRO
 MTU
+MTX
 mul
 MVC
 MVCC
@@ -360,6 +373,7 @@ nacl
 nanodjango
 neocrypto
 netbird
+nextjs
 nic
 Nightweave
 Nightwind
@@ -379,6 +393,8 @@ Num
 numlock
 numpad
 Nunjucks
+Nuxt
+nuxtjs
 Nygaard
 OCI
 octothorp
@@ -388,6 +404,7 @@ OLAP
 OLED
 Olroth
 OLTP
+Omniphobia
 oneof
 oneshot
 oneside
@@ -409,6 +426,7 @@ Paua
 pdb
 PDR
 Petrov
+pfctl
 Phlex
 phpenv
 phpvm
@@ -487,12 +505,15 @@ Sambodhi
 Sarn
 sauron
 scaffolder
+Scanf
+Schoeneman
 scikit
 Scm
 scp
 scrollbars
 SDP
 Secutor
+Sekhem
 Sephirot
 Serpentscale
 setdefault
@@ -504,6 +525,7 @@ Shieldbearer
 sigcheck
 Simula
 Siri
+Sirus
 skitterbots
 skylighting
 sln
@@ -562,6 +584,7 @@ tcbox
 techdocs
 Teradata
 textwidth
+TF-IDF
 TFS
 tft
 TG
@@ -619,6 +642,7 @@ vectorizer
 Vectorizing
 venv
 ver
+vercel
 Verilog
 Verisium
 Veritania
@@ -637,6 +661,7 @@ voidstones
 Vorici
 voximplant
 vsicons
+vuex
 walletteam
 Warband
 Warbands
@@ -650,6 +675,7 @@ webrtc
 Wi-Fi
 Widowsilk
 winapi
+Windscream
 winget
 WIP
 Wnd
@@ -662,6 +688,7 @@ Wyrmscale
 Wyvernscale
 XC
 Xoph
+Xsolla
 xxd
 xy
 YDB
@@ -681,6 +708,7 @@ zeroconf
 аллоцированную
 атомарности
 Атомарность
+АФК
 байткод
 байткода
 байткодом
@@ -692,6 +720,7 @@ zeroconf
 би
 блобах
 блобы
+бо́льшая
 булевого
 векторизация
 вендоров
@@ -779,6 +808,8 @@ zeroconf
 неймспейсов
 неймспейсом
 неймспейсы
+нейросетей
+нейросетям
 нишевых
 ноде
 однопоточно
@@ -870,3 +901,4 @@ zeroconf
 Шард
 шардирования
 эксабайтами
+электрощитке

@@ -1715,11 +1715,11 @@ addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
 addRemap("7", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])
 
 ;;  m2-2 for game text
-addRemap("2", ["m2"], ["send", "`"{!}d en|eec|gen|elo|o al|non`""])
+addRemap("2", ["m2"], ["send", "`"{!}gen|elo|s rec|o al|non`""])
 
 ;;  m2-s-2 for game text
 ;; FIXME: not working with 'shift'
-addRemap("6", ["m2"], ["send", "`"{!}rges|eec|gen|elo|s rec|o al|non`""])
+addRemap("6", ["m2"], ["send", "`"{!}gen|elo|s rec|o al|non|ask`""])
 
 ;;  m2-3 for game text
 addRemap("3", ["m2"], ["send", "`"grand black|exceptional black|coin|the sun|medved|vorana|uhtred|olroth`""])

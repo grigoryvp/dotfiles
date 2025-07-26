@@ -7,6 +7,7 @@ aiomonitor
 Aisling
 aistudio
 Akil
+akka
 alch
 Alexa
 Alivia
@@ -251,6 +252,7 @@ indice
 Indigon
 Infohazards
 Inlines
+instancecheck
 ioc
 IPFS
 IPX
@@ -564,6 +566,7 @@ subclassing
 subcomponents
 subkey
 subshell
+subshells
 Sulphite
 sumsub
 Sunfire

@@ -6,7 +6,7 @@
 # REORDERS $PATH, moving "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # in the beginning. For pyenv/rbenv/etc to work correctly they should be
 # in $PATH before default path, so we need to also reorder for each
-# invokation of zsh and each execution of this script.
+# invocation of zsh and each execution of this script.
 start_path_with() {
   if ! [ -e $1 ]; then
     return
@@ -118,7 +118,7 @@ export PIPENV_SKIP_LOCK="1"
 ##  Caprover default branch
 export CAPROVER_DEFAULT_BRANCH=main
 
-##  OSX?
+##  macOS?
 if [ "$(uname)" = "Darwin" ]; then
   ##  Add color to |ls| output
   export CLICOLOR=1
@@ -155,6 +155,16 @@ if [ "$(uname)" = "Darwin" ]; then
     export RADAR_CMD='$(git-radar --zsh --fetch)'
   else
     export RADAR_CMD='$(git-radar --bash --fetch)'
+  fi
+
+  BREW_DIR="/opt/homebrew/share"
+  ZSH_PLUGIN="zsh-autosuggestions"
+  if [ -e "$BREW_DIR/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh" ]; then
+    . "$BREW_DIR/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh"
+  fi
+  ZSH_PLUGIN="zsh-syntax-highlighting"
+  if [ -e "$BREW_DIR/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh" ]; then
+    . "$BREW_DIR/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh"
   fi
 
   camera() {

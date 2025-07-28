@@ -1729,7 +1729,7 @@ addRemap("3", ["m2"], ["send", "`"grand black|exceptional black|coin|the sun|med
 addRemap("8", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|Divine|Torturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])
 
 ;;  m2-4 for game text
-addRemap("4", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"mirr|(ine|ent|ted|aos|aal|tic|gal) or|of (ann|fu|ch|alc|ho|regr)|(on|ck|ent|ver|en) oi|deck|r's p|chis|foss|reson|cata|sco|glas|envy|drea|scor|zeal|spit|chay|ghas`""])
+addRemap("4", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"mirr|(ine|ent|ted|aos|aal|tic|gal) or|of (ann|fu|ch|alc|ho|regr|alt)|(on|ck|ent|ver|en) oi|deck|r's p|chis|foss|reson|cata|sco|glas|envy|drea|scor|zeal|spit|chay|ghas`""])
 
 ;;  m2-s-4 for game text
 ;; FIXME: not working with 'shift'

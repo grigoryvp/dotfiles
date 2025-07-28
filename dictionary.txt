@@ -98,6 +98,7 @@ convolutional
 cookiecutter
 cooldown
 cpython
+craftable
 Craicic
 createdb
 Crystallised
@@ -162,6 +163,7 @@ epub
 eqmac
 Esh
 essencecraft
+essencecrafted
 essencecrafting
 etl
 eventtap
@@ -174,6 +176,7 @@ fastapi
 fastfetch
 Fenumal
 ffi
+Firesong
 Fishscale
 fn
 Fossilised
@@ -634,7 +637,9 @@ Uul-Netol
 uvicorn
 uvloop
 uvx
+UWP
 uwsgi
+UX
 Uzaza
 Vagan
 Valdo
@@ -684,6 +689,7 @@ WIP
 Wnd
 WOLED
 Wolven
+WPF
 wsgi
 WSL
 wx
@@ -732,7 +738,9 @@ zeroconf
 горутинах
 Грациано
 де́бетом
+Демистификация
 десериализаторов
+десериализация
 деструктурирования
 дистрибьюцией
 дистрибьюции
@@ -750,6 +758,8 @@ zeroconf
 инстанс
 инстанцированием
 инстанцируем
+интерконнекта
+интерконнекту
 итерировании
 итерирования
 калечное
@@ -811,10 +821,12 @@ zeroconf
 неймспейсов
 неймспейсом
 неймспейсы
+Нейродизайн
 нейросетей
 нейросетям
 нишевых
 ноде
+нодой
 однопоточно
 однопоточными
 октоторп
@@ -874,6 +886,7 @@ zeroconf
 Сепулькариях
 Сепульки
 сериализаторов
+сериализует
 скам
 скилл
 скопироваться

@@ -677,6 +677,7 @@ Wargraves
 Warhoards
 Warstaves
 watchstone
+Waystone
 weakref
 webdav
 webrtc

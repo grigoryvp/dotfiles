@@ -1229,12 +1229,15 @@ onKeydown(key) {
     )
   }
   else {
-    ; Keys recive constant "keydown" events while pressed. "keyup" event
-    ; can be missed, so "stuck counter" is always incremented by a background
-    ; thred, while receiving "keydown" event resets it. If counter overflows,
-    ; this means that no "keydown" was received for this key recently,
-    ; but no "keyup" either and it's "stuck".
-    appKeysPressed[key]["stuck_counter"] := 0
+    ; Can be removed in another virtual thread
+    if (appKeysPressed.Has(key)) {
+      ; Keys recive constant "keydown" events while pressed. "keyup" event
+      ; can be missed, so "stuck counter" is always incremented by
+      ; a background thred, while receiving "keydown" event resets it. If
+      ; counter overflows, this means that no "keydown" was received for this
+      ; key recently, but no "keyup" either and it's "stuck".
+      appKeysPressed[key]["stuck_counter"] := 0
+    }
   }
 }
 
@@ -1815,7 +1818,7 @@ onFastTimer() {
     ; No "keydown" events for 1sec - they are being received periodically
     ; if key is actually pressed down. This means that "key up" event was
     ; missed.
-    if (keyInfo["stuck_counter"] > 7) {
+    if (keyInfo["stuck_counter"] > 5) {
       toRemove.Push(key)
     }
   }

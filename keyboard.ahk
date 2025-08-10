@@ -1418,9 +1418,9 @@ onRepeatedClick() {
 +$WheelDown::onRepeatedClick()
 ^+$WheelDown::onRepeatedClick()
 
-^$-::onRepeatedClick()
-+$-::onRepeatedClick()
-^+$-::onRepeatedClick()
+^$f11::onRepeatedClick()
++$f11::onRepeatedClick()
+^+$f11::onRepeatedClick()
 
 ; caps lock to meta-1
 addRemap("vked", [], ["meta", "m1"])
@@ -1914,5 +1914,4 @@ readSymolbs()
 ; TODO: native C++ COM dll that can press taskbar buttons by index and name
 ; TODO: Support for both English and Russian typographic quotes depending on
 ;       the layout
-; TODO: remap mouse repeated click on some unused key, not minus
 ; FIXME: m2-5 followed by m1-p acts like m1-m2-p

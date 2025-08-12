@@ -138,6 +138,7 @@ pip install --upgrade pip
 
 * Ignore subsequent "down" events on buttons that emulate mouse buttons.
 * Implement "go-to-background" Ctrl-D via PS keyboard hook.
+* Move text insert into copyq.
 
 ## License
 

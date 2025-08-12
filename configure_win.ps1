@@ -318,6 +318,8 @@ class App {
       $this._installApp("XPFCS9QJBKTHVZ");
       # Remote keyboard and mouse
       $this._installApp("Deskflow.Deskflow");
+      # Clipboard manager
+      $this._installApp("hluk.CopyQ");
     }
 
     if ($this._isTest) {

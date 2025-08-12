@@ -75,7 +75,7 @@ brew install libyaml
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install --cask mpv docker tailscale 
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting copyq
 
 # Need to check for network issues
 # brew install orbstack
@@ -248,6 +248,10 @@ read -s
 # Entire config dir should be symlinked
 rm -rf ~/.config/karabiner 
 ln -fs ~/dotfiles/karabiner ~/.config/karabiner
+
+# Required for copyq to work
+xattr -d com.apple.quarantine /Applications/CopyQ.app
+codesign --force --deep --sign - /Applications/CopyQ.app
 
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'

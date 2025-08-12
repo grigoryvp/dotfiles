@@ -59,6 +59,7 @@ Aul
 autohide
 autohotkey
 autoreplace
+Avarius
 Aventail
 awk
 Aylo
@@ -69,6 +70,7 @@ Barbute
 Basemetal
 Beastcrafting
 Beelink
+bem
 benchcraft
 benchcrafted
 bg
@@ -101,6 +103,7 @@ Catarina
 certbot
 CERTDIR
 Chainmail
+Chakram
 characterised
 charfrom
 chartjs
@@ -124,6 +127,7 @@ clr
 cls
 CMY
 CMYK
+codesign
 cognitiо
 colorlinks
 Colour
@@ -143,9 +147,11 @@ Crystallised
 CTO
 ctx
 ctypes
+cui
 cwd
 Cython
 Dannig
+darknet
 Darksteel
 databasehash
 dataclass
@@ -196,7 +202,9 @@ dunder
 Duolingo
 Durov
 Duskwalk
+DWH
 Eagon
+ebpf
 Eelskin
 Einhar
 Elderslayers
@@ -330,6 +338,7 @@ Indigon
 Infohazards
 Inlines
 instancecheck
+Interpretability
 invis
 ioc
 IPFS
@@ -358,6 +367,7 @@ Kalandra
 Kalguuran
 karabiner
 Karui
+kde
 KE
 Keepass
 keepassxc
@@ -374,6 +384,8 @@ koi8-r
 Korell
 Kosis
 Kristian
+kubeadm
+kubeconfig
 Kulemak
 Kurgal
 KVM
@@ -442,6 +454,7 @@ MEDS
 memmove
 memoizations
 memray
+Merveil
 MESI
 metaclass
 metaclasses
@@ -472,6 +485,7 @@ NAS
 Nenet
 neocrypto
 netbird
+netrc
 nextjs
 nic
 Nightweave
@@ -502,6 +516,7 @@ OCI
 octothorp
 offlevel
 OFS
+okular
 OLAP
 OLED
 Olroth
@@ -587,6 +602,7 @@ readouterr
 realpython
 Reanimator
 Rebar
+rebeccapurple
 recents
 recvfrom
 redacter
@@ -686,6 +702,7 @@ startswith
 statement'ов
 staticmethod
 Steelscale
+Steelskin
 stormblast
 Stormcall
 Stormcaller
@@ -735,6 +752,7 @@ TF-IDF
 TFS
 tft
 TG
+Threadripper
 Thunderquiver
 Tibbs
 tikzpicture
@@ -850,6 +868,7 @@ Withertouch
 Wnd
 WOLED
 Wolven
+worktree
 WPF
 wsgi
 WSL
@@ -859,6 +878,7 @@ wxruby
 wxwidgets
 Wyrmscale
 Wyvernscale
+xattr
 XC
 Xoph
 xrange
@@ -883,6 +903,7 @@ zeroconf
 аллокатора
 аллокаторов
 аллоцированную
+аппроксиматоры
 атомарности
 Атомарность
 АФК
@@ -1019,8 +1040,11 @@ zeroconf
 нейросетей
 нейросетям
 нишевых
+нод
+нодах
 ноде
 нодой
+ноду
 однопоточно
 однопоточными
 октоторп
@@ -1105,6 +1129,8 @@ zeroconf
 таба
 тимлид
 типобезопасный
+токенизатор
+токену
 тредами
 тредпулом
 трем
@@ -1127,6 +1153,7 @@ zeroconf
 фреймворке
 фронтенд
 Хабра
+хачапури
 хендл
 Хидо
 Хоара
@@ -1139,3 +1166,4 @@ zeroconf
 шорткатами
 эксабайтами
 электрощитке
+эмбеддинги

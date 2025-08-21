@@ -53,6 +53,7 @@ Astromancer
 Asus
 asynccontextmanager
 asyncio
+atexit
 Atoi
 Atziri
 Aul
@@ -153,6 +154,7 @@ Cython
 Dannig
 darknet
 Darksteel
+Darktongue
 databasehash
 dataclass
 dataclasses
@@ -365,6 +367,7 @@ JVM
 Jython
 Kalandra
 Kalguuran
+Kaom
 karabiner
 Karui
 kde
@@ -376,6 +379,7 @@ keypair
 KEYUP
 killall
 Kineticist
+Kingsmarch
 Kirac
 Kitava
 Kivy
@@ -438,6 +442,7 @@ lvl
 Lysah
 Mageblood
 Mahuxotl
+Malachai
 malloc
 Manyshot
 Maraketh
@@ -463,6 +468,7 @@ Metalsmith
 microcontroller
 mimestream
 mineffect
+miniboss
 minipage
 Miscreation
 Mojolicious
@@ -731,6 +737,7 @@ Swiftblade
 swiftenv
 syncdb
 Synthesised
+Synthesising
 syscall
 sysconfig
 systemsetup
@@ -910,6 +917,7 @@ zeroconf
 байткод
 байткода
 байткодом
+байткоду
 баристы
 Бартунова
 беззнаковые
@@ -923,13 +931,19 @@ zeroconf
 бо́льшая
 булевого
 бэкенде
+валидировать
 векторизация
 вендоров
+вызываемости
+вызываемость
 высоконагруженных
 геймдизайнер
 генерализовать
 гитхаба
+горутин
+горутина
 горутинах
+горутины
 Грациано
 дандер-атрибутами
 дандер-атрибутов
@@ -941,6 +955,7 @@ zeroconf
 дандер-методов
 дандер-методы
 дандер-функций
+двумерны
 де́бетом
 Демистификация
 десериализаторов
@@ -948,6 +963,8 @@ zeroconf
 деструктурирования
 дистрибьюцией
 дистрибьюции
+донастроить
+донастройки
 еtcd
 журналирования
 заморачивались
@@ -1020,6 +1037,7 @@ zeroconf
 мутабельности
 Мутабельность
 мутабельные
+мутабельный
 мутабельными
 мутабельных
 Надиктовка
@@ -1039,6 +1057,7 @@ zeroconf
 Нейродизайн
 нейросетей
 нейросетям
+неоптимальна
 нишевых
 нод
 нодах
@@ -1089,6 +1108,7 @@ zeroconf
 программерских
 промпт
 промпту
+промпты
 просмотрщик
 Псевдогаллюцинации
 раздрай
@@ -1133,6 +1153,7 @@ zeroconf
 токену
 тредами
 тредпулом
+трейсы
 трем
 ТСР
 туториалах

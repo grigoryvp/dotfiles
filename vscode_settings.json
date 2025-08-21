@@ -237,6 +237,9 @@
     "checkLimit": 10000,
     "minWordLength": 2,
     "language": "en,ru",
+    "flagWords": [
+      "аттрибут"
+    ],
     "ignoreRegExpList": [
       "\\\\x[0-9a-fA-F]{2}"
     ],

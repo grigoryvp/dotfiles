@@ -16,6 +16,7 @@ __subclasshook__
 __truediv__
 Acclimatisation
 Accor
+Achmiz
 activerecord
 ADHD
 Aetherwind
@@ -101,6 +102,7 @@ cardano
 CAS
 Catalysing
 Catarina
+cdef
 certbot
 CERTDIR
 Chainmail
@@ -200,6 +202,7 @@ Drox
 DS
 DSA
 DSL
+dsn
 dunder
 Duolingo
 Durov
@@ -222,6 +225,7 @@ eqmac
 Errno
 Eruptor
 Esh
+esim
 essencecraft
 essencecrafted
 essencecrafting
@@ -370,6 +374,7 @@ Kalguuran
 Kaom
 karabiner
 Karui
+kawaii
 kde
 KE
 Keepass
@@ -490,6 +495,8 @@ nanodjango
 NAS
 Nenet
 neocrypto
+nerfed
+netbeans
 netbird
 netrc
 nextjs
@@ -794,11 +801,13 @@ udemy
 UDP
 UEFI
 Unaliased
+unblockable
 unc
 uncollegiate
 underlinecolor
 undropped
 unhashable
+unpackings
 Unraisable
 unsequenced
 unsummon
@@ -873,6 +882,7 @@ winget
 WIP
 Withertouch
 Wnd
+wol
 WOLED
 Wolven
 worktree
@@ -885,6 +895,7 @@ wxruby
 wxwidgets
 Wyrmscale
 Wyvernscale
+xapk
 xattr
 XC
 Xoph
@@ -892,7 +903,9 @@ xrange
 Xsolla
 xxd
 xy
+ycoins
 YDB
+yesim
 yshift
 Yudkowsky
 Zab
@@ -960,6 +973,7 @@ zeroconf
 Демистификация
 десериализаторов
 десериализация
+деструктурированием
 деструктурирования
 дистрибьюцией
 дистрибьюции
@@ -1034,6 +1048,7 @@ zeroconf
 мутабелен
 Мутабельная
 мутабельного
+мутабельное
 мутабельности
 Мутабельность
 мутабельные

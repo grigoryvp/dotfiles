@@ -1277,7 +1277,7 @@ appLastKeyTick := A_TickCount
 onRepeatedClick() {
   global appLastKeyTick
   if (WinActive("ahk_exe PathOfExileSteam.exe")) {
-    if (A_TickCount > appLastKeyTick + 100) {
+    if (A_TickCount > appLastKeyTick + 90) {
       appLastKeyTick := A_TickCount
       Send("{blind}{lbutton}")
     }

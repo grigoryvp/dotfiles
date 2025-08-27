@@ -23,7 +23,7 @@
   }],
   "vim.visualModeKeyBindings": [{
     "before": ["p"],
-    "after":["P"]
+    "after": ["P"]
   }],
   "vim.normalModeKeyBindingsNonRecursive": [{
     "before": ["n"],
@@ -34,6 +34,14 @@
   }, {
     "before": ["Q"],
     "after": ["g", "q", "i", "p"]
+  }, {
+    "comment": "delete a character without yanking",
+    "before": ["x"],
+    "after": ["\"", "_", "x"]
+  }, {
+    "comment": "backward delete a character without yanking",
+    "before": ["X"],
+    "after": ["\"", "_", "X"]
   }],
   "vim.otherModesKeyBindingsNonRecursive": [{
     "before": ["Z", "Z"],

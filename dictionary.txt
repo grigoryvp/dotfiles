@@ -162,6 +162,7 @@ dataclass
 dataclasses
 Dawnbreaker
 dbname
+dbt
 debuff
 debuffs
 deepcopy
@@ -203,6 +204,7 @@ DS
 DSA
 DSL
 dsn
+Dualstring
 dunder
 Duolingo
 Durov
@@ -222,6 +224,7 @@ endswith
 env
 epub
 eqmac
+erb
 Errno
 Eruptor
 Esh
@@ -442,6 +445,7 @@ lualatex
 luarocks
 luasocket
 luasodium
+luatex
 Lunaris
 lvl
 Lysah
@@ -547,6 +551,7 @@ orbstack
 oreventhis
 Oriath
 osascript
+osx
 OTP
 overlevel
 pacman
@@ -646,6 +651,7 @@ rubocop
 Runed
 Runefinding
 rustdesk
+rustup
 RVM
 RYB
 Ryzen

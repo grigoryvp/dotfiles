@@ -321,6 +321,7 @@ hextouch
 Hezmin
 Highgate
 highload
+Hinekora
 HMAC
 HN
 Hom
@@ -553,6 +554,7 @@ Oriath
 osascript
 osx
 OTP
+overcap
 overlevel
 pacman
 pagebreak
@@ -567,6 +569,7 @@ pdb
 PDR
 Petrov
 pfctl
+phantomsection
 Phlex
 phpenv
 phpvm
@@ -980,7 +983,9 @@ zeroconf
 Демистификация
 десериализаторов
 десериализация
+Деструктурирование
 деструктурированием
+деструктурировании
 деструктурирования
 дистрибьюцией
 дистрибьюции

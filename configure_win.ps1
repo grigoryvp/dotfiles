@@ -320,6 +320,10 @@ class App {
       $this._installApp("Deskflow.Deskflow");
       # Clipboard manager
       $this._installApp("hluk.CopyQ");
+      # Discord client
+      $this._installApp("Discord.Discord");
+      # EpicGames client
+      $this._installApp("EpicGames.EpicGamesLauncher");
     }
 
     if ($this._isTest) {

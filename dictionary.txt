@@ -80,9 +80,11 @@ bindgen
 BIP
 Bitterbind
 Bjarne
+Blacksteel
 Bladebitter
 Bladecaster
 Bladefall
+Bladeguard
 Blaidd
 Blightheart
 blobstorage
@@ -169,6 +171,7 @@ deepcopy
 defaultdict
 defence
 defences
+Dekharan
 Dementophobia
 densesample
 densesamplenum
@@ -206,6 +209,7 @@ DSL
 dsn
 Dualstring
 dunder
+Dunerunner
 Duolingo
 Durov
 Duskwalk
@@ -213,8 +217,10 @@ DWH
 Eagon
 ebpf
 Eelskin
+Effigial
 Einhar
 Elderslayers
+Elementalist
 elgato
 elif
 Elreon
@@ -245,6 +251,7 @@ EXIF
 expression'ов
 eza
 Ezomyte
+Faridun
 fastapi
 fastfetch
 Fenumal
@@ -282,17 +289,21 @@ Gianna
 Giantslayer
 Gigantification
 Gitbeaker
+Gladiatoral
 Glassdoor
 GNN
 Goathide
 Goatmem
 goatmen
+Goldcast
+Goldworked
 Goroutines
 gpetrov
 gping
 GPT
 Gravebind
 Gravicius
+Greathelm
 Greatwolf
 Greenplum
 grigory
@@ -300,6 +311,7 @@ grigoryvp
 Gruthkul
 GTK
 gunicorn
+Gutspike
 gvl
 Gwennen
 habr
@@ -310,10 +322,13 @@ hasattr
 hashability
 hashlib
 Hateforge
+Hatungo
 HCSSF
 HDR
 headscale
 HEALTHCHECK
+Heartcarver
+Heraldric
 Heretech
 Heterochromia
 hexdigest
@@ -375,6 +390,7 @@ JVM
 Jython
 Kalandra
 Kalguuran
+Kamasan
 Kaom
 karabiner
 Karui
@@ -383,6 +399,7 @@ kde
 KE
 Keepass
 keepassxc
+Keth
 keygen
 keypair
 KEYUP
@@ -408,6 +425,7 @@ Lacewood
 Lantador
 LDR
 leaguestart
+Leatherbound
 Leatherscale
 leetcode
 letsencrypt
@@ -431,6 +449,7 @@ listtimezones
 Litestar
 litestream
 livejournal
+Lizardscale
 LLM
 lmb
 LNGB
@@ -556,6 +575,7 @@ osx
 OTP
 overcap
 overlevel
+packrat
 pacman
 pagebreak
 pageless
@@ -565,6 +585,7 @@ Paradoxica
 pastebin
 pathlib
 Paua
+Pauascale
 pdb
 PDR
 Petrov
@@ -610,6 +631,7 @@ PYTHONMALLOC
 PYTHONPATH
 QNX
 queryset
+Quickslip
 rabbitmq
 Radeon
 Raku
@@ -629,6 +651,7 @@ recents
 recvfrom
 redacter
 Redactions
+Reefsteel
 regen
 Régime
 relogin
@@ -638,6 +661,7 @@ respin
 résumé
 RGB
 Rhoa
+Rhoahide
 Riker
 Rin
 Ringmail
@@ -647,6 +671,7 @@ rmtree
 Rog
 Rogcrafting
 Ronacher
+Rossum
 rowconfigure
 RTT
 RTX
@@ -658,9 +683,11 @@ rustup
 RVM
 RYB
 Ryzen
+Sabatons
 safehouse
 safehouses
 Sambodhi
+Sandsworn
 Sanguimancer
 Sarn
 sauron
@@ -674,6 +701,7 @@ scrollbars
 SDP
 Secutor
 Sekhem
+Sekheman
 sendall
 sendto
 Sephirot
@@ -693,11 +721,14 @@ Siri
 Sirus
 skitterbots
 sklearn
+Skycrown
 skylighting
+Slipstrike
 sln
 smallstrut
 smm
 Smoulderstrike
+SMPP
 SNMP
 SOCK_DGRAM
 Socketable
@@ -709,7 +740,9 @@ Soulbound
 Soulrend
 spacebar
 Spidersilk
+Spikeward
 Spinehail
+Spiritbone
 Sporeguard
 SPX
 sqlalchemy
@@ -724,8 +757,11 @@ starlette
 startswith
 statement'ов
 staticmethod
+Steelmail
+Steelpoint
 Steelscale
 Steelskin
+Steeltoe
 stormblast
 Stormcall
 Stormcaller
@@ -752,6 +788,7 @@ suppresssample
 suppresssamplenum
 Swiftblade
 swiftenv
+Swiftstalker
 syncdb
 Synthesised
 Synthesising
@@ -779,6 +816,7 @@ TG
 Threadripper
 Thunderquiver
 Tibbs
+Tideseer
 tikzpicture
 timelog
 Tk
@@ -793,6 +831,7 @@ tqdm
 traceroute
 Trackpad
 Trapsetter
+Treerunner
 Triggerblades
 Triggerslam
 Trino
@@ -894,6 +933,7 @@ Withertouch
 Wnd
 wol
 WOLED
+Wolfskin
 Wolven
 worktree
 WPF
@@ -949,7 +989,9 @@ zeroconf
 бессерверной
 би
 Бигтех
+блоба
 блобах
+блобов
 блобы
 бо́льшая
 булевого
@@ -1057,6 +1099,7 @@ zeroconf
 Мониторим
 Монти
 моржик
+моржика
 мутабелен
 Мутабельная
 мутабельного
@@ -1069,6 +1112,7 @@ zeroconf
 мутабельных
 Надиктовка
 Найгард
+насмотренность
 неаутентифицированному
 неиспользуемости
 нейминга
@@ -1148,6 +1192,7 @@ zeroconf
 ребаланс
 резидентства
 реселлера
+Рецидивирующий
 Россум
 роутеров
 роутеры
@@ -1175,6 +1220,7 @@ zeroconf
 схлопывать
 таба
 тимлид
+Тиннитус
 типобезопасный
 токенизатор
 токену

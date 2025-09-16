@@ -32,11 +32,12 @@ function App:new()
   -- a battery to discharge from 90 to 89 percents.
   inst.batteryDecHistory = {}
   inst.telegramDockItem = nil
+  inst.mimestreamDockItem = nil
   inst.mailDockItem = nil
+  inst.heyDockItem = nil
   inst.slackDockItem = nil
   inst.discordDockItem = nil
   inst.whatsappDockItem = nil
-  inst.heyDockItem = nil
   inst.notionDockItem = nil
   inst.vkToken = nil
   -- Can't get if not connected to the network.
@@ -179,6 +180,12 @@ function App:startHttpServer()
             return "slack not found in dock", 400, {}
           end
           self.slackDockItem:doAXPress()
+          return "", 200, {}
+        elseif json.app_id == "mail" then
+          if not self.mailDockItem then
+            return "Mail not found in dock", 400, {}
+          end
+          self.mailDockItem:doAXPress()
           return "", 200, {}
         elseif json.app_id == "hey" then
           if not self.heyDockItem then
@@ -878,11 +885,12 @@ function App:onHeartbeat()
   end
 
   if not self.telegramDockItem
+     or not self.mimestreamDockItem
      or not self.mailDockItem
+     or not self.heyDockItem
      or not self.slackDockItem
      or not self.discordDockItem
      or not self.whatsappDockItem
-     or not self.heyDockItem
      or not self.notionDockItem then
     -- Do not check too often, CPU expensive
     if isBigTimeout then
@@ -891,7 +899,13 @@ function App:onHeartbeat()
           self.telegramDockItem = item
         end
         if item.AXTitle == "Mimestream" then
+          self.mimestreamDockItem = item
+        end
+        if item.AXTitle == "Mail" then
           self.mailDockItem = item
+        end
+        if item.AXTitle == "HEY" then
+          self.heyDockItem = item
         end
         if item.AXTitle == "Slack" then
           self.slackDockItem = item
@@ -901,9 +915,6 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "WhatsApp" then
           self.whatsappDockItem = item
-        end
-        if item.AXTitle == "HEY" then
-          self.heyDockItem = item
         end
         if item.AXTitle == "Notion" then
           self.notionDockItem = item
@@ -969,8 +980,14 @@ function App:onHeartbeat()
   if self.telegramDockItem and self.telegramDockItem.AXStatusLabel then
     table.insert(notifications, "T")
   end
-  if self.mailDockItem and self.mailDockItem.AXStatusLabel then
+  if self.mimestreamDockItem and self.mimestreamDockItem.AXStatusLabel then
     table.insert(notifications, "E")
+  end
+  if self.mailDockItem and self.mailDockItem.AXStatusLabel then
+    table.insert(notifications, "e")
+  end
+  if self.heyDockItem and self.heyDockItem.AXStatusLabel then
+    table.insert(notifications, "H")
   end
   if self.slackDockItem and self.slackDockItem.AXStatusLabel then
     table.insert(notifications, "S")
@@ -983,9 +1000,6 @@ function App:onHeartbeat()
   end
   if self.whatsappDockItem and self.whatsappDockItem.AXStatusLabel then
     table.insert(notifications, "W")
-  end
-  if self.heyDockItem and self.heyDockItem.AXStatusLabel then
-    table.insert(notifications, "H")
   end
   if self.notionDockItem and self.notionDockItem.AXStatusLabel then
     table.insert(notifications, "N")

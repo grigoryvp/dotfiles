@@ -1788,9 +1788,9 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-m2-8 for HEY.com",
+                                "description": "m1-m2-8 for Mail app",
                                 "from": { "key_code": "8" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"hey\"}' 2>/dev/null" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"mail\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

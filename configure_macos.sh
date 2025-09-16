@@ -75,7 +75,7 @@ brew install libyaml
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install --cask mpv docker tailscale 
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting copyq
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv rv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting copyq
 
 # Need to check for network issues
 # brew install orbstack
@@ -112,14 +112,6 @@ fi
 # Input method name lookup for debug purpose
 curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 
-if [ -e ~/.rbenv ]; then
-  echo "rbenv already installed"
-else
-  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-  git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-  git clone https://github.com/rkh/rbenv-update ~/.rbenv/plugins/rbenv-update
-fi
-
 if [ -e ~/.nodenv ]; then
   echo "nodenv already installed"
 else
@@ -140,13 +132,10 @@ fi
 # git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
 # export PATH="$HOME/.phpenv/bin:$PATH"
 
-export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.nodenv/bin:$PATH"
 export PATH="$HOME/.swiftenv/bin:$PATH"
 uv python install 3.13
-# Answer "no" to "already installed, continue?"
-echo "n" | rbenv install 3.4.1
-rbenv global 3.4.1
+rv ruby install 3.4.5
 # Answer "no" to "already installed, continue?"
 echo "n" | nodenv install 23.7.0
 nodenv global 23.7.0

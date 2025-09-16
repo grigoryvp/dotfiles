@@ -14,6 +14,8 @@ __setattr__
 __setitem__
 __subclasshook__
 __truediv__
+.railsrc
+á
 Acclimatisation
 Accor
 Achmiz
@@ -46,6 +48,7 @@ Archdemon
 Archmage
 Armin
 Asenath
+ASF
 asg
 asgi
 Astragali
@@ -96,6 +99,7 @@ breachstone
 Brinerot
 Bronzescale
 btog
+bunjs
 Bunq
 Caeserius
 Cameria
@@ -132,6 +136,7 @@ clr
 cls
 CMY
 CMYK
+codepoints
 codesign
 cognitiо
 colorlinks
@@ -155,7 +160,9 @@ ctypes
 cui
 cwd
 Cython
+Dagster
 Dannig
+Daresso
 darknet
 Darksteel
 Darktongue
@@ -179,6 +186,7 @@ Deskflow
 desktopservices
 desync
 df
+DHH
 Dialla
 dind
 discriminare
@@ -256,6 +264,7 @@ fastapi
 fastfetch
 Fenumal
 ffi
+fidonet
 Firesong
 Fishscale
 Flamebolt
@@ -277,6 +286,7 @@ Gbit
 GDI
 Gemcutter
 Gemling
+getaddrinfo
 getattr
 getcwd
 getencoding
@@ -323,6 +333,7 @@ hashability
 hashlib
 Hateforge
 Hatungo
+HCP
 HCSSF
 HDR
 headscale
@@ -366,6 +377,7 @@ instancecheck
 Interpretability
 invis
 ioc
+IPC
 IPFS
 IPX
 ipynb
@@ -379,6 +391,8 @@ itertools
 Izaro
 jailbreaking
 JDBC
+JDK
+JEP
 Jewellery
 JIT
 Johan
@@ -472,6 +486,7 @@ Lysah
 Mageblood
 Mahuxotl
 Malachai
+Maligaro
 malloc
 manifestless
 Manyshot
@@ -491,6 +506,7 @@ memoizations
 memray
 Merveil
 MESI
+mesos
 metaclass
 metaclasses
 metainformation
@@ -511,9 +527,11 @@ MRO
 MTU
 MTX
 mul
+multibyte
 MVC
 MVCC
 mynamespace
+mypy
 mysuppress
 nacl
 nanodjango
@@ -526,6 +544,7 @@ netbird
 netrc
 nextjs
 nic
+nifi
 Nightweave
 Nightwind
 Niko
@@ -629,6 +648,7 @@ PYTHONDONTWRITEBYTECODE
 pythonic
 PYTHONMALLOC
 PYTHONPATH
+Pytype
 QNX
 queryset
 Quickslip
@@ -803,12 +823,14 @@ Tarantool
 taskkill
 tcbox
 techdocs
+techempower
 Teradata
 textbackslash
 textblock
 textcolor
 textquotesingle
 textwidth
+textwrap
 TF-IDF
 TFS
 tft
@@ -841,6 +863,7 @@ tsc
 TSMC
 ttl
 Tujen
+Tukohama
 Tul
 Tulfall
 Tullina
@@ -856,6 +879,7 @@ uncollegiate
 underlinecolor
 undropped
 unhashable
+unicodedata
 unpackings
 Unraisable
 unsequenced
@@ -993,6 +1017,7 @@ zeroconf
 блобах
 блобов
 блобы
+Бобук
 бо́льшая
 булевого
 бэкенде
@@ -1031,6 +1056,7 @@ zeroconf
 деструктурирования
 дистрибьюцией
 дистрибьюции
+Длинношеев
 донастроить
 донастройки
 еtcd
@@ -1235,6 +1261,7 @@ zeroconf
 Фаликман
 фан
 фейковым
+Фидонет
 фикстур
 фикстурами
 фикстуру
@@ -1255,9 +1282,12 @@ zeroconf
 хэндлу
 Цеттелькастен
 человекочитаемые
+шаблонизатором
 Шард
 шардирования
+шестнадцатиричном
 шорткатами
+ы́
 эксабайтами
 электрощитке
 эмбеддинги

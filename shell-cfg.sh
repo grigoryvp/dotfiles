@@ -463,12 +463,6 @@ if [ -d $HOME/.rye ]; then
   source "$HOME/.rye/env"
 fi
 
-##  Load rbenv, if installed
-if [ -d $HOME/.rbenv ]; then
-  start_path_with "$HOME/.rbenv/bin"
-  start_path_with "$HOME/.rbenv/shims"
-fi
-
 ##  Load nodenv, if installed
 if [ -d $HOME/.nodenv ]; then
   start_path_with "$HOME/.nodenv/bin"

@@ -35,6 +35,7 @@ Allflame
 Amanamu
 AMQP
 anki
+ANTLR
 anychar
 aoe
 AOT
@@ -297,6 +298,7 @@ Gevent
 GG
 Gianna
 Giantslayer
+gigaflop
 Gigantification
 Gitbeaker
 Gladiatoral
@@ -448,6 +450,7 @@ LFE
 LFW
 LGA
 lib-dynload
+libadwaita
 libbz
 libexec
 libncursesw
@@ -542,6 +545,7 @@ nerfed
 netbeans
 netbird
 netrc
+neuroenergetics
 nextjs
 nic
 nifi
@@ -661,10 +665,12 @@ Rarible
 RDBMS
 RDNA
 RDTSC
+reactjs
 readlink
 readouterr
 realpython
 Reanimator
+reasonml
 Rebar
 rebeccapurple
 recents
@@ -698,6 +704,7 @@ RTX
 rubocop
 Runed
 Runefinding
+runlevel
 rustdesk
 rustup
 RVM
@@ -764,6 +771,7 @@ Spikeward
 Spinehail
 Spiritbone
 Sporeguard
+Sprache
 SPX
 sqlalchemy
 sre
@@ -927,6 +935,7 @@ VM
 Voidforge
 voidstone
 voidstones
+Voll
 Voltaxic
 Vorici
 voximplant
@@ -1024,6 +1033,8 @@ zeroconf
 валидировать
 векторизация
 вендоров
+видеопроигрывателя
+виртуалках
 вызываемости
 вызываемость
 высоконагруженных
@@ -1106,6 +1117,7 @@ zeroconf
 Кристен
 Кэй
 легаси
+лексеров
 Лема
 макбуке
 Маккарти
@@ -1172,6 +1184,8 @@ zeroconf
 пайтон
 пайтоне
 Парсер
+парсерах
+парсеры
 переиспользовали
 переиспользован
 переиспользование
@@ -1241,6 +1255,7 @@ zeroconf
 сорцами
 спеллчекеров
 стагнируют
+стейблкойн
 Страуструп
 Страуструпа
 схлопывать

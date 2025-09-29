@@ -173,6 +173,7 @@ dataclasses
 Dawnbreaker
 dbname
 dbt
+DDL
 debuff
 debuffs
 deepcopy
@@ -247,6 +248,7 @@ esim
 essencecraft
 essencecrafted
 essencecrafting
+ETF
 etl
 etog
 evaluate'ится
@@ -469,6 +471,7 @@ livejournal
 Lizardscale
 LLM
 lmb
+lms
 LNGB
 Lockpicking
 loglevel
@@ -868,6 +871,7 @@ Trino
 triphosphate
 truecrypt
 tsc
+tsidp
 TSMC
 ttl
 Tujen
@@ -1022,6 +1026,7 @@ zeroconf
 бессерверной
 би
 Бигтех
+благославлен
 блоба
 блобах
 блобов

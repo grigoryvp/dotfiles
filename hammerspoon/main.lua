@@ -1112,9 +1112,9 @@ function App:onHeartbeat()
   self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
   self.menuItem:addSpacer(4)
   if hs.battery.isCharging() or hs.battery.isCharged() then
-    self.menuItem:addText("🔋")
+    self.menuItem:addText("🔌")
   else
-    self.menuItem:addText("🪫")
+    self.menuItem:addText("🔋")
   end
   self.menuItem:addSpacer(4)
   -- Fixed width font size for 3 characters so "1" and "100" take same space

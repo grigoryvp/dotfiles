@@ -1113,6 +1113,8 @@ function App:onHeartbeat()
   self.menuItem:addSpacer(4)
   if hs.battery.isCharging() or hs.battery.isCharged() then
     self.menuItem:addText("🔌")
+  elseif battery <= 20 then
+    self.menuItem:addText("🪫")
   else
     self.menuItem:addText("🔋")
   end

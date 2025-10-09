@@ -256,6 +256,7 @@ evaluate'ить
 évaluation
 eventtap
 evp
+evrone
 EVT
 Excalidraw
 EXIF
@@ -331,6 +332,7 @@ Gwennen
 habr
 Haemophilia
 hammerspoon
+hanami
 Harpyskin
 hasattr
 hashability
@@ -399,6 +401,7 @@ JDK
 JEP
 Jewellery
 JIT
+JNI
 Johan
 Jorgin
 JPA
@@ -415,6 +418,7 @@ Karui
 kawaii
 kde
 KE
+KEEPALIVE
 Keepass
 keepassxc
 Keth
@@ -440,6 +444,7 @@ KVM
 kwargs
 kyc
 Lacewood
+langchain
 Lantador
 LDR
 leaguestart
@@ -705,6 +710,7 @@ rowconfigure
 RTT
 RTX
 rubocop
+rubygems
 Runed
 Runefinding
 runlevel
@@ -835,6 +841,7 @@ taskkill
 tcbox
 techdocs
 techempower
+templatelib
 Teradata
 textbackslash
 textblock
@@ -846,6 +853,7 @@ TF-IDF
 TFS
 tft
 TG
+Thinkpad
 Threadripper
 Thunderquiver
 Tibbs
@@ -1034,6 +1042,7 @@ zeroconf
 Бобук
 бо́льшая
 булевого
+бэкенд
 бэкенде
 валидировать
 векторизация
@@ -1063,6 +1072,8 @@ zeroconf
 дандер-функций
 двумерны
 де́бетом
+дедлокам
+дедлоки
 Демистификация
 десериализаторов
 десериализация
@@ -1087,6 +1098,7 @@ zeroconf
 иммутабельные
 иммутабельными
 инвайта
+инвалидировать
 инстанс
 инстансами
 инстансы
@@ -1121,6 +1133,7 @@ zeroconf
 Кре́дит
 Кристен
 Кэй
+ЛВР
 легаси
 лексеров
 Лема
@@ -1131,6 +1144,7 @@ zeroconf
 Мейлбоксы
 мема
 мемов
+метаклассы
 метапрограммирование
 метапрограммированием
 метапрограммировании
@@ -1218,10 +1232,13 @@ zeroconf
 петабайт
 петабайты
 пиксельной
+пинги
+пингов
 погуглить
 полуструктурированных
 попинговать
 порейзить
+потокобезопасный
 программерских
 промпт
 промпту
@@ -1266,11 +1283,14 @@ zeroconf
 Страуструпа
 схлопывать
 таба
+тестировщика
 тимлид
 Тиннитус
 типобезопасный
 токенизатор
+токеном
 токену
+трансформера
 тредами
 тредпулом
 трейсы
@@ -1312,3 +1332,4 @@ zeroconf
 эксабайтами
 электрощитке
 эмбеддинги
+юнит

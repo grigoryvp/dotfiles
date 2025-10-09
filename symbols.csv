@@ -30,6 +30,13 @@
 ↑,up
 ↓,down
 
+# Directions
+↔️,sideways
+⬅️,west
+➡️,east
+⬆️,north
+⬇️,south
+
 # Tags
 教,speaker
 技,skilled
@@ -73,6 +80,7 @@
 去,past
 完,perfect
 多,plural
+反,antonym
 
 # Formatting
 🔘,queue
@@ -88,6 +96,9 @@
 8️⃣,8
 9️⃣,9
 🆕,new
+🆗,ok
+✅,done
+❌,miss
 🔴,red
 🟢,green
 🔵,blue

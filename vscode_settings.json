@@ -139,7 +139,11 @@
     ],
     "env.osx": {
       "FIG_NEW_SESSION": "1"
-    }
+    },
+    // Don't display sticky scroll atop of the terminal since terminal
+    // vertical space is limited and such are is 2-3 lines, completely
+    // obscuring actual output
+    "stickyScroll.enabled": false
   },
   "window.menuBarVisibility": "toggle",
   "window.openFilesInNewWindow": "off",
@@ -216,8 +220,8 @@
   "[dart]": {
     "editor.formatOnSave": false,
     "editor.formatOnType": false,
-    "editor.suggestSelection": "first",
     "editor.tabCompletion": "onlySnippets",
+    "editor.suggestSelection": "first",
     "editor.wordBasedSuggestions": "off"
   },
   "[typescriptreact]": {
@@ -246,7 +250,9 @@
     "minWordLength": 2,
     "language": "en,ru",
     "flagWords": [
-      "аттрибут"
+      "аттрибут",
+      "аттрибута",
+      "аттрибуте"
     ],
     "ignoreRegExpList": [
       "\\\\x[0-9a-fA-F]{2}"

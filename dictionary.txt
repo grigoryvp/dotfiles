@@ -290,6 +290,7 @@ Gbit
 GDI
 Gemcutter
 Gemling
+geospatial
 getaddrinfo
 getattr
 getcwd
@@ -444,6 +445,7 @@ KVM
 kwargs
 kyc
 Lacewood
+Lakehouse
 langchain
 Lantador
 LDR

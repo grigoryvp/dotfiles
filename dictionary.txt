@@ -62,6 +62,7 @@ atexit
 Atoi
 Atziri
 Aul
+autofocus
 autohide
 autohotkey
 autoreplace
@@ -695,6 +696,7 @@ remappable
 respawn
 respin
 résumé
+retryable
 RGB
 Rhoa
 Rhoahide
@@ -1008,6 +1010,7 @@ Yudkowsky
 Zab
 Zana
 zeroconf
+Zod
 автовыбора
 автоконверсии
 автосохранение

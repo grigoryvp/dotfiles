@@ -96,6 +96,7 @@ blobstorage
 Bloodletter
 bonechill
 Borland
+bottlenecked
 BPF
 breachstone
 Brinerot
@@ -131,6 +132,7 @@ clangd
 classoption
 Classpath
 Clayshaper
+cleandoc
 cli
 clickhouse
 Cloudwhisper
@@ -151,6 +153,7 @@ contextmanager
 convolutional
 cookiecutter
 cooldown
+coreutils
 cpython
 craftable
 Craicic
@@ -288,7 +291,9 @@ FX
 gamesample
 gamesamplenum
 Gbit
+gdb
 GDI
+Geekbench
 Gemcutter
 Gemling
 geospatial
@@ -368,6 +373,7 @@ HTAP
 htmx
 httpx
 Hydrascale
+hyperliquid
 Hyrri
 idir
 idl
@@ -503,6 +509,7 @@ Malachai
 Maligaro
 malloc
 manifestless
+mant_dig
 Manyshot
 Maraketh
 marginhandwrite
@@ -527,10 +534,13 @@ metainformation
 Metalsmith
 microcontroller
 mimestream
+mimetypes
 mineffect
 miniboss
 minipage
 Miscreation
+mkdocs
+mkdocstrings
 Mojolicious
 Moosh
 moscowpythonconf
@@ -586,6 +596,7 @@ nuxtjs
 Nygaard
 OCI
 octothorp
+offchain
 offlevel
 OFS
 okular
@@ -634,6 +645,7 @@ pipx
 pkey
 pmbok
 Polaric
+popd
 Popen
 ppp
 pprint
@@ -642,6 +654,8 @@ Progenesis
 programdata
 psql
 Psyco
+Ptyxis
+pushd
 Putembo
 pwsh
 pybook
@@ -710,6 +724,7 @@ Rog
 Rogcrafting
 Ronacher
 Rossum
+roundoff
 rowconfigure
 RTT
 RTX
@@ -756,6 +771,7 @@ shell'ов
 Shieldbearer
 shutil
 sigcheck
+significand
 Simula
 Siri
 Sirus
@@ -846,6 +862,7 @@ tcbox
 techdocs
 techempower
 templatelib
+TEP
 Teradata
 textbackslash
 textblock
@@ -872,6 +889,7 @@ tomllib
 TONCOIN
 Tonkeeper
 TOTP
+TPEP
 tqdm
 traceroute
 Trackpad
@@ -917,6 +935,7 @@ usr
 utf-8
 Utzaal
 Uul-Netol
+uutils
 uvicorn
 uvloop
 uvx
@@ -985,6 +1004,7 @@ WOLED
 Wolfskin
 Wolven
 worktree
+wox
 WPF
 wsgi
 WSL
@@ -1014,6 +1034,7 @@ Zod
 автовыбора
 автоконверсии
 автосохранение
+автотестов
 айти
 айтишная
 айтишного
@@ -1075,6 +1096,8 @@ Zod
 дандер-методов
 дандер-методы
 дандер-функций
+датацентре
+датацентров
 двумерны
 де́бетом
 дедлокам
@@ -1093,6 +1116,7 @@ Zod
 донастройки
 еtcd
 журналирования
+заблюрить
 заморачивались
 Значек
 Иммутабельная
@@ -1193,6 +1217,7 @@ Zod
 неоптимальна
 нишевых
 нод
+нодам
 нодах
 ноде
 нодой
@@ -1338,3 +1363,4 @@ Zod
 электрощитке
 эмбеддинги
 юнит
+gh-deploy

@@ -43,6 +43,7 @@ apk
 APNG
 appengine
 applescript
+approle
 Arakaali
 Arcanist
 Archdemon
@@ -311,6 +312,7 @@ Giantslayer
 gigaflop
 Gigantification
 Gitbeaker
+glab
 Gladiatoral
 Glassdoor
 GNN
@@ -407,6 +409,7 @@ jailbreaking
 JDBC
 JDK
 JEP
+jestfile
 Jewellery
 JIT
 JNI

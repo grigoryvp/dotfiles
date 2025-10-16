@@ -228,6 +228,7 @@ fi
 ln -fs ~/dotfiles/vscode_keybindings.json "$VSCODE_DIR/keybindings.json"
 ln -fs ~/dotfiles/vscode_settings.json "$VSCODE_DIR/settings.json"
 ln -fs ~/dotfiles/vscode_tasks.json "$VSCODE_DIR/tasks.json"
+rm -rf "$VSCODE_DIR/snippets"
 ln -fs ~/dotfiles/vscode_snippets "$VSCODE_DIR/snippets"
 
 mkdir -p ~/.config/mpv

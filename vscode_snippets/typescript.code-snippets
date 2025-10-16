@@ -1,0 +1,13 @@
+{
+  "ts.jest.file": {
+    "scope": "typescript,javascript",
+    "prefix": "_jestfile",
+    "body": [
+      "describe('something', () => {",
+      "  it('should do something', async () => {",
+      "    expect(true).toBe(true)",
+      "  });",
+      "});"
+    ]
+  }
+}

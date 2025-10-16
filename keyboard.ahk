@@ -1598,8 +1598,8 @@ addRemap("-", ["m2"], ["send", "—"])
 addRemap("vkdc", ["m1", "ctrl"], "tab", ["shift"])
 ;;  'm1-s-backslash' for notifications.
 addRemap("vkdc", ["m1", "shift"], "a", ["win"])
-;;  'm1-backslash' for launchpad.
-addRemap("vkdc", ["m1"], "lwin")
+;;  'm1-backslash' for wox launcher
+addRemap("vkdc", ["m1"], "space", ["alt"])
 ;;  'm2-backslash' for clear formatting in Google Spreadsheet
 addRemap("vkdc", ["m2"], "vkdc", ["ctrl"])
 ;;  'm3-backslash' for screen lock

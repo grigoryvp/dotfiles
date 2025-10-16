@@ -174,6 +174,7 @@ class App {
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
     $this._installApp("windhawk");
+    $this._installApp("Wox.Wox");
  
     if (-not $this._isPublic) {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
@@ -318,8 +319,6 @@ class App {
       $this._installApp("XPFCS9QJBKTHVZ");
       # Remote keyboard and mouse
       $this._installApp("Deskflow.Deskflow");
-      # Clipboard manager
-      $this._installApp("hluk.CopyQ");
       # Discord client
       $this._installApp("Discord.Discord");
       # EpicGames client

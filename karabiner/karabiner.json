@@ -1934,9 +1934,14 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-backslash for launchpad",
+                                "description": "m1-backslash for wox",
                                 "from": { "key_code": "backslash" },
-                                "to": [{ "key_code": "launchpad" }],
+                                "to": [
+                                    {
+                                        "key_code": "spacebar",
+                                        "modifiers": ["command"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {

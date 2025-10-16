@@ -67,6 +67,8 @@ sudo defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier
 brew update --verbose
 # For Deskflow
 brew tap deskflow/homebrew-tap
+# For Wox launcher
+brew tap wox-launcher/wox
 # For Python 3.10.0 on Apple Silicon
 brew install readline openssl
 # For Ruby 3.2
@@ -75,7 +77,7 @@ brew install libyaml
 brew install --build-from-source libgpg-error
 # Install into applications, not as a cli
 brew install --cask mpv docker tailscale 
-brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv rv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting copyq
+brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv rv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting wox
 
 # Need to check for network issues
 # brew install orbstack

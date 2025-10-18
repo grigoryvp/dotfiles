@@ -59,6 +59,7 @@ Astromancer
 Asus
 asynccontextmanager
 asyncio
+asyncpg
 atexit
 Atoi
 Atziri
@@ -176,6 +177,7 @@ databasehash
 dataclass
 dataclasses
 Dawnbreaker
+DBAPI
 dbname
 dbt
 DDL
@@ -307,6 +309,7 @@ getrefcount
 getsizeof
 Gevent
 GG
+gh-deploy
 Gianna
 Giantslayer
 gigaflop
@@ -400,6 +403,7 @@ ipynb
 ipython
 Ironscale
 ISA
+isclose
 isinstance
 Isla
 iterm
@@ -884,6 +888,7 @@ Tibbs
 Tideseer
 tikzpicture
 timelog
+TIOBE
 Tk
 tkinter
 toc
@@ -1366,4 +1371,3 @@ Zod
 электрощитке
 эмбеддинги
 юнит
-gh-deploy

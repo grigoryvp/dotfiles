@@ -174,7 +174,9 @@ class App {
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
     $this._installApp("windhawk");
-    $this._installApp("Wox.Wox");
+    # TODO: install wox 2.0.0-beta5
+    # ! Seems it conflicts with AutoHotkey, it should be started AFTER wox
+    # $this._installApp("Wox.Wox");  # this installs wox 1.x
  
     if (-not $this._isPublic) {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));

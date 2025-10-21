@@ -273,6 +273,7 @@ EVT
 Excalidraw
 EXIF
 expression'ов
+expressjs
 eza
 Ezomyte
 Faridun

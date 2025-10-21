@@ -75,7 +75,8 @@ pip install --upgrade pip
 # In "Settings/Keyboard/Shortcuts":
 # * Add "⇧⌘\" for "Mission Control/Notification Center"
 # * Disable input source shortcuts in "Input sources"
-# * Remove "⇧⌘/" app shortcut from "All Applications"
+# * Disable Spotlight hotkeys
+# * Remove "⇧⌘/" app shortcut from "App Shortcuts"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut
 # * Add "⌥⇧⌘V" to "Paste and Match Style" for "Telegram" app shortcut
 # * Enable F-keys in "Function Keys"

@@ -14,6 +14,7 @@ __setattr__
 __setitem__
 __subclasshook__
 __truediv__
+-ов
 .railsrc
 á
 Acclimatisation
@@ -70,6 +71,7 @@ autohotkey
 autoreplace
 Avarius
 Aventail
+AVF
 awk
 Aylo
 Azyran
@@ -79,6 +81,7 @@ Barbute
 Basemetal
 Beastcrafting
 Beelink
+Bellcore
 bem
 benchcraft
 benchcrafted
@@ -177,6 +180,7 @@ databasehash
 dataclass
 dataclasses
 Dawnbreaker
+DBA
 DBAPI
 dbname
 dbt
@@ -184,6 +188,7 @@ DDL
 debuff
 debuffs
 deepcopy
+deeplink
 defaultdict
 defence
 defences
@@ -273,6 +278,7 @@ Ezomyte
 Faridun
 fastapi
 fastfetch
+FDBS
 Fenumal
 ffi
 fidonet
@@ -281,6 +287,7 @@ Fishscale
 Flamebolt
 Flamehand
 Flamequiver
+Flink
 fn
 Forkshot
 Fossilised
@@ -353,6 +360,7 @@ Hateforge
 Hatungo
 HCP
 HCSSF
+HDFS
 HDR
 headscale
 HEALTHCHECK
@@ -388,9 +396,11 @@ ilvl
 IMG
 implicits
 impnattypo
+incapsulate
 indice
 Indigon
 Infohazards
+Informix
 Inlines
 instancecheck
 Interpretability
@@ -410,6 +420,8 @@ iterm
 itertools
 Izaro
 jailbreaking
+javac
+javap
 JDBC
 JDK
 JEP
@@ -657,6 +669,7 @@ Popen
 ppp
 pprint
 prestart
+println
 Progenesis
 programdata
 psql
@@ -775,6 +788,7 @@ setuptools
 Shakari
 Shattersword
 shell'ов
+Sheth
 Shieldbearer
 shutil
 sigcheck
@@ -853,6 +867,7 @@ suppresssamplenum
 Swiftblade
 swiftenv
 Swiftstalker
+Sybase
 syncdb
 Synthesised
 Synthesising
@@ -887,6 +902,7 @@ Thunderquiver
 Tibbs
 Tideseer
 tikzpicture
+Timecode
 timelog
 TIOBE
 Tk
@@ -1117,6 +1133,7 @@ Zod
 деструктурированием
 деструктурировании
 деструктурирования
+джойнить
 дистрибьюцией
 дистрибьюции
 Длинношеев
@@ -1152,6 +1169,8 @@ Zod
 квалиа
 кликает
 кликаете
+кликстрим
+кликхаус
 ключем
 когнитома
 коммита
@@ -1220,6 +1239,7 @@ Zod
 неймспейсом
 неймспейсы
 Нейродизайн
+нейрональные
 нейросетей
 нейросетям
 неоптимальна
@@ -1244,6 +1264,7 @@ Zod
 Парсер
 парсерах
 парсеры
+пентеста
 переиспользовали
 переиспользован
 переиспользование
@@ -1273,6 +1294,7 @@ Zod
 пинги
 пингов
 погуглить
+поджойнить
 полуструктурированных
 попинговать
 порейзить
@@ -1297,6 +1319,7 @@ Zod
 Россум
 роутеров
 роутеры
+РСУБД
 Сocoa
 Сапольски
 Сбере
@@ -1324,6 +1347,7 @@ Zod
 тестировщика
 тимлид
 Тиннитус
+Типобезопасность
 типобезопасный
 токенизатор
 токеном
@@ -1339,6 +1363,7 @@ Zod
 файберы
 Фаликман
 фан
+федеративность
 фейковым
 Фидонет
 фикстур
@@ -1354,12 +1379,15 @@ Zod
 фронтенд
 Хабра
 хачапури
+Хейлсберг
 хендл
 Хидо
 Хоара
 хостить
 хэндлу
 Цеттелькастен
+чанк
+чанки
 человекочитаемые
 шаблонизатором
 Шард

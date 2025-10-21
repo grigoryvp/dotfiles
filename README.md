@@ -50,7 +50,7 @@ pip install --upgrade pip
 # Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # In "Settings/General"
-# * Add noTunes.app, hammerspoon to "Login Items"
+# * Add noTunes.app, hammerspoon, wox to "Login Items"
 # In "Settings/Accessibility"
 # * Disable "Siri/Settings/Intelligence"
 # In "Settings/Battery":
@@ -66,6 +66,7 @@ pip install --upgrade pip
 # * Mute interface sound effects
 # In "Settings/Privacy & Security"
 # * Add iTerm2 to "App Management" (for brew to update apps)
+# * Disable "Apple Intelligence Report"
 # In "Settings/Lock Screen":
 # * Require password immediately after screen is locked
 # In "Settings/Keyboard":

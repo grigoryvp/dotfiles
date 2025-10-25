@@ -736,6 +736,7 @@ respawn
 respin
 résumé
 retryable
+returncode
 RGB
 Rhoa
 Rhoahide
@@ -790,6 +791,7 @@ setdefault
 setrestartfreeze
 settimezone
 setuptools
+setx
 Shakari
 Shattersword
 shell'ов

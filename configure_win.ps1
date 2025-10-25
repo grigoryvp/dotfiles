@@ -208,6 +208,7 @@ class App {
     $this._registerAutohotkeyStartup();
     # TODO: wait for BatteryInfoView install
     # $this._registerBatteryInfoViewStartup();
+    # TODO: add wox startup BEFORE autohotkey
 
     # Interactive
     $this._mapKeyboard();

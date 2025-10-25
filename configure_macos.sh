@@ -1,3 +1,7 @@
+test() {
+  echo "Testing configuration script..."
+}
+
 configure() {
   if ! [ -e ~/.ssh/id_rsa.pub ]; then
     ssh-keygen -t rsa -f "$HOME/.ssh/id_rsa" -N ""
@@ -332,4 +336,8 @@ configure() {
   killall SystemUIServer
 }
 
-configure
+if [ "$1" = "--test" ]; then
+  test
+else
+  configure
+fi

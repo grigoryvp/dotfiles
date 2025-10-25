@@ -282,6 +282,7 @@ fastfetch
 FDBS
 Fenumal
 ffi
+fi
 fidonet
 Firesong
 Fishscale

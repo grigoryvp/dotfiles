@@ -9,89 +9,164 @@
       "typescriptreact"
     ]
   },
-
   "vim.leader": "<space>",
   "vim.ignorecase": true,
   "vim.textwidth": 78,
-  "vim.insertModeKeyBindings": [{
-    "before": ["<c-v>"],
-    "after": [],
-    "commands": [{
-        "command": "editor.action.clipboardPasteAction",
-        "args": []
-    }]
-  }],
-  "vim.visualModeKeyBindings": [{
-    "before": ["p"],
-    "after": ["P"]
-  }],
-  "vim.normalModeKeyBindingsNonRecursive": [{
-    "before": ["n"],
-    "after": ["n", "z", "z"]
-  }, {
-    "before": ["N"],
-    "after": ["N", "z", "z"]
-  }, {
-    "before": ["Q"],
-    "after": ["g", "q", "i", "p"]
-  }, {
-    "comment": "delete a character without yanking",
-    "before": ["x"],
-    "after": ["\"", "_", "x"]
-  }, {
-    "comment": "backward delete a character without yanking",
-    "before": ["X"],
-    "after": ["\"", "_", "X"]
-  }],
-  "vim.otherModesKeyBindingsNonRecursive": [{
-    "before": ["Z", "Z"],
-    "after": [],
-    "commands": [{
-      "command": "workbench.action.closeActiveEditor",
-      "args": []
-    }]
-  },
-  {
-    "before": ["<c-o>"],
-    "after": [],
-    "commands": [{
-        "command": "workbench.action.files.openFile",
-        "args": []
-    }]
-  },
-  {
-    "before": ["<c-w>"],
-    "after": [],
-    "commands": [{
-        "command": "workbench.action.closeActiveEditor",
-        "args": []
-    }]
-  },
-  {
-    "before": ["<c-]>"],
-    "after": [],
-    "commands": [{
-        "command": "editor.action.openLink",
-        "args": []
-    }]
-  },
-  {
-    "before": ["<c-[>"],
-    "after": [],
-    "commands": [{
-        "command": "workbench.action.navigateBack",
-        "args": []
-    }]
-  },
-  {
-    "before": ["<leader>", "p"],
-    "after": [],
-    "commands": [{
-        "command": "workbench.action.showCommandPalette",
-        "args": []
-    }]
-  }],
-
+  "vim.insertModeKeyBindings": [
+    {
+      "before": [
+        "<c-v>"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "editor.action.clipboardPasteAction",
+          "args": []
+        }
+      ]
+    }
+  ],
+  "vim.visualModeKeyBindings": [
+    {
+      "before": [
+        "p"
+      ],
+      "after": [
+        "P"
+      ]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "n"
+      ],
+      "after": [
+        "n",
+        "z",
+        "z"
+      ]
+    },
+    {
+      "before": [
+        "N"
+      ],
+      "after": [
+        "N",
+        "z",
+        "z"
+      ]
+    },
+    {
+      "before": [
+        "Q"
+      ],
+      "after": [
+        "g",
+        "q",
+        "i",
+        "p"
+      ]
+    },
+    {
+      "comment": "delete a character without yanking",
+      "before": [
+        "x"
+      ],
+      "after": [
+        "\"",
+        "_",
+        "x"
+      ]
+    },
+    {
+      "comment": "backward delete a character without yanking",
+      "before": [
+        "X"
+      ],
+      "after": [
+        "\"",
+        "_",
+        "X"
+      ]
+    }
+  ],
+  "vim.otherModesKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "Z",
+        "Z"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.closeActiveEditor",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "<c-o>"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.files.openFile",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "<c-w>"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.closeActiveEditor",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "<c-]>"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "editor.action.openLink",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "<c-[>"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.navigateBack",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "p"
+      ],
+      "after": [],
+      "commands": [
+        {
+          "command": "workbench.action.showCommandPalette",
+          "args": []
+        }
+      ]
+    }
+  ],
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
@@ -109,7 +184,9 @@
   "editor.guides.indentation": false,
   "editor.guides.bracketPairs": true,
   "editor.renderLineHighlight": "line",
-  "editor.rulers": [78],
+  "editor.rulers": [
+    78
+  ],
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
   "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
@@ -177,8 +254,7 @@
     "*.ipynb": "jupyter-notebook"
   },
   "workbench.iconTheme": "vscode-great-icons",
-  "workbench.colorCustomizations": {
-  },
+  "workbench.colorCustomizations": {},
   "files": {
     "eol": "\n",
     "associations": {
@@ -204,7 +280,6 @@
   "Lua.telemetry.enable": false,
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
   "powershell.integratedConsole.showOnStartup": false,
-
   "[python]": {
     "editor.tabSize": 4
   },
@@ -212,8 +287,7 @@
     "editor.formatOnSave": false,
     "editor.defaultFormatter": "Shopify.ruby-lsp"
   },
-  "[javascript]": {
-  },
+  "[javascript]": {},
   "[rust]": {
     "editor.tabSize": 4
   },
@@ -230,6 +304,9 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
   "git.openRepositoryInParentFolders": "never",
   "AutoHotkey2": {
     "InterpreterPath": "AutoHotkey.exe"
@@ -301,5 +378,5 @@
   },
   "[github-actions-workflow]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  }
+  },
 }

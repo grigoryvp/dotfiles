@@ -241,10 +241,6 @@ read -s
 rm -rf ~/.config/karabiner 
 ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 
-# Required for copyq to work
-xattr -d com.apple.quarantine /Applications/CopyQ.app
-codesign --force --deep --sign - /Applications/CopyQ.app
-
 # Close any preferences so settings are not overwritten.
 osascript -e 'tell application "System Preferences" to quit'
 # Show hidden files, folders and extensions.

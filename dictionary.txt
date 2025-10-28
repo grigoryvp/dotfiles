@@ -351,6 +351,7 @@ Gutspike
 gvl
 Gwennen
 habr
+habrahabr
 Haemophilia
 hammerspoon
 hanami
@@ -537,6 +538,7 @@ Maraketh
 marginhandwrite
 matplotlib
 Matryoshka
+Matz
 Mawr
 mbr
 MCM

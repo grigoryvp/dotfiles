@@ -1,5 +1,25 @@
+open_port() {
+  local port=$1
+  nc -l localhost $port >/dev/null 2>&1 &
+  local pid=$!
+  for i in {1..20}; do
+    if nc -z localhost $port >/dev/null 2>&1; then
+      echo $pid
+      return 0
+    fi
+    sleep 0.05
+  done
+  kill $pid >/dev/null 2>&1
+  return 1
+}
+
+_configure_wox() {
+  pid=$(open_port 12345)
+  kill $pid >/dev/null 2>&1
+}
+
 test() {
-  echo "Testing configuration script..."
+  _configure_wox
 }
 
 configure() {
@@ -245,6 +265,8 @@ configure() {
   # Entire config dir should be symlinked
   rm -rf ~/.config/karabiner 
   ln -fs ~/dotfiles/karabiner ~/.config/karabiner
+
+  _configure_wox
 
   # Close any preferences so settings are not overwritten.
   osascript -e 'tell application "System Preferences" to quit'

@@ -380,13 +380,15 @@ require "main"
 require "menuitem"
 require "helpers"
 require "netstat"
+require "elgato"
 
 app = App:new()
 assert(
   table.concat(app:ipStrToList("192.168.0.1")) ==
   table.concat({192, 168, 0, 1}))
 app:getDockItems()
-app:clickDockItem(1)
+app:clickDockItemByNum(1)
+app:clickDockItemByName("foo")
 app:registerMouse()
 history = {}
 app:icmpPingToHistory(history, "didStart")

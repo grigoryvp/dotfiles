@@ -1162,6 +1162,10 @@ function App:_shortenUrl(targetUrl)
 end
 
 
+function App:startTimer(timeoutSec)
+end
+
+
 function App:shortenUrlInClipboard()
   local clipboard = hs.pasteboard.readString()
   if not clipboard:match("^https?://") then
@@ -1300,6 +1304,10 @@ function App:createMenu()
 
   self.menuItem:addSubmenuSeparator()
 
+
+  self.menuItem:addSubmenuItem("Timer: 5m", function()
+    self:startTimer(5 * 60)
+  end)
 
   self.menuItem:addSubmenuItem("Shorten URL", function()
     self:shortenUrlInClipboard()

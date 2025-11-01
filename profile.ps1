@@ -15,7 +15,17 @@ function _path([array] $pathList) {
 
 # Used for Elixir repl.
 Remove-Alias -Force -Name iex
-New-Alias -Name "grep" -Value "Select-String"
+
+function grep {
+  param(
+    [Parameter(ValueFromPipeline = $true)]
+    $InputObject,
+    [string]$Pattern
+  )
+  process {
+    $InputObject | Out-String -Stream | Select-String -Pattern $Pattern
+  }
+}
 
 # For git to correctly show unicode files content.
 $env:LANG = "en_US.UTF-8";

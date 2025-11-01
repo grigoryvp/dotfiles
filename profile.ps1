@@ -15,6 +15,7 @@ function _path([array] $pathList) {
 
 # Used for Elixir repl.
 Remove-Alias -Force -Name iex
+New-Alias -Name "grep" -Value "Select-String"
 
 # For git to correctly show unicode files content.
 $env:LANG = "en_US.UTF-8";

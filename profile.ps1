@@ -118,10 +118,6 @@ function ll($dst) {
   lsd -l $dst
 }
 
-function grep() {
-  Select-String -Path $Args[1] -Pattern $Args[0]
-}
-
 function vec() {
   python3 -m virtualenv .venv
 }

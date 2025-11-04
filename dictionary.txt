@@ -22,6 +22,7 @@ Accor
 Achmiz
 activerecord
 ADHD
+Adiyah
 Aetherwind
 aiomonitor
 Aisling
@@ -196,6 +197,7 @@ Dekharan
 Dementophobia
 densesample
 densesamplenum
+DERP
 Deskflow
 desktopservices
 desync
@@ -283,6 +285,7 @@ FDBS
 Fenumal
 ffi
 fi
+Fidium
 fidonet
 Firesong
 Fishscale
@@ -393,6 +396,7 @@ hyperliquid
 Hyrri
 idir
 idl
+iex
 ignorecase
 ilograph
 ilvl
@@ -511,6 +515,7 @@ lmb
 lms
 LNGB
 Lockpicking
+Lockpicks
 loglevel
 lol
 lookaround
@@ -706,6 +711,7 @@ PYTHONPATH
 Pytype
 QNX
 queryset
+questline
 Quickslip
 Qwen
 rabbitmq
@@ -887,6 +893,7 @@ taildrive
 taildrop
 tailnet
 tailscale
+tanky
 Tarantool
 taskkill
 tcbox

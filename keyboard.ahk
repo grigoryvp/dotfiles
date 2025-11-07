@@ -1812,7 +1812,7 @@ onFastTimer() {
   toRemove := []
   for key, keyInfo in appKeysPressed {
     keyInfo["stuck_counter"] += 1
-    ; No "keydown" events for 1sec - they are being received periodically
+    ; No "keydown" events for some time - they are being received periodically
     ; if key is actually pressed down. This means that "key up" event was
     ; missed.
     if (keyInfo["stuck_counter"] > 5) {

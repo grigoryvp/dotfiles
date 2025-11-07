@@ -1721,7 +1721,7 @@ addRemap("2", ["m2"], ["send", "`"{!}(!gen|s rec|o al|non)|((60|80|100)% deli)`"
 addRemap("3", ["m2"], ["send", "`"{!}(gen|elo|s rec|o al|non|ask)|((40|60|80|100)% deli)`""])
 
 ;;  m2-4 for game text
-addRemap("4", ["m2"], ["send", "`"grand black|exceptional black|coin|the sun|medved|vorana|uhtred|olroth`""])
+addRemap("4", ["m2"], ["send", "`"grand black|exceptional black|coin|the sun|vorana|olroth`""])
 
 ;;  m2-5 for game text
 addRemap("5", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|chis|r's p|chay|ror sh|(ine|ent|ted|aos|aal|tic|gal) or|of (kal|ann|fu|ch|alc|ho|regr|alt)|deck|foss|reson|cata|sco|glas|envy|drea|scor|zeal|spit|ghas`""])

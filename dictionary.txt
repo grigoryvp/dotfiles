@@ -146,6 +146,8 @@ clr
 cls
 CMY
 CMYK
+codegen
+codeowners
 codepoints
 codesign
 cognitiо
@@ -281,6 +283,7 @@ Ezomyte
 Faridun
 fastapi
 fastfetch
+fb
 FDBS
 Fenumal
 ffi
@@ -559,6 +562,7 @@ MESI
 mesos
 metaclass
 metaclasses
+metainfo
 metainformation
 Metalsmith
 microcontroller
@@ -679,6 +683,7 @@ popd
 Popen
 ppp
 pprint
+preprod
 prestart
 println
 Progenesis
@@ -779,6 +784,7 @@ Sambodhi
 Sandsworn
 Sanguimancer
 Sarn
+Saruman
 sauron
 scaffolder
 Scanf

@@ -403,6 +403,7 @@ iex
 ignorecase
 ilograph
 ilvl
+im
 IMG
 implicits
 impnattypo
@@ -1237,6 +1238,7 @@ Zod
 метапрограммирования
 микросервисов
 микросервисы
+минималках
 многострочниках
 Мониторим
 Монти

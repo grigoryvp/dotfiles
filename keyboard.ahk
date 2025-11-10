@@ -1714,11 +1714,11 @@ addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
 
 ;;  m2-2 for game text
-addRemap("2", ["m2"], ["send", "`"{!}(gen|s rec|o al|non)|((60|80|100)% deli)`""])
+addRemap("2", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reflect)|((80|100)% deli)|memories`""])
 
 ;;  m2-3 for game text
 ;; FIXME: not working with 'shift'
-addRemap("3", ["m2"], ["send", "`"{!}(gen|elo|s rec|o al|non|ask)|((40|60|80|100)% deli)`""])
+addRemap("3", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reduced flask|taunted|reflect)|((40|60|80|100)% deli)|memories`""])
 
 ;;  m2-4 for game text
 addRemap("4", ["m2"], ["send", "`"grand black|exceptional black|coin|the sun|vorana|olroth`""])

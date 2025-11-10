@@ -25,6 +25,7 @@ ADHD
 Adiyah
 Aetherwind
 aiomonitor
+airpods
 Aisling
 aistudio
 Akil
@@ -838,6 +839,7 @@ SonarQube
 Soulbound
 Soulrend
 spacebar
+Spellslinger
 Spidersilk
 Spikeward
 Spinehail
@@ -1274,6 +1276,7 @@ Zod
 нейрональные
 нейросетей
 нейросетям
+нейросетями
 неоптимальна
 нишевых
 нод

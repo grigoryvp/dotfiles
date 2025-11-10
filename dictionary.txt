@@ -601,8 +601,10 @@ mul
 multibyte
 MVC
 MVCC
+myapp
 mynamespace
 mypy
+myscope
 mysuppress
 nacl
 nanodjango

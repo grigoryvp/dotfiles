@@ -1279,7 +1279,12 @@ onRepeatedClick() {
   if (WinActive("ahk_exe PathOfExileSteam.exe")) {
     if (A_TickCount > appLastKeyTick + 90) {
       appLastKeyTick := A_TickCount
-      Send("{blind}{lbutton}")
+      if (GetKeyState("rbutton", "P")) {
+        Send("{blind}{rbutton}")
+      }
+      else {
+        Send("{blind}{lbutton}")
+      }
     }
   }
   else {

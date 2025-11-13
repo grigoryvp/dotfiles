@@ -108,6 +108,7 @@ BPF
 breachstone
 Brinerot
 Bronzescale
+BTF
 btog
 bunjs
 Bunq
@@ -255,6 +256,7 @@ Elreon
 Emscripten
 endraw
 endswith
+Enthalpic
 env
 epub
 eqmac
@@ -346,6 +348,7 @@ Goroutines
 gpetrov
 gping
 GPT
+Granian
 Gravebind
 Gravicius
 Greathelm
@@ -585,6 +588,7 @@ movespeed
 mpv
 MQTT
 MRO
+msbuild
 MTU
 MTX
 mul
@@ -673,6 +677,7 @@ pdb
 PDR
 Petrov
 pfctl
+pgvector
 phantomsection
 Phlex
 phpenv
@@ -769,6 +774,7 @@ Ronacher
 Rossum
 roundoff
 rowconfigure
+RSGI
 RTT
 RTX
 rubocop
@@ -1378,6 +1384,7 @@ Zod
 сорцами
 спеллчекеров
 стагнируют
+стейблкоинах
 стейблкойн
 Страуструп
 Страуструпа
@@ -1403,6 +1410,7 @@ Zod
 ТЦ
 у́же
 упрощенке
+учеткой
 файберы
 Фаликман
 фан

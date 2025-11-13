@@ -231,6 +231,15 @@ function HsCanvas:imageFromCanvas()
 end
 
 
+Bonjour = {}
+function Bonjour:new()
+  return setmetatable({
+  }, {
+    __index = self,
+  })
+end
+
+
 Hs = {}
 function Hs:new()
   local screen = HsScreen:new()
@@ -363,6 +372,11 @@ function Hs:new()
   this.drawing = {
     getTextDrawingSize = function(text)
       return {w=1, h=1}
+    end
+  }
+  this.bonjour = {
+    new = function()
+      return Bonjour:new()
     end
   }
   return setmetatable(this, {__index = self})

@@ -1208,6 +1208,7 @@ function App:createMenu()
   end)
 
   self.menuItem:addSubmenuItem("Load passwords", function()
+    -- TODO: confirm this PC is trusted
     local msg = "Enter master password"
     local secure = true
     local _, masterPass = hs.dialog.textPrompt(msg, "", "", "", "", secure)

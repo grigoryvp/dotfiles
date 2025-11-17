@@ -108,6 +108,7 @@ BPF
 breachstone
 Brinerot
 Bronzescale
+bson
 BTF
 btog
 bunjs
@@ -168,6 +169,7 @@ coreutils
 cpython
 craftable
 Craicic
+CRDT
 createdb
 Crystallised
 CTO
@@ -275,6 +277,7 @@ eurocom
 evaluate'ится
 evaluate'ить
 évaluation
+evdev
 eventtap
 evp
 evrone
@@ -300,6 +303,7 @@ Fishscale
 Flamebolt
 Flamehand
 Flamequiver
+Flet
 Flink
 fn
 Forkshot
@@ -506,6 +510,7 @@ lib-dynload
 libadwaita
 libbz
 libexec
+libinput
 libncursesw
 libreadline
 libsodium
@@ -589,6 +594,7 @@ mpv
 MQTT
 MRO
 msbuild
+msgpack
 MTU
 MTX
 mul

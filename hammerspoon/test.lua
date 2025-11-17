@@ -240,6 +240,16 @@ function Bonjour:new()
 end
 
 
+function Bonjour:findServices(type, handler)
+  -- browserObject,
+  -- domain,
+  -- isAdvertised,
+  -- serviceObject,
+  -- isMoreExpected
+  handler(self)
+end
+
+
 Hs = {}
 function Hs:new()
   local screen = HsScreen:new()

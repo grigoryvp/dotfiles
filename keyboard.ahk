@@ -1726,7 +1726,7 @@ addRemap("2", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|le
 addRemap("3", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reduced flask|taunted|reflect)|((40|60|80|100)% deli)|memories`""])
 
 ;;  m2-4 for game text
-addRemap("4", ["m2"], ["send", "`"grand black|exceptional black|coin|the sun|vorana|olroth`""])
+addRemap("4", ["m2"], ["send", "`"greater black|grand black|exceptional black|coin|of the sun|scythe merc|vorana|olroth`""])
 
 ;;  m2-5 for game text
 addRemap("5", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|chis|r's (p|b)|chay|ror sh|(ine|ent|ted|aos|aal|tic|gal) or|of (kal|ann|fu|ch|alc|ho|regr|alt)|foss|reson|cata|sco|glas|envy|drea|scor|zeal|spit|ghas|deck`""])

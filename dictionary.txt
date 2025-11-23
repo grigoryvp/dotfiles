@@ -290,6 +290,7 @@ expression'ов
 expressjs
 eza
 Ezomyte
+Fanless
 Faridun
 fastapi
 fastfetch
@@ -310,6 +311,7 @@ Flink
 fn
 Forkshot
 Fossilised
+Freepik
 frontmost
 Frosthand
 frozenset
@@ -360,6 +362,7 @@ Gravicius
 Greathelm
 Greatwolf
 Greenplum
+greenwashing
 grigory
 grigoryvp
 Gruthkul
@@ -522,6 +525,7 @@ libxmlsec
 Lich
 Lich's
 Lifeforce
+linearmouse
 LINQ
 listtimezones
 Litestar
@@ -580,6 +584,7 @@ metaclasses
 metainfo
 metainformation
 Metalsmith
+michaeldfallen
 microcontroller
 mimestream
 mimetypes
@@ -599,6 +604,7 @@ MRO
 msbuild
 msgpack
 MTU
+MTWTFSSouehrauneduitn
 MTX
 mul
 multibyte
@@ -665,6 +671,7 @@ oneshot
 oneside
 OOP
 opensearch
+openwashing
 openwrt
 optimus
 orbstack
@@ -711,6 +718,7 @@ println
 Progenesis
 programdata
 psql
+psu
 Psyco
 Ptyxis
 pushd
@@ -736,6 +744,7 @@ pythonic
 PYTHONMALLOC
 PYTHONPATH
 Pytype
+qbittorrent
 QNX
 queryset
 questline
@@ -763,6 +772,7 @@ recents
 recvfrom
 redacter
 Redactions
+Redpanda
 Reefsteel
 regen
 Régime
@@ -818,6 +828,7 @@ Scm
 scp
 scrollbars
 SDP
+Seasonic
 Secutor
 Sekhem
 Sekheman
@@ -1446,6 +1457,7 @@ Zod
 фичи
 флешек
 фолбэки
+форк
 форком
 фреймворках
 фреймворке

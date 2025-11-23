@@ -411,8 +411,15 @@ function App:startHttpServer()
       self:_wndClose()
       return "", 200, {}
 
+    elseif json.command == "paste" then
+      if not json.text then
+        return "paste without text", 400, {}
+      end
+      self:_paste(json.text)
+      return "", 200, {}
+
     elseif json.command == "raw_paste" then
-      self:_rawPaste()
+      self:_paste(hs.pasteboard.readString())
       return "", 200, {}
 
     elseif json.command == "show_symbol_picker" then
@@ -527,7 +534,7 @@ function App:_wndClose()
 end
 
 
-function App:_rawPaste()
+function App:_paste(text)
   local wnd = hs.window.frontmostWindow()
   if not wnd then return end
   local app = wnd:application()
@@ -535,9 +542,11 @@ function App:_rawPaste()
   local oldClipboard = hs.pasteboard.uniquePasteboard()
   hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
-  hs.pasteboard.setContents(hs.pasteboard.readString())
+  hs.pasteboard.setContents(text)
   -- command-v may not work due to focus issues
-  app:selectMenuItem("Paste")
+  if not app:selectMenuItem("Paste") then
+    hs.eventtap.keyStroke({"⌘"}, "v")
+  end
 
   hs.timer.doAfter(0.01, function()
     -- If not delayed in will replace the clipboard content BEFORE

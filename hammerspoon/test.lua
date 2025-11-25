@@ -241,12 +241,25 @@ end
 
 
 function Bonjour:findServices(type, handler)
-  -- browserObject,
-  -- domain,
-  -- isAdvertised,
-  -- serviceObject,
-  -- isMoreExpected
-  handler(self)
+  browserObject = self
+  domain = nil
+  isAdvertised = false
+  serviceObject = {
+    type = function()
+      return "_elg._tcp."
+    end,
+    name = function()
+      return "foo"
+    end,
+  }
+  isMoreExpected = false
+  handler(
+    browserObject,
+    domain,
+    isAdvertised,
+    serviceObject,
+    isMoreExpected
+  )
 end
 
 

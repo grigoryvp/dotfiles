@@ -253,6 +253,7 @@ Effigial
 Einhar
 Elderslayers
 Elementalist
+elg
 elgato
 elif
 Elreon
@@ -340,6 +341,7 @@ GG
 gh-deploy
 Gianna
 Giantslayer
+gibibyte
 gigaflop
 Gigantification
 Gitbeaker
@@ -479,6 +481,7 @@ Keth
 keygen
 keypair
 KEYUP
+kibibyte
 killall
 Kineticist
 Kingsmarch
@@ -572,6 +575,7 @@ MCM
 MCP
 MDM
 mdutil
+mebibyte
 MEDS
 memmove
 memoizations
@@ -1168,6 +1172,11 @@ Zod
 высоконагруженных
 геймдизайнер
 генерализовать
+гиби-
+гибибайт
+гига-
+гигабитах
+гигабите
 гитхаба
 Главред
 горутин
@@ -1236,6 +1245,8 @@ Zod
 Каллистов
 катастрофоустойчивость
 квалиа
+киби-
+кибибайт
 кликает
 кликаете
 кликстрим
@@ -1266,6 +1277,8 @@ Zod
 макбуке
 Маккарти
 манипулятивных
+меби-
+мебибайт
 мейлбокс
 Мейлбоксы
 мема
@@ -1456,6 +1469,7 @@ Zod
 фича
 фичи
 флешек
+флешку
 фолбэки
 форк
 форком
@@ -1484,4 +1498,3 @@ Zod
 электрощитке
 эмбеддинги
 юнит
-гига-

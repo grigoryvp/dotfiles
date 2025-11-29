@@ -358,6 +358,7 @@ Goroutines
 gpetrov
 gping
 GPT
+gradlew
 Granian
 Gravebind
 Gravicius
@@ -649,6 +650,7 @@ nonglobal
 nonlocal
 notunes
 NPC
+npmignore
 Nubuck
 NUC
 Num

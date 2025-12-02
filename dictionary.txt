@@ -799,6 +799,7 @@ Ringmail
 rippy
 rmi
 rmtree
+RO
 Rog
 Rogcrafting
 Ronacher
@@ -816,6 +817,7 @@ runlevel
 rustdesk
 rustup
 RVM
+RW
 RYB
 Ryzen
 Sabatons

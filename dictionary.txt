@@ -274,6 +274,7 @@ essencecraft
 essencecrafted
 essencecrafting
 ETF
+Ethena
 etl
 etog
 eurocom
@@ -409,6 +410,7 @@ horticrafting
 hotstrings
 Hotwire
 HRESULT
+HSV
 HTAP
 htmx
 httpx
@@ -449,6 +451,7 @@ iterm
 itertools
 Izaro
 jailbreaking
+jailbroken
 javac
 javap
 JDBC
@@ -489,6 +492,7 @@ Kingsmarch
 Kirac
 Kitava
 Kivy
+KLM
 kmeans
 koi8-r
 Korell
@@ -599,6 +603,7 @@ minipage
 Miscreation
 mkdocs
 mkdocstrings
+MLX
 Mojolicious
 Moosh
 moscowpythonconf
@@ -1020,6 +1025,7 @@ Unraisable
 unsequenced
 unsummon
 URLCONF
+usde
 userdata
 userinfo
 USERPROFILE
@@ -1124,6 +1130,7 @@ Yudkowsky
 Zab
 Zana
 zeroconf
+zk
 Zod
 автовыбора
 автоконверсии
@@ -1337,6 +1344,7 @@ Zod
 нейросетям
 нейросетями
 неоптимальна
+нереплицируемый
 нишевых
 нод
 нодам
@@ -1374,6 +1382,7 @@ Zod
 переиспользуют
 переиспользуются
 Переиспользуя
+переподключились
 пересборки
 переукажет
 переуказание
@@ -1435,8 +1444,10 @@ Zod
 скилл
 скопироваться
 сорцами
+софтины
 спеллчекеров
 стагнируют
+стейблкоина
 стейблкоинах
 стейблкойн
 Страуструп

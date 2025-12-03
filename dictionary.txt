@@ -578,6 +578,7 @@ Mawr
 mbr
 MCM
 MCP
+mcs
 MDM
 mdutil
 mebibyte
@@ -954,6 +955,7 @@ tanky
 Tarantool
 taskkill
 tcbox
+tcpdump
 techdocs
 techempower
 templatelib
@@ -1291,6 +1293,7 @@ Zod
 макбуке
 Маккарти
 манипулятивных
+маппинга
 меби-
 мебибайт
 мейлбокс

@@ -116,6 +116,7 @@ function HsAppElement:new()
         }),
         HsAppSubelement:new({
           AXRoleDescription = "application dock item",
+          AXTitle = "foo",
         }),
       }
     }},

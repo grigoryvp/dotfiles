@@ -986,6 +986,7 @@ function App:onHeartbeat()
   end
 
   local notifications = {}
+
   if self.telegramDockItem and self.telegramDockItem.AXStatusLabel then
     table.insert(notifications, "T")
   end
@@ -1105,9 +1106,15 @@ function App:onHeartbeat()
       })
     end
   end
-
   self.menuItem:addIndicator(indicator)
   self.menuItem:addSpacer(4)
+
+  if self.timerEndTime and self.timerEndTime > curTime then
+    local diff = self.timerEndTime - curTime
+    self.menuItem:addText(math.floor(diff))
+    self.menuItem:addSpacer(4)
+  end
+
   self.menuItem:addText("🛜")
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(routerGraph, self.maxIcmpHistory)
@@ -1172,6 +1179,7 @@ end
 
 
 function App:startTimer(timeoutSec)
+  self.timerEndTime = hs.timer.absoluteTime() / 1000000000 + timeoutSec
 end
 
 

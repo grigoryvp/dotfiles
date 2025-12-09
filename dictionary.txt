@@ -26,6 +26,7 @@ activerecord
 ADHD
 Adiyah
 Aetherwind
+ahk
 aiomonitor
 aircrack-ng
 aireplay-ng
@@ -50,6 +51,7 @@ apk
 APNG
 appengine
 applescript
+appname
 approle
 Arakaali
 Arcanist

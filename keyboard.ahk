@@ -1716,7 +1716,8 @@ addRemap("m", ["m1", "m2"], ["winpos", "left"])
 addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
 ;;  m2-1 for game text
-addRemap("1", ["m2"], ["send", "-[rgb]-|nne|rint"])
+addRemap(["1", "app", "Path of Exile\PathOfExileSteam.exe"], ["m2"], ["send", "-[rgb]-|nne|rint"])
+addRemap(["1", "app", "Path of Exile 2\PathOfExileSteam.exe"], ["m2"], ["send", "\d+% i.+mov|\d ch.+da|^\+.*ills$|spiri"])
 
 ;;  m2-2 for game text
 addRemap("2", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reflect)|((80|100)% deli)|memories`""])

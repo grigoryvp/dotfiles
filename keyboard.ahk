@@ -1075,19 +1075,25 @@ onKey(key, dir) {
     }
   }
 
-  hasAloneMappings := false
-  remappedTo := ""
+  local hasAloneMappings := false
+  local remappedTo := ""
 
   if (appRemap.has(key)) {
     for _, config in appRemap[key] {
-      fromMods := config["from_mods"]
-      options := config["options"]
+      local fromMods := config["from_mods"]
+      local options := config["options"]
       if (includes(fromMods, "alone")) {
         hasAloneMappings := true
       }
       if (options.Length and options[1] == "app") {
-        appName := options[2]
+        local appName := options[2]
         if (not WinActive("ahk_exe " . appName)) {
+          continue
+        }
+      }
+      if (options.Length and options[1] == "appname") {
+        local appName := options[2]
+        if (not WinActive(appName)) {
           continue
         }
       }
@@ -1716,8 +1722,8 @@ addRemap("m", ["m1", "m2"], ["winpos", "left"])
 addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
 ;;  m2-1 for game text
-addRemap(["1", "app", "Path of Exile\PathOfExileSteam.exe"], ["m2"], ["send", "-[rgb]-|nne|rint"])
-addRemap(["1", "app", "Path of Exile 2\PathOfExileSteam.exe"], ["m2"], ["send", "\d+% i.+mov|\d ch.+da|^\+.*ills$|spiri"])
+addRemap(["1", "appname", "Path of Exile 2"], ["m2"], ["send", "\d+% i.+mov|\d ch.+da|^\+.*ills$|spiri"])
+addRemap(["1", "appname", "Path of Exile"], ["m2"], ["send", "-[rgb]-|nne|rint"])
 
 ;;  m2-2 for game text
 addRemap("2", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reflect)|((80|100)% deli)|memories`""])

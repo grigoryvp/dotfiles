@@ -261,6 +261,7 @@ DWH
 Eagon
 EAPOL
 ebpf
+EE
 Eelskin
 Effigial
 Einhar
@@ -313,11 +314,13 @@ fastapi
 fastfetch
 fb
 FDBS
+Feedly
 Fenumal
 ffi
 fi
 Fidium
 fidonet
+Fira
 Firesong
 Fishscale
 Flamebolt
@@ -451,6 +454,7 @@ Informix
 Inlines
 instancecheck
 Interpretability
+Invictus
 invis
 ioc
 IPC
@@ -476,6 +480,7 @@ JEP
 jestfile
 Jewellery
 JIT
+JMS
 JNI
 Johan
 Jorgin
@@ -561,6 +566,7 @@ LLM
 lmb
 lms
 LNGB
+lockfiles
 Lockpicking
 Lockpicks
 loglevel
@@ -597,6 +603,7 @@ mbr
 MCM
 MCP
 mcs
+MCU
 MDM
 mdutil
 mebibyte
@@ -614,6 +621,7 @@ metainformation
 Metalsmith
 michaeldfallen
 microcontroller
+microcontrollers
 mimestream
 mimetypes
 mineffect
@@ -623,8 +631,10 @@ Miscreation
 mkdocs
 mkdocstrings
 MLX
+modulepath
 Mojolicious
 Moosh
+Morior
 moscowpythonconf
 movespeed
 mpv
@@ -656,6 +666,7 @@ netbird
 netcat
 netrc
 neuroenergetics
+Neuroscientists
 nextjs
 nic
 nifi
@@ -686,6 +697,7 @@ Nuxt
 nuxtjs
 nvm
 Nygaard
+OCC
 OCI
 octothorp
 offchain
@@ -733,6 +745,7 @@ phantomsection
 Phlex
 phpenv
 phpvm
+PicoRuby
 PIL
 pinggraph
 pipx
@@ -934,6 +947,7 @@ Steelpoint
 Steelscale
 Steelskin
 Steeltoe
+STM32
 stormblast
 Stormcall
 Stormcaller
@@ -977,6 +991,7 @@ tailscale
 tanky
 Tarantool
 taskkill
+Tauri
 tcbox
 tcpdump
 techdocs
@@ -1079,6 +1094,7 @@ Vcpkg
 VCS
 vectorizer
 Vectorizing
+Ventor
 venv
 ver
 vercel
@@ -1131,6 +1147,7 @@ WIP
 Withertouch
 wlan
 Wnd
+wndproc
 wol
 WOLED
 Wolfskin
@@ -1190,6 +1207,7 @@ Zod
 байткоду
 баристы
 Бартунова
+беззнаковой
 беззнаковые
 бенчмарк
 бенчмарки
@@ -1280,6 +1298,7 @@ Zod
 иммутабельные
 иммутабельными
 инвайта
+инвалидировании
 инвалидировать
 инвойсами
 инстанс
@@ -1297,6 +1316,7 @@ Zod
 калечное
 Каллистов
 каррирование
+картируются
 катастрофоустойчивость
 квалиа
 киби-
@@ -1456,9 +1476,11 @@ Zod
 раздрай
 рантайм
 рантайма
+рантайме
 рантаймом
 рантайму
 Рантаймы
+раскирпичить
 расшарить
 ребаланс
 резидентства
@@ -1535,6 +1557,7 @@ Zod
 фолбэки
 форк
 форком
+фреймворкам
 фреймворках
 фреймворке
 фронтенд
@@ -1561,3 +1584,4 @@ Zod
 электрощитке
 эмбеддинги
 юнит
+YugabyteDB

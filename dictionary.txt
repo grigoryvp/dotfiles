@@ -172,6 +172,7 @@ colorlinks
 Colour
 columnconfigure
 conce
+confeta
 Configurator
 contextlib
 contextmanager
@@ -642,6 +643,7 @@ MQTT
 MRO
 msbuild
 msgpack
+mts
 MTU
 MTWTFSSouehrauneduitn
 MTX
@@ -974,6 +976,7 @@ Sunfire
 Superintelligence
 suppresssample
 suppresssamplenum
+SWE-Bench
 Swiftblade
 swiftenv
 Swiftstalker

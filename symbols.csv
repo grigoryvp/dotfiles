@@ -156,8 +156,9 @@
 🆕,new
 🆗,ok
 📌,todo
+⚠️,warn
 ✅,done
-❌,miss
+❌,err
 ❓,question
 🔴,red
 🟢,green

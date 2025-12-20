@@ -198,6 +198,7 @@ Daresso
 darknet
 Darksteel
 Darktongue
+dasel
 databasehash
 dataclass
 dataclasses
@@ -354,6 +355,7 @@ getattr
 getcwd
 getencoding
 getenv
+getgems
 getrefcount
 getsizeof
 Gevent
@@ -587,6 +589,7 @@ lvl
 Lysah
 Magebane
 Mageblood
+magick
 Mahuxotl
 Malachai
 Maligaro
@@ -670,6 +673,7 @@ netrc
 neuroenergetics
 Neuroscientists
 nextjs
+NIAH
 nic
 nifi
 Nightweave
@@ -688,6 +692,7 @@ nonlocal
 notunes
 NPC
 npmignore
+NSSM
 Nubuck
 NUC
 Num
@@ -705,6 +710,7 @@ octothorp
 offchain
 offlevel
 OFS
+Okkam
 okular
 OLAP
 OLED
@@ -832,6 +838,7 @@ respin
 résumé
 retryable
 returncode
+rfind
 RGB
 Rhoa
 Rhoahide
@@ -1181,11 +1188,16 @@ YDB
 yesim
 yshift
 Yudkowsky
+YugabyteDB
 Zab
 Zana
 zeroconf
+zgo.at
+ZJIT
 zk
 Zod
+абиогенезом
+австрийско-
 автовыбора
 автоконверсии
 автосохранение
@@ -1208,6 +1220,7 @@ Zod
 байткода
 байткодом
 байткоду
+бакет
 баристы
 Бартунова
 беззнаковой
@@ -1300,6 +1313,8 @@ Zod
 иммутабельны
 иммутабельные
 иммутабельными
+имплантами
+имплантатом
 инвайта
 инвалидировании
 инвалидировать
@@ -1347,6 +1362,7 @@ Zod
 Кре́дит
 Кристен
 Кэй
+Лакатос
 ЛВР
 легаси
 лексеров
@@ -1409,6 +1425,7 @@ Zod
 нейросетями
 неоптимальна
 нереплицируемый
+нефальсифицируемой
 нишевых
 нод
 нодам
@@ -1466,6 +1483,9 @@ Zod
 поджойнить
 полуструктурированных
 попинговать
+Поппер
+Поппера
+Поппером
 порейзить
 потокобезопасный
 Преобразуя
@@ -1484,6 +1504,7 @@ Zod
 рантайму
 Рантаймы
 раскирпичить
+Рассела
 расшарить
 ребаланс
 резидентства
@@ -1498,6 +1519,7 @@ Zod
 Сапольски
 Сбере
 свежесозданного
+СГС
 СДВГ
 СЕО
 сепулек
@@ -1547,6 +1569,7 @@ Zod
 Фаликман
 фан
 федеративность
+Фейерабенд
 фейковым
 Фидонет
 фикстур
@@ -1587,4 +1610,3 @@ Zod
 электрощитке
 эмбеддинги
 юнит
-YugabyteDB

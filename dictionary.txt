@@ -85,8 +85,10 @@ awk
 Aylo
 Azyran
 backoffice
+badusb
 Baran
 Barbute
+barya
 Basemetal
 Beastcrafting
 Beelink
@@ -125,6 +127,7 @@ Bunq
 byteorder
 Caeserius
 Cameria
+CAPEX
 capsys
 cardano
 CAS
@@ -207,6 +210,7 @@ DBA
 DBAPI
 dbname
 dbt
+DDD
 DDL
 debuff
 debuffs
@@ -360,6 +364,7 @@ getrefcount
 getsizeof
 Gevent
 GG
+GGUF
 gh-deploy
 Gianna
 Giantslayer
@@ -399,6 +404,7 @@ Gwennen
 habr
 habrahabr
 Haemophilia
+Haemorrhage
 hammerspoon
 hanami
 Harpyskin
@@ -717,6 +723,7 @@ OLED
 Olroth
 OLTP
 Omniphobia
+onekey
 oneof
 oneshot
 oneside
@@ -724,6 +731,7 @@ OOP
 opensearch
 openwashing
 openwrt
+opex
 optimus
 orbstack
 oreventhis
@@ -806,6 +814,7 @@ questline
 Quickslip
 Qwen
 rabbitmq
+radd
 Radeon
 radmin
 Raku
@@ -856,6 +865,7 @@ Rossum
 roundoff
 rowconfigure
 RSGI
+rsub
 RTT
 RTX
 rubocop
@@ -886,11 +896,13 @@ scikit
 Scm
 scp
 scrollbars
+Scrying
 SDP
 Seasonic
 Secutor
 Sekhem
 Sekheman
+Sekhemas
 sendall
 sendto
 Sephirot
@@ -1239,6 +1251,7 @@ Zod
 блобы
 Бобук
 бо́льшая
+Брока
 булевого
 Бухучёт
 бэкенд
@@ -1393,6 +1406,7 @@ Zod
 моржик
 моржика
 Мосигры
+МРТ
 мутабелен
 Мутабельная
 мутабельного
@@ -1407,6 +1421,7 @@ Zod
 Найгард
 насмотренность
 неаутентифицированному
+неизменяем
 неиспользуемости
 нейминга
 неймспейс

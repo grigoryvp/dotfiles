@@ -19,6 +19,8 @@ pretty = "oneline"
 
 [push]
 default = "simple"
+# No need to --set-upstream while pushing new branches
+autoSetupRemote = true
 
 [fetch]
 # Fixes "cannot lock ref" macOS case sensetive issue.

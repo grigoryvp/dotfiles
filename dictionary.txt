@@ -63,6 +63,7 @@ ASF
 asg
 asgi
 asic
+ASML
 Astragali
 Astramentis
 Astromancer
@@ -77,6 +78,7 @@ Aul
 autofocus
 autohide
 autohotkey
+autopep8
 autoreplace
 Avarius
 Aventail
@@ -189,6 +191,7 @@ Craicic
 CRDT
 createdb
 Crystallised
+CSO
 CTO
 ctx
 ctypes
@@ -264,6 +267,7 @@ Dunerunner
 Duolingo
 Durov
 Duskwalk
+DUV
 DWH
 Eagon
 EAPOL
@@ -301,6 +305,7 @@ Ethena
 etl
 etog
 eurocom
+EUV
 evaluate'ится
 evaluate'ить
 évaluation
@@ -398,6 +403,7 @@ grigory
 grigoryvp
 Gruthkul
 GTK
+GTX
 gunicorn
 Gutspike
 gvl
@@ -538,6 +544,7 @@ kwargs
 kyc
 Lacewood
 Lakehouse
+Langa
 langchain
 Lantador
 LDR
@@ -591,6 +598,7 @@ luarocks
 luasocket
 luasodium
 luatex
+Łukasz
 Lunaris
 lvl
 Lysah
@@ -668,6 +676,7 @@ mypy
 myscope
 mysuppress
 nacl
+Nanbeige
 nanodjango
 NAS
 Nenet
@@ -688,6 +697,7 @@ Nightwind
 Niko
 Nimis
 njk
+NLP
 Noctua
 nodenext
 nodenv
@@ -719,8 +729,10 @@ offlevel
 OFS
 Okkam
 okular
+OKX
 OLAP
 OLED
+OLEDB
 Olroth
 OLTP
 Omniphobia
@@ -809,6 +821,7 @@ PYTHONMALLOC
 PYTHONPATH
 Pytype
 qbittorrent
+QD-OLED
 QNX
 queryset
 questline
@@ -914,6 +927,7 @@ settimezone
 setuptools
 setx
 Shakari
+shalerb
 Shattersword
 shell'ов
 Sheth
@@ -1019,6 +1033,7 @@ tcbox
 tcpdump
 techdocs
 techempower
+Telegem
 templatelib
 TEP
 Teradata
@@ -1100,6 +1115,7 @@ userspace
 usr
 utf-8
 Utzaal
+uuidv7
 Uul-Netol
 uutils
 uvicorn
@@ -1143,6 +1159,7 @@ Voltaxic
 Vorici
 voximplant
 vsicons
+vuejs
 vuex
 walletteam
 Warband
@@ -1157,6 +1174,7 @@ Waystone
 wchar
 weakref
 webdav
+webmoney
 webrtc
 websequencediagrams
 WEP
@@ -1196,6 +1214,7 @@ xrange
 Xsolla
 xxd
 xy
+yapf
 ycoins
 YDB
 yesim
@@ -1204,6 +1223,7 @@ Yudkowsky
 YugabyteDB
 Zab
 Zana
+Zenbook
 zeroconf
 zgo.at
 ZJIT
@@ -1239,6 +1259,7 @@ Zod
 беззнаковой
 беззнаковые
 бенчмарк
+бенчмаркам
 бенчмарки
 Берклевских
 бессерверной
@@ -1277,12 +1298,14 @@ Zod
 гигабите
 Гипервизор
 гитхаба
+ГКС
 Главред
 горутин
 горутина
 горутинах
 горутины
 Грациано
+грудино-ключично-сосцевидной
 дандер-атрибутами
 дандер-атрибутов
 дандер-атрибуты
@@ -1320,6 +1343,7 @@ Zod
 заблюрить
 заморачивались
 Значек
+ИБ
 Иммутабельная
 иммутабельной
 иммутабельности
@@ -1329,6 +1353,7 @@ Zod
 иммутабельными
 имплантами
 имплантатом
+инактивировано
 инвайта
 инвалидировании
 инвалидировать
@@ -1534,6 +1559,7 @@ Zod
 Сocoa
 Сапольски
 Сбере
+СБП
 свежесозданного
 СГС
 СДВГ
@@ -1546,8 +1572,11 @@ Zod
 Сепульки
 сериализаторов
 сериализует
+сид-фраза
+сид-фразам
 скам
 скилл
+Скиннер
 скопироваться
 сорцами
 софтины
@@ -1614,8 +1643,10 @@ Zod
 Цеттелькастен
 чанк
 чанки
+Чанпэн
 человекочитаемые
 четырёхшаговый
+Чжао
 шаблонизатором
 Шард
 шардирования
@@ -1626,3 +1657,4 @@ Zod
 электрощитке
 эмбеддинги
 юнит
+Tonnel_Network_bot

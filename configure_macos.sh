@@ -347,6 +347,9 @@ configure() {
   osascript -e "set volume alert volume 0"
   # Mute volume change feedback
   defaults write -g "com.apple.sound.beep.feedback" -bool false
+  # Disable power attach chime
+  defaults write com.apple.PowerChime ChimeOnNoHardware -bool true
+  killall PowerChime >/dev/null 2>&1
   # Disable screen saver (manually turn off screen by locking the laptop)
   defaults -currentHost write com.apple.screensaver idleTime -int 0
 

@@ -40,7 +40,9 @@
 
 # Tags
 教,speaker
-技,skilled
+技,senior
+中,middle
+未,junior
 力,influencer
 大,boss
 死,dead
@@ -48,6 +50,7 @@
 # Utility tags
 会,meet
 ✉️,mail
+📖,book
 業,LFE
 事,LFW
 

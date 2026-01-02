@@ -31,14 +31,14 @@ function App:new()
   -- key 90 contains value of 1000 that means that it took 1000 seconds for
   -- a battery to discharge from 90 to 89 percents.
   inst.batteryDecHistory = {}
-  inst.telegramDockItem = nil
-  inst.mimestreamDockItem = nil
-  inst.mailDockItem = nil
-  inst.heyDockItem = nil
-  inst.slackDockItem = nil
-  inst.discordDockItem = nil
-  inst.whatsappDockItem = nil
-  inst.notionDockItem = nil
+  inst.tgDock = nil
+  inst.mimeDock = nil
+  inst.mailDock = nil
+  inst.heyDock = nil
+  inst.slackDock = nil
+  inst.discordDock = nil
+  inst.waDock = nil
+  inst.notionDock = nil
   inst.vkToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
@@ -176,28 +176,28 @@ function App:startHttpServer()
         return "", 200, {}
       elseif json.app_id then
         if json.app_id == "slack" then
-          if not self.slackDockItem then
+          if not self.slackDock then
             return "slack not found in dock", 400, {}
           end
-          self.slackDockItem:doAXPress()
+          self.slackDock:doAXPress()
           return "", 200, {}
         elseif json.app_id == "mail" then
-          if not self.mailDockItem then
+          if not self.mailDock then
             return "Mail not found in dock", 400, {}
           end
-          self.mailDockItem:doAXPress()
+          self.mailDock:doAXPress()
           return "", 200, {}
         elseif json.app_id == "hey" then
-          if not self.heyDockItem then
+          if not self.heyDock then
             return "HEY not found in dock", 400, {}
           end
-          self.heyDockItem:doAXPress()
+          self.heyDock:doAXPress()
           return "", 200, {}
         elseif json.app_id == "notion" then
-          if not self.notionDockItem then
+          if not self.notionDock then
             return "Notion not found in dock", 400, {}
           end
-          self.notionDockItem:doAXPress()
+          self.notionDock:doAXPress()
           return "", 200, {}
         elseif json.app_id == "gpt" then
           self:clickDockItemByName("ChatGPT")
@@ -893,40 +893,40 @@ function App:onHeartbeat()
     self:getKarabinerState()
   end
 
-  if not self.telegramDockItem
-     or not self.mimestreamDockItem
-     or not self.mailDockItem
-     or not self.heyDockItem
-     or not self.slackDockItem
-     or not self.discordDockItem
-     or not self.whatsappDockItem
-     or not self.notionDockItem then
+  if not self.tgDock
+     or not self.mimeDock
+     or not self.mailDock
+     or not self.heyDock
+     or not self.slackDock
+     or not self.discordDock
+     or not self.waDock
+     or not self.notionDock then
     -- Do not check too often, CPU expensive
     if isBigTimeout then
       for _, item in ipairs(self.dockItems) do
         if item.AXTitle == "Telegram" then
-          self.telegramDockItem = item
+          self.tgDock = item
         end
         if item.AXTitle == "Mimestream" then
-          self.mimestreamDockItem = item
+          self.mimeDock = item
         end
         if item.AXTitle == "Mail" then
-          self.mailDockItem = item
+          self.mailDock = item
         end
         if item.AXTitle == "HEY" then
-          self.heyDockItem = item
+          self.heyDock = item
         end
         if item.AXTitle == "Slack" then
-          self.slackDockItem = item
+          self.slackDock = item
         end
         if item.AXTitle == "Discord" then
-          self.discordDockItem = item
+          self.discordDock = item
         end
         if item.AXTitle == "WhatsApp" then
-          self.whatsappDockItem = item
+          self.waDock = item
         end
         if item.AXTitle == "Notion" then
-          self.notionDockItem = item
+          self.notionDock = item
         end
       end
     end
@@ -987,31 +987,53 @@ function App:onHeartbeat()
 
   local notifications = {}
 
-  if self.telegramDockItem and self.telegramDockItem.AXStatusLabel then
+  if self.tgDock and self.tgDock.AXStatusLabel then
     table.insert(notifications, "T")
   end
-  if self.mimestreamDockItem and self.mimestreamDockItem.AXStatusLabel then
+  if not self.tgDock or not self.tgDock.AXIsApplicationRunning then
+    table.insert(notifications, "T͓")
+  end
+
+  if self.mimeDock and self.mimeDock.AXStatusLabel then
     table.insert(notifications, "E")
   end
-  if self.mailDockItem and self.mailDockItem.AXStatusLabel then
+  if not self.mimeDock or not self.mimeDock.AXIsApplicationRunning then
+    table.insert(notifications, "E͓")
+  end
+
+  if self.mailDock and self.mailDock.AXStatusLabel then
     table.insert(notifications, "e")
   end
-  if self.heyDockItem and self.heyDockItem.AXStatusLabel then
-    table.insert(notifications, "H")
+  if not self.mailDock or not self.mailDock.AXIsApplicationRunning then
+    table.insert(notifications, "e͓")
   end
-  if self.slackDockItem and self.slackDockItem.AXStatusLabel then
+
+  if self.waDock and self.waDock.AXStatusLabel then
+    table.insert(notifications, "W")
+  end
+  if not self.waDock or not self.waDock.AXIsApplicationRunning then
+    table.insert(notifications, "W͓")
+  end
+
+  if self.slackDock and self.slackDock.AXStatusLabel then
     table.insert(notifications, "S")
   end
-  if self.discordDockItem and self.discordDockItem.AXStatusLabel then
+  if not self.slackDock or not self.slackDock.AXIsApplicationRunning then
+    table.insert(notifications, "◌͓S")
+  end
+
+  if self.heyDock and self.heyDock.AXStatusLabel then
+    table.insert(notifications, "H")
+  end
+
+  if self.discordDock and self.discordDock.AXStatusLabel then
     -- "•" indicates channel messages, counter indicates privates and mentions
-    if self.discordDockItem.AXStatusLabel ~= "•" then
+    if self.discordDock.AXStatusLabel ~= "•" then
       table.insert(notifications, "D")
     end
   end
-  if self.whatsappDockItem and self.whatsappDockItem.AXStatusLabel then
-    table.insert(notifications, "W")
-  end
-  if self.notionDockItem and self.notionDockItem.AXStatusLabel then
+
+  if self.notionDock and self.notionDock.AXStatusLabel then
     table.insert(notifications, "N")
   end
 

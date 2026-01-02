@@ -117,6 +117,7 @@ bonechill
 Borland
 bottlenecked
 BPF
+brandoo
 breachstone
 Brinerot
 Bronzescale
@@ -170,6 +171,7 @@ CMY
 CMYK
 codegen
 codeowners
+codepoint
 codepoints
 codesign
 cognitiо
@@ -836,6 +838,7 @@ Raku
 randint
 randombytes
 Rarible
+RCE
 RDBMS
 RDNA
 RDTSC
@@ -879,6 +882,7 @@ Ronacher
 Rossum
 roundoff
 rowconfigure
+RSC
 RSGI
 rsub
 RTT
@@ -1115,6 +1119,7 @@ userinfo
 USERPROFILE
 userspace
 usr
+UTF-16
 utf-8
 Utzaal
 uuidv7

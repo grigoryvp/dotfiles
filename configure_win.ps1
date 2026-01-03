@@ -213,6 +213,9 @@ class App {
     # Interactive
     $this._mapKeyboard();
 
+    # Interactive
+    $this._disableModernStandby(();
+
     # Interactive.
     $this._installFonts();
 
@@ -652,6 +655,19 @@ class App {
       if ($len -eq 20) { return $false; }
     }
     return $true;
+  }
+
+
+  # Modern standby is not working on most Asus laptops,
+  # https://tinyurl.com/3k52vbfh
+  _disableModernStandby() {
+    Write-Host "disabling modern standby";
+    New-ItemProperty `
+      -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Power" `
+      -Name "PlatformAoAcOverride" `
+      -PropertyType "DWord" `
+      -Value 0 `
+      -Force
   }
 
 

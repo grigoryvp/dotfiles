@@ -214,7 +214,7 @@ class App {
     $this._mapKeyboard();
 
     # Interactive
-    $this._disableModernStandby(();
+    $this._disableModernStandby();
 
     # Interactive.
     $this._installFonts();

@@ -57,6 +57,7 @@ Arakaali
 Arcanist
 Archdemon
 Archmage
+argmap
 Armin
 Asenath
 ASF
@@ -271,6 +272,8 @@ Durov
 Duskwalk
 DUV
 DWH
+e͓
+E͓
 Eagon
 EAPOL
 ebpf
@@ -416,6 +419,7 @@ Haemophilia
 Haemorrhage
 hammerspoon
 hanami
+Hardlink
 Harpyskin
 hasattr
 hashability
@@ -438,6 +442,7 @@ Hezmin
 Highgate
 highload
 Hinekora
+HKLM
 HMAC
 HN
 Hom
@@ -783,6 +788,7 @@ pinggraph
 pipx
 pixelmator
 pkey
+PlatformAoAcOverride
 pmbok
 PMK
 Polaric
@@ -956,6 +962,7 @@ SMPP
 SNMP
 SOCK_DGRAM
 Socketable
+Softlink
 Solana
 Someclass
 somemethod
@@ -1026,6 +1033,7 @@ Synthesising
 syscall
 sysconfig
 systemsetup
+T͓
 taildrive
 taildrop
 tailnet
@@ -1168,6 +1176,8 @@ voximplant
 vsicons
 vuejs
 vuex
+W͓
+WAITMS
 walletteam
 Warband
 Warbands
@@ -1263,6 +1273,7 @@ Zod
 бакет
 баристы
 Бартунова
+безделие
 беззнаковой
 беззнаковые
 бенчмарк
@@ -1664,7 +1675,3 @@ Zod
 электрощитке
 эмбеддинги
 юнит
-T͓
-E͓
-e͓
-W͓

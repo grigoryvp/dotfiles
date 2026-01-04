@@ -534,7 +534,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.tinyspeck\\.slackmacgap$",
-                                            "^com\\.openai\\.chat$"
+                                            "^com\\.openai\\.chat$",
+                                            "^com\\.googlecode\\.iterm2$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }

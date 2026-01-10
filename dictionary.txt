@@ -7,9 +7,15 @@ __getitem__
 __getstate__
 __iadd__
 __imul__
+__matmul__
 __qualname__
 __repr__
+__rfloordiv__
+__rmatmul__
+__rmod__
 __rmul__
+__rpow__
+__rtruediv__
 __setattr__
 __setitem__
 __subclasshook__
@@ -53,6 +59,7 @@ appengine
 applescript
 appname
 approle
+Appsignal
 Arakaali
 Arcanist
 Archdemon
@@ -91,6 +98,7 @@ backoffice
 badusb
 Baran
 Barbute
+barebone
 barya
 Basemetal
 Beastcrafting
@@ -241,6 +249,7 @@ discriminare
 Disfavour
 diskimages
 Displate
+displayport
 displaysleep
 Disruptors
 distutils
@@ -281,6 +290,7 @@ EE
 Eelskin
 Effigial
 Einhar
+eink
 Elderslayers
 Elementalist
 elg
@@ -339,6 +349,7 @@ Fidium
 fidonet
 Fira
 Firesong
+Firewire
 Fishscale
 Flamebolt
 Flamehand
@@ -395,6 +406,7 @@ Goldworked
 Goroutines
 gpetrov
 gping
+GPMI
 GPT
 gradlew
 Granian
@@ -458,6 +470,7 @@ httpx
 Hydrascale
 hyperliquid
 Hyrri
+ibeacon
 idir
 idl
 iex
@@ -773,6 +786,7 @@ pastebin
 pathlib
 Paua
 Pauascale
+PCI-E
 pdb
 PDR
 Petrov
@@ -832,6 +846,7 @@ Pytype
 qbittorrent
 QD-OLED
 QNX
+quadrocopter
 queryset
 questline
 Quickslip
@@ -871,6 +886,7 @@ respin
 résumé
 retryable
 returncode
+rfid
 rfind
 RGB
 Rhoa
@@ -969,6 +985,7 @@ somemethod
 SonarQube
 Soulbound
 Soulrend
+soundcloud
 spacebar
 Spellslinger
 Spidersilk
@@ -1156,6 +1173,7 @@ Verilog
 Verisium
 Veritania
 Vermillion
+VESA
 viewports
 viewsets
 Vilenta
@@ -1166,6 +1184,7 @@ virtualenvs
 VK
 vlc
 VM
+VMD
 Voidforge
 voidstone
 voidstones
@@ -1324,6 +1343,7 @@ Zod
 горутины
 Грациано
 грудино-ключично-сосцевидной
+гуглит
 дандер-атрибутами
 дандер-атрибутов
 дандер-атрибуты
@@ -1625,6 +1645,7 @@ Zod
 ТСР
 туториалах
 ТЦ
+ужатия
 у́же
 упрощенке
 учеткой

@@ -204,24 +204,24 @@
   "editor.accessibilitySupport": "off",
   "editor.formatOnSave": false,
   "diffEditor.wordWrap": "off",
-  "terminal.integrated": {
-    "fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
-    "fontSize": 16,
-    "commandsToSkipShell": [
-      "workbench.action.toggleSidebarVisibility",
-      "workbench.action.focusSideBar",
-      "workbench.action.toggleAuxiliaryBar",
-      "workbench.action.focusAuxiliaryBar",
-      "workbench.action.focusActiveEditorGroup"
-    ],
-    "env.osx": {
-      "FIG_NEW_SESSION": "1"
-    },
-    // Don't display sticky scroll atop of the terminal since terminal
-    // vertical space is limited and such are is 2-3 lines, completely
-    // obscuring actual output
-    "stickyScroll.enabled": false
+  //! terminal options are not inherited, ex it's not possible to specify
+  //  'terminal.integrated' option as a dict.
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.commandsToSkipShell": [
+    "workbench.action.toggleSidebarVisibility",
+    "workbench.action.focusSideBar",
+    "workbench.action.toggleAuxiliaryBar",
+    "workbench.action.focusAuxiliaryBar",
+    "workbench.action.focusActiveEditorGroup"
+  ],
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
   },
+  // Don't display sticky scroll atop of the terminal since terminal
+  // vertical space is limited and such are is 2-3 lines, completely
+  // obscuring actual output
+  "terminal.integrated.stickyScroll.enabled": false,
   "window.menuBarVisibility": "toggle",
   "window.openFilesInNewWindow": "off",
   "window.openFoldersInNewWindow": "off",

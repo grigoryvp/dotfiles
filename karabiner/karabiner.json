@@ -3043,7 +3043,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^org\\.keepassx\\.keepassxc$"
+                                            "^org\\.keepassxc\\.keepassxc$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -3056,6 +3056,28 @@
                                 "to": [
                                     {
                                         "key_code": "e",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^org\\.keepassxc\\.keepassxc$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "control-b => command-b for mac-win consistency",
+                                "from": {
+                                    "key_code": "b",
+                                    "modifiers": { "mandatory": ["right_control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "b",
                                         "modifiers": ["right_command"]
                                     }
                                 ],

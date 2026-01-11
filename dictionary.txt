@@ -770,6 +770,7 @@ opex
 optimus
 orbstack
 oreventhis
+orgchart
 Oriath
 osascript
 osx
@@ -792,6 +793,7 @@ pdb
 PDR
 Petrov
 pfctl
+PGSSLMODE
 pgvector
 phantomsection
 Phlex
@@ -836,6 +838,7 @@ pyproject
 Pypy
 pyrefly
 pyright
+pyroscope
 Pyston
 pytest
 PYTHONASYNCIODEBUG
@@ -1142,6 +1145,7 @@ URLCONF
 usde
 userdata
 userinfo
+usermod
 USERPROFILE
 userspace
 usr

@@ -614,6 +614,7 @@ Loreweave
 Loricated
 lru
 lsp
+LTE
 lualatex
 luarocks
 luasocket
@@ -948,6 +949,7 @@ Secutor
 Sekhem
 Sekheman
 Sekhemas
+semgrep
 sendall
 sendto
 Sephirot
@@ -1329,6 +1331,7 @@ Zod
 видеопроигрывателя
 виртуалках
 врапперов
+вспомогательности
 вызываемости
 вызываемость
 высоконагруженных

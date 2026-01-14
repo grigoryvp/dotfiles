@@ -160,6 +160,8 @@
 🆕,new
 🆗,ok
 📌,todo
+⌛,wait
+⏰,time
 ⚠️,warn
 ✅,done
 ❌,no
@@ -167,4 +169,3 @@
 🔴,red
 🟢,green
 🔵,blue
-🕘,time

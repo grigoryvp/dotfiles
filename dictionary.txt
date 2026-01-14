@@ -926,6 +926,7 @@ RVM
 RW
 RYB
 Ryzen
+S͓
 Sabatons
 SAE
 safehouse
@@ -1712,4 +1713,3 @@ Zod
 электрощитке
 эмбеддинги
 юнит
-S͓

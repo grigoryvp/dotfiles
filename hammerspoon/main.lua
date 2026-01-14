@@ -1019,7 +1019,7 @@ function App:onHeartbeat()
     table.insert(notifications, "S")
   end
   if not self.slackDock or not self.slackDock.AXIsApplicationRunning then
-    table.insert(notifications, "◌͓S")
+    table.insert(notifications, "S͓")
   end
 
   if self.heyDock and self.heyDock.AXStatusLabel then

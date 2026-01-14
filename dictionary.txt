@@ -673,6 +673,7 @@ Miscreation
 mkdocs
 mkdocstrings
 MLX
+mochajs
 modulepath
 Mojolicious
 Moosh
@@ -1115,6 +1116,7 @@ Trino
 triphosphate
 truecrypt
 tsc
+tsd
 tsidp
 TSMC
 ttl
@@ -1237,6 +1239,7 @@ WOLED
 Wolfskin
 Wolven
 worktree
+Worktrees
 wox
 WPA
 WPF
@@ -1709,3 +1712,4 @@ Zod
 электрощитке
 эмбеддинги
 юнит
+S͓

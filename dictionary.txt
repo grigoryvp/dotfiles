@@ -145,6 +145,7 @@ cardano
 CAS
 Catalysing
 Catarina
+CBOW
 cdecl
 cdef
 cdll
@@ -197,6 +198,7 @@ convolutional
 cookiecutter
 cooldown
 coreutils
+cowork
 cpython
 craftable
 Craicic
@@ -332,6 +334,7 @@ evrone
 EVT
 Excalidraw
 EXIF
+expanduser
 expression'ов
 expressjs
 eza
@@ -504,6 +507,7 @@ ISA
 isclose
 isinstance
 Isla
+isnan
 iterm
 itertools
 Izaro
@@ -603,6 +607,7 @@ Lizardscale
 LLM
 lmb
 lms
+lmstudio
 LNGB
 lockfiles
 Lockpicking
@@ -849,6 +854,7 @@ pythonic
 PYTHONMALLOC
 PYTHONPATH
 Pytype
+QAT
 qbittorrent
 QD-OLED
 QNX
@@ -1173,6 +1179,7 @@ valēre
 Varargs
 Vcpkg
 VCS
+Vec
 vectorizer
 Vectorizing
 Ventor
@@ -1390,6 +1397,7 @@ Zod
 Длинношеев
 донастроить
 донастройки
+дообучается
 еtcd
 журналирования
 заблюрить
@@ -1694,6 +1702,7 @@ Zod
 хендл
 Хидо
 Хоара
+Хопкинса
 хостить
 хэндлу
 Цеттелькастен
@@ -1712,4 +1721,5 @@ Zod
 эксабайтами
 электрощитке
 эмбеддинги
+эмбеддингов
 юнит

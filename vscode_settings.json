@@ -1,14 +1,12 @@
 {
-  "emmet": {
-    "includeLanguages": {
-      "vue-html": "html",
-      "vue": "html"
-    },
-    "excludeLanguages": [
-      "typescript",
-      "typescriptreact"
-    ]
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "vue": "html"
   },
+  "emmet.excludeLanguages": [
+    "typescript",
+    "typescriptreact"
+  ],
   "vim.leader": "<space>",
   "vim.ignorecase": true,
   "vim.textwidth": 78,

@@ -743,6 +743,7 @@ Nimis
 njk
 NLP
 Noctua
+Nodedotjs
 nodenext
 nodenv
 nogil
@@ -971,6 +972,7 @@ scrollbars
 Scrying
 SDP
 Seasonic
+Securityscorecard
 Secutor
 Sekhem
 Sekheman
@@ -1006,6 +1008,7 @@ Slipstrike
 sln
 smallstrut
 smm
+smol-toml
 Smoulderstrike
 SMPP
 SNMP
@@ -1152,6 +1155,7 @@ Tul
 Tulfall
 Tullina
 Tunnelslam
+typeguards
 ubyte
 UCS-2
 udemy
@@ -1283,6 +1287,7 @@ Wyvernscale
 xapk
 xattr
 XC
+xcodes
 Xoph
 xrange
 Xsolla

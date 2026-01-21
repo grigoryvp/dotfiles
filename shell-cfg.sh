@@ -157,6 +157,7 @@ if [ "$(uname)" = "Darwin" ]; then
     export RADAR_CMD='$(git-radar --bash --fetch)'
   fi
 
+  # completion via suggestions
   BREW_DIR="/opt/homebrew/share"
   ZSH_PLUGIN="zsh-autosuggestions"
   if [ -e "$BREW_DIR/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh" ]; then

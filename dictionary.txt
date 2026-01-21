@@ -7,15 +7,21 @@ __getitem__
 __getstate__
 __iadd__
 __imul__
+__lshift__
 __matmul__
 __qualname__
 __repr__
 __rfloordiv__
+__rlshift__
 __rmatmul__
 __rmod__
 __rmul__
+__ror__
 __rpow__
+__rrshift__
+__rshift__
 __rtruediv__
+__rxor__
 __setattr__
 __setitem__
 __subclasshook__
@@ -103,6 +109,7 @@ barya
 Basemetal
 Beastcrafting
 Beelink
+beeradmoore.dlss-swapper
 Bellcore
 bem
 benchcraft
@@ -222,6 +229,7 @@ dasel
 databasehash
 dataclass
 dataclasses
+datasette
 Dawnbreaker
 DBA
 DBAPI
@@ -258,6 +266,7 @@ Disruptors
 distutils
 Divinarius
 dkjson
+DLSS
 dmg
 dockerfiles
 dockerhub
@@ -271,6 +280,7 @@ dotfiles
 Dragonscale
 Dramatiq
 Dreamquest
+DRF
 Drox
 DS
 DSA
@@ -308,6 +318,7 @@ env
 epub
 eqmac
 erb
+ERC-20
 ERC20
 ERP
 Errno
@@ -356,6 +367,7 @@ Firesong
 Firewire
 Fishscale
 Flamebolt
+flamegraph
 Flamehand
 Flamequiver
 Flet
@@ -479,6 +491,7 @@ idir
 idl
 iex
 ignorecase
+IHG
 IIR
 ilograph
 ilvl
@@ -580,6 +593,7 @@ leetcode
 letsencrypt
 Leyline
 LFE
+LFM
 LFW
 LGA
 lib-dynload
@@ -708,6 +722,7 @@ nacl
 Nanbeige
 nanodjango
 NAS
+Nemotron
 Nenet
 neocrypto
 nerfed
@@ -762,6 +777,7 @@ OKX
 OLAP
 OLED
 OLEDB
+ollama
 Olroth
 OLTP
 Omniphobia
@@ -770,6 +786,7 @@ oneof
 oneshot
 oneside
 OOP
+opencode
 opensearch
 openwashing
 openwrt
@@ -866,6 +883,7 @@ Qwen
 rabbitmq
 radd
 Radeon
+Radisson
 radmin
 Raku
 randint
@@ -967,6 +985,7 @@ setrestartfreeze
 settimezone
 setuptools
 setx
+SFT
 Shakari
 shalerb
 Shattersword
@@ -1160,6 +1179,7 @@ usermod
 USERPROFILE
 userspace
 usr
+utcp
 UTF-16
 utf-8
 Utzaal
@@ -1284,6 +1304,7 @@ ZJIT
 zk
 Zod
 абиогенезом
+абырвалг
 австрийско-
 автовыбора
 автоконверсии

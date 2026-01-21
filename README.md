@@ -42,7 +42,7 @@ pip install --upgrade pip
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
-# Install https://macos.telegram.org/
+# Install https://desktop.telegram.org/
 # Install Trello from App Store
 # Enable KeePass Chrome integration and connect Chrome to the correct DB
 # Command-drag-out menu icons except clock (until the "x" mark appears)

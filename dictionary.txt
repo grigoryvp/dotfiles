@@ -38,6 +38,7 @@ activerecord
 ADHD
 Adiyah
 Aetherwind
+agentic
 ahk
 aiomonitor
 aircrack-ng
@@ -80,6 +81,7 @@ asic
 ASML
 Astragali
 Astramentis
+Astrocyte
 Astromancer
 Asus
 asynccontextmanager
@@ -259,6 +261,7 @@ dind
 discriminare
 Disfavour
 diskimages
+diskutil
 Displate
 displayport
 displaysleep
@@ -722,6 +725,7 @@ nacl
 Nanbeige
 nanodjango
 NAS
+ncdu
 Nemotron
 Nenet
 neocrypto
@@ -970,6 +974,7 @@ Scm
 scp
 scrollbars
 Scrying
+SDLC
 SDP
 Seasonic
 Securityscorecard
@@ -1573,6 +1578,7 @@ Zod
 опенсорсе
 опенспейс
 ОПХБЕР
+пайплайн
 пайтон
 пайтоне
 Парсер
@@ -1708,6 +1714,7 @@ Zod
 фейковым
 Фидонет
 фикстур
+фикстура
 фикстурами
 фикстуру
 фикстуры

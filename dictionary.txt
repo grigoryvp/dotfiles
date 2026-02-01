@@ -132,6 +132,7 @@ Blightheart
 blobstorage
 Bloodletter
 bonechill
+bootstrapper
 Borland
 bottlenecked
 BPF
@@ -1142,6 +1143,7 @@ TPEP
 tqdm
 traceroute
 Trackpad
+Transavia
 Trapsetter
 Treerunner
 Triggerblades
@@ -1498,6 +1500,7 @@ Zod
 легаси
 лексеров
 Лема
+Маджента
 макбуке
 Маккарти
 Малкиела
@@ -1750,9 +1753,12 @@ Zod
 шардирования
 шестнадцатиричном
 шорткатами
+штрудель
 ы́
 эксабайтами
 электрощитке
+Эмбеддинг
 эмбеддинги
 эмбеддингов
 юнит
+acqui-hired

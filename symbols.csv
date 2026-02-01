@@ -166,8 +166,13 @@
 ✅,done
 ❌,no
 ❓,question
-🔴,red
+🔴,red circle
+🟥,red square
 🟢,green
+🟩,green square
 🔵,blue
+🟦,blue square
+🟡,yellow
+🟨,yellow square
 📄,document
 💹,slides

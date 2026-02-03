@@ -20,6 +20,7 @@
 ✈️,airplane
 ✍️,muse
 €,euro
+₽,ruble
 
 # Keyboard
 ⌘,command
@@ -168,11 +169,11 @@
 ❓,question
 🔴,red circle
 🟥,red square
-🟢,green
+🟢,green circle
 🟩,green square
-🔵,blue
+🔵,blue circle
 🟦,blue square
-🟡,yellow
+🟡,yellow circle
 🟨,yellow square
 📄,document
 💹,slides

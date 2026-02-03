@@ -34,6 +34,7 @@ accesstoken
 Acclimatisation
 Accor
 Achmiz
+acqui-hired
 activerecord
 ADHD
 Adiyah
@@ -50,6 +51,7 @@ Akil
 akka
 alch
 Alexa
+Aliexpress
 Alira
 Alivia
 Allflame
@@ -61,6 +63,7 @@ anychar
 aoe
 AOT
 apk
+APM
 APNG
 appengine
 applescript
@@ -229,6 +232,7 @@ darknet
 Darksteel
 Darktongue
 dasel
+Dasung
 databasehash
 dataclass
 dataclasses
@@ -509,6 +513,7 @@ Indigon
 Infohazards
 Informix
 Inlines
+Innocn
 instancecheck
 Interpretability
 Invictus
@@ -577,6 +582,7 @@ koi8-r
 Korell
 Kosis
 Kristian
+KTC
 kubeadm
 kubeconfig
 Kulemak
@@ -813,6 +819,7 @@ pagebreak
 pageless
 Pandemonius
 pandoc
+Paperlike
 Paradoxica
 pastebin
 pathlib
@@ -1761,4 +1768,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-acqui-hired

@@ -207,6 +207,7 @@ confeta
 Configurator
 contextlib
 contextmanager
+contextvars
 convolutional
 cookiecutter
 cooldown
@@ -884,6 +885,7 @@ pythonic
 PYTHONMALLOC
 PYTHONPATH
 Pytype
+pyyaml
 QAT
 qbittorrent
 QD-OLED
@@ -1260,6 +1262,7 @@ Warhoards
 Warpriest
 Warstaff
 Warstaves
+WASI
 watchstone
 Waystone
 wchar
@@ -1768,3 +1771,5 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
+rjsf
+jsonschema

@@ -278,6 +278,7 @@ Divinarius
 dkjson
 DLSS
 dmg
+dockercompose
 dockerfiles
 dockerhub
 docstrings

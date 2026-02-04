@@ -551,6 +551,7 @@ Johan
 Jorgin
 JPA
 jpeek
+jsonschema
 Justicar
 JVM
 Jython
@@ -633,6 +634,7 @@ litestream
 livejournal
 Lizardscale
 LLM
+llmster
 lmb
 lms
 lmstudio
@@ -943,6 +945,7 @@ Riker
 Rin
 Ringmail
 rippy
+rjsf
 rmi
 rmtree
 RO
@@ -1778,5 +1781,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-rjsf
-jsonschema

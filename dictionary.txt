@@ -73,6 +73,7 @@ Appsignal
 Arakaali
 Arcanist
 Archdemon
+Archlinux
 Archmage
 argmap
 Armin
@@ -580,6 +581,8 @@ Kivy
 KLM
 kmeans
 koi8-r
+Konquerer
+Kool
 Korell
 Kosis
 Kristian
@@ -1058,6 +1061,7 @@ starlette
 startswith
 statement'ов
 staticmethod
+steamos
 Steelmail
 Steelpoint
 Steelscale
@@ -1139,6 +1143,7 @@ Timecode
 timelog
 tinyurl
 TIOBE
+tizen
 Tk
 tkinter
 toc
@@ -1306,6 +1311,7 @@ xattr
 XC
 xcodes
 Xoph
+xorg
 xrange
 Xsolla
 xxd
@@ -1660,6 +1666,7 @@ Zod
 реселлера
 ретраи
 Рецидивирующий
+Риддел
 Россум
 роутеров
 роутеры

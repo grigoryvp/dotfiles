@@ -1,4 +1,5 @@
 {
+  "chat.disableAIFeatures": true,
   "claudeCode.environmentVariables": [
     {
       "name": "ANTHROPIC_BASE_URL",

@@ -238,6 +238,7 @@ Dasung
 databasehash
 dataclass
 dataclasses
+dataframe
 datasette
 Dawnbreaker
 DBA
@@ -424,6 +425,7 @@ Gitbeaker
 glab
 Gladiatoral
 Glassdoor
+GMKtec
 GNN
 Goathide
 Goatmem
@@ -575,6 +577,7 @@ keypair
 KEYUP
 kibibyte
 killall
+Kimi
 Kineticist
 Kingsmarch
 Kirac
@@ -820,6 +823,7 @@ osx
 OTP
 overcap
 overlevel
+oxyde
 packrat
 pacman
 pagebreak
@@ -918,6 +922,7 @@ reactjs
 readlink
 readouterr
 realpython
+Realtek
 Reanimator
 reasonml
 Rebar
@@ -1226,6 +1231,7 @@ Vagan
 Valdo
 valēre
 Varargs
+vbus
 Vcpkg
 VCS
 Vec

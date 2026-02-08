@@ -76,6 +76,7 @@ Archdemon
 Archlinux
 Archmage
 argmap
+argparse
 Armin
 Asenath
 ASF
@@ -114,6 +115,7 @@ barebone
 barya
 Basemetal
 Beastcrafting
+beautifulsoup
 Beelink
 beeradmoore.dlss-swapper
 Bellcore
@@ -124,6 +126,7 @@ bg
 bindgen
 BIP
 bit.ly
+Bitget
 Bitterbind
 Bjarne
 Blacksteel
@@ -140,6 +143,7 @@ bootstrapper
 Borland
 bottlenecked
 BPF
+bpython
 brandoo
 breachstone
 Brinerot
@@ -150,6 +154,7 @@ BTF
 btog
 bunjs
 Bunq
+Bybit
 byteorder
 Caeserius
 Cameria
@@ -185,6 +190,7 @@ clangd
 classoption
 Classpath
 Clayshaper
+clck.ru
 cleandoc
 clevo
 cli
@@ -200,6 +206,7 @@ codepoint
 codepoints
 codesign
 cognitiо
+Collapsable
 colorlinks
 Colour
 columnconfigure
@@ -870,6 +877,7 @@ psql
 psu
 Psyco
 PTK
+ptpython
 Ptyxis
 pushd
 Putembo
@@ -1021,6 +1029,7 @@ Shattersword
 shell'ов
 Sheth
 Shieldbearer
+shortenworld
 shutil
 sigcheck
 significand
@@ -1186,6 +1195,7 @@ Tulfall
 Tullina
 Tunnelslam
 typeguards
+Typer
 ubyte
 UCS-2
 udemy
@@ -1206,6 +1216,7 @@ Unraisable
 unsequenced
 unsummon
 URLCONF
+urlencode
 usde
 userdata
 userinfo
@@ -1514,10 +1525,12 @@ Zod
 консьюмеры
 контейнеризированных
 контринтуитивен
+контринтуитивному
 корутины
 косинусодиальное
 коэволюции
 Кре́дит
+криптобирж
 Кристен
 Кэй
 кюнафе

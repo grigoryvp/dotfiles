@@ -39,7 +39,7 @@ function App:new()
   inst.discordDock = nil
   inst.waDock = nil
   inst.notionDock = nil
-  inst.vkToken = nil
+  inst.tinyurlToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
   inst.lastIp = nil
@@ -1171,29 +1171,32 @@ end
 
 
 function App:_shortenUrl(targetUrl)
-  if not self.vkToken then
+  if not self.tinyurlToken then
     return hs.alert.show("Passwords not loaded")
   end
 
-  local url = "https://api.vk.com/method/utils.getShortLink"
-  url = url .. "?" .. "url=" .. hs.http.encodeForQuery(targetUrl)
-  url = url .. "&" .. "private=1"
-  url = url .. "&" .. "access_token=" .. hs.http.encodeForQuery(self.vkToken)
-  url = url .. "&" .. "v=5.199"
-  hs.http.asyncGet(url, nil, function(status, response, _)
+  local url = "https://api.tinyurl.com/create"
+  local data = hs.json.encode({
+    url = targetUrl,
+  })
+  local headers = {
+    ["Content-Type"] = "application/json",
+    Authorization = "bearer " .. self.tinyurlToken,
+  }
+  hs.http.asyncPost(url, data, headers, function(status, response, _)
     if status ~= 200 and status ~= 201 then
-      return hs.alert.show("Failed")
+      return hs.alert.show("Failed: " .. status)
     end
     local response = hs.json.decode(response)
-    if not response.response then
-      if response.error then
-        dir(response.error)
+    if not response.data then
+      if response.errors then
+        dir(response.errors)
       else
         dir(response)
       end
-      return hs.alert.show("Failed")
+      return hs.alert.show("Failed: no data")
     else
-      hs.pasteboard.setContents(response.response.short_url)
+      hs.pasteboard.setContents(response.data.tiny_url)
       return hs.alert.show("Success")
     end
   end)
@@ -1210,6 +1213,9 @@ function App:shortenUrlInClipboard()
   if not clipboard:match("^https?://") then
     return hs.alert.show("No URL in clipboard")
   end
+  if clipboard:match("^https?://tinyurl.com") then
+    return hs.alert.show("Short URL in clipboard")
+  end
   if clipboard:match("^https?://vk.cc") then
     return hs.alert.show("Short URL in clipboard")
   end
@@ -1224,6 +1230,9 @@ function App:shortenAndTrimUrlInClipboard()
   local clipboard = hs.pasteboard.readString()
   if not clipboard:match("^https?://") then
     return hs.alert.show("No URL in clipboard")
+  end
+  if clipboard:match("^https?://tinyurl.com") then
+    return hs.alert.show("Short URL in clipboard")
   end
   if clipboard:match("^https?://vk.cc") then
     return hs.alert.show("Short URL in clipboard")
@@ -1259,7 +1268,7 @@ function App:createMenu()
     local db = "/Users/user/dotfiles/auth/passwords.kdbx"
     local app = "/opt/homebrew/bin/keepassxc-cli"
     local args = {
-      "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "token"
+      "show", "-s", db, "tinyurl", "--attributes", "token"
     }
     local onTaskExit = function(exitCode, stdOut, stdErr)
       if exitCode ~= 0 then
@@ -1269,7 +1278,7 @@ function App:createMenu()
         print(stdErr)
         return hs.alert.show("Error executing keepassxc")
       end
-      self.vkToken = stdOut
+      self.tinyurlToken = stdOut:match("^%s*(.-)%s*$")
       hs.alert.show("Loaded")
     end
     local task = hs.task.new(app, onTaskExit, args)

@@ -509,6 +509,7 @@ Hyrri
 ibeacon
 idir
 idl
+idx
 iex
 ignorecase
 IHG
@@ -1203,6 +1204,7 @@ UDP
 UEFI
 ulonglong
 Unaliased
+unavail
 unblockable
 unc
 uncollegiate

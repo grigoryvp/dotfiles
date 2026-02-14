@@ -38,6 +38,7 @@ acqui-hired
 activerecord
 ADHD
 Adiyah
+ADK
 Aetherwind
 agentic
 ahk
@@ -96,6 +97,7 @@ atexit
 Atoi
 Atziri
 Aul
+autobuild
 autofocus
 autohide
 autohotkey
@@ -452,6 +454,7 @@ Greathelm
 Greatwolf
 Greenplum
 greenwashing
+grigo
 grigory
 grigoryvp
 Gruthkul
@@ -507,6 +510,7 @@ Hydrascale
 hyperliquid
 Hyrri
 ibeacon
+ICQ
 idir
 idl
 idx
@@ -611,6 +615,7 @@ Lacewood
 Lakehouse
 Langa
 langchain
+langgraph
 Lantador
 LDR
 leaguestart
@@ -672,8 +677,10 @@ Lunaris
 luxon
 lvl
 Lysah
+mactop
 Magebane
 Mageblood
+magicdns
 magick
 Mahuxotl
 Malachai
@@ -1299,6 +1306,7 @@ webdav
 webmoney
 webrtc
 websequencediagrams
+wechat
 WEP
 Whakano
 Wi-Fi
@@ -1400,6 +1408,7 @@ Zod
 блобов
 блобы
 Бобук
+Бодрийяр
 бо́льшая
 Брока
 булевого
@@ -1426,6 +1435,7 @@ Zod
 гигабитах
 гигабите
 Гипервизор
+гиперреальностью
 гитхаба
 ГКС
 Главред
@@ -1520,6 +1530,7 @@ Zod
 коммита
 коммитам
 компактифицированный
+Компартментализация
 консьюмер
 консьюмера
 консьюмерам
@@ -1562,6 +1573,7 @@ Zod
 микросервисах
 микросервисов
 микросервисы
+минималистична
 минималках
 многострочниках
 моментум
@@ -1714,6 +1726,10 @@ Zod
 сериализует
 сид-фраза
 сид-фразам
+симулякр
+симулякра
+симулякров
+симулякры
 скам
 скилл
 Скиннер
@@ -1722,6 +1738,8 @@ Zod
 софтины
 спеллчекеров
 стагнируют
+Старбакс
+Старбаксе
 стейблкоина
 стейблкоинах
 стейблкойн

@@ -535,6 +535,7 @@ instancecheck
 Interpretability
 Invictus
 invis
+io_uring
 ioc
 IPC
 IPFS
@@ -727,6 +728,7 @@ minipage
 Miscreation
 mkdocs
 mkdocstrings
+MLO
 MLX
 mochajs
 modulepath
@@ -1130,6 +1132,7 @@ syncdb
 Synthesised
 Synthesising
 syscall
+syscalls
 sysconfig
 systemsetup
 T͓
@@ -1181,6 +1184,7 @@ Tonkeeper
 Tonnel_Network_bot
 TOTP
 TPEP
+TPM
 tqdm
 traceroute
 Trackpad

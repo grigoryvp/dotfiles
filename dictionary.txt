@@ -323,6 +323,7 @@ ebpf
 EE
 Eelskin
 Effigial
+egpu
 Einhar
 eink
 Elderslayers
@@ -402,6 +403,7 @@ Frosthand
 frozenset
 FSM
 FSRS
+FTX
 functools
 FX
 gamesample
@@ -434,6 +436,7 @@ Gitbeaker
 glab
 Gladiatoral
 Glassdoor
+GlennDelahoy
 GMKtec
 GNN
 Goathide
@@ -730,6 +733,7 @@ mkdocs
 mkdocstrings
 MLO
 MLX
+mmd
 mochajs
 modulepath
 Mojolicious
@@ -764,11 +768,14 @@ ncdu
 Nemotron
 Nenet
 neocrypto
+neofetch
 nerfed
 netbeans
 netbird
 netcat
+netplan
 netrc
+networkd
 neuroenergetics
 Neuroscientists
 nextjs
@@ -790,6 +797,7 @@ nohidden
 NONCEBYTES
 nonglobal
 nonlocal
+NOPASSWD
 notunes
 NPC
 npmignore
@@ -826,6 +834,7 @@ oneof
 oneshot
 oneside
 OOP
+openclaw
 opencode
 opensearch
 openwashing
@@ -850,6 +859,7 @@ Pandemonius
 pandoc
 Paperlike
 Paradoxica
+passwordless
 pastebin
 pathlib
 Paua
@@ -1061,6 +1071,7 @@ SMPP
 SNMP
 SOCK_DGRAM
 Socketable
+SODIMM
 Softlink
 Solana
 Someclass
@@ -1146,6 +1157,7 @@ taskkill
 Tauri
 tcbox
 tcpdump
+TDP
 techdocs
 techempower
 Telegem
@@ -1200,6 +1212,7 @@ tsc
 tsd
 tsidp
 TSMC
+tsnet
 ttl
 Tujen
 Tukohama
@@ -1280,6 +1293,7 @@ virtualenv
 virtualenvs
 VK
 vlc
+VLESS
 VM
 VMD
 Voidforge
@@ -1415,6 +1429,7 @@ Zod
 Бобук
 Бодрийяр
 бо́льшая
+Бреттон-Вудская
 Брока
 булевого
 Бухучёт
@@ -1424,6 +1439,7 @@ Zod
 валидировать
 векторизация
 вендоров
+версионируется
 видеокодека
 видеопроигрывателя
 виртуалках
@@ -1622,6 +1638,7 @@ Zod
 неоптимальна
 нереплицируемый
 нефальсифицируемой
+Никсон
 нишевых
 нод
 нодам
@@ -1679,6 +1696,7 @@ Zod
 погуглить
 поджойнить
 полуструктурированных
+помазаников
 попинговать
 Поппер
 Поппера
@@ -1737,6 +1755,7 @@ Zod
 симулякры
 скам
 скилл
+скиллы
 Скиннер
 скопироваться
 сорцами
@@ -1748,8 +1767,10 @@ Zod
 стейблкоина
 стейблкоинах
 стейблкойн
+стейкинге
 Страуструп
 Страуструпа
+суммаризирует
 схлопывать
 таба
 тестировщика
@@ -1780,6 +1801,7 @@ Zod
 федеративность
 Фейерабенд
 фейковым
+фиатными
 Фидонет
 фикстур
 фикстура

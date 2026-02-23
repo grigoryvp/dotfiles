@@ -1730,7 +1730,8 @@ addRemap("2", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|le
 
 ;;  m2-3 for game text
 ;; FIXME: not working with 'shift'
-addRemap("3", ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reduced flask|taunted|reflect)|((40|60|80|100)% deli)|memories`""])
+addRemap(["3", "appname", "Path of Exile 2"], ["m2"], ["send", "`"{!}(resistances|weakness)`""])
+addRemap(["3", "appname", "Path of Exile"], ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|reduced flask|taunted|reflect)|((40|60|80|100)% deli)|memories`""])
 
 ;;  m2-4 for game text
 addRemap("4", ["m2"], ["send", "`"greater black|grand black|exceptional black|coin|of the sun|scythe merc|vorana|olroth`""])

@@ -564,6 +564,7 @@ JMS
 JNI
 Johan
 Jorgin
+journalctl
 JPA
 jpeek
 jsonschema

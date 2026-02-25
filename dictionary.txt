@@ -268,6 +268,7 @@ Dementophobia
 densesample
 densesamplenum
 DERP
+descr
 Deskflow
 desktopservices
 desync
@@ -530,6 +531,7 @@ impnattypo
 incapsulate
 indice
 Indigon
+inferencer
 Infohazards
 Informix
 Inlines
@@ -833,6 +835,7 @@ onekey
 oneof
 oneshot
 oneside
+ontico
 OOP
 openclaw
 opencode
@@ -1116,6 +1119,7 @@ Stormrider
 Stormshroud
 Stranglegasp
 strconv
+stress-ng
 Strix
 Stroustrup
 strtolower
@@ -1370,6 +1374,7 @@ yapf
 ycoins
 YDB
 yesim
+YS
 yshift
 Yudkowsky
 YugabyteDB
@@ -1616,6 +1621,7 @@ Zod
 мутабельных
 Надиктовка
 Найгард
+нарративу
 насмотренность
 неаутентифицированному
 неизменяем

@@ -212,6 +212,10 @@ configure() {
     mkdir ~/.hammerspoon
   fi
   ln -fs ~/dotfiles/hammerspoon/init.lua ~/.hammerspoon/init.lua
+  if [ -e ~/.claude ]; then
+    rm -rf ~/.claude
+  fi
+  ln -fs ~/dotfiles/.claude ~/.claude
   ln -fs ~/dotfiles/.screenrc ~/.screenrc
   ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
   ln -fs ~/dotfiles/.rubocop.yml ~/.rubocop.yml

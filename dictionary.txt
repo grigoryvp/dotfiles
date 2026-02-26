@@ -184,6 +184,7 @@ Chestplate
 Chimeral
 Chimerascale
 chromakey
+CI_PIPELINE_IID
 Cinderswallow
 CIO
 Citus
@@ -1066,6 +1067,7 @@ Skycrown
 skylighting
 Slipstrike
 sln
+slu.u.
 smallstrut
 smm
 smol-toml
@@ -1725,6 +1727,7 @@ Zod
 рантайму
 Рантаймы
 раскирпичить
+распараллелить
 Рассела
 расшарить
 ребаланс

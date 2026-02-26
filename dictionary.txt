@@ -832,6 +832,7 @@ ollama
 Olroth
 OLTP
 Omniphobia
+oncall
 onekey
 oneof
 oneshot
@@ -944,6 +945,7 @@ Radeon
 Radisson
 radmin
 Raku
+RAML
 randint
 randombytes
 Rarible

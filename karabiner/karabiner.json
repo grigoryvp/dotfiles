@@ -524,7 +524,7 @@
                                 "to_if_alone": [{ "key_code": "tab" }],
                                 "type": "basic"
                             },
-// Dual mode return
+// dual-mode return
                             {
                                 "conditions": [
                                     {
@@ -555,6 +555,9 @@
                                             "^com\\.googlecode\\.iterm2$",
                                             "^com\\.microsoft\\.VSCode$"
                                         ],
+                                        "file_paths": [
+                                          "/Notion Calendar$"
+                                        ],
                                         "type": "frontmost_application_if"
                                     }
                                 ],
@@ -572,6 +575,34 @@
                                 "to_if_alone": [{
                                   "key_code": "return_or_enter",
                                   "modifiers": ["shift"]
+                                }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.edgemac$",
+                                            "^com\\.apple\\.Safari$",
+                                            "^org\\.chromium\\.Chromium$",
+                                            "^com\\.google\\.Chrome$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "dual mode 'enter': control if not alone, enter if alone for some apps",
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_control",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{
+                                  "key_code": "return_or_enter"
                                 }],
                                 "type": "basic"
                             },

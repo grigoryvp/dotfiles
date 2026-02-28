@@ -524,57 +524,7 @@
                                 "to_if_alone": [{ "key_code": "tab" }],
                                 "type": "basic"
                             },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m1",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    },
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.tinyspeck\\.slackmacgap$",
-                                            "^com\\.openai\\.chat$",
-                                            "^com\\.googlecode\\.iterm2$",
-                                            "^com\\.microsoft\\.VSCode$"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "description": "ctrl-enter to shift-enter for consistency; before dual mode",
-                                "from": {
-                                    "key_code": "right_control",
-                                    "modifiers": { "mandatory": ["left_control"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "return_or_enter",
-                                        "modifiers": ["shift"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m1",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    }
-                                ],
-                                "description": "ctrl-enter (command-enter); before dual mode",
-                                "from": {
-                                    "key_code": "right_control",
-                                    "modifiers": { "mandatory": ["left_control"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "return_or_enter",
-                                        "modifiers": ["right_command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
+// Dual mode return
                             {
                                 "conditions": [
                                     {
@@ -597,7 +547,18 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "dual mode 'enter': control if not alone",
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.tinyspeck\\.slackmacgap$",
+                                            "^com\\.openai\\.chat$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.microsoft\\.VSCode$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "dual mode 'enter': control if not alone, shift-enter if alone for some apps",
                                 "from": {
                                     "key_code": "right_control",
                                     "modifiers": { "optional": ["any"] }
@@ -608,7 +569,28 @@
                                         "lazy": true
                                     }
                                 ],
-                                "to_if_alone": [{ "key_code": "return_or_enter" }],
+                                "to_if_alone": [{
+                                  "key_code": "return_or_enter",
+                                  "modifiers": ["shift"]
+                                }],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "dual mode 'enter': control if not alone, command-enter if alone for rest of the apps",
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_control",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{
+                                  "key_code": "return_or_enter",
+                                  "modifiers": ["right_command"]
+                                }],
                                 "type": "basic"
                             },
                             {

@@ -1924,4 +1924,5 @@ readSymolbs()
 ; TODO: native C++ COM dll that can press taskbar buttons by index and name
 ; TODO: Support for both English and Russian typographic quotes depending on
 ;       the layout
+; TODO: 'enter' for newline, 'right alt' for 'send'
 ; FIXME: m2-5 followed by m1-p acts like m1-m2-p

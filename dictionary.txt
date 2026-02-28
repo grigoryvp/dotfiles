@@ -399,6 +399,7 @@ Flink
 fn
 Forkshot
 Fossilised
+Foulborn
 Freepik
 frontmost
 Frosthand
@@ -493,6 +494,7 @@ Heraldric
 Heretech
 Heterochromia
 hexdigest
+Hexproof
 hextouch
 Hezmin
 Highgate
@@ -685,6 +687,7 @@ Lunaris
 luxon
 lvl
 Lysah
+macbook
 mactop
 Magebane
 Mageblood
@@ -782,6 +785,7 @@ networkd
 neuroenergetics
 Neuroscientists
 nextjs
+Ngakanu
 NIAH
 nic
 nifi
@@ -1005,6 +1009,7 @@ rubocop
 rubygems
 Runed
 Runefinding
+Runegrafts
 runlevel
 rustdesk
 rustup

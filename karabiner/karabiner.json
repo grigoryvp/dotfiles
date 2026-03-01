@@ -588,6 +588,9 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.company\\.doublecmd$"
                                         ],
+                                        "file_paths": [
+                                          "/wox-ui$"
+                                        ],
                                         "type": "frontmost_application_if"
                                     }
                                 ],

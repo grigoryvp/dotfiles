@@ -79,6 +79,7 @@ class App {
       - Disable Battle.net launcher "gpu acceleration"
       - Configure Win11 for top taskbar with small icons
       - Set nVidia shader cache size to 100Gb
+      - Disable hyper-threading and energy-saving cores
 "@;
   }
 

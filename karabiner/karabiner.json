@@ -552,8 +552,9 @@
                                         "bundle_identifiers": [
                                             "^com\\.tinyspeck\\.slackmacgap$",
                                             "^com\\.openai\\.chat$",
+                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.googlecode\\.iterm2$",
-                                            "^com\\.microsoft\\.VSCode$"
+                                            "^com\\.atlassian\\.trello$"
                                         ],
                                         "file_paths": [
                                           "/Notion Calendar$"

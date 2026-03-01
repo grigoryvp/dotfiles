@@ -586,7 +586,8 @@
                                             "^com\\.microsoft\\.edgemac$",
                                             "^com\\.apple\\.Safari$",
                                             "^org\\.chromium\\.Chromium$",
-                                            "^com\\.google\\.Chrome$"
+                                            "^com\\.google\\.Chrome$",
+                                            "^com\\.company\\.doublecmd$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }

@@ -300,6 +300,7 @@ dont
 Doryani
 dotenv
 dotfiles
+doublecmd
 Dragonscale
 Dramatiq
 Dreamquest
@@ -697,6 +698,7 @@ Mahuxotl
 Malachai
 Maligaro
 malloc
+Maloney
 manifestless
 mant_dig
 Manyshot
@@ -859,6 +861,7 @@ osx
 OTP
 overcap
 overlevel
+oversustain
 oxyde
 packrat
 pacman
@@ -912,6 +915,7 @@ Ptyxis
 pushd
 Putembo
 pwsh
+pyboek
 pybook
 pyc
 pycache
@@ -1864,5 +1868,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-Maloney
-oversustain

@@ -105,4 +105,10 @@
       "args": {"after": ["<Esc>"]}
     }]
   }
-}]
+},
+{
+  "key": "shift+enter",
+  "command": "-acceptAlternativeSelectedSuggestion",
+  "when": "suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && textInputFocus"
+}
+]

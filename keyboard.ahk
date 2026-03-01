@@ -1737,10 +1737,10 @@ addRemap(["3", "appname", "Path of Exile"], ["m2"], ["send", "`"{!}(non-curse|al
 addRemap("4", ["m2"], ["send", "`"greater black|grand black|exceptional black|coin|of the sun|scythe merc|vorana|olroth`""])
 
 ;;  m2-5 for game text
-addRemap("5", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|chis|r's (p|b)|chay|ror sh|(ine|aos) o|of (kal|conta|awa|pre|cat|inv|bloodl|cal|corn|reg)|(se|ring|al|ied|low|hic|eted|red) fo|(ile|tic) ca|en su|deck`""])
+addRemap("5", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|r's (p|b)|chay|ror sh|(ine|aos) o|of (kal|conta|awa|pre|cat|inv|bloodl|cal|corn|reg)|(se|ring|al|ied|low|hic|eted|red) fo|(ile|tic) ca|en su|deck`""])
 
 ;;  m2-6 for game text
-addRemap("6", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|chis|r's (p|b)|chay|ror sh|(ine|ent|ted|aos|aal|tic|gal) or|of (kal|ann|fu|ch|alc|ho|regr|alt)|foss|reson|cata|sco|glas|envy|drea|scor|zeal|spit|ghas|deck`""])
+addRemap("6", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|r's (p|b)|chay|ror sh|(ine|ent|ted|aos|aal|tic|gal) or|of (kal|ann|fu|ch|alc|ho|regr|alt)|foss|reson|cata|sco|glas|envy|drea|scor|zeal|spit|deck`""])
 
 ;;  m2-7 for game text
 addRemap("7", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])

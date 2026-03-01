@@ -582,6 +582,7 @@ Justicar
 JVM
 Jython
 Kalandra
+Kalguur
 Kalguuran
 Kamasan
 Kaom
@@ -844,6 +845,7 @@ oneof
 oneshot
 oneside
 ontico
+Onui
 OOP
 openclaw
 opencode
@@ -897,6 +899,7 @@ PlatformAoAcOverride
 pmbok
 PMK
 Polaric
+Pondium
 popd
 Popen
 ppp
@@ -990,6 +993,7 @@ rfind
 RGB
 Rhoa
 Rhoahide
+Riben
 Riker
 Rin
 Ringmail
@@ -1142,6 +1146,7 @@ subclassing
 subcomponents
 subdirs
 subkey
+subreddits
 subshell
 subshells
 Subtests
@@ -1185,6 +1190,7 @@ Tewi
 textbackslash
 textblock
 textcolor
+textquotedbl
 textquotesingle
 textwidth
 textwrap

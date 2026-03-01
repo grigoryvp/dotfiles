@@ -1,16 +1,15 @@
 {
-    "global": {
-        "check_for_updates_on_startup": false,
-        "show_in_menu_bar": false
-    },
-    "profiles": [
-        {
-            "complex_modifications": {
-                "rules": [
-                    {
-                        "description": "caps lock as meta",
-                        "manipulators": [
-                            {
+  "global": {
+    "check_for_updates_on_startup": false,
+    "show_in_menu_bar": false
+  },
+  "profiles": [{
+    "complex_modifications": {
+      "rules": [{
+
+        // caps lock to m1
+        "description": "caps lock as meta",
+        "manipulators": [{
                                 "description": "Use caps lock as 'meta' key to trigger things",
                                 "from": {
                                     "description": "'modifiers' so shift-caps do not trigger caps",

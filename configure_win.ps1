@@ -78,6 +78,7 @@ class App {
       - Disable the "SSDP Discovery" service
       - Disable Battle.net launcher "gpu acceleration"
       - Configure Win11 for top taskbar with small icons
+      - Set nVidia shader cache size to 100Gb
 "@;
   }
 

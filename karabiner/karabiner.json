@@ -8,57 +8,51 @@
       "rules": [{
 
         // caps lock to m1
-        "description": "caps lock as meta",
+        "description": "caps lock to m1",
         "manipulators": [{
-                                "description": "Use caps lock as 'meta' key to trigger things",
-                                "from": {
-                                    "description": "'modifiers' so shift-caps do not trigger caps",
-                                    "key_code": "caps_lock",
-                                    "modifiers": { "optional": ["any"] }
-                                },
-                                "parameters": { "basic.to_if_held_down_threshold_milliseconds": 500 },
-                                "to": [
-                                    {
-                                        "set_variable": {
-                                            "name": "_m1",
-                                            "value": 1
-                                        }
-                                    }
-                                ],
-                                "to_after_key_up": [
-                                    {
-                                        "set_variable": {
-                                            "name": "_m1",
-                                            "value": 0
-                                        }
-                                    },
-                                    {
-                                        "set_variable": {
-                                            "name": "_m1_held",
-                                            "value": 0
-                                        }
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "set_variable": {
-                                            "name": "_m1",
-                                            "value": 1
-                                        }
-                                    },
-                                    {
-                                        "set_variable": {
-                                            "name": "_m1_held",
-                                            "value": 1
-                                        }
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "left cmd to m2 and esc",
+          "description": "Use caps lock as 'meta' key to trigger things",
+          "from": {
+            "description": "'modifiers' so shift-caps do not trigger caps",
+            "key_code": "caps_lock",
+            "modifiers": { "optional": ["any"] }
+          },
+          "parameters": {
+            "basic.to_if_held_down_threshold_milliseconds": 500
+          },
+          "to": [{
+            "set_variable": {
+              "name": "_m1",
+              "value": 1
+            }
+          }],
+          "to_after_key_up": [{
+            "set_variable": {
+              "name": "_m1",
+              "value": 0
+            }
+          }, {
+            "set_variable": {
+              "name": "_m1_held",
+              "value": 0
+            }
+          }],
+          "to_if_held_down": [{
+            "set_variable": {
+              "name": "_m1",
+              "value": 1
+            }
+          }, {
+            "set_variable": {
+              "name": "_m1_held",
+              "value": 1
+            }
+          }],
+          "type": "basic"
+        }]
+      }, {
+
+        // left cmd to m2 and esc
+        "description": "left cmd to m2 and esc",
                         "manipulators": [
                             {
                                 "description": "Use left cmd as both 'meta-2' and 'esc' key",

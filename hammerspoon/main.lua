@@ -1409,16 +1409,39 @@ function App:createMenu()
 end
 
 function App:showSymbolPicker()
+  local chooser = nil
+  local hotkeys = {}
   local oldLayout = hs.keycodes.currentLayout()
   hs.keycodes.setLayout("ABC")
-  -- TODO: also register cmd-return and shift-return as hotkeys
-  local chooser = hs.chooser.new(function(choice)
+
+  local choices = {}
+  for _, pair in pairs(self.symbols) do
+    symbol = pair[1]
+    name = pair[2]
+    table.insert(choices, {
+      text = symbol .. " " .. name,
+      symbol = symbol
+    })
+  end
+
+  function onConfirm()
+    if chooser and chooser:isVisible() then
+      local choice = chooser:selectedRow()
+      chooser:select(choice)
+    end
+  end
+
+  function onSelect(choice)
+    for _, hotkey in ipairs(hotkeys) do
+      hotkey:disable()
+    end
+    hotkeys = {}
+    focusLastFocused()
+
     if not choice then
-      focusLastFocused()
       return
     end
-    focusLastFocused()
-  
+ 
     local oldClipboard = hs.pasteboard.uniquePasteboard()
     hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
@@ -1428,17 +1451,13 @@ function App:showSymbolPicker()
     hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
     hs.pasteboard.deletePasteboard(oldClipboard)
     hs.keycodes.setLayout(oldLayout)
-  end)
-
-  choices = {}
-  for _, pair in pairs(self.symbols) do
-    symbol = pair[1]
-    name = pair[2]
-    table.insert(choices, {
-      text = symbol .. " " .. name,
-      symbol = symbol
-    })
   end
+
+  table.insert(hotkeys, hs.hotkey.bind({}, "return", onConfirm))
+  table.insert(hotkeys, hs.hotkey.bind({"cmd"}, "return", onConfirm))
+  table.insert(hotkeys, hs.hotkey.bind({"shift"}, "return", onConfirm))
+
+  chooser = hs.chooser.new(onSelect)
   chooser:choices(choices)
   chooser:show()
 end

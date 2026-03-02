@@ -1411,6 +1411,7 @@ end
 function App:showSymbolPicker()
   local oldLayout = hs.keycodes.currentLayout()
   hs.keycodes.setLayout("ABC")
+  -- TODO: also register cmd-return and shift-return as hotkeys
   local chooser = hs.chooser.new(function(choice)
     if not choice then
       focusLastFocused()

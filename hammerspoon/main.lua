@@ -39,6 +39,7 @@ function App:new()
   inst.discordDock = nil
   inst.waDock = nil
   inst.notionDock = nil
+  inst.vkToken = nil
   inst.tinyurlToken = nil
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
@@ -1170,36 +1171,63 @@ function App:startHeartbeat()
 end
 
 
-function App:_shortenUrl(targetUrl)
-  if not self.tinyurlToken then
+function App:_shortenUrl(targetUrl, provider)
+  provider = provider or "vk"
+  if not self.tinyurlToken or not self.vkToken then
     return hs.alert.show("Passwords not loaded")
   end
 
-  local url = "https://api.tinyurl.com/create"
-  local data = hs.json.encode({
-    url = targetUrl,
-  })
-  local headers = {
-    ["Content-Type"] = "application/json",
-    Authorization = "bearer " .. self.tinyurlToken,
-  }
-  hs.http.asyncPost(url, data, headers, function(status, response, _)
-    if status ~= 200 and status ~= 201 then
-      return hs.alert.show("Failed: " .. status)
-    end
-    local response = hs.json.decode(response)
-    if not response.data then
-      if response.errors then
-        dir(response.errors)
-      else
-        dir(response)
+  if provider == "vk" then
+    local url = "https://api.vk.com/method/utils.getShortLink"
+    url = url .. "?" .. "url=" .. hs.http.encodeForQuery(targetUrl)
+    url = url .. "&" .. "private=1"
+    url = url .. "&" .. "access_token=" .. hs.http.encodeForQuery(self.vkToken)
+    url = url .. "&" .. "v=5.199"
+    hs.http.asyncPost(url, data, headers, function(status, response, _)
+      if status ~= 200 and status ~= 201 then
+        return hs.alert.show("Failed: " .. status)
       end
-      return hs.alert.show("Failed: no data")
-    else
-      hs.pasteboard.setContents(response.data.tiny_url)
-      return hs.alert.show("Success")
-    end
-  end)
+      local response = hs.json.decode(response)
+      if not response.response then
+        if response.error then
+          dir(response.error)
+        else
+          dir(response)
+        end
+        return hs.alert.show("Failed: no data")
+      else
+        hs.pasteboard.setContents(response.response.short_url)
+        return hs.alert.show("Success")
+      end
+    end)
+
+  elseif provider == "tinyurl" then
+    local url = "https://api.tinyurl.com/create"
+    local data = hs.json.encode({
+      url = targetUrl,
+    })
+    local headers = {
+      ["Content-Type"] = "application/json",
+      Authorization = "bearer " .. self.tinyurlToken,
+    }
+    hs.http.asyncPost(url, data, headers, function(status, response, _)
+      if status ~= 200 and status ~= 201 then
+        return hs.alert.show("Failed: " .. status)
+      end
+      local response = hs.json.decode(response)
+      if not response.data then
+        if response.errors then
+          dir(response.errors)
+        else
+          dir(response)
+        end
+        return hs.alert.show("Failed: no data")
+      else
+        hs.pasteboard.setContents(response.data.tiny_url)
+        return hs.alert.show("Success")
+      end
+    end)
+  end
 end
 
 
@@ -1267,6 +1295,7 @@ function App:createMenu()
 
     local db = "/Users/user/dotfiles/auth/passwords.kdbx"
     local app = "/opt/homebrew/bin/keepassxc-cli"
+
     local args = {
       "show", "-s", db, "tinyurl", "--attributes", "token"
     }
@@ -1279,13 +1308,31 @@ function App:createMenu()
         return hs.alert.show("Error executing keepassxc")
       end
       self.tinyurlToken = stdOut:match("^%s*(.-)%s*$")
-      hs.alert.show("Loaded")
+
+      -- TODO: refactor into reusable chain code
+      local args = {
+        "show", "-s", db, "vk.gvp-url-shortener", "--attributes", "token"
+      }
+      local onTaskExit = function(exitCode, stdOut, stdErr)
+        if exitCode ~= 0 then
+          print("keepass stdout")
+          print(stdOut)
+          print("keepass stderr")
+          print(stdErr)
+          return hs.alert.show("Error executing keepassxc")
+        end
+        self.vkToken = stdOut
+        hs.alert.show("Loaded")
+      end
+      local task = hs.task.new(app, onTaskExit, args)
+      task:setInput(masterPass)
+
+      -- Do not trust GC
+      masterPass = ""
+      task:start()
     end
     local task = hs.task.new(app, onTaskExit, args)
     task:setInput(masterPass)
-
-    -- Do not trust GC
-    masterPass = ""
     task:start()
   end)
 

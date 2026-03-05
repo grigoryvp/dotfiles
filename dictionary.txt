@@ -754,6 +754,7 @@ mimetypes
 mineffect
 miniboss
 minipage
+ministral
 Miscreation
 mkdocs
 mkdocstrings
@@ -1291,6 +1292,7 @@ ulonglong
 Unaliased
 unavail
 unblockable
+Unbreaking
 unc
 uncollegiate
 underlinecolor
@@ -1789,6 +1791,7 @@ Zod
 ребаланс
 резидентства
 реселлера
+ресентимента
 ретраи
 Рецидивирующий
 Риддел

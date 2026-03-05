@@ -763,6 +763,7 @@ MLO
 MLX
 mmd
 mochajs
+modelinfo
 modulepath
 Mojolicious
 Moosh

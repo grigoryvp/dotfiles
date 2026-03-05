@@ -62,18 +62,15 @@
           "parameters": {
             "basic.to_if_held_down_threshold_milliseconds": 500
           },
+          "to": [{
+            "set_variable": {
+              "name": "_m2",
+              "value": 1
+            }
+          }],
 
 
 
-
-          "to": [
-              {
-                  "set_variable": {
-                      "name": "_m2",
-                      "value": 1
-                  }
-              }
-          ],
           "to_after_key_up": [
               {
                   "set_variable": {

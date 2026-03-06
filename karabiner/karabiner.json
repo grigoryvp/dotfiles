@@ -20,32 +20,17 @@
             "basic.to_if_held_down_threshold_milliseconds": 500
           },
           "to": [{
-            "set_variable": {
-              "name": "_m1",
-              "value": 1
-            }
+            "set_variable": { "name": "_m1", "value": 1 }
           }],
           "to_after_key_up": [{
-            "set_variable": {
-              "name": "_m1",
-              "value": 0
-            }
+            "set_variable": { "name": "_m1", "value": 0 }
           }, {
-            "set_variable": {
-              "name": "_m1_held",
-              "value": 0
-            }
+            "set_variable": { "name": "_m1_held", "value": 0 }
           }],
           "to_if_held_down": [{
-            "set_variable": {
-              "name": "_m1",
-              "value": 1
-            }
+            "set_variable": { "name": "_m1", "value": 1 }
           }, {
-            "set_variable": {
-              "name": "_m1_held",
-              "value": 1
-            }
+            "set_variable": { "name": "_m1_held", "value": 1 }
           }],
           "type": "basic"
         }]
@@ -63,28 +48,14 @@
             "basic.to_if_held_down_threshold_milliseconds": 500
           },
           "to": [{
-            "set_variable": {
-              "name": "_m2",
-              "value": 1
-            }
+            "set_variable": { "name": "_m2", "value": 1 }
+          }],
+          "to_after_key_up": [{
+            "set_variable": { "name": "_m2", "value": 0 }
+          }, {
+            "set_variable": { "name": "_m2_held", "value": 0 }
           }],
 
-
-
-          "to_after_key_up": [
-              {
-                  "set_variable": {
-                      "name": "_m2",
-                      "value": 0
-                  }
-              },
-              {
-                  "set_variable": {
-                      "name": "_m2_held",
-                      "value": 0
-                  }
-              }
-          ],
           "to_if_alone": [{ "key_code": "escape" }],
           "to_if_held_down": [
               {

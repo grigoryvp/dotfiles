@@ -415,6 +415,7 @@ Freepik
 freezegun
 frontmost
 Frosthand
+frozendict
 frozenset
 FSM
 FSRS
@@ -455,6 +456,7 @@ GlennDelahoy
 GMKtec
 GNN
 Goathide
+Goatman
 Goatmem
 goatmen
 Goldcast
@@ -749,6 +751,7 @@ Metalsmith
 michaeldfallen
 microcontroller
 microcontrollers
+midtones
 mimestream
 mimetypes
 mineffect
@@ -775,6 +778,7 @@ MQTT
 MRO
 msbuild
 msgpack
+mspaint
 mts
 MTU
 MTWTFSSouehrauneduitn
@@ -1024,6 +1028,7 @@ returncode
 rfid
 rfind
 RGB
+RGWB
 Rhoa
 Rhoahide
 Riben
@@ -1212,6 +1217,7 @@ tailnet
 tailscale
 tanky
 Tarantool
+targetable
 taskkill
 Tauri
 tcbox

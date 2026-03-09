@@ -461,6 +461,7 @@ Goatmem
 goatmen
 Goldcast
 Goldworked
+googleworkspace
 Goroutines
 gpetrov
 gping
@@ -484,6 +485,7 @@ gunicorn
 Gutspike
 gvl
 Gwennen
+gws
 habr
 habrahabr
 Haemophilia
@@ -1924,3 +1926,6 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
+Moti
+Aro
+Svalinn

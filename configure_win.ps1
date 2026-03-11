@@ -327,6 +327,8 @@ class App {
       $this._installApp("XPFCS9QJBKTHVZ");
       # Remote keyboard and mouse
       $this._installApp("Deskflow.Deskflow");
+      # htop
+      $this._installApp("marlocarlo.pstop");
       # Discord client
       $this._installApp("Discord.Discord");
       # EpicGames client

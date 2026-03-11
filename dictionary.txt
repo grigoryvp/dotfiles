@@ -788,6 +788,7 @@ multibyte
 MULTIPROC
 MVC
 MVCC
+mvn
 myapp
 mycompany
 mynamespace

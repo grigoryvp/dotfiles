@@ -1483,6 +1483,8 @@ addRemap(["d", "app", "doublecmd.exe"], ["m1", "m3"], "f8")
 addRemap("p", ["m1", "m3"], ["delete"])
 ;;  m1-p for backspace
 addRemap("p", ["m1"], "backspace")
+;;  'm2-p' for phone
+addRemap("p", ["m2"], ["send", "{+}31681345854"])
 
 ;;  'm1-semicolon' for left mouse button.
 addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
@@ -1547,8 +1549,8 @@ addRemap("t", ["m1", "m2"], "end")
 addRemap("t", ["m1", "shift"], "end", ["shift"])
 ;;  'm1-t' for end.
 addRemap("t", ["m1"], "end")
-;;  'm2-t' for phone
-addRemap("t", ["m2"], ["send", "{+}31681345854"])
+;;  'm2-t' for 10 (PoE essence sell)
+addRemap("t", ["m2"], ["send", "10"])
 ;;  'ctrl-t' to 'ctrl-shift-t' for WindowsTerminal
 app := "WindowsTerminal.exe"
 addRemap(["t", "app", app], ["ctrl"], "t", ["ctrl", "shift"])

@@ -3095,6 +3095,29 @@
                                 "type": "basic"
                             },
                             {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m2-z for 0 (PoE one-hand)",
+                                "from": { "key_code": "z" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"paste\", \"text\": \"0\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
                                 "description": "control-y => command-y for mac-win consistency",
                                 "from": {
                                     "key_code": "y",

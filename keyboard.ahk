@@ -1570,7 +1570,7 @@ addRemap("s", ["m2"], ["send", "Best regards, {enter}Grigory Petrov,{enter}{+}31
 addRemap("s", ["m3"], ["shorten"])
 
 ;;  'm2-z' for 0 (PoE one-hand operation)
-addRemap("t", ["m2"], ["send", "0"])
+addRemap("z", ["m2"], ["send", "0"])
 
 ;;  'm1-2' fo 1st app
 addRemap("2", ["m1"], "1", ["win", "ctrl"])

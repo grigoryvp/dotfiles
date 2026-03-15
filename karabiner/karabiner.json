@@ -549,6 +549,32 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.anthropic\\.claudefordesktop$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "dual mode 'enter': control if not alone, option-enter if alone for some apps",
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "right_control",
+                                        "lazy": true
+                                    }
+                                ],
+                                "to_if_alone": [{
+                                  "key_code": "return_or_enter",
+                                  "modifiers": ["left_option"]
+                                }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
                                             "^com\\.microsoft\\.edgemac$",
                                             "^com\\.apple\\.Safari$",
                                             "^org\\.chromium\\.Chromium$",
@@ -1874,11 +1900,44 @@
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "m1-6 for 5th app",
                                 "from": { "key_code": "6" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_index\": 4}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-m2-6 for Notion",
+                                "from": { "key_code": "6" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"notion\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2004,9 +2063,9 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-m2-0 for Notion",
+                                "description": "m1-m2-0 for Linear",
                                 "from": { "key_code": "0" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"notion\"}' 2>/dev/null" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"linear\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -3073,7 +3132,7 @@
                                 "description": "control-k => command-k for mac-win consistency",
                                 "from": {
                                     "key_code": "k",
-                                    "modifiers": { "mandatory": ["right_control"] }
+                                    "modifiers": { "mandatory": ["control"] }
                                 },
                                 "to": [
                                     {

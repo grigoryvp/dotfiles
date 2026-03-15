@@ -1013,6 +1013,29 @@
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m2-p for phone",
+                                "from": { "key_code": "p" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"paste\", \"text\": \"+31681345854\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
                                         "value": 1
                                     },
                                     {
@@ -2908,9 +2931,9 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m2-t for phone",
+                                "description": "m2-t for 10 (PoE essence sell)",
                                 "from": { "key_code": "t" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"paste\", \"text\": \"+31681345854\"}' 2>/dev/null" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"paste\", \"text\": \"10\"}' 2>/dev/null" }],
                                 "type": "basic"
                             }
                         ]

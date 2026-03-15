@@ -39,6 +39,7 @@ function App:new()
   inst.discordDock = nil
   inst.waDock = nil
   inst.notionDock = nil
+  inst.linearDock = nil
   inst.vkToken = nil
   inst.tinyurlToken = nil
   -- Can't get if not connected to the network.
@@ -199,6 +200,12 @@ function App:startHttpServer()
             return "Notion not found in dock", 400, {}
           end
           self.notionDock:doAXPress()
+          return "", 200, {}
+        elseif json.app_id == "linear" then
+          if not self.linearDock then
+            return "Linear not found in dock", 400, {}
+          end
+          self.linearDock:doAXPress()
           return "", 200, {}
         elseif json.app_id == "gpt" then
           self:clickDockItemByName("ChatGPT")
@@ -901,7 +908,8 @@ function App:onHeartbeat()
      or not self.slackDock
      or not self.discordDock
      or not self.waDock
-     or not self.notionDock then
+     or not self.notionDock
+     or not self.linearDock then
     -- Do not check too often, CPU expensive
     if isBigTimeout then
       for _, item in ipairs(self.dockItems) do
@@ -928,6 +936,9 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "Notion" then
           self.notionDock = item
+        end
+        if item.AXTitle == "Linear" then
+          self.linearDock = item
         end
       end
     end
@@ -1036,6 +1047,10 @@ function App:onHeartbeat()
 
   if self.notionDock and self.notionDock.AXStatusLabel then
     table.insert(notifications, "N")
+  end
+
+  if self.linearDock and self.linearDock.AXStatusLabel then
+    table.insert(notifications, "L")
   end
 
   self.menuItem:clear()

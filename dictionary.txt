@@ -82,6 +82,7 @@ Archmage
 argmap
 argparse
 Armin
+Aro
 Asenath
 ASF
 asg
@@ -199,6 +200,7 @@ cjkfont
 clangd
 classoption
 Classpath
+claudefordesktop
 Clayshaper
 clck.ru
 cleandoc
@@ -774,6 +776,7 @@ Mojolicious
 Moosh
 Morior
 moscowpythonconf
+Moti
 movespeed
 mpv
 MQTT
@@ -1035,6 +1038,7 @@ RGWB
 Rhoa
 Rhoahide
 Riben
+Ridan
 Riker
 Rin
 Ringmail
@@ -1201,6 +1205,7 @@ Sunfire
 Superintelligence
 suppresssample
 suppresssamplenum
+Svalinn
 SWE-Bench
 Swiftblade
 swiftenv
@@ -1341,6 +1346,7 @@ Vagan
 Valdo
 valēre
 Varargs
+Varashta
 vbus
 Vcpkg
 VCS
@@ -1926,6 +1932,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-Moti
-Aro
-Svalinn

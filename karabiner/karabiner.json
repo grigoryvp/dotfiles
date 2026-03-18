@@ -520,7 +520,8 @@
                                             "^com\\.openai\\.chat$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.googlecode\\.iterm2$",
-                                            "^com\\.atlassian\\.trello$"
+                                            "^com\\.atlassian\\.trello$",
+                                            "^com\\.linear$"
                                         ],
                                         "file_paths": [
                                           "/Notion Calendar$"

@@ -3153,16 +3153,17 @@
                                 "type": "basic"
                             },
                             {
-                                "description": "control-k => command-k for mac-win consistency",
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
                                             "^ru\\.keepcoder\\.Telegram$",
-                                            "^com\\.tdesktop\\.Telegram$"
+                                            "^com\\.tdesktop\\.Telegram$",
+                                            "^com\\.tinyspeck\\.slackmacgap$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
                                 ],
+                                "description": "control-k => command-k for mac-win consistency",
                                 "from": {
                                     "key_code": "k",
                                     "modifiers": { "mandatory": ["control"] }

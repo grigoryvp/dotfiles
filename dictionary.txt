@@ -464,6 +464,7 @@ goatmen
 Goldcast
 Goldworked
 googleworkspace
+GOPATH
 Goroutines
 gpetrov
 gping
@@ -937,6 +938,7 @@ Polaric
 Pondium
 popd
 Popen
+postpack
 ppp
 pprint
 PPX

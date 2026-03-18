@@ -306,6 +306,10 @@
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "yaml.customTags": [
+    // For GitLab CI/CD includes
+    "!reference sequence"
+  ],
   "git.openRepositoryInParentFolders": "never",
   "AutoHotkey2": {
     "InterpreterPath": "AutoHotkey.exe"

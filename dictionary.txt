@@ -811,6 +811,7 @@ Nanbeige
 nanodjango
 NAS
 ncdu
+needspace
 Nemotron
 Nenet
 neocrypto
@@ -1923,6 +1924,7 @@ Zod
 фикстурами
 фикстуру
 фикстуры
+финтеха
 фича
 фичи
 флешек

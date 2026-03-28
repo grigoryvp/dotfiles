@@ -101,6 +101,7 @@ asyncio
 asyncpg
 atexit
 Atoi
+ATX
 Atziri
 Aul
 autobuild
@@ -130,6 +131,8 @@ Bellcore
 bem
 benchcraft
 benchcrafted
+benchcrafting
+benchcrafts
 bg
 bindgen
 BIP
@@ -166,7 +169,9 @@ bunjs
 Bunq
 Bybit
 byteorder
+bzr
 cachetools
+CachyOS
 Caeserius
 Cameria
 CAPEX
@@ -194,6 +199,7 @@ cheatsheet
 Chestplate
 Chimeral
 Chimerascale
+choco
 chromakey
 CI_PIPELINE_IID
 Cinderswallow
@@ -236,6 +242,7 @@ convolutional
 cookiecutter
 cooldown
 coreutils
+Cortana
 cowork
 cpython
 craftable
@@ -423,6 +430,7 @@ Frosthand
 frozendict
 frozenset
 FSM
+FSR
 FSRS
 FTX
 functools
@@ -553,6 +561,7 @@ IIR
 ilograph
 ilvl
 im
+imagex
 IMG
 implicits
 impnattypo
@@ -565,6 +574,7 @@ Informix
 iniconfig
 Inlines
 Innocn
+innodb
 instancecheck
 instrumentator
 Interpretability
@@ -663,6 +673,7 @@ Leatherbound
 Leatherscale
 leetcode
 letsencrypt
+leveldb
 Leyline
 LFE
 LFM
@@ -705,6 +716,7 @@ lookaround
 Loreweave
 Loricated
 lru
+LSMT
 lsp
 LTE
 lualatex
@@ -750,6 +762,7 @@ MEDS
 memmove
 memoizations
 memray
+Memtable
 Merveil
 MESI
 mesos
@@ -757,10 +770,12 @@ metaclass
 metaclasses
 metainfo
 metainformation
+metallb
 Metalsmith
 michaeldfallen
 microcontroller
 microcontrollers
+Microk8s
 midtones
 mimestream
 mimetypes
@@ -810,6 +825,7 @@ nacl
 Nanbeige
 nanodjango
 NAS
+ncase
 ncdu
 needspace
 Nemotron
@@ -834,6 +850,8 @@ Nightweave
 Nightwind
 Niko
 Nimis
+Nir
+nircmd
 njk
 NLP
 Noctua
@@ -851,6 +869,7 @@ notunes
 NPC
 npmignore
 NSSM
+NTFS
 Nubuck
 NUC
 Num
@@ -1055,6 +1074,7 @@ rjsf
 rmi
 rmtree
 RO
+rocksdb
 Rog
 Rogcrafting
 Ronacher
@@ -1113,6 +1133,7 @@ sendgrid
 sendto
 Sephirot
 Serpentscale
+servicelb
 setdefault
 setproctitle
 setrestartfreeze
@@ -1120,6 +1141,7 @@ settimezone
 setuptools
 setx
 SFT
+SFX
 Shakari
 shalerb
 Shattersword
@@ -1147,6 +1169,7 @@ Smoulderstrike
 SMPP
 sniffio
 SNMP
+SO-DIMM
 SOCK_DGRAM
 Socketable
 SODIMM
@@ -1220,6 +1243,7 @@ SWE-Bench
 Swiftblade
 swiftenv
 Swiftstalker
+swm
 Sybase
 syncdb
 Synthesised
@@ -1237,6 +1261,7 @@ tanky
 Tarantool
 targetable
 taskkill
+taskschedulerview
 Tauri
 tcbox
 tcpdump
@@ -1313,8 +1338,10 @@ UCS-2
 udemy
 UDP
 UEFI
+ufw
 ujson
 ulonglong
+ultrathink
 Unaliased
 unavail
 unblockable
@@ -1345,6 +1372,7 @@ utf-8
 Utzaal
 uuidv7
 Uul-Netol
+UUP
 uutils
 uvicorn
 uvloop
@@ -1373,6 +1401,7 @@ Verisium
 Veritania
 Vermillion
 VESA
+vha
 viewports
 viewsets
 Vilenta
@@ -1420,6 +1449,8 @@ Werkzeug
 Whakano
 Wi-Fi
 Widowsilk
+wim
+wimlib
 winapi
 Windscream
 winget
@@ -1521,6 +1552,7 @@ Zod
 блобах
 блобов
 блобы
+блокчейнах
 Бобук
 Бодрийяр
 бо́льшая
@@ -1638,6 +1670,7 @@ Zod
 Каллистов
 каррирование
 картируются
+Кастомное
 катастрофоустойчивость
 квалиа
 киби-
@@ -1685,6 +1718,7 @@ Zod
 Малкиела
 манипулятивных
 маппинга
+масштабируемостью
 меби-
 мебибайт
 мейлбокс
@@ -1710,6 +1744,7 @@ Zod
 моржика
 Мосигры
 МРТ
+Мультитул
 мутабелен
 Мутабельная
 мутабельно
@@ -1743,6 +1778,7 @@ Zod
 нейросетей
 нейросетям
 нейросетями
+неконсистентные
 неоптимальна
 нереплицируемый
 нефальсифицируемой
@@ -1766,6 +1802,7 @@ Zod
 опенсорсе
 опенспейс
 ОПХБЕР
+отказоустойчивовостью
 пайплайн
 пайтон
 пайтоне
@@ -1872,6 +1909,10 @@ Zod
 скиллы
 Скиннер
 скопироваться
+слайса
+слайсах
+слайсе
+слайсов
 сорцами
 софтины
 спеллчекеров
@@ -1898,6 +1939,7 @@ Zod
 токенизированных
 токеном
 токену
+транзакционность
 трансформера
 тредами
 тредпулом
@@ -1956,6 +1998,7 @@ Zod
 Шард
 шардирования
 шардируется
+шейдеров
 шестнадцатиричном
 шорткатами
 штрудель

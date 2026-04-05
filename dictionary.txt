@@ -227,10 +227,12 @@ codepoint
 codepoints
 codesign
 cognitiо
+colframe
 Collapsable
 colorama
 colorlinks
 Colour
+coltitle
 columnconfigure
 conce
 confeta
@@ -400,6 +402,7 @@ Ezomyte
 Fanless
 Faridun
 fastapi
+fastcgi
 fastfetch
 fb
 FDBS
@@ -420,6 +423,7 @@ Flamequiver
 Flet
 Flink
 fn
+fontupper
 Forkshot
 Fossilised
 Foulborn
@@ -438,6 +442,7 @@ FX
 gamesample
 gamesamplenum
 Gbit
+GC
 gdb
 GDI
 Geekbench
@@ -523,6 +528,7 @@ Heartcarver
 Heraldric
 Heretech
 Heterochromia
+Hetrix
 hexdigest
 Hexproof
 hextouch
@@ -1168,6 +1174,7 @@ smm
 smol-toml
 Smoulderstrike
 SMPP
+SNI
 sniffio
 SNMP
 SO-DIMM
@@ -1423,6 +1430,7 @@ Voll
 Voltaxic
 Vorici
 voximplant
+Vruun
 vsicons
 vuejs
 vuex
@@ -1745,6 +1753,7 @@ Zod
 микросервисы
 минималистична
 минималках
+Минцифры
 многострочниках
 моментум
 Мониторим
@@ -1799,6 +1808,7 @@ Zod
 ноде
 нодой
 ноду
+ноцицептивных
 обналичить
 одномерны
 однопоточно
@@ -1940,7 +1950,9 @@ Zod
 суммаризирует
 схлопывать
 таба
+тайминги
 Тб
+Тбит
 тестировщика
 тимлид
 Тиннитус
@@ -1958,6 +1970,7 @@ Zod
 трейсы
 трем
 труднопереводимым
+ТСПУ
 ТСР
 туториалах
 ТЦ
@@ -1999,6 +2012,7 @@ Zod
 хачапури
 Хейлсберг
 хендл
+хендшейк
 Хидо
 Хоара
 Хопкинса

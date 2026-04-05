@@ -6,6 +6,7 @@ function App:new()
   inst.menuItem = menuitem:new()
   inst.MENU_LIGHTS_ON = 2
   inst.MENU_LIGHTS_OFF = 3
+  inst.MENU_LOAD_PASS = 4
   inst.lastLightsCount = 0
   inst.lastCpuUsage = hs.host.cpuUsageTicks()
   inst.cpuLoadHistory = {}
@@ -895,6 +896,14 @@ function App:onHeartbeat()
       local title = "Turn off lights (" .. lightsCount .. ")"
       self.menuItem:setSubmenuItemTitle(self.MENU_LIGHTS_OFF, title)
     end
+
+    -- check this PC is trusted
+    local filename = os.getenv("HOME") .. "/dotfiles/.secure"
+    if hs.fs.attributes(filename) ~= nil then
+      self.menuItem:setSubmenuItemEnabled(self.MENU_LOAD_PASS, true)
+    else
+      self.menuItem:setSubmenuItemEnabled(self.MENU_LOAD_PASS, false)
+    end
   end
 
   if isMedTimeout then
@@ -1297,9 +1306,8 @@ function App:createMenu()
   self.menuItem:addSubmenuItem("Reload", function()
     hs:reload()
   end)
-
+ 
   self.menuItem:addSubmenuItem("Load passwords", function()
-    -- TODO: confirm this PC is trusted
     local msg = "Enter master password"
     local secure = true
     local _, masterPass = hs.dialog.textPrompt(msg, "", "", "", "", secure)
@@ -1314,6 +1322,7 @@ function App:createMenu()
     local args = {
       "show", "-s", db, "tinyurl", "--attributes", "token"
     }
+
     local onTaskExit = function(exitCode, stdOut, stdErr)
       if exitCode ~= 0 then
         print("keepass stdout")
@@ -1346,10 +1355,11 @@ function App:createMenu()
       masterPass = ""
       task:start()
     end
+
     local task = hs.task.new(app, onTaskExit, args)
     task:setInput(masterPass)
     task:start()
-  end)
+  end, self.MENU_LOAD_PASS)
 
   self.menuItem:addSubmenuCheckbox(
     "Ping router (internal)",

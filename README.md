@@ -42,12 +42,14 @@ pip install --upgrade pip
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
+# touch ~/dotfiles/.secure
 # Install https://desktop.telegram.org/
 # Install Trello from App Store
 # Enable KeePass Chrome integration and connect Chrome to the correct DB
 # Command-drag-out menu icons except clock (until the "x" mark appears)
 # Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
-# Dock left: Notion, ChatGPT, Slack, WhatsApp, HEY, Discord, Parallels
+# Dock left: Tailscale, Docker, Linear, Notion, ChatGPT, Slack, WhatsApp,
+#   HEY, Parallels, Discord, Steam
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # In "Settings/General"
 # * Add noTunes.app, hammerspoon, wox to "Login Items"

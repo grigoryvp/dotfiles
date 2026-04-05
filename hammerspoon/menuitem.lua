@@ -252,6 +252,17 @@ function menuitem:setSubmenuItemTitle(id, title)
 end
 
 
+function menuitem:setSubmenuItemEnabled(id, isEnabled)
+  for _, submenu in pairs(self._submenu) do
+    if submenu.id == id then
+      submenu.disabled = not isEnabled
+      break
+    end
+  end
+  self._item:setMenu(self._submenu)
+end
+
+
 function menuitem:addSubmenuSeparator()
   table.insert(self._submenu, {title = "-"})
   self._item:setMenu(self._submenu)

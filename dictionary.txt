@@ -34,6 +34,7 @@ accesstoken
 Acclimatisation
 Accor
 Achmiz
+ack
 acqui-hired
 activerecord
 ADHD
@@ -438,6 +439,7 @@ frontmost
 Frosthand
 frozendict
 frozenset
+fsencode
 FSM
 FSR
 FSRS
@@ -1490,6 +1492,7 @@ WPF
 WPS
 wsgi
 WSL
+wss
 wx
 wxpython
 wxruby

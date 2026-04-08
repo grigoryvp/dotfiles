@@ -201,8 +201,10 @@ Chimeral
 Chimerascale
 choco
 chromakey
+chruby
 CI_PIPELINE_IID
 Cinderswallow
+Cingulate
 CIO
 Citus
 cjkfont
@@ -278,6 +280,7 @@ DBA
 DBAPI
 dbname
 dbt
+dcmake
 DDD
 DDL
 debuff
@@ -301,6 +304,7 @@ df
 DHH
 Dialla
 dind
+direnv
 discriminare
 Disfavour
 diskimages
@@ -364,6 +368,7 @@ endraw
 endswith
 Enthalpic
 env
+envrc
 epub
 eqmac
 erb
@@ -490,6 +495,7 @@ gradlew
 Granian
 Gravebind
 Gravicius
+grayscale
 Greathelm
 Greatwolf
 Greenplum
@@ -638,6 +644,7 @@ KEEPALIVE
 Keepass
 keepassdb
 keepassxc
+Kesus
 Keth
 keygen
 keypair
@@ -956,6 +963,7 @@ Phlex
 phpenv
 phpvm
 PicoRuby
+pik
 PIL
 pinggraph
 pipx
@@ -1553,6 +1561,7 @@ Zod
 бенчмарк
 бенчмаркам
 бенчмарки
+бенчмарков
 Берклевских
 бессерверной
 би
@@ -1621,6 +1630,9 @@ Zod
 датацентрах
 датацентре
 датацентров
+даташардов
+даташардом
+даташарды
 двумерны
 деавторизации
 Деавторизация
@@ -1768,6 +1780,7 @@ Zod
 мутабельно
 мутабельного
 мутабельное
+мутабельной
 мутабельности
 Мутабельность
 мутабельные
@@ -1831,6 +1844,7 @@ Zod
 партицированию
 паттерн-матчинга
 пентеста
+передоговориться
 переиспользовали
 переиспользован
 переиспользование
@@ -1889,6 +1903,7 @@ Zod
 Рантаймы
 раскирпичить
 распараллелить
+распарсить
 Рассела
 расшарить
 ребаланс
@@ -1904,6 +1919,7 @@ Zod
 роутеры
 РСУБД
 Сocoa
+самоподписанным
 Сапольски
 Сбере
 СБП
@@ -2029,6 +2045,7 @@ Zod
 шаблонизатором
 Шард
 шардам
+шардами
 шардирования
 шардируется
 шардов

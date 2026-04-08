@@ -96,13 +96,15 @@ configure() {
   brew tap wox-launcher/wox
   # For Python 3.10.0 on Apple Silicon
   brew install readline openssl
+  # For PHP
+  brew install autoconf
   # For Ruby 3.2
   brew install libyaml
   # For keepassxc-cli
   brew install --build-from-source libgpg-error
   # Install into applications, not as a cli
   brew install --cask mpv docker tailscale 
-  brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv rv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear
+  brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise
 
   # Need to check for network issues
   # brew install orbstack
@@ -139,33 +141,13 @@ configure() {
   # Input method name lookup for debug purpose
   curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 
-  if [ -e ~/.nodenv ]; then
-    echo "nodenv already installed"
-  else
-    git clone https://github.com/nodenv/nodenv.git ~/.nodenv
-    git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
-    git clone https://github.com/nodenv/nodenv-update.git ~/.nodenv/plugins/nodenv-update
-  fi
-
-  if [ -e ~/.swiftenv ]; then
-    echo "swiftenv already installed"
-  else
-    git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
-  fi
-
-  # Seems not working on macOS, maybe switch to phpvm?
-  # git clone https://github.com/phpenv/phpenv.git ~/.phpenv
-  # git clone https://github.com/php-build/php-build ~/.phpenv/plugins/php-build
-  # git clone https://github.com/jridgewell/phpenv-update ~/.phpenv/plugins/phpenv-update
-  # export PATH="$HOME/.phpenv/bin:$PATH"
-
-  export PATH="$HOME/.nodenv/bin:$PATH"
-  export PATH="$HOME/.swiftenv/bin:$PATH"
-  uv python install 3.13
-  rv ruby install 3.4.5
-  # Answer "no" to "already installed, continue?"
-  echo "n" | nodenv install 23.7.0
-  nodenv global 23.7.0
+  mise use -g python@3.14.3
+  mise use -g node@24.14.1
+  mise use -g ruby@4.0.2
+  brew install php
+  # No prebuilt binaries, fails to compile from source
+  mise use -g php@system
+  mise use -g swift@6.3
 
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
     echo "Dotfiles already cloned"

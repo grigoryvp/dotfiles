@@ -257,6 +257,8 @@ class App {
 
     # Optional installs after reboot
     if ($this._isFull) {
+      # TODO: add to PATH during install
+      $this._installApp("jdx.mise");
       # for diff-so-fancy
       $this._installBinApp("StrawberryPerl.StrawberryPerl",
         "C:\Strawberry\perl\bin\");

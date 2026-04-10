@@ -519,6 +519,7 @@ Haemophilia
 Haemorrhage
 hammerspoon
 hanami
+Handmouth
 Hardlink
 Harpyskin
 hasattr
@@ -1065,6 +1066,7 @@ redacter
 Redactions
 Redpanda
 Reefsteel
+refspec
 regen
 Régime
 relogin

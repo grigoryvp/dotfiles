@@ -386,5 +386,9 @@
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "claudeCode.preferredLocation": "panel",
-  "claudeCode.selectedModel": "default"
+  "claudeCode.selectedModel": "default",
+  "claude-code.environmentVariables": [{
+    "name": "ANTHROPIC_BASE_URL",
+    "value": "https://api.anthropic.com"
+  }]
 }

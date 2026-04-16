@@ -167,6 +167,7 @@ bson
 bssid
 BTF
 btog
+btop
 bunjs
 Bunq
 Bybit
@@ -293,6 +294,7 @@ defaultdict
 defence
 defences
 Dekharan
+deleteon
 Dementophobia
 densesample
 densesamplenum
@@ -320,6 +322,7 @@ Divinarius
 dkjson
 DLSS
 dmg
+DML
 dockercompose
 dockerfiles
 dockerhub
@@ -391,6 +394,7 @@ etl
 etog
 eurocom
 EUV
+evals
 evaluate'ится
 evaluate'ить
 évaluation
@@ -561,6 +565,7 @@ HTAP
 htmx
 httpx
 hvac
+HX
 Hydrascale
 hyperliquid
 Hyrri
@@ -612,6 +617,7 @@ isnan
 iterm
 itertools
 itsdangerous
+ixx
 Izaro
 jailbreaking
 jailbroken
@@ -641,6 +647,7 @@ Kamasan
 Kaom
 karabiner
 Karui
+Katana
 kawaii
 kde
 KE
@@ -669,6 +676,7 @@ Konquerer
 Kool
 Korell
 Kosis
+KQP
 Kristian
 KTC
 kubeadm
@@ -735,6 +743,7 @@ Loricated
 lru
 LSMT
 lsp
+lsusb
 LTE
 lualatex
 luarocks
@@ -823,6 +832,8 @@ MRO
 msbuild
 msgpack
 mspaint
+MSVC
+MSVCRT
 mts
 MTU
 MTWTFSSouehrauneduitn
@@ -862,6 +873,7 @@ neuroenergetics
 Neuroscientists
 nextjs
 Ngakanu
+NGW
 NIAH
 nic
 nifi
@@ -1358,6 +1370,7 @@ typeguards
 Typer
 ua-parser
 ubyte
+UCRT
 UCS-2
 udemy
 UDP
@@ -1382,6 +1395,7 @@ Unpowered
 Unraisable
 unsequenced
 unsummon
+Updateon
 URLCONF
 urlencode
 usde
@@ -1473,12 +1487,14 @@ websequencediagrams
 wechat
 WEP
 Werkzeug
+Wh
 Whakano
 Wi-Fi
 Widowsilk
 wim
 wimlib
 winapi
+Windhawk
 Windscream
 winget
 WIP
@@ -1514,6 +1530,7 @@ Xoph
 xorg
 xrange
 Xsolla
+XW
 xxd
 xy
 yapf
@@ -1844,6 +1861,7 @@ Zod
 опенсорсе
 опенспейс
 ОПХБЕР
+оркестрирует
 отказоустойчивовостью
 пайплайн
 пайтон
@@ -1851,6 +1869,7 @@ Zod
 Парсер
 парсерах
 парсеры
+парсится
 партицированию
 паттерн-матчинга
 пентеста
@@ -2059,6 +2078,7 @@ Zod
 шардирования
 шардируется
 шардов
+шарды
 шейдеров
 шестнадцатиричном
 шорткатами

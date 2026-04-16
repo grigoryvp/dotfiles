@@ -326,6 +326,7 @@
   "workbench.editor.empty.hint": "hidden",
   "xi.debug": false,
   "cSpell": {
+    "caseSensitive": false,
     "checkLimit": 10000,
     "minWordLength": 2,
     "language": "en,ru",

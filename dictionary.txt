@@ -153,6 +153,7 @@ blockable
 Bloodletter
 bonechill
 bootstrapper
+Borgmon
 Borland
 bottlenecked
 BPF
@@ -806,6 +807,7 @@ mktemp
 MLO
 MLX
 mmd
+mobiledev
 mochajs
 modelinfo
 modulepath

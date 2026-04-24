@@ -66,6 +66,7 @@ anki
 ANTLR
 anychar
 anyio
+AOC
 aoe
 AOT
 apk
@@ -426,6 +427,7 @@ fidonet
 Fira
 Firesong
 Firewire
+firstlineno
 Fishscale
 Flamebolt
 flamegraph
@@ -451,6 +453,7 @@ FSRS
 FTX
 functools
 FX
+Galera
 gamesample
 gamesamplenum
 Gbit
@@ -692,6 +695,7 @@ Langa
 langchain
 langgraph
 Lantador
+LARQL
 LDR
 leaguestart
 Leatherbound
@@ -762,6 +766,7 @@ Mageblood
 magicdns
 magick
 Mahuxotl
+Maingear
 Malachai
 Maligaro
 malloc
@@ -838,6 +843,7 @@ mts
 MTU
 MTWTFSSouehrauneduitn
 MTX
+Mudi
 mul
 multibyte
 MULTIPROC
@@ -849,6 +855,7 @@ mycompany
 mynamespace
 mypy
 myscope
+mysqldump
 mysuppress
 nacl
 Nanbeige
@@ -1131,6 +1138,7 @@ rustdesk
 rustup
 RVM
 RW
+Ryanair
 RYB
 Ryzen
 S͓
@@ -1299,6 +1307,7 @@ taskkill
 taskschedulerview
 Tauri
 tcbox
+TCO
 tcpdump
 TDP
 techdocs
@@ -1349,6 +1358,7 @@ Trackpad
 Transavia
 Trapsetter
 Treerunner
+Tri
 Triggerblades
 Triggerslam
 Trino
@@ -1427,6 +1437,7 @@ valēre
 Varargs
 Varashta
 vbus
+vcloud
 Vcpkg
 VCS
 Vec
@@ -1607,12 +1618,14 @@ Zod
 Брока
 булевого
 Бухучёт
+БХВ
 бэкенд
 бэкенда
 бэкенде
 валидировать
 векторизация
 вендоров
+вендорской
 версионируется
 видеокодека
 видеопроигрывателя
@@ -1779,6 +1792,7 @@ Zod
 мебибайт
 мейлбокс
 Мейлбоксы
+мейнфреймов
 мема
 мемов
 метаклассы
@@ -1840,6 +1854,7 @@ Zod
 неоптимальна
 нереплицируемый
 нефальсифицируемой
+низкоинтенсивное
 Никсон
 нишевых
 нод
@@ -1850,6 +1865,7 @@ Zod
 ноду
 ноцицептивных
 обналичить
+оверхеда
 одномерны
 однопоточно
 однопоточный
@@ -2013,6 +2029,7 @@ Zod
 тредами
 тредпулом
 трейсы
+трейтов
 трем
 труднопереводимым
 ТСПУ

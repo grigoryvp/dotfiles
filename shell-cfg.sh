@@ -459,32 +459,14 @@ if which go > /dev/null; then
   start_path_with $(go env GOPATH)/bin
 fi
 
-##  Load eye, if installed
-if [ -d $HOME/.rye ]; then
-  source "$HOME/.rye/env"
-fi
-
-##  Load nodenv, if installed
-if [ -d $HOME/.nodenv ]; then
-  start_path_with "$HOME/.nodenv/bin"
-  start_path_with "$HOME/.nodenv/shims"
-  eval "$(nodenv init -)"
-fi
-
-##  Load phpenv, if installed
-if [ -d $HOME/.phpenv ]; then
-  start_path_with "$HOME/.phpenv/bin"
-  start_path_with "$HOME/.phpenv/shims"
-fi
-
-##  Load swiftenv, if installed
-if [ -d $HOME/.swiftenv ]; then
-  start_path_with "$HOME/.swiftenv/bin"
-fi
-
 ##  Load opam, if installed
 if [ -d $HOME/.opam ]; then
   eval "$(opam env)"
+fi
+
+##  Activate mise, if installed
+if mise --version >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
 fi
 
 # Disable pagers when the terminal is launched by Cline

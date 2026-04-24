@@ -845,6 +845,7 @@ nanodjango
 NAS
 ncase
 ncdu
+nclibs
 needspace
 Nemotron
 Nenet
@@ -1323,6 +1324,7 @@ TLI
 toc
 Tolman
 tomllib
+tonapps
 TONCOIN
 Tonkeeper
 Tonnel_Network_bot
@@ -1361,6 +1363,7 @@ udemy
 UDP
 UEFI
 ufw
+UID
 ujson
 ulonglong
 ultrathink

@@ -1518,6 +1518,7 @@ WOLED
 Wolfskin
 Wolven
 Wombgift
+Wordlist
 worktree
 Worktrees
 wox

@@ -27,6 +27,10 @@ function App:new()
   inst.lastBattery = nil
   inst.secondsSinceBatteryDec = 0
   inst.keepBrightness = false
+  -- If enabled will display indicators for messenger apps for which new
+  -- message indicators are displayed if these apps are not running (so they
+  -- can be started and no new messages are missed).
+  inst.indicateMissedMsgApps = false
   -- Keys are the charge amount the decrease is from, values are number
   -- of seconds it took for battery to discharge from that value. Ex, if
   -- key 90 contains value of 1000 that means that it took 1000 seconds for
@@ -65,6 +69,7 @@ function App:loadSettings()
   self.pingInetExt = hs.settings.get("pingInetExt")
   self.showBatteryTime = hs.settings.get("showBatteryTime")
   self.keepBrightness = hs.settings.get("keepBrightness")
+  self.indicateMissedMsgApps = hs.settings.get("indicateMissedMsgApps")
 end
 
 
@@ -907,7 +912,9 @@ function App:onHeartbeat()
   end
 
   if isMedTimeout then
-    self:getKarabinerState()
+    -- TODO: Removed in Karabiner 15.6.0, if I ever need to display this
+    -- state I need to write variables to json files in Karabiner script
+    -- self:getKarabinerState()
   end
 
   if not self.tgDock
@@ -1011,36 +1018,46 @@ function App:onHeartbeat()
   if self.tgDock and self.tgDock.AXStatusLabel then
     table.insert(notifications, "T")
   end
-  if not self.tgDock or not self.tgDock.AXIsApplicationRunning then
-    table.insert(notifications, "T͓")
+  if self.indicateMissedMsgApps then
+    if not self.tgDock or not self.tgDock.AXIsApplicationRunning then
+      table.insert(notifications, "T͓")
+    end
   end
 
   if self.mimeDock and self.mimeDock.AXStatusLabel then
     table.insert(notifications, "E")
   end
-  if not self.mimeDock or not self.mimeDock.AXIsApplicationRunning then
-    table.insert(notifications, "E͓")
+  if self.indicateMissedMsgApps then
+    if not self.mimeDock or not self.mimeDock.AXIsApplicationRunning then
+      table.insert(notifications, "E͓")
+    end
   end
 
   if self.mailDock and self.mailDock.AXStatusLabel then
     table.insert(notifications, "e")
   end
-  if not self.mailDock or not self.mailDock.AXIsApplicationRunning then
-    table.insert(notifications, "e͓")
+  if self.indicateMissedMsgApps then
+    if not self.mailDock or not self.mailDock.AXIsApplicationRunning then
+      table.insert(notifications, "e͓")
+    end
   end
 
   if self.waDock and self.waDock.AXStatusLabel then
     table.insert(notifications, "W")
   end
-  if not self.waDock or not self.waDock.AXIsApplicationRunning then
-    table.insert(notifications, "W͓")
+  if self.indicateMissedMsgApps then
+    if not self.waDock or not self.waDock.AXIsApplicationRunning then
+      table.insert(notifications, "W͓")
+    end
   end
 
   if self.slackDock and self.slackDock.AXStatusLabel then
     table.insert(notifications, "S")
   end
-  if not self.slackDock or not self.slackDock.AXIsApplicationRunning then
-    table.insert(notifications, "S͓")
+  if self.indicateMissedMsgApps then
+    if not self.slackDock or not self.slackDock.AXIsApplicationRunning then
+      table.insert(notifications, "S͓")
+    end
   end
 
   if self.heyDock and self.heyDock.AXStatusLabel then
@@ -1135,26 +1152,8 @@ function App:onHeartbeat()
     batteryText = batteryText .. timeLeft
   end
 
-  local indicator = {}
-  if self.karabinerState and self.karabinerState["variables"] then
-    if self.karabinerState["variables"]["_m1"] == 1 then
-      table.insert(indicator, {
-        color = {red = 0.0, green = 1.0, blue = 0.0}
-      })
-    end
-    if self.karabinerState["variables"]["_m2"] == 1 then
-      table.insert(indicator, {
-        color = {red = 1.0, green = 1.0, blue = 0.0}
-      })
-    end
-    if self.karabinerState["variables"]["_m3"] == 1 then
-      table.insert(indicator, {
-        color = {red = 0.0, green = 1.0, blue = 1.0}
-      })
-    end
-  end
-  self.menuItem:addIndicator(indicator)
-  self.menuItem:addSpacer(4)
+  -- See getKarabinerState()
+  -- self._displayKarabinerIndicator()
 
   if self.timerEndTime and self.timerEndTime > curTime then
     local diff = self.timerEndTime - curTime
@@ -1192,6 +1191,30 @@ function App:startHeartbeat()
   self.heartbeatTimer = hs.timer.doEvery(self.heartbeatInterval, function()
     self:onHeartbeat()
   end)
+end
+
+
+function App:_displayKarabinerIndicator()
+  local indicator = {}
+  if self.karabinerState and self.karabinerState["variables"] then
+    if self.karabinerState["variables"]["_m1"] == 1 then
+      table.insert(indicator, {
+        color = {red = 0.0, green = 1.0, blue = 0.0}
+      })
+    end
+    if self.karabinerState["variables"]["_m2"] == 1 then
+      table.insert(indicator, {
+        color = {red = 1.0, green = 1.0, blue = 0.0}
+      })
+    end
+    if self.karabinerState["variables"]["_m3"] == 1 then
+      table.insert(indicator, {
+        color = {red = 0.0, green = 1.0, blue = 1.0}
+      })
+    end
+  end
+  self.menuItem:addIndicator(indicator)
+  self.menuItem:addSpacer(4)
 end
 
 
@@ -1360,6 +1383,15 @@ function App:createMenu()
     task:setInput(masterPass)
     task:start()
   end, self.MENU_LOAD_PASS)
+
+  self.menuItem:addSubmenuCheckbox(
+    "Indicate missed messenger apps",
+    self.indicateMissedMsgApps,
+    function(checked)
+      self.indicateMissedMsgApps = checked
+      hs.settings.set("indicateMissedMsgApps", self.keepBrightness)
+    end
+  )
 
   self.menuItem:addSubmenuCheckbox(
     "Ping router (internal)",

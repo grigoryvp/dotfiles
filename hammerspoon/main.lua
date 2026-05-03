@@ -27,6 +27,7 @@ function App:new()
   inst.lastBattery = nil
   inst.secondsSinceBatteryDec = 0
   inst.keepBrightness = false
+  inst.indicateNewMsg = false
   -- If enabled will display indicators for messenger apps for which new
   -- message indicators are displayed if these apps are not running (so they
   -- can be started and no new messages are missed).
@@ -63,13 +64,14 @@ end
 
 
 function App:loadSettings()
+  self.indicateNewMsg = hs.settings.get("indicateNewMsg")
+  self.indicateMissedMsgApps = hs.settings.get("indicateMissedMsgApps")
   self.pingRouterInt = hs.settings.get("pingRouterInt")
   self.pingRouterExt = hs.settings.get("pingRouterExt")
   self.pingInetInt = hs.settings.get("pingInetInt")
   self.pingInetExt = hs.settings.get("pingInetExt")
   self.showBatteryTime = hs.settings.get("showBatteryTime")
   self.keepBrightness = hs.settings.get("keepBrightness")
-  self.indicateMissedMsgApps = hs.settings.get("indicateMissedMsgApps")
 end
 
 
@@ -1015,8 +1017,10 @@ function App:onHeartbeat()
 
   local notifications = {}
 
-  if self.tgDock and self.tgDock.AXStatusLabel then
-    table.insert(notifications, "T")
+  if self.indicateNewMsg then
+    if self.tgDock and self.tgDock.AXStatusLabel then
+      table.insert(notifications, "T")
+    end
   end
   if self.indicateMissedMsgApps then
     if not self.tgDock or not self.tgDock.AXIsApplicationRunning then
@@ -1024,8 +1028,10 @@ function App:onHeartbeat()
     end
   end
 
-  if self.mimeDock and self.mimeDock.AXStatusLabel then
-    table.insert(notifications, "E")
+  if self.indicateNewMsg then
+    if self.mimeDock and self.mimeDock.AXStatusLabel then
+      table.insert(notifications, "E")
+    end
   end
   if self.indicateMissedMsgApps then
     if not self.mimeDock or not self.mimeDock.AXIsApplicationRunning then
@@ -1033,8 +1039,10 @@ function App:onHeartbeat()
     end
   end
 
-  if self.mailDock and self.mailDock.AXStatusLabel then
-    table.insert(notifications, "e")
+  if self.indicateNewMsg then
+    if self.mailDock and self.mailDock.AXStatusLabel then
+      table.insert(notifications, "e")
+    end
   end
   if self.indicateMissedMsgApps then
     if not self.mailDock or not self.mailDock.AXIsApplicationRunning then
@@ -1042,8 +1050,10 @@ function App:onHeartbeat()
     end
   end
 
-  if self.waDock and self.waDock.AXStatusLabel then
-    table.insert(notifications, "W")
+  if self.indicateNewMsg then
+    if self.waDock and self.waDock.AXStatusLabel then
+      table.insert(notifications, "W")
+    end
   end
   if self.indicateMissedMsgApps then
     if not self.waDock or not self.waDock.AXIsApplicationRunning then
@@ -1051,8 +1061,10 @@ function App:onHeartbeat()
     end
   end
 
-  if self.slackDock and self.slackDock.AXStatusLabel then
-    table.insert(notifications, "S")
+  if self.indicateNewMsg then
+    if self.slackDock and self.slackDock.AXStatusLabel then
+      table.insert(notifications, "S")
+    end
   end
   if self.indicateMissedMsgApps then
     if not self.slackDock or not self.slackDock.AXIsApplicationRunning then
@@ -1060,23 +1072,31 @@ function App:onHeartbeat()
     end
   end
 
-  if self.heyDock and self.heyDock.AXStatusLabel then
-    table.insert(notifications, "H")
-  end
-
-  if self.discordDock and self.discordDock.AXStatusLabel then
-    -- "•" indicates channel messages, counter indicates privates and mentions
-    if self.discordDock.AXStatusLabel ~= "•" then
-      table.insert(notifications, "D")
+  if self.indicateNewMsg then
+    if self.heyDock and self.heyDock.AXStatusLabel then
+      table.insert(notifications, "H")
     end
   end
 
-  if self.notionDock and self.notionDock.AXStatusLabel then
-    table.insert(notifications, "N")
+  if self.indicateNewMsg then
+    if self.discordDock and self.discordDock.AXStatusLabel then
+      -- "•" indicates channel messages, counter indicates privates and mentions
+      if self.discordDock.AXStatusLabel ~= "•" then
+        table.insert(notifications, "D")
+      end
+    end
   end
 
-  if self.linearDock and self.linearDock.AXStatusLabel then
-    table.insert(notifications, "L")
+  if self.indicateNewMsg then
+    if self.notionDock and self.notionDock.AXStatusLabel then
+      table.insert(notifications, "N")
+    end
+  end
+
+  if self.indicateNewMsg then
+    if self.linearDock and self.linearDock.AXStatusLabel then
+      table.insert(notifications, "L")
+    end
   end
 
   self.menuItem:clear()
@@ -1385,11 +1405,20 @@ function App:createMenu()
   end, self.MENU_LOAD_PASS)
 
   self.menuItem:addSubmenuCheckbox(
+    "Indicate new messages",
+    self.indicateNewMsg,
+    function(checked)
+      self.indicateNewMsg = checked
+      hs.settings.set("indicateNewMsg", self.indicateNewMsg)
+    end
+  )
+
+  self.menuItem:addSubmenuCheckbox(
     "Indicate missed messenger apps",
     self.indicateMissedMsgApps,
     function(checked)
       self.indicateMissedMsgApps = checked
-      hs.settings.set("indicateMissedMsgApps", self.keepBrightness)
+      hs.settings.set("indicateMissedMsgApps", self.indicateMissedMsgApps)
     end
   )
 

@@ -595,10 +595,12 @@ Indigon
 inferencer
 Infohazards
 Informix
+inhouse
 iniconfig
 Inlines
 Innocn
 innodb
+Inspiron
 instancecheck
 instrumentator
 Interpretability
@@ -998,6 +1000,7 @@ PlatformAoAcOverride
 pluggy
 pmbok
 PMK
+pointstick
 Polaric
 Pondium
 popd
@@ -1471,6 +1474,7 @@ voidstones
 Voll
 Voltaxic
 Vorici
+Vostro
 voximplant
 Vruun
 vsicons
@@ -1728,6 +1732,7 @@ Zod
 инстанцируем
 интерконнекта
 интерконнекту
+инференса
 инфостиле
 ИП
 итерировании

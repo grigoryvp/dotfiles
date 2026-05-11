@@ -144,9 +144,8 @@ configure() {
   mise use -g python@3.14.3
   mise use -g node@24.14.1
   mise use -g ruby@4.0.2
-  brew install php
   # No prebuilt binaries, fails to compile from source
-  mise use -g php@system
+  brew install php
   mise use -g swift@6.3
 
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then

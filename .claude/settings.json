@@ -1,4 +1,6 @@
 {
+  "model": "opusplan",
+  "effortLevel": "max",
   "permissions": {
     "allow": [
       "Bash(ls:*)",

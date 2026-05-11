@@ -112,6 +112,7 @@ autohide
 autohotkey
 autopep8
 autoreplace
+Avalonia
 Avarius
 Aventail
 AVF
@@ -435,6 +436,7 @@ Flamehand
 Flamequiver
 Flet
 Flink
+FLTK
 fn
 fontupper
 Forkshot
@@ -567,6 +569,7 @@ HSV
 HTAP
 htmx
 httpx
+HTX
 hvac
 HX
 Hydrascale
@@ -805,6 +808,7 @@ metainfo
 metainformation
 metallb
 Metalsmith
+mfc
 michaeldfallen
 microcontroller
 microcontrollers
@@ -952,6 +956,7 @@ openwashing
 openwrt
 opex
 optimus
+opusplan
 orbstack
 oreventhis
 orgchart
@@ -1197,6 +1202,7 @@ shortenworld
 shutil
 sigcheck
 significand
+Silverlight
 Simula
 Siri
 Sirus
@@ -1590,6 +1596,7 @@ Zod
 атомарности
 Атомарность
 АФК
+бóльшим
 байткод
 байткода
 байткодом
@@ -1852,6 +1859,7 @@ Zod
 неймспейсов
 неймспейсом
 неймспейсы
+нейровизуализации
 Нейродизайн
 нейрональные
 нейросетей
@@ -1897,6 +1905,7 @@ Zod
 паттерн-матчинга
 пентеста
 передоговориться
+переиспользовал
 переиспользовали
 переиспользован
 переиспользование
@@ -1924,6 +1933,7 @@ Zod
 пессимизаций
 петабайт
 петабайты
+Петцольда
 пиксельной
 пинги
 пингов

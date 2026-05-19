@@ -40,6 +40,7 @@ activerecord
 ADHD
 Adiyah
 ADK
+Aerospike
 Aetherwind
 agentic
 ahk
@@ -107,6 +108,7 @@ ATX
 Atziri
 Aul
 autobuild
+autoencoders
 autofocus
 autohide
 autohotkey
@@ -442,6 +444,7 @@ fontupper
 Forkshot
 Fossilised
 Foulborn
+FRC
 Freepik
 freezegun
 frontmost
@@ -537,6 +540,7 @@ hashability
 hashlib
 Hateforge
 Hatungo
+Hazelcast
 HCP
 HCSSF
 HDFS
@@ -728,8 +732,10 @@ libxmlsec
 Lich
 Lich's
 Lifeforce
+Linearization
 linearmouse
 LINQ
+Liquibase
 listtimezones
 Litestar
 litestream
@@ -808,6 +814,7 @@ metainfo
 metainformation
 metallb
 Metalsmith
+methylxanthine
 mfc
 michaeldfallen
 microcontroller
@@ -827,6 +834,7 @@ mktemp
 MLO
 MLX
 mmd
+MMU
 mobiledev
 mochajs
 modelinfo
@@ -1062,6 +1070,7 @@ pyyaml
 QAT
 qbittorrent
 QD-OLED
+Qdrant
 QNX
 quadrocopter
 queryset
@@ -1444,6 +1453,7 @@ Uzaza
 Vagan
 Valdo
 valēre
+Valkey
 Varargs
 Varashta
 vbus
@@ -1456,6 +1466,7 @@ Vectorizing
 Ventor
 venv
 ver
+verbalisation
 vercel
 Verilog
 Verisium
@@ -1536,6 +1547,7 @@ wox
 WPA
 WPF
 WPS
+WSA
 wsgi
 WSL
 wss
@@ -1736,6 +1748,7 @@ Zod
 инвойсами
 инстанс
 инстансами
+инстансах
 инстансы
 инстанцированием
 инстанцируем
@@ -1760,7 +1773,6 @@ Zod
 кликаете
 кликстрим
 кликхаус
-ключем
 когнитома
 коллапсирует
 коммита
@@ -1817,6 +1829,7 @@ Zod
 метапрограммировании
 метапрограммированию
 метапрограммирования
+микросервис
 микросервисах
 микросервисов
 микросервисы
@@ -1885,6 +1898,7 @@ Zod
 оверхеда
 одномерны
 однопоточно
+однопоточную
 однопоточный
 однопоточными
 Одноузловая
@@ -1892,6 +1906,7 @@ Zod
 ООП
 опенсорс
 опенсорсе
+опенсорсной
 опенспейс
 ОПХБЕР
 оркестрирует
@@ -2047,6 +2062,9 @@ Zod
 трансформера
 тредами
 тредпулом
+трейс
+трейса
+трейсов
 трейсы
 трейтов
 трем

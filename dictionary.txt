@@ -678,6 +678,7 @@ Kimi
 Kineticist
 Kingsmarch
 Kirac
+kislyuk
 Kitava
 Kivy
 KLM
@@ -821,6 +822,7 @@ microcontroller
 microcontrollers
 Microk8s
 midtones
+mikefarah
 mimestream
 mimetypes
 mineffect
@@ -1280,6 +1282,7 @@ Stormrider
 Stormshroud
 Stranglegasp
 strconv
+strenv
 stress-ng
 Strix
 Stroustrup

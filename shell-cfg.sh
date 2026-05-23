@@ -156,6 +156,8 @@ if [ "$(uname)" = "Darwin" ]; then
   else
     export RADAR_CMD='$(git-radar --bash --fetch)'
   fi
+  ##  For JS test harness to correctly find the docker runtime
+  export DOCKER_HOST=unix:///var/run/docker.sock
 
   # completion via suggestions
   BREW_DIR="/opt/homebrew/share"

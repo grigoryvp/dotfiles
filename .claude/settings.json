@@ -4,7 +4,8 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
-      "Bash(uv:*)"
+      "Bash(uv:*)",
+      "Bash(yarn:*)"
     ]
   }
 }

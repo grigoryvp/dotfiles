@@ -292,6 +292,7 @@ DDD
 DDL
 debuff
 debuffs
+dedupe
 deepcopy
 deeplink
 defaultdict
@@ -307,6 +308,7 @@ descr
 Deskflow
 desktopservices
 desync
+detekt
 devnull
 df
 DHH

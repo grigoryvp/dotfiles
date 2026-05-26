@@ -43,6 +43,7 @@ ADK
 Aerospike
 Aetherwind
 agentic
+agy
 ahk
 Ailith
 aiohttp
@@ -431,6 +432,7 @@ Fidium
 fidonet
 Fira
 Firesong
+firewalld
 Firewire
 firstlineno
 Fishscale
@@ -449,6 +451,7 @@ Foulborn
 FRC
 Freepik
 freezegun
+frontends
 frontmost
 Frosthand
 frozendict
@@ -651,6 +654,7 @@ Jorgin
 journalctl
 JPA
 jpeek
+jquery
 jsonschema
 Justicar
 JVM
@@ -893,12 +897,15 @@ nerfed
 netbeans
 netbird
 netcat
+netfilter
+Netlink
 netplan
 netrc
 networkd
 neuroenergetics
 Neuroscientists
 nextjs
+nftables
 Ngakanu
 NGW
 NIAH
@@ -1029,6 +1036,7 @@ ppp
 pprint
 PPX
 preprod
+PREROUTING
 prestart
 println
 Progenesis
@@ -1158,6 +1166,7 @@ Runegrafts
 runlevel
 runserver
 rustdesk
+rustore
 rustup
 RVM
 RW
@@ -1804,6 +1813,7 @@ Zod
 коэволюции
 Кре́дит
 криптобирж
+криптокомпании
 Кристен
 кулдаун
 Кэй
@@ -2100,6 +2110,7 @@ Zod
 фикстуры
 финтеха
 фича
+фичей
 фичи
 флешек
 флешку

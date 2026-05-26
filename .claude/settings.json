@@ -1,11 +1,14 @@
 {
-  "model": "opusplan",
-  "effortLevel": "max",
   "permissions": {
     "allow": [
       "Bash(ls:*)",
       "Bash(uv:*)",
-      "Bash(yarn:*)"
+      "Bash(yarn:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(./gradlew:*)"
     ]
-  }
+  },
+  "model": "opusplan",
+  "effortLevel": "max"
 }

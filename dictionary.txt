@@ -482,6 +482,7 @@ getsizeof
 Gevent
 GG
 GGUF
+gh
 gh-deploy
 Gianna
 Giantslayer

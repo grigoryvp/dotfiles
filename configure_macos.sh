@@ -197,6 +197,11 @@ configure() {
     rm -rf ~/.claude
   fi
   ln -fs ~/dotfiles/.claude ~/.claude
+  if [ -e ~/.codex ]; then
+    rm -rf ~/.codex
+  fi
+  ln -fs ~/dotfiles/.codex ~/.codex
+  ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
   ln -fs ~/dotfiles/.screenrc ~/.screenrc
   ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
   ln -fs ~/dotfiles/.rubocop.yml ~/.rubocop.yml

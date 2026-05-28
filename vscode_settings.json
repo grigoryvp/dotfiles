@@ -396,6 +396,10 @@
   "chat.utilityModel": "customendpoint/gemma-4-26b-a4b-it-mlx-4bit",
   "chat.utilitySmallModel": "customendpoint/gemma-4-26b-a4b-it-mlx-4bit",
   "chat.tools.terminal.autoApprove": {
-    "/^git\\s+branch\\s+(--show-current)/": true
-  }
+    "/^git (status|show|branch\\b.*)$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  },
+  "chat.viewSessions.orientation": "stacked"
 }

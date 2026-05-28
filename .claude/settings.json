@@ -10,7 +10,9 @@
     ]
   },
   "model": "opusplan",
-  "effortLevel": "max",
+  "enabledPlugins": {
+    "chrome-devtools-mcp@chrome-devtools-plugins": true
+  },
   "extraKnownMarketplaces": {
     "chrome-devtools-plugins": {
       "source": {
@@ -19,7 +21,5 @@
       }
     }
   },
-  "enabledPlugins": {
-    "chrome-devtools-mcp@chrome-devtools-plugins": true
-  }
+  "effortLevel": "max"
 }

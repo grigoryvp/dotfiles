@@ -1337,6 +1337,7 @@ tailscale
 tanky
 Tarantool
 targetable
+Taskfile
 taskkill
 taskschedulerview
 Tauri

@@ -1,5 +1,4 @@
 {
-  "chat.disableAIFeatures": true,
   "emmet.includeLanguages": {
     "vue-html": "html",
     "vue": "html"
@@ -388,8 +387,10 @@
   },
   "claudeCode.preferredLocation": "panel",
   "claudeCode.selectedModel": "default",
-  "claude-code.environmentVariables": [{
-    "name": "ANTHROPIC_BASE_URL",
-    "value": "https://api.anthropic.com"
-  }]
+  "claude-code.environmentVariables": [
+    {
+      "name": "ANTHROPIC_BASE_URL",
+      "value": "https://api.anthropic.com"
+    }
+  ]
 }

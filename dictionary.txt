@@ -176,6 +176,7 @@ btop
 bunjs
 Bunq
 Bybit
+BYOK
 byteorder
 bzr
 cachetools
@@ -2098,6 +2099,7 @@ Zod
 ужатия
 у́же
 упрощенке
+УЦ
 учеткой
 файберы
 Фаликман

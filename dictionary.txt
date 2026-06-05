@@ -173,6 +173,7 @@ bssid
 BTF
 btog
 btop
+BUI
 bunjs
 Bunq
 Bybit
@@ -557,6 +558,7 @@ headscale
 HEALTHCHECK
 Heartcarver
 Heraldric
+heredocs
 Heretech
 Heterochromia
 Hetrix
@@ -1400,6 +1402,7 @@ Triggerblades
 Triggerslam
 Trino
 triphosphate
+trixie
 truecrypt
 tsc
 tsd

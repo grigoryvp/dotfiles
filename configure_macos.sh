@@ -202,6 +202,7 @@ configure() {
   fi
   ln -fs ~/dotfiles/.codex ~/.codex
   ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
+  ln -fs ~/dotfiles/.claude/skills ~/.codex/skills
   ln -fs ~/dotfiles/.screenrc ~/.screenrc
   ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
   ln -fs ~/dotfiles/.rubocop.yml ~/.rubocop.yml

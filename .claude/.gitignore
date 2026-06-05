@@ -2,4 +2,6 @@
 !settings.json
 !commands/
 !commands/**
+!skills/
+!skills/**
 !.gitignore

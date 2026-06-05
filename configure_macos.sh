@@ -141,9 +141,9 @@ configure() {
   # Input method name lookup for debug purpose
   curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
 
-  mise use -g python@3.14.3
-  mise use -g node@24.14.1
-  mise use -g ruby@4.0.2
+  mise use -g python@3.14.5
+  mise use -g node@24.16.0
+  mise use -g ruby@4.0.5
   # No prebuilt binaries, fails to compile from source
   brew install php
   mise use -g swift@6.3

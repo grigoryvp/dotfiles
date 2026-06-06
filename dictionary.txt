@@ -168,6 +168,7 @@ Breachlord
 breachstone
 Brinerot
 Bronzescale
+Bronzeworks
 bson
 bssid
 BTF
@@ -231,6 +232,7 @@ clickhouse
 Cloudwhisper
 clr
 cls
+cmux
 CMY
 CMYK
 codegen
@@ -311,6 +313,7 @@ DERP
 descr
 Deskflow
 desktopservices
+Destabiliser
 desync
 detekt
 devnull
@@ -744,6 +747,7 @@ libxmlsec
 Lich
 Lich's
 Lifeforce
+Lightwell
 Linearization
 linearmouse
 LINQ
@@ -1111,6 +1115,7 @@ RDTSC
 reactjs
 readlink
 readouterr
+Realmgate
 realpython
 Realtek
 Reanimator
@@ -1232,6 +1237,7 @@ sigcheck
 significand
 Silverlight
 Simula
+Siphoner
 Siri
 Sirus
 skitterbots
@@ -1329,6 +1335,7 @@ Sybase
 syncdb
 Synthesised
 Synthesising
+Synthflesh
 syscall
 syscalls
 sysconfig
@@ -1395,6 +1402,7 @@ tqdm
 traceroute
 Trackpad
 Transavia
+Transcension
 Trapsetter
 Treerunner
 Tri
@@ -1568,6 +1576,7 @@ wox
 WPA
 WPF
 WPS
+Wraeclast
 WSA
 wsgi
 WSL
@@ -1582,6 +1591,7 @@ xapk
 xattr
 XC
 xcodes
+Xesht
 Xoph
 xorg
 xrange
@@ -2172,3 +2182,4 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
+Zantipi

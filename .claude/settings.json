@@ -29,7 +29,6 @@
       }
     ]
   },
-  "model": "claude-fable-5[1m]",
   "enabledPlugins": {
     "chrome-devtools-mcp@chrome-devtools-plugins": true
   },

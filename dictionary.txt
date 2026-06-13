@@ -64,6 +64,7 @@ Alivia
 Allflame
 Amanamu
 AMQP
+Ange
 anki
 ANTLR
 anychar
@@ -121,6 +122,8 @@ Aventail
 AVF
 awk
 Aylo
+Azmeri
+Azmerian
 Azyran
 backoffice
 badusb
@@ -197,9 +200,11 @@ cdecl
 cdef
 cdll
 CEFR
+Cenotes
 certbot
 CERTDIR
 certifi
+Chaber
 Chainmail
 Chakram
 characterised
@@ -210,6 +215,7 @@ cheatsheet
 Chestplate
 Chimeral
 Chimerascale
+Chober
 choco
 chromakey
 chruby
@@ -220,6 +226,7 @@ CIO
 Citus
 cjkfont
 clangd
+classmethod
 classoption
 Classpath
 claudefordesktop
@@ -229,6 +236,7 @@ cleandoc
 clevo
 cli
 clickhouse
+Cliffside
 Cloudwhisper
 clr
 cls
@@ -265,6 +273,7 @@ craftable
 Craicic
 CRDT
 createdb
+Crystallisation
 Crystallised
 CSO
 CTO
@@ -320,6 +329,7 @@ devnull
 df
 DHH
 Dialla
+Digsite
 dind
 direnv
 discriminare
@@ -343,6 +353,7 @@ docstrings
 documentclass
 Doedre
 dont
+Doomfletch
 Doryani
 dotenv
 dotfiles
@@ -401,6 +412,7 @@ esm
 essencecraft
 essencecrafted
 essencecrafting
+Estazunti
 ETF
 Ethena
 etl
@@ -459,6 +471,7 @@ Freepik
 freezegun
 frontends
 frontmost
+Frostbreath
 Frosthand
 frozendict
 frozenset
@@ -523,6 +536,8 @@ Granian
 Gravebind
 Gravicius
 grayscale
+Greatclub
+Greathammer
 Greathelm
 Greatwolf
 Greenplum
@@ -576,12 +591,14 @@ hivebrain
 HKLM
 HMAC
 HN
+Hoghunt
 Hom
 homelab
 horticrafting
 hotstrings
 Hotwire
 HRESULT
+Hrimnor
 HSV
 HTAP
 htmx
@@ -592,6 +609,7 @@ HX
 Hydrascale
 hyperliquid
 Hyrri
+Hysseg
 ibeacon
 ICQ
 idir
@@ -644,6 +662,7 @@ itertools
 itsdangerous
 ixx
 Izaro
+Jado
 jailbreaking
 jailbroken
 javac
@@ -663,6 +682,7 @@ JPA
 jpeek
 jquery
 jsonschema
+Juatalotli
 Justicar
 JVM
 Jython
@@ -701,6 +721,7 @@ kNN
 koi8-r
 Konquerer
 Kool
+Kopec
 Korell
 Kosis
 KQP
@@ -771,6 +792,7 @@ lol
 lookaround
 Loreweave
 Loricated
+Lorrata
 lru
 LSMT
 lsp
@@ -805,6 +827,7 @@ Maraketh
 marginhandwrite
 matplotlib
 Matryoshka
+Matsya
 Matz
 Mawr
 mbr
@@ -817,6 +840,7 @@ MDM
 mdutil
 mebibyte
 MEDS
+Medved
 memmove
 memoizations
 memray
@@ -843,8 +867,10 @@ mimetypes
 mineffect
 miniboss
 minipage
+Minisforum
 ministral
 Miscreation
+Mjölner
 mkdocs
 mkdocstrings
 mktemp
@@ -1039,6 +1065,7 @@ Polaric
 Pondium
 popd
 Popen
+poppler
 postpack
 ppp
 pprint
@@ -1108,6 +1135,7 @@ RAML
 randint
 randombytes
 Rarible
+Rasa
 RCE
 RDBMS
 RDNA
@@ -1126,6 +1154,7 @@ recents
 recvfrom
 redacter
 Redactions
+redmine
 Redpanda
 Reefsteel
 refspec
@@ -1150,10 +1179,12 @@ Riker
 Rin
 Ringmail
 rippy
+Riverhold
 rjsf
 rmi
 rmtree
 RO
+Rockpools
 rocksdb
 Rog
 Rogcrafting
@@ -1161,6 +1192,7 @@ Ronacher
 Rossum
 roundoff
 rowconfigure
+RPA
 RSC
 RSGI
 RSM
@@ -1169,8 +1201,10 @@ RTT
 RTX
 rubocop
 rubygems
+Rugosa
 Runed
 Runefinding
+Runeforging
 Runegrafts
 runlevel
 runserver
@@ -1187,8 +1221,11 @@ Sabatons
 SAE
 safehouse
 safehouses
+Saitha
 Sambodhi
 sandboxing
+Sandspit
+Sandstrider
 Sandsworn
 Sanguimancer
 Sarn
@@ -1205,6 +1242,7 @@ Scrying
 SDLC
 SDP
 Seasonic
+Seastorm
 Securityscorecard
 Secutor
 sed
@@ -1232,6 +1270,8 @@ Shattersword
 shell'ов
 Sheth
 Shieldbearer
+Shockwarden
+Shortbow
 shortenworld
 shutil
 sigcheck
@@ -1245,6 +1285,7 @@ skitterbots
 sklearn
 Skycrown
 skylighting
+Skysliver
 Slipstrike
 sln
 slu.u.
@@ -1321,6 +1362,7 @@ subshell
 subshells
 Subtests
 Sulphite
+Sulphuric
 sumsub
 Sunfire
 Superintelligence
@@ -1346,6 +1388,7 @@ taildrive
 taildrop
 tailnet
 tailscale
+Tangletongue
 tanky
 Tarantool
 targetable
@@ -1363,6 +1406,7 @@ Telegem
 templatelib
 TEP
 Teradata
+terraforming
 Tewi
 textbackslash
 textblock
@@ -1379,6 +1423,7 @@ Thinkpad
 Threadripper
 Thunderquiver
 Tibbs
+Tidebreaker
 Tideseer
 tikzpicture
 Timecode
@@ -1402,6 +1447,7 @@ TPM
 tqdm
 traceroute
 Trackpad
+Trampletoe
 Transavia
 Transcension
 Trapsetter
@@ -1436,6 +1482,7 @@ udemy
 UDP
 UEFI
 ufw
+Uhtred
 UID
 ujson
 ulonglong
@@ -1505,6 +1552,8 @@ Veritania
 Vermillion
 VESA
 vha
+victorialogs
+victoriatraces
 viewports
 viewsets
 Vilenta
@@ -1522,6 +1571,7 @@ voidstone
 voidstones
 Voll
 Voltaxic
+Vorana
 Vorici
 Vostro
 voximplant
@@ -1536,12 +1586,14 @@ Warband
 Warbands
 Wargraves
 Warhoards
+Warpick
 Warpriest
 Warstaff
 Warstaves
 WASI
 watchstone
 Waystone
+Waystones
 wchar
 weakref
 webdav
@@ -1614,6 +1666,7 @@ Yudkowsky
 YugabyteDB
 Zab
 Zana
+Zantipi
 Zarokh
 Zenbook
 zeroconf
@@ -1697,6 +1750,7 @@ Zod
 высоконагруженных
 геймдизайнер
 генерализовать
+гео
 Геораспределенная
 гиби-
 гибибайт
@@ -1742,6 +1796,7 @@ Zod
 Демистификация
 десериализаторов
 десериализация
+десериализовать
 Деструктурирование
 деструктурированием
 деструктурировании
@@ -2051,6 +2106,7 @@ Zod
 Сепулькариях
 Сепульки
 сериализаторов
+сериализовать
 сериализует
 сид-фраза
 сид-фразам
@@ -2184,4 +2240,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-Zantipi

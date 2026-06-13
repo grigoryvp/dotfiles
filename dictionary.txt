@@ -1207,6 +1207,7 @@ SDP
 Seasonic
 Securityscorecard
 Secutor
+sed
 Sekhem
 Sekheman
 Sekhemas
@@ -1412,6 +1413,7 @@ Trino
 triphosphate
 trixie
 truecrypt
+tsbash
 tsc
 tsd
 tsidp

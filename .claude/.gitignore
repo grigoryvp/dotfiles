@@ -4,4 +4,6 @@
 !commands/**
 !skills/
 !skills/**
+!hooks/
+!hooks/**
 !.gitignore

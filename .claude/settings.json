@@ -2,14 +2,34 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(sed:*)",
       "Bash(uv:*)",
       "Bash(yarn:*)",
       "Bash(find:*)",
       "Bash(grep:*)",
-      "Bash(./gradlew:*)"
+      "Bash(./gradlew:*)",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"
     ]
   },
-  "model": "opusplan",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/bash.py"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "claude-fable-5[1m]",
   "enabledPlugins": {
     "chrome-devtools-mcp@chrome-devtools-plugins": true
   },
@@ -20,6 +40,5 @@
         "repo": "ChromeDevTools/chrome-devtools-mcp"
       }
     }
-  },
-  "effortLevel": "max"
+  }
 }

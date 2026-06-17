@@ -403,5 +403,6 @@
       "matchCommandLine": true
     }
   },
-  "chat.viewSessions.orientation": "stacked"
+  "chat.viewSessions.orientation": "stacked",
+  "extensions.autoUpdateDelay": 240
 }

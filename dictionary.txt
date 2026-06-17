@@ -56,7 +56,9 @@ Aisling
 aistudio
 Akil
 akka
+Akoyan
 alch
+Aldur
 Alexa
 Aliexpress
 Alira
@@ -94,6 +96,8 @@ ASF
 asg
 asgi
 asgiref
+Ashbark
+Ashrend
 asic
 ASML
 Astragali
@@ -149,6 +153,7 @@ bit.ly
 Bitget
 Bitterbind
 Bjarne
+Blackbraid
 Blacksteel
 Bladebitter
 Bladecaster
@@ -169,6 +174,7 @@ bpython
 brandoo
 Breachlord
 breachstone
+breachstones
 Brinerot
 Bronzescale
 Bronzeworks
@@ -186,6 +192,7 @@ byteorder
 bzr
 cachetools
 CachyOS
+Cadigan
 Caeserius
 Cameria
 CAPEX
@@ -215,6 +222,7 @@ cheatsheet
 Chestplate
 Chimeral
 Chimerascale
+chirality
 Chober
 choco
 chromakey
@@ -283,6 +291,7 @@ cui
 customendpoint
 cwd
 Cython
+Daggerfoot
 Dagster
 Dannig
 Daresso
@@ -359,6 +368,7 @@ dotenv
 dotfiles
 doublecmd
 Dragonscale
+Drakeskin
 Dramatiq
 Dreamquest
 DRF
@@ -466,6 +476,7 @@ fontupper
 Forkshot
 Fossilised
 Foulborn
+Foxshade
 FRC
 Freepik
 freezegun
@@ -536,12 +547,15 @@ Granian
 Gravebind
 Gravicius
 grayscale
+Greataxe
+Greatblade
 Greatclub
 Greathammer
 Greathelm
 Greatwolf
 Greenplum
 greenwashing
+Greymake
 grigo
 grigory
 grigoryvp
@@ -789,6 +803,7 @@ Lockpicking
 Lockpicks
 loglevel
 lol
+Longsword
 lookaround
 Loreweave
 Loricated
@@ -816,6 +831,7 @@ magicdns
 magick
 Mahuxotl
 Maingear
+Maji
 Malachai
 Maligaro
 malloc
@@ -1032,6 +1048,7 @@ Pandemonius
 pandoc
 Paperlike
 Paradoxica
+Paralysing
 passlib
 passwordless
 pastebin
@@ -1103,6 +1120,7 @@ Pypy
 pyrate
 pyrefly
 pyright
+Pyrophyte
 pyroscope
 Pyston
 pytest
@@ -1247,6 +1265,7 @@ Securityscorecard
 Secutor
 sed
 Sekhem
+Sekhema
 Sekheman
 Sekhemas
 semgrep
@@ -1254,6 +1273,7 @@ sendall
 sendgrid
 sendto
 Sephirot
+Serle
 Serpentscale
 servicelb
 setdefault
@@ -1279,10 +1299,12 @@ significand
 Silverlight
 Simula
 Siphoner
+Sirenscale
 Siri
 Sirus
 skitterbots
 sklearn
+Skullcrusher
 Skycrown
 skylighting
 Skysliver
@@ -1392,10 +1414,12 @@ Tangletongue
 tanky
 Tarantool
 targetable
+Tasalian
 Taskfile
 taskkill
 taskschedulerview
 Tauri
+Tawhoan
 tcbox
 TCO
 tcpdump
@@ -1561,6 +1585,7 @@ Vinderi
 Vinia
 virtualenv
 virtualenvs
+Vitalic
 VK
 vlc
 VLESS
@@ -2011,6 +2036,7 @@ Zod
 парсеры
 парсится
 партицированию
+Пасхалки
 паттерн-матчинга
 пентеста
 передоговориться

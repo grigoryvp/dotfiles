@@ -1727,7 +1727,7 @@ addRemap("m", ["m1", "m2"], ["winpos", "left"])
 addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
 ;;  m2-1 for game text
-addRemap(["1", "appname", "Path of Exile 2"], ["m2"], ["send", "\d+% i.+mov|\d ch.+da|^\+.*ills$|spiri"])
+addRemap(["1", "appname", "Path of Exile 2"], ["m2"], ["send", "movement|skills|spirit|adds.{+}damage"])
 addRemap(["1", "appname", "Path of Exile"], ["m2"], ["send", "-[rgb]-|nne|rint"])
 
 ;;  m2-2 for game text

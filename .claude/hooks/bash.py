@@ -6,9 +6,35 @@
 import os
 import sys
 import json
+import builtins
 
 import tree_sitter_bash as tsbash
 from tree_sitter import Language, Parser
+
+
+class NotAllowed:
+
+    def __init__(self, reason):
+        self._reason = reason
+
+    def __str__(self):
+        return f"Not allowed: {self._reason}"
+
+    def __bool__(self):
+        return False
+
+
+class AskPermission:
+
+    def __init__(self, reason):
+        self._reason = reason
+
+    def __str__(self):
+        return f"Ask permission: {self._reason}"
+
+    def __bool__(self):
+        return False
+
 
 def json_from_stdin():
     decoder = json.JSONDecoder()
@@ -28,15 +54,16 @@ def json_from_stdin():
 def is_git_command_allowed(args: list[str]):
     OPTIONS = ["-C", "-c"]
     ALLOWED = {
-        "bisect": [None],
-        "diff": [None],
-        "grep": [None],
-        "log": [None],
-        "show": [None],
-        "status": [None],
-        "branch": [None, '-a'],
+        "bisect": [...],
+        "diff": [...],
+        "grep": [...],
+        "log": [...],
+        "show": [...],
+        "status": [...],
+        "branch": [None, '-a', '--show-current'],
         "tag": ['-l', '--list'],
     }
+    src_args = args[::]
     try:
         while args:
             arg = args.pop(0)
@@ -47,7 +74,9 @@ def is_git_command_allowed(args: list[str]):
             if allowed_params := ALLOWED.get(arg, None):
                 for param in allowed_params:
                     match param:
-                        case None:
+                        case builtins.Ellipsis:  # any args?
+                            return True  # allowed
+                        case None:  # no args?
                             if len(remaining_args) == 0:
                                 return True  # allowed
                         case str(param_name):
@@ -55,16 +84,34 @@ def is_git_command_allowed(args: list[str]):
                                 return True  # allowed
                         case _:
                             assert False, "Unexpected"
-            return False  # not allowed
+            return NotAllowed(" ".join(["git", arg, *args]))
     except IndexError:
-        pass
+        return NotAllowed(f"Incorrect git args: {" ".join(src_args)}")
 
 def is_command_allowed(sequence: list[str]):
+    ALLOWED = [
+        "cd",
+        "ls",
+        "echo",
+        "cat",
+        "head",
+        "tail",
+        "sed",
+        "uv",
+        "yarn",
+        "find",
+        "grep",
+    ]
     if not sequence:
         return
     cmd, *args = sequence
+    if cmd in ALLOWED:
+        return True
+    if cmd == "xargs":
+        return is_command_allowed(args)
     if cmd == "git":
         return is_git_command_allowed(args)
+    return AskPermission(" ".join(sequence))
 
 
 def node_text(node, source) -> str:
@@ -90,15 +137,27 @@ source = request["tool_input"]["command"].encode("utf-8")
 tree = parser.parse(source)
 decisions = []
 walk_ast(tree.root_node, source, decisions)
+
 if all(decisions):
     print(json.dumps({
         "hookSpecificOutput": {
-            "hookEventName": request.hook_event_name,
+            "hookEventName": request["hook_event_name"],
             "permissionDecision": "allow"
         }
     }))
     sys.exit(0)
-if False in decisions:
-    sys.stderr.write("Not permitted")
+
+
+decision = next(iter(
+    [v for v in decisions if isinstance(v, NotAllowed)]), None)
+if decision is not None:
+    sys.stderr.write(str(decision))
     sys.exit(2)
-sys.exit(0)  # ask
+
+decision = next(iter(
+    [v for v in decisions if isinstance(v, AskPermission)]), None)
+if decision is not None:
+    sys.stderr.write(str(decision))
+    sys.exit(0)
+
+assert False, "Unexpected"

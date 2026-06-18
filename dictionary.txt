@@ -1172,8 +1172,8 @@ recents
 recvfrom
 redacter
 Redactions
-redmine
 redirections
+redmine
 Redpanda
 Reefsteel
 refspec
@@ -1377,6 +1377,7 @@ strtolower
 STT
 Stunlock
 subclassing
+subcmd
 subcomponents
 subdirs
 subkey

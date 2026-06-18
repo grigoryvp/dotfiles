@@ -109,6 +109,17 @@ def is_command_allowed(sequence: list[str]):
         return True
     if cmd == "xargs":
         return is_command_allowed(args)
+    if cmd == "timeout":
+        if len(args) <= 1:
+            return True
+        args.pop(0)  # timeout value
+        return is_command_allowed(args)
+    if cmd == "node":
+        if len(args) <= 1:
+            return NotAllowed("nodejs REPL")
+        subcmd = args.pop(0)
+        if subcmd.endswith(("tsc", "/tsc", "\\tsc")):
+            return True
     if cmd == "git":
         return is_git_command_allowed(args)
     return AskPermission(" ".join(sequence))

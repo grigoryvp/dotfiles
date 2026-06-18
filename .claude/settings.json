@@ -40,5 +40,6 @@
         "repo": "ChromeDevTools/chrome-devtools-mcp"
       }
     }
-  }
+  },
+  "tui": "fullscreen"
 }

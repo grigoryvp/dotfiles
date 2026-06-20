@@ -66,6 +66,13 @@ else
   echo "Unsupported shell"
 fi
 
+##  Load global env variables, if any
+if [ -f ~/.env ]; then
+  set -a
+  source ~/.env
+  set +a
+fi
+
 ##  Disable terminal/ssh freeze with C-S:
 stty -ixon
 ##  Don't create |.pyc| files while executing python code from console.

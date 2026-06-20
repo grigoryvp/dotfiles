@@ -100,6 +100,7 @@ Ashbark
 Ashrend
 asic
 ASML
+Assandra
 Astragali
 Astramentis
 Astrocyte
@@ -278,6 +279,7 @@ Cortana
 cowork
 cpython
 craftable
+Craiceann
 Craicic
 CRDT
 createdb
@@ -447,6 +449,7 @@ eza
 Ezomyte
 Fanless
 Faridun
+Farrul
 fastapi
 fastcgi
 fastfetch
@@ -454,6 +457,7 @@ fb
 FDBS
 Feedly
 Fenumal
+Fenumus
 ffi
 fi
 Fidium
@@ -480,6 +484,7 @@ Foxshade
 FRC
 Freepik
 freezegun
+FRL
 frontends
 frontmost
 Frostbreath
@@ -545,6 +550,7 @@ GPMI
 GPT
 gradlew
 Granian
+Grannell
 Gravebind
 Gravicius
 grayscale
@@ -590,9 +596,11 @@ HDR
 headscale
 HEALTHCHECK
 Heartcarver
+Hedgewitch
 Heraldric
 heredocs
 Heretech
+Hestra
 Heterochromia
 Hetrix
 hexdigest
@@ -709,6 +717,7 @@ Kaom
 karabiner
 Karui
 Katana
+Katla
 kawaii
 kde
 KE
@@ -734,6 +743,7 @@ KLM
 kmeans
 kNN
 koi8-r
+Kolr
 Konquerer
 Kool
 Kopec
@@ -761,6 +771,7 @@ leaguestart
 Leatherbound
 Leatherscale
 leetcode
+Leld
 letsencrypt
 leveldb
 Leyline
@@ -838,6 +849,7 @@ Maligaro
 malloc
 Maloney
 manifestless
+Mannan
 mant_dig
 Manyshot
 Maraketh
@@ -928,6 +940,7 @@ myapp
 mycompany
 mynamespace
 mypy
+Myrk
 myscope
 mysqldump
 mysuppress
@@ -1248,6 +1261,7 @@ Sandspit
 Sandstrider
 Sandsworn
 Sanguimancer
+Saqawal
 Sarn
 Saruman
 sauron
@@ -1278,6 +1292,7 @@ Sephirot
 Serle
 Serpentscale
 servicelb
+Seske
 setdefault
 setproctitle
 setrestartfreeze
@@ -1296,6 +1311,7 @@ Shockwarden
 Shortbow
 shortenworld
 shutil
+Sidereus
 sigcheck
 significand
 Silverlight
@@ -1440,6 +1456,7 @@ textblock
 textcolor
 textquotedbl
 textquotesingle
+Textra
 textwidth
 textwrap
 TF-IDF
@@ -1448,6 +1465,7 @@ tft
 TG
 Thinkpad
 Threadripper
+Thrud
 Thunderquiver
 Tibbs
 Tidebreaker
@@ -1461,6 +1479,7 @@ tizen
 Tk
 tkinter
 TLI
+TMDS
 toc
 Tolman
 tomllib
@@ -1651,6 +1670,7 @@ WOLED
 Wolfskin
 Wolven
 Wombgift
+wombgifts
 Wordlist
 worktree
 Worktrees

@@ -348,7 +348,8 @@ configure() {
   defaults write com.apple.dock persistent-apps -array ""
 
   # Disable caps lock alongside its hardware light indicator. Key itself
-  # is used as meta by Karabiner.
+  # is used as meta by Karabiner. This option is available in Settings under
+  # Keyboard/Keyboard Shortcuts/Modifier Keys/Caps Lock.
   read -r KEYBOARD_VENDOR_ID KEYBOARD_PRODUCT_ID < <(
     ioreg -r -c AppleHIDKeyboardEventDriver |
     awk -F' = ' '
@@ -371,8 +372,9 @@ configure() {
     </dict>"
 
   # Apply changes
-  killall Dock
-  killall SystemUIServer
+  killall Dock 2>/dev/null || true
+  killall SystemUIServer 2>/dev/null || true
+  killall cfprefsd 2>/dev/null || true
 }
 
 if [ "$1" = "--test" ]; then

@@ -609,6 +609,7 @@ hexdigest
 Hexproof
 hextouch
 Hezmin
+hidutil
 Highgate
 highload
 Hinekora

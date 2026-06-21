@@ -350,31 +350,15 @@ configure() {
   # Disable caps lock alongside its hardware light indicator. Key itself
   # is used as meta by Karabiner. This option is available in Settings under
   # Keyboard/Keyboard Shortcuts/Modifier Keys/Caps Lock.
-  read -r KEYBOARD_VENDOR_ID KEYBOARD_PRODUCT_ID < <(
-    ioreg -r -c AppleHIDKeyboardEventDriver |
-    awk -F' = ' '
-      /"VendorID"/ { vendor=$2 }
-      /"ProductID"/ { product=$2; print vendor, product; exit }')
-  CFG_DOMAIN=$(
-    echo "
-      com.apple.keyboard.modifiermapping
-      .${KEYBOARD_VENDOR_ID}
-      -${KEYBOARD_PRODUCT_ID}
-      -0
-    " | tr -d '\n ')
-  CAPSLOCK_KEYCODE=30064771129
-  defaults -currentHost write -g $CFG_DOMAIN -array "
-    <dict>
-      <key>HIDKeyboardModifierMappingSrc</key>
-      <integer>${CAPSLOCK_KEYCODE}</integer>
-      <key>HIDKeyboardModifierMappingDst</key>
-      <integer>0</integer>
-    </dict>"
+  # NOTE: Change is not displayed in GUI settings, but works!
+  hidutil property --set '{
+    "UserKeyMapping": [{
+      "HIDKeyboardModifierMappingSrc": 0x700000039,
+      "HIDKeyboardModifierMappingDst":0x0}]}'
 
   # Apply changes
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true
-  killall cfprefsd 2>/dev/null || true
 }
 
 if [ "$1" = "--test" ]; then

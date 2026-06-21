@@ -347,6 +347,29 @@ configure() {
   # Remove all dock icons
   defaults write com.apple.dock persistent-apps -array ""
 
+  # Disable caps lock alongside its hardware light indicator. Key itself
+  # is used as meta by Karabiner.
+  read -r KEYBOARD_VENDOR_ID KEYBOARD_PRODUCT_ID < <(
+    ioreg -r -c AppleHIDKeyboardEventDriver |
+    awk -F' = ' '
+      /"VendorID"/ { vendor=$2 }
+      /"ProductID"/ { product=$2; print vendor, product; exit }')
+  CFG_DOMAIN=$(
+    echo "
+      com.apple.keyboard.modifiermapping
+      .${KEYBOARD_VENDOR_ID}
+      -${KEYBOARD_PRODUCT_ID}
+      -0
+    " | tr -d '\n ')
+  CAPSLOCK_KEYCODE=30064771129
+  defaults -currentHost write -g $CFG_DOMAIN -array "
+    <dict>
+      <key>HIDKeyboardModifierMappingSrc</key>
+      <integer>${CAPSLOCK_KEYCODE}</integer>
+      <key>HIDKeyboardModifierMappingDst</key>
+      <integer>0</integer>
+    </dict>"
+
   # Apply changes
   killall Dock
   killall SystemUIServer

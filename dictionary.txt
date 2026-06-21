@@ -213,6 +213,7 @@ Cenotes
 certbot
 CERTDIR
 certifi
+cfprefsd
 Chaber
 Chainmail
 Chakram

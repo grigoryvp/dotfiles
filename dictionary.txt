@@ -197,6 +197,7 @@ Cadigan
 Caeserius
 Cameria
 CAPEX
+CAPSLOCK
 capsys
 captionof
 cardano
@@ -669,6 +670,7 @@ Invictus
 invis
 io_uring
 ioc
+ioreg
 IPC
 IPFS
 IPX
@@ -910,6 +912,7 @@ MMU
 mobiledev
 mochajs
 modelinfo
+modifiermapping
 modulepath
 Mojolicious
 Moosh

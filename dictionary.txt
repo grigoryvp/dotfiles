@@ -912,6 +912,7 @@ mmd
 MMU
 mobiledev
 mochajs
+modelcontextprotocol
 modelinfo
 modifiermapping
 modulepath

@@ -310,6 +310,7 @@ dataclass
 dataclasses
 dataframe
 datasette
+datasheets
 dateutil
 Dawnbreaker
 DBA
@@ -681,6 +682,8 @@ ipynb
 ipython
 Ironscale
 ISA
+isalnum
+isascii
 isclose
 isinstance
 Isla
@@ -1397,6 +1400,7 @@ strconv
 strenv
 stress-ng
 Strix
+strongarms
 Stroustrup
 strtolower
 STT
@@ -1513,6 +1517,7 @@ Triggerslam
 Trino
 triphosphate
 trixie
+trmnl
 truecrypt
 tsbash
 tsc
@@ -2077,6 +2082,7 @@ Zod
 переиспользовали
 переиспользован
 переиспользование
+переиспользовании
 переиспользования
 переиспользуем
 переиспользуемые

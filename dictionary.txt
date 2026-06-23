@@ -251,6 +251,7 @@ Cliffside
 Cloudwhisper
 clr
 cls
+cmdline
 cmux
 CMY
 CMYK

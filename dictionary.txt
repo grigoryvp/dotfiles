@@ -1339,6 +1339,7 @@ slu.u.
 smallstrut
 smm
 smol-toml
+smoothcsv
 Smoulderstrike
 SMPP
 SNI

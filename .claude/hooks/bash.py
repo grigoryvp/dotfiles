@@ -96,6 +96,7 @@ def is_command_allowed(sequence: list[str]):
         "cat",
         "head",
         "tail",
+        "which",
         "sed",
         "uv",
         "yarn",
@@ -114,11 +115,24 @@ def is_command_allowed(sequence: list[str]):
             return True
         args.pop(0)  # timeout value
         return is_command_allowed(args)
+    if cmd == "npx":
+        if len(args) <= 1:
+            return NotAllowed("npx without args")
+        subcmd = args.pop(0)
+        if subcmd == "prettier":
+            return True
     if cmd == "node":
         if len(args) <= 1:
             return NotAllowed("nodejs REPL")
         subcmd = args.pop(0)
         if subcmd.endswith(("tsc", "/tsc", "\\tsc")):
+            return True
+    if cmd == "glab":
+        if len(args) <= 1:
+            return NotAllowed("glab REPL")
+        if args[:2] == ["mr", "view"]:
+            return True
+        if args[:2] == ["mr", "diff"]:
             return True
     if cmd == "git":
         return is_git_command_allowed(args)

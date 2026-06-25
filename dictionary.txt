@@ -359,6 +359,7 @@ distutils
 Divinarius
 dkjson
 DLSS
+DMARC
 dmg
 DML
 dockercompose
@@ -1400,6 +1401,7 @@ strconv
 strenv
 stress-ng
 Strix
+strncpy
 strongarms
 Stroustrup
 strtolower
@@ -1422,6 +1424,7 @@ Sunfire
 Superintelligence
 suppresssample
 suppresssamplenum
+sus
 Svalinn
 SWE-Bench
 Swiftblade
@@ -1992,6 +1995,7 @@ Zod
 минималках
 Минцифры
 многострочниках
+Молина
 моментум
 Мониторим
 Монти
@@ -2143,6 +2147,7 @@ Zod
 Рассела
 расшарить
 ребаланс
+редиректят
 резидентства
 реконнектится
 реселлера
@@ -2217,6 +2222,7 @@ Zod
 токенизированных
 токеном
 токену
+Торвальдс
 транзакционность
 трансформера
 тредами

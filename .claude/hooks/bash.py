@@ -125,6 +125,7 @@ def is_command_allowed(sequence: list[str], state: State):
         "find",
         "grep",
         "sort",
+        "xxd",  # hex dump
         "javap",  # java disassembler
     ]
     NEED_ARGS = [

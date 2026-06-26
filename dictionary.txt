@@ -1401,6 +1401,7 @@ Stroustrup
 strtolower
 STT
 Stunlock
+subarg
 subclassing
 subcmd
 subcomponents

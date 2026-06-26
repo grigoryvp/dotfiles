@@ -41,5 +41,6 @@
       }
     }
   },
+  "skipWorkflowUsageWarning": true,
   "tui": "fullscreen"
 }

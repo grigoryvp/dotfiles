@@ -102,34 +102,50 @@ def is_command_allowed(sequence: list[str]):
         "yarn",
         "find",
         "grep",
+        "sort",
     ]
+    NEED_ARGS = [
+        "xargs",
+        "sh",
+        "npx",
+        "node",
+        "glab",
+    ]
+
     if not sequence:
         return
     cmd, *args = sequence
     if cmd in ALLOWED:
         return True
+    if cmd in NEED_ARGS and len(args) < 1:
+        return NotAllowed(f"{cmd} without args")
+
     if cmd == "xargs":
+        while len(args):
+            subarg = args[0]
+            if subarg.startswith("-I") or subarg in ("-0", "-i"):
+                args.pop(0)
+            else:
+                break
         return is_command_allowed(args)
+    if cmd == "sh":
+        subcmd = args.pop(0)
+        if subcmd == "-c":
+            return is_command_allowed(args)
     if cmd == "timeout":
         if len(args) <= 1:
             return True
         args.pop(0)  # timeout value
         return is_command_allowed(args)
     if cmd == "npx":
-        if len(args) <= 1:
-            return NotAllowed("npx without args")
         subcmd = args.pop(0)
         if subcmd == "prettier":
             return True
     if cmd == "node":
-        if len(args) <= 1:
-            return NotAllowed("nodejs REPL")
         subcmd = args.pop(0)
         if subcmd.endswith(("tsc", "/tsc", "\\tsc")):
             return True
     if cmd == "glab":
-        if len(args) <= 1:
-            return NotAllowed("glab REPL")
         if args[:2] == ["mr", "view"]:
             return True
         if args[:2] == ["mr", "diff"]:

@@ -26,6 +26,11 @@ class NotAllowed:
     def __bool__(self):
         return False
 
+    @staticmethod
+    def find(decisions):
+        return next(iter(
+            [v for v in decisions if isinstance(v, NotAllowed)]), None)
+
 
 class AskPermission:
 
@@ -42,6 +47,12 @@ class AskPermission:
 
     def __bool__(self):
         return False
+
+    @staticmethod
+    def find(decisions):
+        return next(iter(
+            [v for v in decisions if isinstance(v, AskPermission)]), None)
+
 
 @dataclass
 class State:
@@ -182,9 +193,21 @@ def is_command_allowed(sequence: list[str], state: State):
                 break
         return is_command_allowed(args, state)
     if cmd == "sh":
-        subcmd = args.pop(0)
-        if subcmd == "-c":
-            return is_command_allowed(args, State(cwd=state.cwd))
+        if args.pop(0) == "-c" and len(args) == 1:
+            subcmd = args[0].strip("'")
+            source = subcmd.encode("utf-8")
+            tree = parser.parse(source)
+            state = State(cwd=state.cwd)
+            decisions = []
+            walk_ast(tree.root_node, source, state, decisions)
+            if all(decisions):
+                return True
+            else:
+                if (decision := NotAllowed.find(decisions)) is not None:
+                    return decision
+                if (decision := AskPermission.find(decisions)) is not None:
+                    return decision
+                assert False, "Unexpected"
     if cmd == "npx":
         subcmd = args.pop(0)
         if subcmd == "prettier":
@@ -202,11 +225,11 @@ def is_command_allowed(sequence: list[str], state: State):
         return is_git_command_allowed(args)
     if cmd == "unzip":
         while len(args):
-            if args[0] in ("-o", "-q"):
+            if args[0] in ("-o", "-q", "-l"):
                 args.pop(0)
                 continue
             if args[0].startswith("-"):
-                return AskPermission(f"rm {args[0]}", state)
+                return AskPermission(f"unzip {args[0]}", state)
             break
         if Path(state.cwd or ".").is_relative_to("/tmp"):
             return True
@@ -249,15 +272,11 @@ if all(decisions):
     sys.exit(0)
 
 
-decision = next(iter(
-    [v for v in decisions if isinstance(v, NotAllowed)]), None)
-if decision is not None:
+if (decision := NotAllowed.find(decisions)) is not None:
     sys.stderr.write(str(decision))
     sys.exit(2)
 
-decision = next(iter(
-    [v for v in decisions if isinstance(v, AskPermission)]), None)
-if decision is not None:
+if (decision := AskPermission.find(decisions)) is not None:
     sys.stderr.write(str(decision))
     sys.exit(0)
 

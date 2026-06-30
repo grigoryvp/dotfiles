@@ -137,6 +137,7 @@ badusb
 Baran
 Barbute
 barebone
+Barthol
 barya
 Basemetal
 beastcraft
@@ -333,8 +334,10 @@ deeplink
 defaultdict
 defence
 defences
+degen
 Dekharan
 deleteon
+deleter
 Dementophobia
 densesample
 densesamplenum
@@ -384,6 +387,7 @@ Dragonscale
 Drakeskin
 Dramatiq
 Dreamquest
+Dreame
 DRF
 Drox
 DS
@@ -1260,6 +1264,7 @@ Rugosa
 Runed
 Runefinding
 Runeforging
+runegraft
 Runegrafts
 runlevel
 runserver
@@ -1713,6 +1718,8 @@ Wraeclast
 WSA
 wsgi
 WSL
+wslc
+wslg
 wss
 wx
 wxpython

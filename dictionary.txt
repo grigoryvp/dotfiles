@@ -225,6 +225,7 @@ Chakram
 characterised
 charfrom
 chartjs
+Chatwoot
 Chayula
 cheatsheet
 Chestplate
@@ -386,8 +387,8 @@ doublecmd
 Dragonscale
 Drakeskin
 Dramatiq
-Dreamquest
 Dreame
+Dreamquest
 DRF
 Drox
 DS
@@ -588,6 +589,7 @@ GTX
 gunicorn
 Gutspike
 gvl
+GW_
 Gwennen
 gws
 habr
@@ -628,6 +630,7 @@ Highgate
 highload
 Hinecora
 Hinekora
+hiveblood
 hivebrain
 HKLM
 HMAC
@@ -636,6 +639,7 @@ Hoghunt
 Hom
 homelab
 horticrafting
+hostable
 hotstrings
 Hotwire
 HRESULT
@@ -1448,6 +1452,7 @@ Swiftblade
 swiftenv
 Swiftstalker
 swm
+SWP_
 Sybase
 syncdb
 Synthesised

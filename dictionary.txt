@@ -66,6 +66,7 @@ Aliexpress
 Alira
 Alivia
 Allflame
+alpinejs
 Amanamu
 AMQP
 Ange
@@ -1023,6 +1024,7 @@ nonglobal
 noninteractive
 nonlocal
 NOPASSWD
+notif
 notunes
 NPC
 npmignore

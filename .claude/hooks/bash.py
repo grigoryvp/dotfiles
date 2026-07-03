@@ -121,12 +121,16 @@ def is_command_allowed(sequence: list[str], state: State):
         "which",
         "sed",
         "uv",
+        "poetry",
         "yarn",
         "find",
         "grep",
         "sort",
         "xxd",  # hex dump
         "javap",  # java disassembler
+    ]
+    LOCAL_ALLOWED = [
+        "gradlew",  # java build tool
     ]
     NEED_ARGS = [
         "cd",
@@ -141,6 +145,9 @@ def is_command_allowed(sequence: list[str], state: State):
         return
     cmd, *args = sequence
     if cmd in ALLOWED:
+        return True
+    # Claude can run either 'gradlew' or './gradlew'
+    if cmd in LOCAL_ALLOWED or cmd.lstrip("./") in LOCAL_ALLOWED:
         return True
     if cmd in NEED_ARGS and len(args) < 1:
         return NotAllowed(f"{cmd} without args")

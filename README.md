@@ -86,6 +86,7 @@ pip install --upgrade pip
 # In "Settings/Trackpad/More gestures":
 # * Disable gestures
 # For iTerm2 settings
+# * Enable /General/Magic/Enable Python API
 # * Disable /General/Closing/Confirm
 # * Disable /General/Selection/Clicking
 # * Set Appearance/General/Theme to "Dark"

@@ -337,6 +337,7 @@ defaultdict
 defence
 defences
 degen
+defi
 Dekharan
 deleteon
 deleter
@@ -811,6 +812,7 @@ libbz
 libc
 libexec
 libinput
+libmagic
 libncursesw
 libreadline
 libsodium

@@ -74,8 +74,9 @@ def json_from_stdin():
             continue
 
 
-def is_git_command_allowed(args: list[str]):
+def is_git_command_allowed(args: list[str], state: State):
     OPTIONS = ["-C", "-c"]
+    FLAGS = ["--no-pager"]
     ALLOWED = {
         "bisect": [...],
         "diff": [...],
@@ -83,6 +84,7 @@ def is_git_command_allowed(args: list[str]):
         "log": [...],
         "show": [...],
         "status": [...],
+        "fetch": [...],
         "branch": [None, '-a', '--show-current'],
         "tag": ['-l', '--list'],
     }
@@ -90,6 +92,8 @@ def is_git_command_allowed(args: list[str]):
     try:
         while args:
             arg = args.pop(0)
+            if arg in FLAGS:
+                continue
             if arg in OPTIONS:
                 args.pop(0)
                 continue
@@ -107,7 +111,7 @@ def is_git_command_allowed(args: list[str]):
                                 return True  # allowed
                         case _:
                             assert False, "Unexpected"
-            return NotAllowed(" ".join(["git", arg, *args]))
+            return AskPermission(" ".join(["git", arg, *args]), state)
     except IndexError:
         return NotAllowed(f"Incorrect git args: {" ".join(src_args)}")
 
@@ -119,6 +123,7 @@ def is_command_allowed(sequence: list[str], state: State):
         "head",
         "tail",
         "which",
+        "awk",
         "sed",
         "uv",
         "poetry",
@@ -126,6 +131,8 @@ def is_command_allowed(sequence: list[str], state: State):
         "find",
         "grep",
         "sort",
+        "wc",
+        "base64",
         "xxd",  # hex dump
         "javap",  # java disassembler
     ]
@@ -139,6 +146,7 @@ def is_command_allowed(sequence: list[str], state: State):
         "npx",
         "node",
         "glab",
+        "java",
     ]
 
     if not sequence:
@@ -224,13 +232,27 @@ def is_command_allowed(sequence: list[str], state: State):
         subcmd = args.pop(0)
         if subcmd.endswith(("tsc", "/tsc", "\\tsc")):
             return True
+    if cmd == "java":
+        subcmd = args.pop(0)
+        if subcmd in ["-version"]:
+            return True
     if cmd == "glab":
+        if args[:1] == ["--version"]:
+            return True
         if args[:2] == ["mr", "view"]:
             return True
         if args[:2] == ["mr", "diff"]:
             return True
+        if args[:3] == ["mr", "note", "list"]:
+            return True
+        if args[:2] == ["ci", "status"]:
+            return True
+        if args[:2] == ["ci", "trace"]:
+            return True
+        if args[:2] == ["ci", "get"]:
+            return True
     if cmd == "git":
-        return is_git_command_allowed(args)
+        return is_git_command_allowed(args, state)
     if cmd == "unzip":
         while len(args):
             if args[0] in ("-o", "-q", "-l"):

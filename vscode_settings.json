@@ -279,7 +279,9 @@
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
   "powershell.integratedConsole.showOnStartup": false,
   "[python]": {
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "[ruby]": {
     "editor.formatOnSave": false,

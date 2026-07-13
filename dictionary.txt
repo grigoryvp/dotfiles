@@ -39,6 +39,7 @@ Achmiz
 ack
 acqui-hired
 activerecord
+addsitedir
 ADHD
 Adiyah
 ADK
@@ -124,6 +125,7 @@ autohide
 autohotkey
 autopep8
 autoreplace
+avahi
 Avalonia
 Avarius
 Aventail
@@ -140,6 +142,7 @@ Barbute
 barebone
 Barthol
 barya
+baselineskip
 Basemetal
 beastcraft
 Beastcrafting
@@ -171,6 +174,7 @@ blobstorage
 blockable
 Bloodletter
 bonechill
+bookclub
 bootstrapper
 Borgmon
 Borland
@@ -225,6 +229,7 @@ Chainmail
 Chakram
 characterised
 charfrom
+charliermarsh.ruff
 chartjs
 Chatwoot
 Chayula
@@ -522,6 +527,7 @@ gamesample
 gamesamplenum
 Gbit
 GC
+GCBV
 gdb
 GDI
 Geekbench
@@ -535,6 +541,7 @@ getencoding
 getenv
 getgems
 getrefcount
+getsitepackages
 getsizeof
 Gevent
 GG
@@ -894,6 +901,7 @@ MCP
 mcs
 MCU
 MDM
+mdns
 mdutil
 mebibyte
 MEDS
@@ -949,6 +957,7 @@ Morrigan
 moscowpythonconf
 Moti
 movespeed
+MPC
 mpv
 MQTT
 MRO
@@ -974,6 +983,7 @@ mynamespace
 mypy
 Myrk
 myscope
+mysite
 mysqldump
 mysuppress
 nacl
@@ -1027,6 +1037,7 @@ noninteractive
 nonlocal
 NOPASSWD
 notif
+normalsize
 notunes
 NPC
 npmignore
@@ -1100,6 +1111,7 @@ passlib
 passwordless
 pastebin
 pathlib
+pathsep
 Paua
 Pauascale
 PCI-E
@@ -1117,6 +1129,7 @@ PicoRuby
 pik
 PIL
 pinggraph
+pipenv
 pipx
 pixelmator
 pkey
@@ -1144,11 +1157,13 @@ psql
 psu
 Psyco
 psycopg2
+pth
 PTK
 ptpython
 Ptyxis
 pushd
 Putembo
+PVS-Studio
 pwsh
 pyboek
 pybook
@@ -1174,6 +1189,7 @@ pytest
 pytest-cov
 PYTHONASYNCIODEBUG
 PYTHONDONTWRITEBYTECODE
+PYTHONHOME
 pythonic
 PYTHONMALLOC
 PYTHONPATH
@@ -1248,6 +1264,7 @@ Ringmail
 rippy
 Riverhold
 rjsf
+RL
 rmi
 rmtree
 RO
@@ -1356,6 +1373,7 @@ Siphoner
 Sirenscale
 Siri
 Sirus
+sitecustomize
 skitterbots
 sklearn
 Skullcrusher
@@ -1388,6 +1406,7 @@ Soulrend
 soundcloud
 spacebar
 Spellslinger
+SPH
 Spidersilk
 Spikeward
 Spinehail
@@ -1529,6 +1548,7 @@ tonapps
 TONCOIN
 Tonkeeper
 Tonnel_Network_bot
+Toolbelt
 TOTP
 TPEP
 TPM
@@ -1572,6 +1592,7 @@ udemy
 UDP
 UEFI
 ufw
+ug
 Uhtred
 UID
 ujson
@@ -1595,8 +1616,10 @@ unsummon
 Updateon
 URLCONF
 urlencode
+urlpatterns
 usde
 userbot
+usercustomize
 userdata
 userinfo
 usermod
@@ -1604,6 +1627,7 @@ USERPROFILE
 userspace
 usr
 utcp
+Uterque
 UTF-16
 utf-8
 Utzaal
@@ -1738,6 +1762,7 @@ Wyrmscale
 Wyvernscale
 xapk
 xattr
+xbar
 XC
 xcodes
 Xesht
@@ -1896,6 +1921,7 @@ Zod
 деструктурированием
 деструктурировании
 деструктурирования
+джентельменским
 джойнить
 дистрибьюцией
 дистрибьюции
@@ -1991,6 +2017,7 @@ Zod
 легаси
 лексеров
 Лема
+Линус
 локал
 локала
 локалу
@@ -2068,6 +2095,7 @@ Zod
 нейросетей
 нейросетям
 нейросетями
+Некастодиальный
 неконсистентные
 неоптимальна
 нереплицируемый
@@ -2246,6 +2274,7 @@ Zod
 Тиннитус
 Типобезопасность
 типобезопасный
+Товальдс
 токенизатор
 токенизированные
 токенизированных

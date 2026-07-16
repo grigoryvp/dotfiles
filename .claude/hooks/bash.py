@@ -245,11 +245,17 @@ def is_command_allowed(sequence: list[str], state: State):
             return True
         if args[:3] == ["mr", "note", "list"]:
             return True
+        if args[:2] == ["ci", "help"]:
+            return True
         if args[:2] == ["ci", "status"]:
             return True
         if args[:2] == ["ci", "trace"]:
             return True
         if args[:2] == ["ci", "get"]:
+            return True
+        if args[:2] == ["ci", "list"]:
+            return True
+        if args[:2] == ["auth", "status"]:
             return True
     if cmd == "git":
         return is_git_command_allowed(args, state)

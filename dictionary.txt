@@ -341,8 +341,8 @@ deeplink
 defaultdict
 defence
 defences
-degen
 defi
+degen
 Dekharan
 deleteon
 deleter
@@ -919,7 +919,9 @@ metainfo
 metainformation
 metallb
 Metalsmith
+Metamethods
 metamod
+metatable
 methylxanthine
 mfc
 michaeldfallen
@@ -1036,8 +1038,8 @@ nonglobal
 noninteractive
 nonlocal
 NOPASSWD
-notif
 normalsize
+notif
 notunes
 NPC
 npmignore
@@ -1718,6 +1720,7 @@ websequencediagrams
 wechat
 WEP
 Werkzeug
+wf
 Wh
 Whakano
 Wi-Fi
@@ -1798,6 +1801,7 @@ Zod
 абырвалг
 австрийско-
 автовыбора
+автогенерацию
 автоконверсии
 автосохранение
 автотестов
@@ -2134,6 +2138,7 @@ Zod
 парсерах
 парсеры
 парсится
+партиционирование
 партицированию
 Пасхалки
 паттерн-матчинга
@@ -2355,6 +2360,7 @@ Zod
 Шард
 шардам
 шардами
+шардирование
 шардирования
 шардируется
 шардов
@@ -2371,3 +2377,4 @@ Zod
 эмбеддингов
 юнит
 charliermarsh.ruff
+utf8

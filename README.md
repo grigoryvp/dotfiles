@@ -91,6 +91,10 @@ pip install --upgrade pip
 # * Disable /General/Selection/Clicking
 # * Set Appearance/General/Theme to "Dark"
 # * Set Appearance/Windows/Hide scrollbars
+# * Set Appearance/Tab bar to Left
+# * Enable Appearance/Tabs/Show tab bar
+# * Disable Appearance/Tabs/Show tab numbers
+# * Disable Appearance/Tabs/Close buttons
 # * Enable Appearance/Dimming "inactive windows" and "affects text", 60%
 # * Set Profiles/General/Initial directory to "Reuse"
 # * Set Profiles/Colors/Color presets to "Solarized Dark", background to black

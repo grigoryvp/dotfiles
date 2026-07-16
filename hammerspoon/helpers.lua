@@ -10,6 +10,17 @@ function count(v)
   return sum
 end
 
+function split(string, pattern)
+  local parts = {}
+  if not pattern then
+    pattern = "%S+"
+  end
+  for part in string:gmatch(pattern) do
+    table.insert(parts, part)
+  end
+  return parts
+end
+
 cls = hs.console.clearConsole
 
 function focusLastFocused()

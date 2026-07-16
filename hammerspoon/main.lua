@@ -446,6 +446,10 @@ function App:startHttpServer()
       self:shortenUrlInClipboard()
       return "", 200, {}
 
+    elseif json.command == "tg_type_username" then
+      self:TgTypeUsername()
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end
@@ -1341,6 +1345,42 @@ function App:shortenAndTrimUrlInClipboard()
     clipboard = clipboard:sub(1, queryPos - 1)
   end
   self:_shortenUrl(clipboard)
+end
+
+
+function App:TgTypeUsername()
+  local app = hs.application.find("Telegram")
+  if not app then
+    return
+  end
+  local wnd = app:mainWindow()
+  if not wnd then
+    return
+  end
+  local title = wnd:title()
+  if not title then
+    return
+  end
+
+  local parts = split(title)
+  if #parts <= 0 then
+    return
+  end
+
+  local name = nil
+  if #parts <= 1 then
+    name = parts[1]
+  else
+    local second = parts[2]
+    if second:sub(1, 1) == "(" and second:sub(-1) == ")" then
+      -- Preferred name can be specified in parenthesis after the name
+      name = second:sub(2, -2)
+    else
+      name = parts[1]
+    end
+  end
+
+  self:_paste(name)
 end
 
 

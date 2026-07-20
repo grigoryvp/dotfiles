@@ -255,6 +255,8 @@ def is_command_allowed(sequence: list[str], state: State):
             return True
         if args[:2] == ["ci", "list"]:
             return True
+        if args[:3] == ["ci", "job", "trace"]:
+            return True
         if args[:2] == ["auth", "status"]:
             return True
     if cmd == "git":

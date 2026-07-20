@@ -12,6 +12,8 @@
       "Bash(yarn:*)",
       "Bash(find:*)",
       "Bash(grep:*)",
+      "Bash(ruff:*)",
+      "Bash(mypy:*)",
       "Bash(./gradlew:*)",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__take_screenshot",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"

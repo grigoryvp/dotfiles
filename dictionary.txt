@@ -37,6 +37,7 @@ Acclimatisation
 Accor
 Achmiz
 ack
+acp
 acqui-hired
 activerecord
 addsitedir
@@ -298,6 +299,7 @@ Craiceann
 Craicic
 CRDT
 createdb
+Crushclaw
 Crystallisation
 Crystallised
 CSO
@@ -402,6 +404,8 @@ DS
 DSA
 DSL
 dsn
+dtrace
+dtruss
 Dualstring
 dunder
 Dunerunner
@@ -441,6 +445,7 @@ ERC20
 ERP
 Errno
 Eruptor
+esbuild
 Esh
 esim
 esm
@@ -505,6 +510,7 @@ Forkshot
 Fossilised
 Foulborn
 Foxshade
+fractionary
 FRC
 Freepik
 freezegun
@@ -1119,6 +1125,7 @@ Pauascale
 PCI-E
 pdb
 PDR
+perma
 Petrov
 pfctl
 PGSSLMODE
@@ -1510,6 +1517,7 @@ techdocs
 techempower
 Telegem
 templatelib
+Temporoparietal
 TEP
 Teradata
 terraforming
@@ -1526,6 +1534,7 @@ TF-IDF
 TFS
 tft
 TG
+Thiel
 Thinkpad
 Threadripper
 Thrud
@@ -1553,6 +1562,7 @@ Tonnel_Network_bot
 Toolbelt
 TOTP
 TPEP
+TPJ
 TPM
 tqdm
 traceroute
@@ -1561,6 +1571,8 @@ Trampletoe
 Transavia
 Transcension
 Trapsetter
+Trarthan
+Trarthus
 Treerunner
 Tri
 Triggerblades
@@ -1632,6 +1644,7 @@ utcp
 Uterque
 UTF-16
 utf-8
+utf8
 Utzaal
 uuidv7
 Uul-Netol
@@ -1802,6 +1815,7 @@ Zod
 австрийско-
 автовыбора
 автогенерацию
+автодополнение
 автоконверсии
 автосохранение
 автотестов
@@ -1866,7 +1880,9 @@ Zod
 версионируется
 видеокодека
 видеопроигрывателя
+Виммер
 виртуалках
+внетелесного
 врапперов
 вспомогательности
 вызываемости
@@ -1932,6 +1948,7 @@ Zod
 Длинношеев
 донастроить
 донастройки
+дообучает
 дообучается
 дропает
 еtcd
@@ -1987,7 +2004,10 @@ Zod
 кликаете
 кликстрим
 кликхаус
+когами
 когнитома
+когов
+кодинг
 коллапсирует
 коммита
 коммитам
@@ -2008,6 +2028,7 @@ Zod
 контринтуитивному
 корутины
 косинусодиальное
+коэволюцией
 коэволюции
 Кре́дит
 криптобирж
@@ -2096,6 +2117,7 @@ Zod
 нейровизуализации
 Нейродизайн
 нейрональные
+нейрональных
 нейросетей
 нейросетям
 нейросетями
@@ -2129,6 +2151,7 @@ Zod
 опенсорсной
 опенспейс
 ОПХБЕР
+орбитофронтальную
 оркестрирует
 отказоустойчивовостью
 пайплайн
@@ -2170,6 +2193,7 @@ Zod
 переуказывать
 переуказываются
 переуказывая
+Пернер
 пессимизаций
 петабайт
 петабайты
@@ -2225,6 +2249,7 @@ Zod
 Сocoa
 самоподписанным
 Сапольски
+Сбера
 Сбере
 СБП
 свежесозданного
@@ -2376,5 +2401,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-charliermarsh.ruff
-utf8

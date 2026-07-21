@@ -2,6 +2,11 @@
 # /// script
 # dependencies = ["tree-sitter", "tree-sitter-bash"]
 # ///
+#
+# Debug via:
+# jq -n --arg cmd "$(pbpaste)" \
+#   '{"hook_event_name":"debug","tool_input":{"command":$cmd}}' \
+# | uv run ~/dotfiles/.claude/hooks/bash.py
 
 import os
 import sys
@@ -85,6 +90,7 @@ def is_git_command_allowed(args: list[str], state: State):
         "show": [...],
         "status": [...],
         "fetch": [...],
+        "ls-files": [...],
         "branch": [None, '-a', '--show-current'],
         "tag": ['-l', '--list'],
     }

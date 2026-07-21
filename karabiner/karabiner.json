@@ -517,7 +517,7 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.tinyspeck\\.slackmacgap$",
-                                            "^com\\.openai\\.chat$",
+                                            "^com\\.openai\\.codex$",
                                             "^com\\.microsoft\\.VSCode$",
                                             "^com\\.googlecode\\.iterm2$",
                                             "^com\\.atlassian\\.trello$",

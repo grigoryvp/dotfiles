@@ -216,7 +216,7 @@ function App:startHttpServer()
           self.linearDock:doAXPress()
           return "", 200, {}
         elseif json.app_id == "gpt" then
-          self:clickDockItemByName("ChatGPT")
+          self:clickDockItemByName("ChatGPT Classic")
         else
           return "unknown app_id", 400, {}
         end

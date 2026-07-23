@@ -55,28 +55,24 @@
           }, {
             "set_variable": { "name": "_m2_held", "value": 0 }
           }],
-
           "to_if_alone": [{ "key_code": "escape" }],
-          "to_if_held_down": [
-              {
-                  "set_variable": {
-                      "name": "_m2",
-                      "value": 1
-                  }
-              },
-              {
-                  "set_variable": {
-                      "name": "_m2_held",
-                      "value": 1
-                  }
-              }
-          ],
+          "to_if_held_down": [{
+            "set_variable": {
+              "name": "_m2",
+              "value": 1
+            }
+          }, {
+            "set_variable": {
+              "name": "_m2_held",
+              "value": 1
+            }
+          }],
           "type": "basic"
-      }
-        ]
-    },
-                    {
-                        "description": "right cmd to m3 and enter",
+        }]
+      }, {
+
+        // right cmd to m3 and enter
+        "description": "right cmd to m3 and enter",
                         "manipulators": [
                             {
                                 "description": "Use right cmd as both 'meta-3' and 'enter' key",

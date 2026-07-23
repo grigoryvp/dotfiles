@@ -827,10 +827,12 @@ libexec
 libinput
 libmagic
 libncursesw
+libopus
 libreadline
 libsodium
 libsqlite
 libui
+libx264
 libxmlsec
 Lich
 Lich's
@@ -948,6 +950,7 @@ Mjölner
 mkdocs
 mkdocstrings
 mktemp
+mkv
 MLO
 MLX
 mmd

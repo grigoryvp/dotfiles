@@ -49,6 +49,7 @@ Aetherwind
 agentic
 agy
 ahk
+AHP
 Ailith
 aiohttp
 aiokafka
@@ -337,6 +338,7 @@ DDD
 DDL
 debuff
 debuffs
+debugpy
 dedupe
 deepcopy
 deeplink
@@ -434,6 +436,7 @@ Elreon
 Emscripten
 endraw
 endswith
+ensurepip
 Enthalpic
 env
 envrc
@@ -1127,6 +1130,7 @@ Paua
 Pauascale
 PCI-E
 pdb
+pdm
 PDR
 perma
 Petrov
@@ -1142,6 +1146,7 @@ pik
 PIL
 pinggraph
 pipenv
+Pipfile
 pipx
 pixelmator
 pkey
@@ -1231,6 +1236,7 @@ Rarible
 Rasa
 RCE
 RDBMS
+RDMA
 RDNA
 RDTSC
 reactjs
@@ -1880,6 +1886,7 @@ Zod
 векторизация
 вендоров
 вендорской
+версионирование
 версионируется
 видеокодека
 видеопроигрывателя
@@ -2238,6 +2245,7 @@ Zod
 ребаланс
 редиректят
 резидентства
+Рейц
 реконнектится
 реселлера
 ресентимента

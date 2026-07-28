@@ -201,6 +201,8 @@
   "editor.stickyScroll.enabled": true,
   "editor.accessibilitySupport": "off",
   "editor.formatOnSave": false,
+  // Default is 500, enough for ~ half of my PoE filter file
+  "editor.colorDecoratorsLimit": 2000,
   "diffEditor.wordWrap": "off",
   //! terminal options are not inherited, ex it's not possible to specify
   //  'terminal.integrated' option as a dict.

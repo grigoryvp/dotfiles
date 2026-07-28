@@ -1,4 +1,4 @@
-#!/usr/bin/env uv run
+#!/usr/bin/env -S uv run --script --no-config
 # /// script
 # dependencies = ["tree-sitter", "tree-sitter-bash"]
 # ///
@@ -244,6 +244,9 @@ def is_command_allowed(sequence: list[str], state: State):
             return True
     if cmd == "glab":
         if args[:1] == ["--version"]:
+            return True
+        # GET api request (ex list issues)?
+        if args[:1] == ["api"] and not ("--method" in args):
             return True
         if args[:2] == ["mr", "view"]:
             return True

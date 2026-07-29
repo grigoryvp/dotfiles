@@ -1686,6 +1686,8 @@ addRemap("b", ["s-poe"], poeFlasks)
 
 ;;  'm1-v' for F7.
 addRemap("v", ["m1"], "f7")
+;;  "m2-v" for game bar
+addRemap("v", ["m2"], "g", ["win"])
 
 ; 'm1-c' for F6.
 addRemap("c", ["m1"], "f6")
@@ -1694,8 +1696,8 @@ addRemap("c", ["m2"], "g", ["win", "alt"])
 
 ;;  'm1-x' for F5.
 addRemap("x", ["m1"], "f5")
-;;  "m2-x" for game bar
-addRemap("x", ["m2"], "g", ["win"])
+;;  'm2-x' for del (PoE one-hand operation)
+addRemap("x", ["m2"], ["send", "{delete}"])
 ;;  "x" triggers flasks in PoE if enabled
 addRemap("x", ["s-poe"], poeFlasks)
 

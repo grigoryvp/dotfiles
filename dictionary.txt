@@ -685,6 +685,7 @@ IHG
 IIR
 ilograph
 ilvl
+ilvls
 im
 imagex
 IMG

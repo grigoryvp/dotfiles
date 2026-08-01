@@ -1730,7 +1730,7 @@ addRemap("vkbc", ["m1", "m2"], ["winpos", "right"])
 
 ;;  m2-1 for game text
 addRemap(["1", "appname", "Path of Exile 2"], ["m2"], ["send", "movement|skills|spirit|adds.{+}damage"])
-addRemap(["1", "appname", "Path of Exile"], ["m2"], ["send", "-[rgb]-|nne|rint"])
+addRemap(["1", "appname", "Path of Exile"], ["m2"], ["send", "-\w-|Runn|rint"])
 
 ;;  m2-2 for game text
 addRemap(["2", "appname", "Path of Exile 2"], ["m2"], ["send", "`"{!}(resistances|cursed|ailment application|break armour|recovery|chilled ground)`""])
@@ -1751,7 +1751,7 @@ addRemap("5", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch 
 addRemap("6", ["m2"], ["send", "`"{!}(ap ti|client:|(nt|ed|r's) sh|incu|scar|ch ri|em so)`" `"(on|ck|ent|ver|en) oi|r's (p|b)|chay|ror sh|(ine|ent|ted|aos|aal|tic|gal) or|of (kal|ann|fu|ch|alc|ho|regr|alt)|reson|cata|sco|glas|envy|drea|scor|zeal|spit|deck`""])
 
 ;;  m2-7 for game text
-addRemap("7", ["m2"], ["send", "-\w-.-|r-g-b|r-b-g|b-r-g|b-g-r|g-r-b|g-b-r|rint"])
+addRemap("7", ["m2"], ["send", "-\w-.-|Runn|rint"])
 
 ;;  m2-8 for game text
 addRemap("8", ["m2"], ["send", "`"Bone R|Vermil|Amet|Vise|Heavy|Leather B|Crystal B|Convoking|Bone S|Ivory|Fossil|Leviathan|Velour|Warlock|Wyvernscale|Paladin|Phantom|Giantslayer|Majestic|Lich'|Haunted|Divine|Torturer'|Royal|Syndicate'|Twilight|Conquest|Sacred|Necrotic`""])

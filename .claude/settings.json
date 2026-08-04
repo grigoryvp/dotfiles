@@ -43,6 +43,6 @@
       }
     }
   },
-  "skipWorkflowUsageWarning": true,
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true
 }

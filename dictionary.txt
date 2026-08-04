@@ -301,6 +301,7 @@ Craiceann
 Craicic
 CRDT
 createdb
+cri
 Crushclaw
 Crystallisation
 Crystallised
@@ -1285,6 +1286,7 @@ Ringmail
 rippy
 Riverhold
 rjsf
+rkt
 RL
 rmi
 rmtree

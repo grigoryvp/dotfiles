@@ -20,6 +20,17 @@
     ]
   },
   "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${HOME}/.claude/hooks/notify.py"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -44,5 +55,7 @@
     }
   },
   "tui": "fullscreen",
-  "skipWorkflowUsageWarning": true
+  "skipWorkflowUsageWarning": true,
+  "messageIdleNotifThresholdMs": 5000,
+  "preferredNotifChannel": "iterm2_with_bell"
 }

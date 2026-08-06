@@ -89,16 +89,20 @@ pip install --upgrade pip
 # * Enable /General/Magic/Enable Python API
 # * Disable /General/Closing/Confirm
 # * Disable /General/Selection/Clicking
+# * Enable "Enable Python API" in /General/Magic
 # * Set Appearance/General/Theme to "Dark"
 # * Set Appearance/Windows/Hide scrollbars
 # * Set Appearance/Tab bar to Left
-# * Enable Appearance/Tabs/Show tab bar
-# * Disable Appearance/Tabs/Show tab numbers
-# * Disable Appearance/Tabs/Close buttons
+# * Enable "Show tab bar" in Appearance/Tabs
+# * Disable "Show tab numbers" in Appearance/Tabs
+# * Disable "Tabs have close button" in Appearance/Tabs
+# * Disable "Show new-output indicator" in Appearance/Tabs
 # * Enable Appearance/Dimming "inactive windows" and "affects text", 60%
 # * Set Profiles/General/Initial directory to "Reuse"
 # * Set Profiles/Colors/Color presets to "Solarized Dark", background to black
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
+# * Enable Profiles/Terminal "Silence bell"
+# * Set Filter Alerts in Profiles/Terminal to "Bell"
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"
 # * In /Files views/extra

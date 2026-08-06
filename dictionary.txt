@@ -512,6 +512,7 @@ FLTK
 fn
 fontupper
 Forkshot
+Fossilcrafting
 Fossilised
 Foulborn
 Foxshade
@@ -782,6 +783,7 @@ Kimi
 Kineticist
 Kingsmarch
 Kirac
+Kishara
 kislyuk
 Kitava
 Kivy
@@ -991,6 +993,7 @@ Mudi
 mul
 multibyte
 MULTIPROC
+multistrike
 MVC
 MVCC
 mvn
@@ -1254,6 +1257,7 @@ reasonml
 Rebar
 rebeccapurple
 recents
+Recombinator
 recvfrom
 redacter
 Redactions
@@ -1684,6 +1688,7 @@ VCS
 Vec
 vectorizer
 Vectorizing
+Velka
 Ventor
 venv
 ver

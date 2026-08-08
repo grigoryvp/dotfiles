@@ -11,7 +11,7 @@ import os
 import iterm2
 
 
-async def main(connection: iterm2.Connection) -> None:
+async def _notify(connection: iterm2.Connection) -> None:
 
     session_id = os.environ.get("ITERM_SESSION_ID")
     if not session_id:
@@ -29,4 +29,8 @@ async def main(connection: iterm2.Connection) -> None:
     await session.async_inject(b"\a")
 
 
-iterm2.run_until_complete(main)
+def notify():
+    iterm2.run_until_complete(_notify)
+
+if __name__ == "__main__":
+    notify()

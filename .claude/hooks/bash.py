@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv run --script --no-config
 # /// script
-# dependencies = ["tree-sitter", "tree-sitter-bash"]
+# dependencies = ["tree-sitter", "tree-sitter-bash", "iterm2"]
 # ///
 #
 # Debug via:
@@ -19,6 +19,7 @@ from textwrap import dedent
 import tree_sitter_bash as tsbash
 from tree_sitter import Language, Parser
 
+import notify
 
 class NotAllowed:
 
@@ -325,6 +326,7 @@ if (decision := NotAllowed.find(decisions)) is not None:
 
 if (decision := AskPermission.find(decisions)) is not None:
     sys.stderr.write(str(decision))
+    notify.notify()
     sys.exit(0)
 
 assert False, "Unexpected"

@@ -92,8 +92,6 @@ configure() {
   brew update --verbose
   # For Deskflow
   brew tap deskflow/homebrew-tap
-  # For Wox launcher
-  brew tap wox-launcher/wox
   # For Python 3.10.0 on Apple Silicon
   brew install readline openssl
   # For PHP

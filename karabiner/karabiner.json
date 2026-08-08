@@ -2342,6 +2342,43 @@
                                     },
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.google\\.Chrome$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "m1-g for Chrome Bookmarks Bar",
+                                "from": {
+                                    "key_code": "g",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "b",
+                                        "modifiers": ["right_command", "right_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
                                             "^com\\.valvesoftware\\.steam\\.streamingclient$",
                                             "^com\\.GGG\\.PathOfExile$"
                                         ],
@@ -2660,17 +2697,12 @@
                                         "type": "frontmost_application_if"
                                     }
                                 ],
-                                "description": "m1-d for Chrome Bookmarks Bar",
+                                "description": "m1-d for collapse/expand tabs in Chrome",
                                 "from": {
                                     "key_code": "d",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [
-                                    {
-                                        "key_code": "b",
-                                        "modifiers": ["right_command", "right_shift"]
-                                    }
-                                ],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"chrome_toggle_tabs\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

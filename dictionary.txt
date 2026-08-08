@@ -1645,6 +1645,7 @@ Unpowered
 Unraisable
 unsequenced
 unsummon
+untap
 Updateon
 URLCONF
 urlencode

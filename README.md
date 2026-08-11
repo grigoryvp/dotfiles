@@ -96,7 +96,8 @@ pip install --upgrade pip
 # * Enable "Show tab bar" in Appearance/Tabs
 # * Disable "Show tab numbers" in Appearance/Tabs
 # * Disable "Tabs have close button" in Appearance/Tabs
-# * Disable "Show new-output indicator" in Appearance/Tabs
+# * Disable "Show activity indicator" (circle progress) in Appearance/Tabs
+# * Disable "Show new-output indicator" (blue dot) in Appearance/Tabs
 # * Enable Appearance/Dimming "inactive windows" and "affects text", 60%
 # * Set Profiles/General/Initial directory to "Reuse"
 # * Set Profiles/Colors/Color presets to "Solarized Dark", background to black

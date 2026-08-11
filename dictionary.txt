@@ -1822,6 +1822,7 @@ yshift
 Yudkowsky
 YugabyteDB
 Zab
+Zaffre
 Zana
 Zantipi
 Zarokh
@@ -2425,3 +2426,10 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
+Guatelitzi
+Xopec
+Ryslatha
+Tzteosh
+Haast
+Ephij
+Bameth

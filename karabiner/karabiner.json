@@ -1495,14 +1495,11 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "'m3-slash' for shift-command-4 (screenshot)",
+                                "description": "'m3-slash' for screenshot",
                                 "from": { "key_code": "slash" },
-                                "to": [
-                                    {
-                                        "key_code": "4",
-                                        "modifiers": ["command", "shift"]
-                                    }
-                                ],
+                                "to": [{
+                                  "shell_command": "/Applications/flameshot.app/Contents/MacOS/flameshot gui"
+                                }],
                                 "type": "basic"
                             },
                             {

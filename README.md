@@ -44,6 +44,11 @@ pip install --upgrade pip
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # touch ~/dotfiles/.secure
 # Install https://desktop.telegram.org/
+# Install https://flameshot.org/
+# * Enable autostart
+# * Disable menubar icon
+# * Set save dir to ~/Screenshots
+# * Enable copy path to clipboard on save
 # Install Trello from App Store
 # Enable KeePass Chrome integration and connect Chrome to the correct DB
 # Command-drag-out menu icons except clock (until the "x" mark appears)

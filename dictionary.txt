@@ -538,6 +538,7 @@ FSRS
 FTX
 functools
 FX
+fzf
 Galera
 gamesample
 gamesamplenum
@@ -1718,10 +1719,12 @@ Veritania
 Vermillion
 VESA
 vha
+vicmd
 victorialogs
 victoriatraces
 viewports
 viewsets
+viins
 Vilenta
 Vinderi
 Vinia

@@ -472,8 +472,17 @@ if [ -d $HOME/.opam ]; then
 fi
 
 ##  Activate mise, if installed
-if mise --version >/dev/null 2>&1; then
+if which mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
+fi
+
+##  Activate fzf, if installed
+if which fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+  bindkey -r '^T'
+  for m in emacs viins vicmd; do
+    bindkey -M $m '^J' fzf-file-widget
+  done
 fi
 
 # Disable pagers when the terminal is launched by Cline

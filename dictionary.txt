@@ -140,6 +140,7 @@ Azmerian
 Azyran
 backoffice
 badusb
+Bameth
 Baran
 Barbute
 barebone
@@ -442,6 +443,7 @@ ensurepip
 Enthalpic
 env
 envrc
+Ephij
 epub
 eqmac
 erb
@@ -462,6 +464,7 @@ ETF
 Ethena
 etl
 etog
+ETX
 eurocom
 EUV
 evals
@@ -506,6 +509,7 @@ Flamebolt
 flamegraph
 Flamehand
 Flamequiver
+flameshot
 Flet
 Flink
 FLTK
@@ -607,12 +611,14 @@ grigoryvp
 Gruthkul
 GTK
 GTX
+Guatelitzi
 gunicorn
 Gutspike
 gvl
 GW_
 Gwennen
 gws
+Haast
 habr
 habrahabr
 Haemophilia
@@ -731,6 +737,7 @@ isnan
 iterm
 itertools
 itsdangerous
+IXON
 ixx
 Izaro
 Jado
@@ -776,7 +783,9 @@ keepassxc
 Kesus
 Keth
 keygen
+keymap
 keypair
+keypresses
 KEYUP
 kibibyte
 killall
@@ -1139,6 +1148,7 @@ PCI-E
 pdb
 pdm
 PDR
+Pearlescent
 perma
 perps
 Petrov
@@ -1328,6 +1338,7 @@ RVM
 RW
 Ryanair
 RYB
+Ryslatha
 Ryzen
 S͓
 Sabatons
@@ -1395,6 +1406,7 @@ shutil
 Sidereus
 sigcheck
 significand
+SIGTSTP
 Silverlight
 Simula
 Siphoner
@@ -1463,6 +1475,7 @@ Steelskin
 Steeltoe
 STM32
 stormblast
+Stormbrewer
 Stormcall
 Stormcaller
 Stormhand
@@ -1478,6 +1491,7 @@ strongarms
 Stroustrup
 strtolower
 STT
+stty
 Stunlock
 subarg
 subclassing
@@ -1617,6 +1631,7 @@ Tullina
 Tunnelslam
 typeguards
 Typer
+Tzteosh
 ua-parser
 ubyte
 UCRT
@@ -1643,6 +1658,7 @@ unhashable
 unicodedata
 unpackings
 Unpowered
+unprintables
 Unraisable
 unsequenced
 unsummon
@@ -1803,6 +1819,9 @@ xbar
 XC
 xcodes
 Xesht
+XOFF
+xon
+Xopec
 Xoph
 xorg
 xrange
@@ -2426,12 +2445,3 @@ Zod
 эмбеддинги
 эмбеддингов
 юнит
-Guatelitzi
-Xopec
-Ryslatha
-Tzteosh
-Haast
-Ephij
-Bameth
-Pearlescent
-Stormbrewer

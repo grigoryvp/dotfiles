@@ -109,7 +109,6 @@ pip install --upgrade pip
 # * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
 # * Enable Profiles/Terminal "Silence bell"
 # * Set Filter Alerts in Profiles/Terminal to "Bell"
-# * Enable "Prevent CSI 3 J" in /Advanced/Terminal
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"
 # * In /Files views/extra

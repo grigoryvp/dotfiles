@@ -214,6 +214,7 @@ CAPEX
 CAPSLOCK
 capsys
 captionof
+Carapaced
 cardano
 CAS
 Catalysing
@@ -582,6 +583,7 @@ Goathide
 Goatman
 Goatmem
 goatmen
+Godslayer
 Goldcast
 Goldworked
 googlecode
@@ -922,6 +924,7 @@ Matryoshka
 Matsya
 Matz
 Mawr
+Mazarine
 mbr
 mccabe
 MCM

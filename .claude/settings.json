@@ -1,7 +1,7 @@
 {
   "env": {
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
-    "CLAUDE_CODE_DISABLE_MOUSE": "1"
+    "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": "1"
   },
   "permissions": {
     "allow": [

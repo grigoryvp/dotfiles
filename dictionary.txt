@@ -306,6 +306,7 @@ cri
 Crushclaw
 Crystallisation
 Crystallised
+CSI
 CSO
 CTO
 ctx

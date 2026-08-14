@@ -251,6 +251,7 @@ CI_PIPELINE_IID
 Cinderswallow
 Cingulate
 CIO
+Citaqualotl
 Citus
 cjkfont
 clangd
@@ -1157,6 +1158,8 @@ PDR
 Pearlescent
 perma
 perps
+PersQueue
+PersQueueReadBalancer
 Petrov
 pfctl
 PGSSLMODE
@@ -1188,6 +1191,8 @@ postpack
 ppp
 pprint
 PPX
+PQ
+PQ-tablet
 preprod
 PREROUTING
 prestart
@@ -1202,6 +1207,7 @@ pth
 PTK
 ptpython
 Ptyxis
+Puhuarte
 pushd
 Putembo
 PVS-Studio
@@ -1599,6 +1605,7 @@ TONCOIN
 Tonkeeper
 Tonnel_Network_bot
 Toolbelt
+Topotante
 TOTP
 TPEP
 TPJ

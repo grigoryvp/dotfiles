@@ -92,8 +92,10 @@ def is_git_command_allowed(args: list[str], state: State):
         "fetch": [...],
         "ls-files": [...],
         "remove": ["-v"],
-        "branch": [None, "-a", "--show-current"],
+        "branch": [None, "-a", "-r", "--show-current"],
         "tag": ["-l", "--list"],
+        "config": ["--get-all"],
+        "rev-list": [...],
     }
     src_args = args[::]
     try:

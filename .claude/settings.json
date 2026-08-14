@@ -1,7 +1,6 @@
 {
   "env": {
-    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
-    "CLAUDE_CODE_DISABLE_MOUSE": "1"
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
   },
   "permissions": {
     "allow": [
@@ -61,5 +60,7 @@
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "messageIdleNotifThresholdMs": 5000,
-  "preferredNotifChannel": "iterm2_with_bell"
+  "preferredNotifChannel": "iterm2_with_bell",
+  "terminalProgressBarEnabled": false,
+  "showStatusInTerminalTab": false
 }

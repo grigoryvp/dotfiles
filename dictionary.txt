@@ -44,6 +44,7 @@ addsitedir
 ADHD
 Adiyah
 ADK
+Adya
 Aerospike
 Aetherwind
 agentic
@@ -693,6 +694,7 @@ idir
 idl
 idna
 idx
+IEC
 iex
 ignorecase
 IHG
@@ -754,6 +756,7 @@ javap
 JDBC
 JDK
 JEP
+Jepsen
 jestfile
 Jewellery
 JIT
@@ -1470,6 +1473,7 @@ sqlalchemy
 sre
 srv
 SSF
+SSI
 ssize
 Stackable
 stackful
@@ -2101,6 +2105,7 @@ Zod
 лексеров
 Лема
 Линус
+лок
 локал
 локала
 локалу

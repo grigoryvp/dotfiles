@@ -134,6 +134,8 @@ def is_command_allowed(sequence: list[str], state: State):
         "which",
         "awk",
         "sed",
+        "mktemp",
+        "unzip",
         "uv",
         "poetry",
         "yarn",
@@ -170,6 +172,9 @@ def is_command_allowed(sequence: list[str], state: State):
         return NotAllowed(f"{cmd} without args")
 
     if cmd == "cd":
+        if args[0] in ("\"$(mktemp -d)\"", "$(mktemp -d)"):
+            state.cwd = "/tmp/__mktemp__"
+            return True
         if (args[0].startswith("$")):
             return AskPermission(f"cd {args[0]}", state)
         # Save to validate commands like 'rm' in the future

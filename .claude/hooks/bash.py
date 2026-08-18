@@ -144,6 +144,7 @@ def is_command_allowed(sequence: list[str], state: State):
         "sort",
         "wc",
         "base64",
+        "tr",
         "xxd",  # hex dump
         "javap",  # java disassembler
     ]

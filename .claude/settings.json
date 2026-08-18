@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${HOME}/.claude/hooks/notify.py"
+            "command": "cd ~ && exec ${HOME}/.claude/hooks/notify.py"
           }
         ]
       }
@@ -41,7 +41,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${HOME}/.claude/hooks/bash.py"
+            "command": "cd ~ && exec ${HOME}/.claude/hooks/bash.py"
           }
         ]
       }

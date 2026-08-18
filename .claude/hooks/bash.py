@@ -12,6 +12,7 @@ import os
 import sys
 import json
 import builtins
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from textwrap import dedent
@@ -202,8 +203,9 @@ def is_command_allowed(sequence: list[str], state: State):
             path = Path(arg)
             if not path.is_absolute():
                 path = Path(state.cwd or ".") / path
-            if path.is_relative_to("/tmp"):
-                continue
+            if "$" not in str(path) and "`" not in str(path):
+                if path.resolve().is_relative_to(Path("/tmp").resolve()):
+                    continue
             return AskPermission(f"rm {path}", state)
         return True
     if cmd == "mkdir":
@@ -211,8 +213,9 @@ def is_command_allowed(sequence: list[str], state: State):
             path = Path(arg)
             if not path.is_absolute():
                 path = Path(state.cwd or ".") / path
-            if path.is_relative_to("/tmp"):
-                continue
+            if "$" not in str(path) and "`" not in str(path):
+                if path.resolve().is_relative_to(Path("/tmp").resolve()):
+                    continue
             return AskPermission(f"mkdir {path}", state)
         return True
     if cmd == "xargs":
@@ -287,10 +290,52 @@ def is_command_allowed(sequence: list[str], state: State):
             if args[0].startswith("-"):
                 return AskPermission(f"unzip {args[0]}", state)
             break
-        if Path(state.cwd or ".").is_relative_to("/tmp"):
+        cwd = Path(state.cwd or ".")
+        if "$" not in str(cwd) and "`" not in str(cwd):
+            if cwd.resolve().is_relative_to(Path("/tmp").resolve()):
+                return True
+    if cmd == "docker":
+        if args[:1] == ["info"]:
+            return True
+    if cmd == "uvx":
+        if args[:1] == ["mypy"]:
+            return True
+        if args[:2] == ["ruff", "check"]:
             return True
 
     return AskPermission(" ".join(sequence), state)
+
+
+def is_redirect_allowed(sequence: list[str], state: State):
+    command = " ".join(sequence)
+    if len(sequence) < 2:
+        return AskPermission(command, state)
+
+    dir_or_descr = sequence.pop(0)
+    if re.fullmatch(r"[0-9]+", dir_or_descr):
+        direction = sequence.pop(0)
+    else:
+        direction = dir_or_descr
+
+    if direction not in (">", ">>", "&>", "&>>", ">|", ">&"):
+        return AskPermission(command, state)
+
+    if len(sequence) < 1:
+        return AskPermission(command, state)
+    target = sequence.pop(0)
+    if re.fullmatch(r"^([\"']).*\1$", target):
+        target = target[1:-1]
+    if re.fullmatch(r"[0-9]+", target) and direction == ">&":
+        # redirect to a descriptor, ex 2 >& 1
+        return True
+    if target in ("/dev/null", "/dev/stdout", "/dev/stderr"):
+        return True
+    path = Path(target or ".")
+    if "$" not in str(path) and "`" not in str(path):
+        if path.resolve().is_relative_to(Path("/tmp").resolve()):
+            return True
+
+    return AskPermission(command, state)
 
 
 def node_text(node, source) -> str:
@@ -302,6 +347,10 @@ def walk_ast(node, source, state, decisions):
         # first child is of type "command_name"
         sequence = map(lambda v: node_text(v, source), node.children)
         decision = is_command_allowed(list(sequence), state)
+        decisions.append(decision)
+    elif node.type == "file_redirect":
+        sequence = map(lambda v: node_text(v, source), node.children)
+        decision = is_redirect_allowed(list(sequence), state)
         decisions.append(decision)
     for child in node.children:
         walk_ast(child, source, state, decisions)

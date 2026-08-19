@@ -81,6 +81,7 @@ def json_from_stdin():
 
 
 def is_git_command_allowed(args: list[str], state: State):
+    args = args[:]
     OPTIONS = ["-C", "-c"]
     FLAGS = ["--no-pager"]
     ALLOWED = {
@@ -302,27 +303,49 @@ def is_command_allowed(sequence: list[str], state: State):
             return True
         if args[:2] == ["ruff", "check"]:
             return True
+    if cmd == "tee":
+        # TODO: refactor places like this into "safe input" / "safe output"
+        if len(args) > 0:
+            path = Path(args[0])
+            if not path.is_absolute():
+                path = Path(state.cwd or ".") / path
+            if "$" not in str(path) and "`" not in str(path):
+                if path.resolve().is_relative_to(Path("/tmp").resolve()):
+                    return True
+    if cmd == "comm":
+        for arg in args:
+            if re.fullmatch(r"-\d+", arg):
+                continue
+            path = Path(arg)
+            if not path.is_absolute():
+                path = Path(state.cwd or ".") / path
+            if "$" not in str(path) and "`" not in str(path):
+                if path.resolve().is_relative_to(Path("/tmp").resolve()):
+                    continue
+            return AskPermission(f"comm {path}", state)
+        return True
 
     return AskPermission(" ".join(sequence), state)
 
 
-def is_redirect_allowed(sequence: list[str], state: State):
-    command = " ".join(sequence)
-    if len(sequence) < 2:
+def is_redirect_allowed(args: list[str], state: State):
+    args = args[:]
+    command = " ".join(args)
+    if len(args) < 2:
         return AskPermission(command, state)
 
-    dir_or_descr = sequence.pop(0)
+    dir_or_descr = args.pop(0)
     if re.fullmatch(r"[0-9]+", dir_or_descr):
-        direction = sequence.pop(0)
+        direction = args.pop(0)
     else:
         direction = dir_or_descr
 
-    if direction not in (">", ">>", "&>", "&>>", ">|", ">&"):
+    if direction not in ("<", ">", ">>", "&>", "&>>", ">|", ">&"):
         return AskPermission(command, state)
 
-    if len(sequence) < 1:
+    if len(args) < 1:
         return AskPermission(command, state)
-    target = sequence.pop(0)
+    target = args.pop(0)
     if re.fullmatch(r"^([\"']).*\1$", target):
         target = target[1:-1]
     if re.fullmatch(r"[0-9]+", target) and direction == ">&":
@@ -345,12 +368,12 @@ def node_text(node, source) -> str:
 def walk_ast(node, source, state, decisions):
     if node.type in ("command", "simple_command"):
         # first child is of type "command_name"
-        sequence = map(lambda v: node_text(v, source), node.children)
-        decision = is_command_allowed(list(sequence), state)
+        sequence = list(map(lambda v: node_text(v, source), node.children))
+        decision = is_command_allowed(sequence, state)
         decisions.append(decision)
     elif node.type == "file_redirect":
-        sequence = map(lambda v: node_text(v, source), node.children)
-        decision = is_redirect_allowed(list(sequence), state)
+        sequence = list(map(lambda v: node_text(v, source), node.children))
+        decision = is_redirect_allowed(sequence, state)
         decisions.append(decision)
     for child in node.children:
         walk_ast(child, source, state, decisions)

@@ -983,6 +983,8 @@ class App {
     $this._installVscodeExt("streetsidesoftware.code-spell-checker");
     $this._installVscodeExt("streetsidesoftware.code-spell-checker-russian");
     $this._installVscodeExt("mark-wiemer.vscode-autohotkey-plus-plus");
+    $this._installVscodeExt("charliermarsh.ruff");
+    $this._installVscodeExt("harrydowning.yaml-embedded-languages");
 
     $docCfgDir = $this._path(@("~", "Documents", ".vscode"));
     if (-not (Test-Path -Path "$docCfgDir")) {

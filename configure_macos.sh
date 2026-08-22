@@ -233,6 +233,7 @@ configure() {
   code --install-extension streetsidesoftware.code-spell-checker-russian
   code --install-extension mark-wiemer.vscode-autohotkey-plus-plus
   code --install-extension charliermarsh.ruff
+  code --install-extension harrydowning.yaml-embedded-languages
   VSCODE_DIR=~/Library/Application\ Support/Code/User
   if [ -e "$VSCODE_DIR" ]; then
     echo "'$VSCODE_DIR' already exists"

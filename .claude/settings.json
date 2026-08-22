@@ -63,5 +63,6 @@
   "messageIdleNotifThresholdMs": 5000,
   "preferredNotifChannel": "iterm2_with_bell",
   "terminalProgressBarEnabled": false,
-  "showStatusInTerminalTab": false
+  "showStatusInTerminalTab": false,
+  "outputStyle": "Concise"
 }

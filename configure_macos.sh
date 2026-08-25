@@ -191,6 +191,8 @@ configure() {
     mkdir ~/.hammerspoon
   fi
   ln -fs ~/dotfiles/hammerspoon/init.lua ~/.hammerspoon/init.lua
+
+  # Use Claude as source-of-truth
   if [ -e ~/.claude ]; then
     rm -rf ~/.claude
   fi
@@ -201,6 +203,8 @@ configure() {
   ln -fs ~/dotfiles/.codex ~/.codex
   ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
   ln -fs ~/dotfiles/.claude/skills ~/.codex
+  ln -fs ~/dotfiles/.claude/CLAUDE.md ~/.codex/AGENTS.md
+
   ln -fs ~/dotfiles/.screenrc ~/.screenrc
   ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
   ln -fs ~/dotfiles/.rubocop.yml ~/.rubocop.yml

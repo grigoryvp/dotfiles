@@ -1,0 +1,3 @@
+[tui]
+# Don't modify iTerm tab names
+terminal_title = null

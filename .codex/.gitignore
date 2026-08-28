@@ -1,3 +1,5 @@
 *
 !.gitignore
 !personal.config.toml
+!rules/
+!rules/**

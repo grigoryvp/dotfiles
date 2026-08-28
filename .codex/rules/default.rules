@@ -1,0 +1,5 @@
+prefix_rule(pattern=["gradlew"], decision="allow")
+prefix_rule(pattern=["yarn"], decision="allow")
+prefix_rule(pattern=["glab", "mr", "view"], decision="allow")
+prefix_rule(pattern = ["glab", "api"], decision="allow")
+prefix_rule(pattern = ["glab", "ci", "trace"], decision="allow")

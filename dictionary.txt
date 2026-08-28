@@ -1492,6 +1492,7 @@ Stackable
 stackful
 Starforge
 starkbank
+starlark
 starlette
 startswith
 statement'ов

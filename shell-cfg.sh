@@ -236,9 +236,6 @@ alias g=git
 ##  kubernetes aliases
 alias k=kubectl
 
-##  Codex does not have per-user config files
-alias codex='codex --profile personal'
-
 ##  svn aliases
 alias svl='svn log'
 alias svs='svn stat'

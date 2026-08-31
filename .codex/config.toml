@@ -1,3 +1,6 @@
 [tui]
 # Don't modify iTerm tab names
 terminal_title = []
+
+[projects."~/Documents/"]
+trust_level = "trusted"

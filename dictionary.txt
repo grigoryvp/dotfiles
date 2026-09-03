@@ -923,6 +923,7 @@ Magebane
 Mageblood
 magicdns
 magick
+magicsock
 Mahuxotl
 Maingear
 Maji
@@ -1570,6 +1571,7 @@ syscalls
 sysconfig
 systemsetup
 T͓
+tailcat
 taildrive
 taildrop
 tailnet
@@ -1659,6 +1661,7 @@ triphosphate
 trixie
 trmnl
 truecrypt
+Tsaurus
 tsbash
 tsc
 tsd
@@ -1885,6 +1888,7 @@ yql
 YQL
 YS
 yshift
+ytsaurus
 Yudkowsky
 YugabyteDB
 Zab

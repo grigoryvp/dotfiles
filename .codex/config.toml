@@ -2,5 +2,5 @@
 # Don't modify iTerm tab names
 terminal_title = []
 
-[projects."~/Documents/"]
+[projects."/Users/user/Documents"]
 trust_level = "trusted"

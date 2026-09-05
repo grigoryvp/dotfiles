@@ -830,6 +830,7 @@ Korell
 Kosis
 KQP
 Kristian
+ksh
 KTC
 kubeadm
 kubeconfig
@@ -1295,6 +1296,7 @@ reactjs
 readlink
 readouterr
 Realmgate
+realpath
 realpython
 Realtek
 Reanimator
@@ -1902,6 +1904,7 @@ zgo.at
 ZJIT
 zk
 Zod
+zx
 абиогенезом
 абырвалг
 австрийско-

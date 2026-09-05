@@ -303,6 +303,8 @@ def is_command_allowed(sequence: list[str], state: State):
             return True
         if args[:2] == ["ruff", "check"]:
             return True
+        if args[:2] == ["ruff@latest", "check"]:
+            return True
     if cmd == "tee":
         # TODO: refactor places like this into "safe input" / "safe output"
         if len(args) > 0:

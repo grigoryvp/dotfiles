@@ -896,6 +896,7 @@ LNGB
 lockfiles
 Lockpicking
 Lockpicks
+logbroker
 loglevel
 lol
 Longsword
@@ -1174,6 +1175,7 @@ Paua
 Pauascale
 PCI-E
 pdb
+PDLC
 pdm
 PDR
 Pearlescent
@@ -2515,6 +2517,7 @@ zx
 шардов
 шарды
 шейдеров
+Шенк
 шестнадцатиричном
 шорткатами
 штрудель

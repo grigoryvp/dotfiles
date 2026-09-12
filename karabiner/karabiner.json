@@ -2910,6 +2910,40 @@
                             {
                                 "conditions": [
                                     {
+                                        "bundle_identifiers": [
+                                            "^com\\.googlecode\\.iterm2$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    },
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-v for horizontal split in iTerm (no 'toggle' functionality)",
+                                "from": { "key_code": "v" },
+                                "to": [
+                                    {
+                                        "key_code": "d",
+                                        "modifiers": ["right_command", "right_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
                                         "name": "_m1",
                                         "type": "variable_if",
                                         "value": 1

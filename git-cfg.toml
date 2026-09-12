@@ -11,6 +11,15 @@ attributesfile = "~/.gitattributes"
 # Better dif
 pager = "diff-so-fancy | less"
 
+[diff]
+	tool = vscode
+
+[difftool]
+prompt = false
+
+[difftool "vscode"]
+cmd = "code --wait --diff $LOCAL $REMOTE"
+
 [init]
 defaultBranch = main
 

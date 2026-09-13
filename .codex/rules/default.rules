@@ -1,5 +1,6 @@
 prefix_rule(pattern=["sed"], decision="allow")
 prefix_rule(pattern=["awk"], decision="allow")
+prefix_rule(pattern=["tail"], decision="allow")
 prefix_rule(pattern=["gradlew"], decision="allow")
 prefix_rule(pattern=["yarn"], decision="allow")
 prefix_rule(pattern=["glab", "mr", "view"], decision="allow")

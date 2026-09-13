@@ -129,6 +129,7 @@ autoencoders
 autofocus
 autohide
 autohotkey
+Automations
 autopep8
 autoreplace
 autovacuum
@@ -533,6 +534,7 @@ Forkshot
 Fossilcrafting
 Fossilised
 Foulborn
+Fournier
 Foxshade
 fractionary
 FRC
@@ -1005,6 +1007,7 @@ modelinfo
 modifiermapping
 modulepath
 Mojolicious
+Momjian
 Moosh
 Morior
 Morrigan
@@ -1546,6 +1549,7 @@ subcomponent
 subcomponents
 subdirs
 subkey
+Subpattern
 subreddits
 subshell
 subshells
@@ -1644,6 +1648,7 @@ Toolbelt
 Topotante
 TOTP
 TPEP
+TPFLAGS
 TPJ
 TPM
 tqdm
@@ -1893,6 +1898,7 @@ YQL
 YS
 yshift
 ytsaurus
+Yu
 Yudkowsky
 YugabyteDB
 Zab
@@ -1932,6 +1938,7 @@ zx
 Атомарность
 АФК
 бóльшим
+багфиксы
 байткод
 байткода
 байткодом
@@ -2414,6 +2421,8 @@ zx
 стейблкоинах
 стейблкойн
 стейкинге
+Стоунбрейкер
+Стоунбрейкера
 Страуструп
 Страуструпа
 Стриминг

@@ -59,6 +59,8 @@ function App:new()
   inst.pingInetExt = false
   inst.karabinerState = {}
   inst.symbols = {}
+  -- Named clipboards, keys are slot numbers, values are pasteboard data
+  inst.clipboards = {}
   return inst
 end
 
@@ -438,6 +440,22 @@ function App:startHttpServer()
       self:_paste(hs.pasteboard.readString())
       return "", 200, {}
 
+    elseif json.command == "clip_copy" then
+      local slot = tonumber(json.slot)
+      if not slot then
+        return "clip_copy without slot", 400, {}
+      end
+      self:_clipCopy(slot)
+      return "", 200, {}
+
+    elseif json.command == "clip_paste" then
+      local slot = tonumber(json.slot)
+      if not slot then
+        return "clip_paste without slot", 400, {}
+      end
+      self:_clipPaste(slot)
+      return "", 200, {}
+
     elseif json.command == "show_symbol_picker" then
       self:showSymbolPicker()
       return "", 200, {}
@@ -567,6 +585,63 @@ function App:_paste(text)
   hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
   hs.pasteboard.setContents(text)
+  -- command-v may not work due to focus issues
+  if not app:selectMenuItem("Paste") then
+    hs.eventtap.keyStroke({"⌘"}, "v")
+  end
+
+  hs.timer.doAfter(0.01, function()
+    -- If not delayed in will replace the clipboard content BEFORE
+    -- it's pasted
+    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+    hs.pasteboard.deletePasteboard(oldClipboard)
+  end)
+end
+
+
+function App:_clipCopy(slot)
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local app = wnd:application()
+
+  local oldClipboard = hs.pasteboard.uniquePasteboard()
+  hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
+  hs.pasteboard.clearContents()
+
+  -- command-c may not work due to focus issues
+  if not app:selectMenuItem("Copy") then
+    hs.eventtap.keyStroke({"⌘"}, "c")
+  end
+
+  hs.timer.doAfter(0.1, function()
+    -- Clipboard is filled asynchronously after the copy command
+    local data = hs.pasteboard.readAllData(nil)
+    if data and next(data) then
+      self.clipboards[slot] = data
+      hs.alert.show("Copied into clipboard " .. slot)
+    else
+      hs.alert.show("Nothing to copy")
+    end
+    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+    hs.pasteboard.deletePasteboard(oldClipboard)
+  end)
+end
+
+
+function App:_clipPaste(slot)
+  local data = self.clipboards[slot]
+  if not data then
+    return hs.alert.show("Clipboard " .. slot .. " is empty")
+  end
+
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then return end
+  local app = wnd:application()
+
+  local oldClipboard = hs.pasteboard.uniquePasteboard()
+  hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
+
+  hs.pasteboard.writeAllData(nil, data)
   -- command-v may not work due to focus issues
   if not app:selectMenuItem("Paste") then
     hs.eventtap.keyStroke({"⌘"}, "v")

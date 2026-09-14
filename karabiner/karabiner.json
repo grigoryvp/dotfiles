@@ -3112,6 +3112,29 @@
                                 "from": { "key_code": "n" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"tg_type_username\"}' 2>/dev/null" }],
                                 "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m2-i for copying accessibility tree into clipboard",
+                                "from": { "key_code": "i" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"copy_ax_tree\"}' 2>/dev/null" }],
+                                "type": "basic"
                             }
                         ]
                     },

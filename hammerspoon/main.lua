@@ -472,6 +472,10 @@ function App:startHttpServer()
       self:chromeToggleTabs()
       return "", 200, {}
 
+    elseif json.command == "copy_ax_tree" then
+      self:copyAxTree()
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end
@@ -1494,6 +1498,120 @@ function App:findChildByNames(element, names, depth)
   end
 
   return nil
+end
+
+
+-- Attributes reported for every accessibility tree node, if not empty
+local AX_TREE_ATTRS = {
+  "AXSubrole", "AXIdentifier", "AXTitle", "AXDescription", "AXValue",
+  "AXHelp", "AXPlaceholderValue", "AXRoleDescription",
+}
+-- Limits so huge trees (like web pages in Chrome) do not hang hammerspoon
+local AX_TREE_MAX_NODES = 5000
+local AX_TREE_MAX_DEPTH = 30
+-- Lists like the telegram chat list can hold thousands of siblings
+local AX_TREE_MAX_CHILDREN = 200
+local AX_TREE_MAX_VALUE_LEN = 80
+
+
+-- Cut by utf8 chars, not bytes: a value split in the middle of a multi-byte
+-- char makes the whole pasteboard write silently store nothing
+local function axTreeTruncate(str)
+  if #str <= AX_TREE_MAX_VALUE_LEN then
+    return str
+  end
+  local cut = AX_TREE_MAX_VALUE_LEN + 1
+  while cut > 1 and str:byte(cut) & 0xC0 == 0x80 do
+    cut = cut - 1
+  end
+  return str:sub(1, cut - 1) .. "..."
+end
+
+
+function App:_axTreeDump(element, lines, depth, state)
+  if state.count >= AX_TREE_MAX_NODES then
+    return
+  end
+
+  -- Some apps (like Zoom) report an element as its own descendant
+  for _, parent in ipairs(state.path) do
+    if parent == element then
+      lines[#lines + 1] = string.rep("  ", depth) .. "<cycle>"
+      return
+    end
+  end
+
+  state.count = state.count + 1
+
+  local parts = {tostring(element:attributeValue("AXRole") or "?")}
+
+  for _, name in ipairs(AX_TREE_ATTRS) do
+    local value = element:attributeValue(name)
+    if type(value) == "number" or type(value) == "boolean" then
+      value = tostring(value)
+    end
+    if type(value) == "string" and value ~= "" then
+      value = axTreeTruncate(value):gsub("[\r\n]", " ")
+      parts[#parts + 1] = name:sub(3) .. '="' .. value .. '"'
+    end
+  end
+
+  local frame = element:attributeValue("AXFrame")
+  if frame then
+    parts[#parts + 1] = string.format("frame=%d,%d,%dx%d",
+      math.floor(frame.x), math.floor(frame.y),
+      math.floor(frame.w), math.floor(frame.h))
+  end
+
+  local actions = element:actionNames()
+  if actions and #actions > 0 then
+    parts[#parts + 1] = "actions=" .. table.concat(actions, ",")
+  end
+
+  lines[#lines + 1] = string.rep("  ", depth) .. table.concat(parts, " ")
+
+  if depth >= AX_TREE_MAX_DEPTH then
+    return
+  end
+
+  local children = element:attributeValue("AXChildren")
+  if not children then
+    return
+  end
+  state.path[#state.path + 1] = element
+  for i, child in ipairs(children) do
+    if i > AX_TREE_MAX_CHILDREN then
+      lines[#lines + 1] = string.rep("  ", depth + 1)
+        .. "<" .. (#children - AX_TREE_MAX_CHILDREN) .. " more children>"
+      break
+    end
+    self:_axTreeDump(child, lines, depth + 1, state)
+  end
+  state.path[#state.path] = nil
+end
+
+
+function App:copyAxTree()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then
+    return hs.alert.show("No focused window")
+  end
+
+  local element = hs.axuielement.applicationElement(wnd:application())
+  if not element then
+    return hs.alert.show("No accessibility element")
+  end
+
+  local lines = {}
+  local state = {count = 0, path = {}}
+  self:_axTreeDump(element, lines, 0, state)
+
+  local text = table.concat(lines, "\n")
+  if not utf8.len(text) then
+    return hs.alert.show("Broken utf8 in a11y tree")
+  end
+  hs.pasteboard.setContents(text)
+  hs.alert.show("Copied " .. state.count .. " a11y elements")
 end
 
 

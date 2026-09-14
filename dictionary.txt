@@ -791,6 +791,7 @@ Kalandra
 Kalguur
 Kalguuran
 Kamasan
+kanata
 Kaom
 karabiner
 Karui
@@ -822,6 +823,7 @@ Kitava
 Kivy
 KLM
 kmeans
+kmonad
 kNN
 koi8-r
 Kolr
@@ -1238,6 +1240,7 @@ pushd
 Putembo
 PVS-Studio
 pwsh
+PXE
 pyboek
 pybook
 pyc
@@ -1274,6 +1277,7 @@ QAT
 qbittorrent
 QD-OLED
 Qdrant
+QMK
 QNX
 quadrocopter
 queryset
@@ -2167,6 +2171,7 @@ zx
 манипулятивных
 маппинга
 масштабируемостью
+материнка
 меби-
 мебибайт
 мейлбокс
@@ -2430,6 +2435,7 @@ zx
 схлопывать
 таба
 тайминги
+таск
 Тб
 Тбит
 тестировщика
@@ -2533,6 +2539,7 @@ zx
 шорткатами
 штрудель
 ы́
+ЫТЬ
 эксабайтами
 электрощитке
 Эмбеддинг

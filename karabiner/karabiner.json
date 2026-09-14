@@ -1377,6 +1377,35 @@
                                         "name": "_m3",
                                         "type": "variable_if",
                                         "value": 0
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.tdesktop\\.Telegram$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "m2-j for next search result in Telegram",
+                                "from": { "key_code": "j" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"tg_next_search_result\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
                                     }
                                 ],
                                 "description": "'m2-j' for command-down_arrow (google spreadsheets hotkey)",

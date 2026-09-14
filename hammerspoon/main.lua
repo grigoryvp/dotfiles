@@ -476,6 +476,10 @@ function App:startHttpServer()
       self:copyAxTree()
       return "", 200, {}
 
+    elseif json.command == "tg_next_search_result" then
+      self:tgNextSearchResult()
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end
@@ -1612,6 +1616,88 @@ function App:copyAxTree()
   end
   hs.pasteboard.setContents(text)
   hs.alert.show("Copied " .. state.count .. " a11y elements")
+end
+
+
+-- Breadth first: the lists we look for are direct window children, so this
+-- avoids descending into the huge message list first
+function App:_axFind(root, role, title)
+  local queue = {root}
+  local head = 1
+  while head <= #queue do
+    local element = queue[head]
+    head = head + 1
+    if element:attributeValue("AXRole") == role
+      and element:attributeValue("AXTitle") == title then
+      return element
+    end
+    local children = element:attributeValue("AXChildren")
+    if children then
+      for i, child in ipairs(children) do
+        if i > AX_TREE_MAX_CHILDREN or #queue >= AX_TREE_MAX_NODES then
+          break
+        end
+        queue[#queue + 1] = child
+      end
+    end
+  end
+  return nil
+end
+
+
+-- Telegram has no selection attribute on chat list items, but its window
+-- title holds the open chat name wrapped into unicode direction isolates:
+-- "<FSI>name<PDI> @ <FSI>account<PDI>"
+local function tgOpenChatName(windowTitle)
+  return windowTitle:match("\u{2068}(.-)\u{2069}")
+end
+
+
+-- List item titles are comma joined fields, where the name is not always the
+-- first one: "name, Seen, <query>, <date>" but "Channel, name, Photo, ..."
+-- for channels and groups. Wrapping both sides makes the name match a whole
+-- field at any position
+local function tgItemIsChat(itemTitle, name)
+  local fields = ", " .. itemTitle .. ", "
+  return fields:find(", " .. name .. ", ", 1, true) ~= nil
+end
+
+
+function App:tgNextSearchResult()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then
+    return
+  end
+
+  local app = hs.axuielement.applicationElement(wnd:application())
+  local list = self:_axFind(app, "AXList", "Chats")
+  if not list then
+    return hs.alert.show("No chat list")
+  end
+
+  local items = list:attributeValue("AXChildren")
+  if not items or #items <= 0 then
+    return hs.alert.show("No search results")
+  end
+
+  -- Without an open chat start from the first result
+  local current = 0
+  local name = tgOpenChatName(wnd:title() or "")
+  if name then
+    for i, item in ipairs(items) do
+      local title = tostring(item:attributeValue("AXTitle") or "")
+      if tgItemIsChat(title, name) then
+        current = i
+        break
+      end
+    end
+  end
+
+  local nextItem = items[current + 1]
+  if not nextItem then
+    return hs.alert.show("No next search result")
+  end
+  nextItem:performAction("AXPress")
 end
 
 

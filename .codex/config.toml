@@ -4,3 +4,12 @@ terminal_title = []
 
 [projects."/Users/user/Documents"]
 trust_level = "trusted"
+
+[projects."/Users/user/dotfiles"]
+trust_level = "trusted"
+
+[tui.keymap.editor]
+insert_newline = ["shift-enter", "ctrl-j"]
+
+[tui.model_availability_nux]
+gpt-6-astra = 2

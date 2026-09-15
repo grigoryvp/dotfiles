@@ -61,6 +61,9 @@ function App:new()
   inst.symbols = {}
   -- Named clipboards, keys are slot numbers, values are pasteboard data
   inst.clipboards = {}
+  -- Index and full title of the search result we opened in Telegram last
+  inst.tgSearchIdx = nil
+  inst.tgSearchTitle = nil
   return inst
 end
 
@@ -1722,6 +1725,49 @@ local function tgItemIsChat(itemTitle, name)
 end
 
 
+-- Item frames cover the whole scrollable list, so only the ones within the
+-- window bounds are on the screen
+local function tgItemIsVisible(item, wndFrame)
+  local frame = item:attributeValue("AXFrame")
+  if not frame then
+    return false
+  end
+  local center = frame.y + frame.h / 2
+  return center >= wndFrame.y and center <= wndFrame.y + wndFrame.h
+end
+
+
+-- The window title holds the open chat name only, and the same chat may
+-- appear in the search results many times, so the name alone can't tell
+-- which result is open. Prefer the result we opened last, fall back to the
+-- one visible on the screen, since a manually clicked one is always visible
+function App:_tgCurrentSearchResult(items, wnd, name)
+  local remembered = self.tgSearchIdx and items[self.tgSearchIdx]
+  if remembered
+    and tostring(remembered:attributeValue("AXTitle") or "") == self.tgSearchTitle
+    and tgItemIsChat(self.tgSearchTitle, name)
+  then
+    return self.tgSearchIdx
+  end
+
+  ---@type table
+  local wndFrame = wnd:frame()
+  local firstMatch = 0
+  for i, item in ipairs(items) do
+    local title = tostring(item:attributeValue("AXTitle") or "")
+    if tgItemIsChat(title, name) then
+      if tgItemIsVisible(item, wndFrame) then
+        return i
+      end
+      if firstMatch == 0 then
+        firstMatch = i
+      end
+    end
+  end
+  return firstMatch
+end
+
+
 -- Returns an error message and a http status code, nil if succeeded
 function App:tgNextSearchResult()
   local wnd = hs.window.frontmostWindow()
@@ -1746,20 +1792,19 @@ function App:tgNextSearchResult()
   local current = 0
   local name = tgOpenChatName(wnd:title() or "")
   if name then
-    for i, item in ipairs(items) do
-      local title = tostring(item:attributeValue("AXTitle") or "")
-      if tgItemIsChat(title, name) then
-        current = i
-        break
-      end
-    end
+    current = self:_tgCurrentSearchResult(items, wnd, name)
   end
 
   local nextItem = items[current + 1]
   if not nextItem then
+    self.tgSearchIdx = nil
+    self.tgSearchTitle = nil
     hs.alert.show("No next search result")
     return "no next search result", 404
   end
+
+  self.tgSearchIdx = current + 1
+  self.tgSearchTitle = tostring(nextItem:attributeValue("AXTitle") or "")
   nextItem:performAction("AXPress")
 end
 

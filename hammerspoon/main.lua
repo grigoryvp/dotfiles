@@ -477,7 +477,20 @@ function App:startHttpServer()
       return "", 200, {}
 
     elseif json.command == "tg_next_search_result" then
-      self:tgNextSearchResult()
+      local err, code = self:tgNextSearchResult()
+      if err then
+        return err, code, {}
+      end
+      return "", 200, {}
+
+    elseif json.command == "focus_app" then
+      local bundleId = json.bundle_id
+      if type(bundleId) ~= "string" or bundleId == "" then
+        return "focus_app without bundle_id", 400, {}
+      end
+      if not hs.application.launchOrFocusByBundleID(bundleId) then
+        return "app with bundle id " .. bundleId .. " not found", 404, {}
+      end
       return "", 200, {}
 
     else
@@ -607,6 +620,14 @@ function App:_paste(text)
 end
 
 
+-- Apps fill the clipboard asynchronously, images take much longer
+-- than text, so wait for the change instead of a fixed delay
+local CLIP_POLL_STEP = 0.025
+local CLIP_COPY_TIMEOUT = 2
+-- Time given to the app to read the clipboard before it's restored
+local CLIP_PASTE_DELAY = 0.5
+
+
 function App:_clipCopy(slot)
   local wnd = hs.window.frontmostWindow()
   if not wnd then return end
@@ -615,23 +636,36 @@ function App:_clipCopy(slot)
   local oldClipboard = hs.pasteboard.uniquePasteboard()
   hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
   hs.pasteboard.clearContents()
+  local emptyChangeCount = hs.pasteboard.changeCount()
+
+  local function restore()
+    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+    hs.pasteboard.deletePasteboard(oldClipboard)
+  end
 
   -- command-c may not work due to focus issues
   if not app:selectMenuItem("Copy") then
     hs.eventtap.keyStroke({"⌘"}, "c")
   end
 
-  hs.timer.doAfter(0.1, function()
-    -- Clipboard is filled asynchronously after the copy command
-    local data = hs.pasteboard.readAllData(nil)
+  local deadline = hs.timer.secondsSinceEpoch() + CLIP_COPY_TIMEOUT
+  self.clipCopyTimer = hs.timer.doEvery(CLIP_POLL_STEP, function()
+    local data = nil
+    -- Change count flips exactly when the copied data becomes readable
+    if hs.pasteboard.changeCount() ~= emptyChangeCount then
+      data = hs.pasteboard.readAllData(nil)
+    elseif hs.timer.secondsSinceEpoch() < deadline then
+      return
+    end
+
+    self.clipCopyTimer:stop()
     if data and next(data) then
       self.clipboards[slot] = data
       hs.alert.show("Copied into clipboard " .. slot)
     else
       hs.alert.show("Nothing to copy")
     end
-    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
-    hs.pasteboard.deletePasteboard(oldClipboard)
+    restore()
   end)
 end
 
@@ -655,8 +689,8 @@ function App:_clipPaste(slot)
     hs.eventtap.keyStroke({"⌘"}, "v")
   end
 
-  hs.timer.doAfter(0.01, function()
-    -- If not delayed in will replace the clipboard content BEFORE
+  hs.timer.doAfter(CLIP_PASTE_DELAY, function()
+    -- If not delayed it will replace the clipboard content BEFORE
     -- it's pasted
     hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
     hs.pasteboard.deletePasteboard(oldClipboard)
@@ -1663,21 +1697,24 @@ local function tgItemIsChat(itemTitle, name)
 end
 
 
+-- Returns an error message and a http status code, nil if succeeded
 function App:tgNextSearchResult()
   local wnd = hs.window.frontmostWindow()
   if not wnd then
-    return
+    return "no wnd", 400
   end
 
   local app = hs.axuielement.applicationElement(wnd:application())
   local list = self:_axFind(app, "AXList", "Chats")
   if not list then
-    return hs.alert.show("No chat list")
+    hs.alert.show("No chat list")
+    return "no chat list", 404
   end
 
   local items = list:attributeValue("AXChildren")
   if not items or #items <= 0 then
-    return hs.alert.show("No search results")
+    hs.alert.show("No search results")
+    return "no search results", 404
   end
 
   -- Without an open chat start from the first result
@@ -1695,7 +1732,8 @@ function App:tgNextSearchResult()
 
   local nextItem = items[current + 1]
   if not nextItem then
-    return hs.alert.show("No next search result")
+    hs.alert.show("No next search result")
+    return "no next search result", 404
   end
   nextItem:performAction("AXPress")
 end

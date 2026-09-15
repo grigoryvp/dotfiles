@@ -625,6 +625,10 @@ function App:_wndClose()
 end
 
 
+-- Time given to the app to read the clipboard before it's restored
+local CLIP_PASTE_DELAY = 0.5
+
+
 function App:_paste(text)
   local wnd = hs.window.frontmostWindow()
   if not wnd then return end
@@ -634,14 +638,11 @@ function App:_paste(text)
   hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
   hs.pasteboard.setContents(text)
-  -- command-v may not work due to focus issues
-  if not app:selectMenuItem("Paste") then
-    hs.eventtap.keyStroke({"⌘"}, "v")
-  end
+  -- Not via menu: Telegram's Paste item reports success without pasting.
+  -- Keystroke is sent to the app directly to avoid focus issues.
+  hs.eventtap.keyStroke({"⌘"}, "v", nil, app)
 
-  hs.timer.doAfter(0.01, function()
-    -- If not delayed in will replace the clipboard content BEFORE
-    -- it's pasted
+  hs.timer.doAfter(CLIP_PASTE_DELAY, function()
     hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
     hs.pasteboard.deletePasteboard(oldClipboard)
   end)
@@ -652,8 +653,6 @@ end
 -- than text, so wait for the change instead of a fixed delay
 local CLIP_POLL_STEP = 0.025
 local CLIP_COPY_TIMEOUT = 2
--- Time given to the app to read the clipboard before it's restored
-local CLIP_PASTE_DELAY = 0.5
 
 
 function App:_clipCopy(slot)
@@ -712,10 +711,9 @@ function App:_clipPaste(slot)
   hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
   hs.pasteboard.writeAllData(nil, data)
-  -- command-v may not work due to focus issues
-  if not app:selectMenuItem("Paste") then
-    hs.eventtap.keyStroke({"⌘"}, "v")
-  end
+  -- Not via menu: Telegram's Paste item reports success without pasting.
+  -- Keystroke is sent to the app directly to avoid focus issues.
+  hs.eventtap.keyStroke({"⌘"}, "v", nil, app)
 
   hs.timer.doAfter(CLIP_PASTE_DELAY, function()
     -- If not delayed it will replace the clipboard content BEFORE
@@ -1510,6 +1508,19 @@ function App:tgTypeUsername()
   if not title then
     return
   end
+
+  -- Telegram wraps the window title in invisible bidi control marks
+  -- (U+200E, U+2068 etc), strip them or they leak into the pasted name
+  local chars = {}
+  for _, c in utf8.codes(title) do
+    local isBidiMark = c == 0x200E or c == 0x200F
+      or (c >= 0x202A and c <= 0x202E)
+      or (c >= 0x2066 and c <= 0x2069)
+    if not isBidiMark then
+      table.insert(chars, utf8.char(c))
+    end
+  end
+  title = table.concat(chars)
 
   local parts = split(title)
   if #parts <= 0 then

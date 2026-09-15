@@ -493,6 +493,31 @@ function App:startHttpServer()
       end
       return "", 200, {}
 
+    elseif json.command == "key_press" then
+      local key = json.key
+      if type(key) ~= "string" or key == "" then
+        return "key_press without key", 400, {}
+      end
+      if not hs.keycodes.map[key:lower()] then
+        return "unknown key " .. key, 400, {}
+      end
+
+      local mods = {}
+      if json.mods then
+        if type(json.mods) ~= "table" then
+          return "key_press.mods is not a list", 400, {}
+        end
+        for _, mod in ipairs(json.mods) do
+          if type(mod) ~= "string" then
+            return "key_press.mods has a non string item", 400, {}
+          end
+          table.insert(mods, mod)
+        end
+      end
+
+      hs.eventtap.keyStroke(mods, key)
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end

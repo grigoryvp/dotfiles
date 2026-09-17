@@ -371,6 +371,7 @@ densesamplenum
 deque
 DERP
 descr
+Deskbar
 Deskflow
 desktopservices
 Destabiliser
@@ -1324,6 +1325,7 @@ Reefsteel
 refspec
 regen
 Régime
+reimplementation
 relogin
 remappable
 respawn
@@ -2378,6 +2380,7 @@ zx
 РСУБД
 Сocoa
 сабагент
+сабагентов
 сабагенты
 самоподписанным
 Сапольски

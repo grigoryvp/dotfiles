@@ -216,6 +216,8 @@ configure() {
     mkdir -p ~/.config/powershell
   fi
   ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
+  ln -fs ~/dotfiles/iterm/Scripts/AutoLaunch \
+         ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
 
   open -a Hammerspoon
   echo "Configure Hammerspoon and press enter"

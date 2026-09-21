@@ -1812,9 +1812,9 @@ function App:_tgCurrentSearchResult(items, wnd, name)
 end
 
 
--- Returns the search result items with the index of the open one, zero if
--- none, or nil with an error message and a http status code
-function App:_tgSearchState()
+-- Returns the search result items, or nil with an error message and a http
+-- status code
+function App:_tgSearchItems()
   local wnd = hs.window.frontmostWindow()
   if not wnd then
     return nil, "no wnd", 400
@@ -1833,14 +1833,43 @@ function App:_tgSearchState()
     return nil, "no search results", 404
   end
 
-  -- Without an open chat start from the first result
-  local current = 0
-  local name = tgOpenChatName(wnd:title() or "")
-  if name then
-    current = self:_tgCurrentSearchResult(items, wnd, name)
+  return {app = app, wnd = wnd, items = items}
+end
+
+
+-- Returns the search result items with the index of the open one, zero if
+-- none, or nil with an error message and a http status code
+function App:_tgSearchState()
+  local state, err, code = self:_tgSearchItems()
+  if not state then
+    return nil, err, code
   end
 
-  return {app = app, wnd = wnd, items = items, current = current}
+  -- Without an open chat start from the first result
+  state.current = 0
+  local name = tgOpenChatName(state.wnd:title() or "")
+  if name then
+    state.current = self:_tgCurrentSearchResult(state.items, state.wnd, name)
+  end
+
+  return state
+end
+
+
+-- Opening is remembered because the window title names the open chat only,
+-- which is not enough to tell duplicate results apart
+function App:_tgOpenSearchResult(idx, item)
+  self.tgSearchIdx = idx
+  self.tgSearchTitle = tostring(item:attributeValue("AXTitle") or "")
+  item:performAction("AXPress")
+end
+
+
+function App:_tgNoNextSearchResult()
+  self.tgSearchIdx = nil
+  self.tgSearchTitle = nil
+  hs.alert.show("No next search result")
+  return "no next search result", 404
 end
 
 
@@ -1853,15 +1882,37 @@ function App:tgNextSearchResult()
 
   local nextItem = state.items[state.current + 1]
   if not nextItem then
-    self.tgSearchIdx = nil
-    self.tgSearchTitle = nil
-    hs.alert.show("No next search result")
-    return "no next search result", 404
+    return self:_tgNoNextSearchResult()
   end
 
-  self.tgSearchIdx = state.current + 1
-  self.tgSearchTitle = tostring(nextItem:attributeValue("AXTitle") or "")
-  nextItem:performAction("AXPress")
+  self:_tgOpenSearchResult(state.current + 1, nextItem)
+end
+
+
+-- Moves to the result after the one that was at `idx`. Looking the open chat
+-- up again would not do: dropping it from the folder takes it out of that
+-- folder's list, and a chat missing from the list reads as "nothing is open",
+-- which sends us back to the very first result. Returns an error message and
+-- a http status code, nil if succeeded
+function App:_tgNextAfterRemoved(idx, title)
+  local state, err, code = self:_tgSearchItems()
+  if not state then
+    return err, code
+  end
+
+  -- A folder list loses the chat, so the next one slides into its index,
+  -- while search results keep it and the next one stays behind it
+  local atIdx = state.items[idx]
+  local removed = not atIdx
+    or tostring(atIdx:attributeValue("AXTitle") or "") ~= title
+  local nextIdx = removed and idx or idx + 1
+
+  local nextItem = state.items[nextIdx]
+  if not nextItem then
+    return self:_tgNoNextSearchResult()
+  end
+
+  self:_tgOpenSearchResult(nextIdx, nextItem)
 end
 
 
@@ -2002,6 +2053,8 @@ function App:tgRemoveFromFolderAndNext()
     hs.alert.show("No current search result")
     return "no current search result", 404
   end
+  local itemIdx = state.current
+  local itemTitle = tostring(item:attributeValue("AXTitle") or "")
 
   -- Menus are opened by clicking, and a scrolled out item reports a frame
   -- somewhere off the window, so clicking it would hit whatever is there
@@ -2036,7 +2089,7 @@ function App:tgRemoveFromFolderAndNext()
             hs.mouse.absolutePosition(mouse)
             -- Let the result list settle before looking up the next item
             runLater(TG_HOVER_SEC, function()
-              self:tgNextSearchResult()
+              self:_tgNextAfterRemoved(itemIdx, itemTitle)
             end)
           end, function()
             giveUp("Menu stays open")

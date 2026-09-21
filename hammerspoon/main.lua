@@ -486,6 +486,13 @@ function App:startHttpServer()
       end
       return "", 200, {}
 
+    elseif json.command == "tg_remove_from_folder_and_next" then
+      local err, code = self:tgRemoveFromFolderAndNext()
+      if err then
+        return err, code, {}
+      end
+      return "", 200, {}
+
     elseif json.command == "focus_app" then
       local bundleId = json.bundle_id
       if type(bundleId) ~= "string" or bundleId == "" then
@@ -625,11 +632,35 @@ function App:_wndClose()
 end
 
 
--- Time given to the app to read the clipboard before it's restored
-local CLIP_PASTE_DELAY = 0.5
+-- A timer nothing holds a reference to is collected before it fires, and
+-- whether that happens depends on how much garbage the caller made, so every
+-- delayed call is kept here until it runs
+local liveTimers = {}
+local liveTimerSeq = 0
 
 
-function App:_paste(text)
+local function runLater(delay, fn)
+  liveTimerSeq = liveTimerSeq + 1
+  local id = liveTimerSeq
+  liveTimers[id] = hs.timer.doAfter(delay, function()
+    liveTimers[id] = nil
+    fn()
+  end)
+end
+
+
+-- Time given to the app to read the clipboard before it's restored. Pulling
+-- an image out of the pasteboard takes an app longer than a bit of text
+local CLIP_PASTE_DELAY = 0.1
+local CLIP_PASTE_IMAGE_DELAY = 0.5
+-- Time given to the app that was focused before a picker to become frontmost
+local CLIP_FOCUS_DELAY = 0.2
+
+
+-- Pastes whatever `write` puts on the clipboard into the focused app and
+-- puts back what was there before. Writing is left to the caller since plain
+-- text and named clipboard slots are stored differently
+function App:_pasteViaClipboard(write)
   local wnd = hs.window.frontmostWindow()
   if not wnd then return end
   local app = wnd:application()
@@ -637,14 +668,31 @@ function App:_paste(text)
   local oldClipboard = hs.pasteboard.uniquePasteboard()
   hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
 
-  hs.pasteboard.setContents(text)
+  write()
+  -- Any change past this one is somebody else copying something
+  local ourChange = hs.pasteboard.changeCount()
+  local delay = CLIP_PASTE_DELAY
+  if hs.pasteboard.typesAvailable().image then
+    delay = CLIP_PASTE_IMAGE_DELAY
+  end
+
   -- Not via menu: Telegram's Paste item reports success without pasting.
   -- Keystroke is sent to the app directly to avoid focus issues.
   hs.eventtap.keyStroke({"⌘"}, "v", nil, app)
 
-  hs.timer.doAfter(CLIP_PASTE_DELAY, function()
-    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+  runLater(delay, function()
+    -- Restoring now would throw away what the user just copied
+    if hs.pasteboard.changeCount() == ourChange then
+      hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
+    end
     hs.pasteboard.deletePasteboard(oldClipboard)
+  end)
+end
+
+
+function App:_paste(text)
+  self:_pasteViaClipboard(function()
+    hs.pasteboard.setContents(text)
   end)
 end
 
@@ -703,23 +751,8 @@ function App:_clipPaste(slot)
     return hs.alert.show("Clipboard " .. slot .. " is empty")
   end
 
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then return end
-  local app = wnd:application()
-
-  local oldClipboard = hs.pasteboard.uniquePasteboard()
-  hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
-
-  hs.pasteboard.writeAllData(nil, data)
-  -- Not via menu: Telegram's Paste item reports success without pasting.
-  -- Keystroke is sent to the app directly to avoid focus issues.
-  hs.eventtap.keyStroke({"⌘"}, "v", nil, app)
-
-  hs.timer.doAfter(CLIP_PASTE_DELAY, function()
-    -- If not delayed it will replace the clipboard content BEFORE
-    -- it's pasted
-    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
-    hs.pasteboard.deletePasteboard(oldClipboard)
+  self:_pasteViaClipboard(function()
+    hs.pasteboard.writeAllData(nil, data)
   end)
 end
 
@@ -1779,24 +1812,25 @@ function App:_tgCurrentSearchResult(items, wnd, name)
 end
 
 
--- Returns an error message and a http status code, nil if succeeded
-function App:tgNextSearchResult()
+-- Returns the search result items with the index of the open one, zero if
+-- none, or nil with an error message and a http status code
+function App:_tgSearchState()
   local wnd = hs.window.frontmostWindow()
   if not wnd then
-    return "no wnd", 400
+    return nil, "no wnd", 400
   end
 
   local app = hs.axuielement.applicationElement(wnd:application())
   local list = self:_axFind(app, "AXList", "Chats")
   if not list then
     hs.alert.show("No chat list")
-    return "no chat list", 404
+    return nil, "no chat list", 404
   end
 
   local items = list:attributeValue("AXChildren")
   if not items or #items <= 0 then
     hs.alert.show("No search results")
-    return "no search results", 404
+    return nil, "no search results", 404
   end
 
   -- Without an open chat start from the first result
@@ -1806,7 +1840,18 @@ function App:tgNextSearchResult()
     current = self:_tgCurrentSearchResult(items, wnd, name)
   end
 
-  local nextItem = items[current + 1]
+  return {app = app, wnd = wnd, items = items, current = current}
+end
+
+
+-- Returns an error message and a http status code, nil if succeeded
+function App:tgNextSearchResult()
+  local state, err, code = self:_tgSearchState()
+  if not state then
+    return err, code
+  end
+
+  local nextItem = state.items[state.current + 1]
   if not nextItem then
     self.tgSearchIdx = nil
     self.tgSearchTitle = nil
@@ -1814,9 +1859,203 @@ function App:tgNextSearchResult()
     return "no next search result", 404
   end
 
-  self.tgSearchIdx = current + 1
+  self.tgSearchIdx = state.current + 1
   self.tgSearchTitle = tostring(nextItem:attributeValue("AXTitle") or "")
   nextItem:performAction("AXPress")
+end
+
+
+-- Item of the chat context menu that opens the folder submenu
+local TG_ADD_TO_FOLDER = "Add to folder"
+-- Menus fade in and out, so every step waits for the one it needs
+local TG_MENU_WAIT_SEC = 2.0
+local TG_MENU_POLL_SEC = 0.05
+-- Qt reacts to the pointer a frame later than the event is posted
+local TG_HOVER_SEC = 0.3
+
+
+-- Telegram draws its menus as borderless windows of their own, siblings of
+-- the main window
+local function tgMenus(app)
+  local res = {}
+  for _, child in ipairs(app:attributeValue("AXChildren") or {}) do
+    if child:attributeValue("AXRole") == "AXWindow"
+      and child:attributeValue("AXSubrole") == "AXDialog" then
+      res[#res + 1] = child
+    end
+  end
+  return res
+end
+
+
+-- Without a title returns the first item, which is the first folder for the
+-- submenu we are after
+local function tgMenuItem(menu, title)
+  for _, item in ipairs(menu:attributeValue("AXChildren") or {}) do
+    if item:attributeValue("AXRole") == "AXMenuItem"
+      and (title == nil or item:attributeValue("AXTitle") == title) then
+      return item
+    end
+  end
+  return nil
+end
+
+
+local function tgFindMenuItem(app, title)
+  for _, menu in ipairs(tgMenus(app)) do
+    local item = tgMenuItem(menu, title)
+    if item then
+      return item
+    end
+  end
+  return nil
+end
+
+
+-- A submenu shows up as one more menu window, the one without the item we
+-- hovered over to open it
+local function tgFindSubmenuItem(app, parentTitle)
+  for _, menu in ipairs(tgMenus(app)) do
+    if not tgMenuItem(menu, parentTitle) then
+      local item = tgMenuItem(menu)
+      if item then
+        return item
+      end
+    end
+  end
+  return nil
+end
+
+
+local function tgWaitFor(check, onFound, onTimeout, deadline)
+  deadline = deadline or hs.timer.secondsSinceEpoch() + TG_MENU_WAIT_SEC
+  local res = check()
+  if res then
+    return onFound(res)
+  end
+  if hs.timer.secondsSinceEpoch() >= deadline then
+    return onTimeout()
+  end
+  runLater(TG_MENU_POLL_SEC, function()
+    tgWaitFor(check, onFound, onTimeout, deadline)
+  end)
+end
+
+
+-- Menu items carry no accessibility actions, so they can only be reached by
+-- coordinates. Returns the point the pointer was put at, nil if unknown
+local function tgHover(element)
+  local frame = element:attributeValue("AXFrame")
+  if not frame then
+    return nil
+  end
+  local point = hs.geometry.point(frame.x + frame.w / 2, frame.y + frame.h / 2)
+  local moved = hs.eventtap.event.types.mouseMoved
+  hs.eventtap.event.newMouseEvent(moved, point):post()
+  return point
+end
+
+
+-- Qt ignores a click on a row it does not consider hovered yet, so the click
+-- comes as a separate step after the pointer had time to land
+local function tgRightClick(element, onDone)
+  local point = tgHover(element)
+  if not point then
+    return false
+  end
+  runLater(TG_HOVER_SEC, function()
+    hs.eventtap.rightClick(point)
+    onDone()
+  end)
+  return true
+end
+
+
+-- Anything closes a menu, a stray click included, and by then its items are
+-- remembered coordinates over the chat list, where a click opens whatever
+-- chat happens to be there. So the menus are rechecked at the last moment
+local function tgClickMenuItem(app, element, onDone, onVanished)
+  local point = tgHover(element)
+  if not point then
+    return onVanished()
+  end
+  runLater(TG_HOVER_SEC, function()
+    if #tgMenus(app) <= 0 then
+      return onVanished()
+    end
+    hs.eventtap.leftClick(point)
+    onDone()
+  end)
+end
+
+
+-- Drops the open search result from the first folder, which is what clicking
+-- an already ticked folder in the submenu does, and moves to the next result
+function App:tgRemoveFromFolderAndNext()
+  local state, err, code = self:_tgSearchState()
+  if not state then
+    return err, code
+  end
+
+  local item = state.items[state.current]
+  if not item then
+    hs.alert.show("No current search result")
+    return "no current search result", 404
+  end
+
+  -- Menus are opened by clicking, and a scrolled out item reports a frame
+  -- somewhere off the window, so clicking it would hit whatever is there
+  if not tgItemIsVisible(item, state.wnd:frame()) then
+    hs.alert.show("Search result is off screen")
+    return "search result is off screen", 404
+  end
+
+  local mouse = hs.mouse.absolutePosition()
+  local function giveUp(msg)
+    -- Leave no menu open, else the next hotkey clicks into it
+    hs.eventtap.keyStroke({}, "escape")
+    hs.mouse.absolutePosition(mouse)
+    hs.alert.show(msg)
+  end
+
+  local opened = tgRightClick(item, function()
+    tgWaitFor(function()
+      return tgFindMenuItem(state.app, TG_ADD_TO_FOLDER)
+    end, function(addToFolder)
+      -- Hovering, not clicking: that is what unfolds the submenu
+      tgHover(addToFolder)
+      tgWaitFor(function()
+        return tgFindSubmenuItem(state.app, TG_ADD_TO_FOLDER)
+      end, function(folder)
+        tgClickMenuItem(state.app, folder, function()
+          -- A menu still on the screen is the frontmost window, and the open
+          -- chat name is read off the frontmost window title
+          tgWaitFor(function()
+            return #tgMenus(state.app) == 0
+          end, function()
+            hs.mouse.absolutePosition(mouse)
+            -- Let the result list settle before looking up the next item
+            runLater(TG_HOVER_SEC, function()
+              self:tgNextSearchResult()
+            end)
+          end, function()
+            giveUp("Menu stays open")
+          end)
+        end, function()
+          giveUp("Folder menu closed")
+        end)
+      end, function()
+        giveUp("No folder submenu")
+      end)
+    end, function()
+      giveUp("No '" .. TG_ADD_TO_FOLDER .. "' menu item")
+    end)
+  end)
+
+  if not opened then
+    hs.alert.show("No search result frame")
+    return "no search result frame", 404
+  end
 end
 
 
@@ -2069,14 +2308,11 @@ function App:showSymbolPicker()
       return
     end
  
-    local oldClipboard = hs.pasteboard.uniquePasteboard()
-    hs.pasteboard.writeAllData(oldClipboard, hs.pasteboard.readAllData(nil))
-
-    hs.pasteboard.setContents(choice["symbol"])
-    hs.eventtap.keyStroke({"cmd"}, "v")
-
-    hs.pasteboard.writeAllData(nil, hs.pasteboard.readAllData(oldClipboard))
-    hs.pasteboard.deletePasteboard(oldClipboard)
+    -- Focus comes back asynchronously, and pasting picks the app to send the
+    -- keystroke to, so it waits for the chooser to be out of the way
+    runLater(CLIP_FOCUS_DELAY, function()
+      self:_paste(choice["symbol"])
+    end)
     hs.keycodes.setLayout(oldLayout)
   end
 

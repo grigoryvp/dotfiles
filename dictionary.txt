@@ -631,6 +631,7 @@ grigoryvp
 Gruthkul
 GTK
 GTX
+GU604VZ
 Guatelitzi
 gunicorn
 Gutspike
@@ -796,6 +797,7 @@ kanata
 Kaom
 karabiner
 Karui
+KAST
 Katana
 Katla
 kawaii
@@ -993,6 +995,7 @@ miniboss
 minipage
 Minisforum
 ministral
+miracast
 Miscreation
 Mjölner
 mkdocs
@@ -1320,6 +1323,7 @@ redacter
 Redactions
 redirections
 redmine
+Redotpay
 Redpanda
 Reefsteel
 refspec

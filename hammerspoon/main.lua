@@ -1922,7 +1922,7 @@ local TG_ADD_TO_FOLDER = "Add to folder"
 local TG_MENU_WAIT_SEC = 2.0
 local TG_MENU_POLL_SEC = 0.05
 -- Qt reacts to the pointer a frame later than the event is posted
-local TG_HOVER_SEC = 0.3
+local TG_HOVER_SEC = 0.2
 
 
 -- Telegram draws its menus as borderless windows of their own, siblings of

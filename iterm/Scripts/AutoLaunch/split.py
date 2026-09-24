@@ -7,9 +7,12 @@ FUNCTION_NAME = "custom_horizontal_split"
 
 def make_key_binding():
     return iterm2.KeyBinding(
-        character=ord("d"),
+        # Shift makes charactersIgnoringModifiers uppercase, so iTerm looks up "D".
+        character=ord("D"),
         modifiers=[iterm2.Modifier.SHIFT, iterm2.Modifier.COMMAND],
-        keycode=None,
+        # Keycode lets iTerm match the physical key in non-Latin layouts
+        # when "language-agnostic key bindings" is enabled.
+        keycode=iterm2.Keycode.ANSI_D,
         action=iterm2.BindingAction.INVOKE_SCRIPT_FUNCTION,
         param=f"{FUNCTION_NAME}()",
         version=None,

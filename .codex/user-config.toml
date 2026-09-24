@@ -10,6 +10,3 @@ trust_level = "trusted"
 
 [tui.keymap.editor]
 insert_newline = ["shift-enter", "ctrl-j"]
-
-[tui.model_availability_nux]
-gpt-6-astra = 2

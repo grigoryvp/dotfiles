@@ -5,6 +5,10 @@
 -- Skip the first-run onboarding window on a fresh user data directory.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('OnboardingFinished','true');
 
+-- Register Wox in HKCU Run on Windows; Wox reconciles the registry with this
+-- key on every start. Platform-suffixed, ignored on macOS.
+INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAutostart@windows','true');
+
 -- Anonymous usage telemetry: daily presence ping to wox-telemetry.qlf.workers.dev.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAnonymousUsageStats','false');
 

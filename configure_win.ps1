@@ -176,9 +176,11 @@ class App {
     # $this._configureBatteryInfoView();
     $this._installApp("strayge.tray-monitor");
     $this._installApp("windhawk");
-    # TODO: install wox 2.0.0-beta5
-    # ! Seems it conflicts with AutoHotkey, it should be started AFTER wox
-    # $this._installApp("Wox.Wox");  # this installs wox 1.x
+    # Portable exe; _configureWox starts it once to create the settings db
+    $this._installApp("Wox.Wox");
+    # For the wox-settings.sql import
+    $this._installApp("SQLite.SQLite");
+    $this._configureWox();
  
     if (-not $this._isPublic) {
       $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
@@ -210,7 +212,6 @@ class App {
     $this._registerAutohotkeyStartup();
     # TODO: wait for BatteryInfoView install
     # $this._registerBatteryInfoViewStartup();
-    # TODO: add wox startup BEFORE autohotkey
 
     # Interactive
     $this._mapKeyboard();
@@ -1053,6 +1054,86 @@ class App {
     }
     Write-Host "Creating hardlink $srcPath => $dstPath";
     New-Hardlink -Path "$dstDir" -Name "$dstFileName" -Value "$srcPath";
+  }
+
+
+  # Wox stores settings in SQLite; the schema is created by Wox itself on
+  # first start, so start it once, wait for its control port, quit it cleanly
+  # and import wox-settings.sql. Wox is started again at the end so it applies
+  # EnableAutostart@windows to HKCU Run itself.
+  _configureWox() {
+    if ($this._isTest) { return; }
+    # Winget adds Links to the user PATH, but not to this session
+    $links = $this._path(@($env:LOCALAPPDATA, "Microsoft", "WinGet", "Links"));
+    $woxExe = $this._path(@($links, "wox-windows-amd64.exe"));
+    $sqliteExe = $this._path(@($links, "sqlite3.exe"));
+    foreach ($exe in @($woxExe, $sqliteExe)) {
+      if (-not (Test-Path -Path "$exe")) { throw "$exe not found" }
+    }
+    $woxDir = $this._path(@("~", ".wox"));
+    $locFile = $this._path(@($woxDir, ".userdata.location"));
+    $userDataDir = $this._path(@($woxDir, "wox-user"));
+    if (Test-Path -Path "$locFile") {
+      $userDataDir = (Get-Content -Path "$locFile" -Raw).Trim();
+    }
+    $db = $this._path(@($userDataDir, "wox.db"));
+
+    if (-not (Test-Path -Path "$db")) {
+      Write-Host "Starting Wox to create $db";
+      Start-Process -FilePath "$woxExe";
+      $lockFile = $this._path(@($woxDir, "wox.lock"));
+      $ready = $false;
+      for ($i = 0; $i -lt 100; $i++) {
+        # A stale lock file from a previous run points to a dead port
+        $port = Get-Content -Path "$lockFile" -Raw -ErrorAction SilentlyContinue;
+        if ($port) {
+          try {
+            $uri = "http://127.0.0.1:$($port.Trim())/ping";
+            $ret = Invoke-RestMethod -Uri $uri -TimeoutSec 1;
+            if ($ret.Success) { $ready = $true; break; }
+          }
+          catch {}
+        }
+        Start-Sleep -Milliseconds 200;
+      }
+      if (-not $ready) { $this._stopWox(); throw "Wox did not start in 20 seconds" }
+    }
+    # Also covers re-runs with Wox running, so its cached settings are not
+    # written back over the imported ones
+    $this._stopWox();
+
+    Write-Host "Importing Wox settings into $db";
+    $sqlPath = $this._path(@($this._cfgDir, "wox-settings.sql"));
+    Get-Content -Path "$sqlPath" -Raw | & "$sqliteExe" "$db";
+    if ($LASTEXITCODE -ne 0) { throw "Failed to import Wox settings" }
+    Start-Process -FilePath "$woxExe";
+  }
+
+
+  # Match by command line, the exe name depends on how Wox was installed
+  [array] _getWoxProcesses($flag) {
+    return @(Get-CimInstance Win32_Process | Where-Object {
+      $_.CommandLine -like "*$flag*" });
+  }
+
+
+  # Newer Wox runs under a crash supervisor that relaunches a child killed
+  # forcibly but treats exit code 0 as a clean exit
+  _stopWox() {
+    if ($this._isTest) { return; }
+    # The supervisor has no window, only a forced kill works; it does not
+    # kill the child, and without it a killed child is not relaunched
+    foreach ($p in $this._getWoxProcesses("--bug-aware-supervisor")) {
+      Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue;
+    }
+    foreach ($p in $this._getWoxProcesses("--bug-aware-child")) {
+      # WM_CLOSE: Wox exits with code 0 once its last window is destroyed
+      & taskkill /PID $p.ProcessId;
+      if ($LASTEXITCODE -eq 0) {
+        Wait-Process -Id $p.ProcessId -Timeout 20 -ErrorAction SilentlyContinue;
+      }
+      Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue;
+    }
   }
 
 

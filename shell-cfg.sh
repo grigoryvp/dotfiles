@@ -264,7 +264,7 @@ alias cdhh="cd ${HHOME}"
 ##  wox-settings.sql. WOX_CFG_KEYS holds "plugin_id:key" pairs from the
 ##  plugin_settings table, WOX_CFG_WOX_KEYS holds keys of the wox_settings table.
 WOX_CFG_KEYS="979d6363-025a-4f51-88d3-0b04e9dc56bf:Disabled 5f815d98-27f5-488d-a756-c317ea39935b:Disabled a48dc5f0-dab9-4112-b883-b68129d6782b:Disabled 95d041d3-be7e-4b20-8517-88dda2db280b:Disabled 1af58721-6c97-4901-b291-620daf08d9c9:Disabled 8f68a760-86a0-46a9-b331-58dcaf091daa:Disabled 78fc701b-a87e-4d5f-a7f2-13cbad9f7d1d:Disabled b8f3d4e5-6c7a-4b9c-8d1e-2f3a4b5c6d7e:Disabled 6cde8bec-3f19-44f6-8a8b-d3ba3712d04e:Disabled a3f7b8c2-d1e4-4f6a-9b0c-7e2d1a5f8b3e:Disabled"
-WOX_CFG_WOX_KEYS="OnboardingFinished EnableAnonymousUsageStats"
+WOX_CFG_WOX_KEYS="OnboardingFinished EnableAnonymousUsageStats EnableAutostart@windows"
 WOX_CFG_DB="${HOME}/.wox/wox-user/wox.db"
 WOX_CFG_SQL="${HHOME}/dotfiles/wox-settings.sql"
 wox-cfg-export() {

@@ -2,3 +2,11 @@
 
 -- Disable the built-in File Search plugin: ClickHouse and 100% cpu load
 INSERT OR REPLACE INTO plugin_settings VALUES('979d6363-025a-4f51-88d3-0b04e9dc56bf','Disabled','true');
+
+-- Disable the built-in Clipboard History plugin: it keeps copied text
+-- (including credentials) in plain text inside wox.db and clipboard.db.
+INSERT OR REPLACE INTO plugin_settings(plugin_id,key,value) VALUES('5f815d98-27f5-488d-a756-c317ea39935b','Disabled','true');
+
+-- Disable the built-in Converter plugin: it polls exchange rates (HKAB) and
+-- crypto prices (CoinGecko) on a schedule in the background.
+INSERT OR REPLACE INTO plugin_settings(plugin_id,key,value) VALUES('a48dc5f0-dab9-4112-b883-b68129d6782b','Disabled','true');

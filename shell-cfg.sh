@@ -262,7 +262,7 @@ alias cdhh="cd ${HHOME}"
 
 ##  Wox keeps settings in SQLite; sync only the rows listed here via
 ##  wox-settings.sql. Pairs are "plugin_id:key" from the plugin_settings table.
-WOX_CFG_KEYS="979d6363-025a-4f51-88d3-0b04e9dc56bf:Disabled"
+WOX_CFG_KEYS="979d6363-025a-4f51-88d3-0b04e9dc56bf:Disabled 5f815d98-27f5-488d-a756-c317ea39935b:Disabled a48dc5f0-dab9-4112-b883-b68129d6782b:Disabled"
 WOX_CFG_DB="${HOME}/.wox/wox-user/wox.db"
 WOX_CFG_SQL="${HHOME}/dotfiles/wox-settings.sql"
 wox-cfg-export() {

@@ -1410,6 +1410,7 @@ Sarn
 Saruman
 sauron
 scaffolder
+Scaffolders
 Scanf
 Schoeneman
 scikit

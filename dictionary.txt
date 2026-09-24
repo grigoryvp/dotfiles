@@ -1801,6 +1801,7 @@ Vitalic
 VK
 vlc
 VLESS
+vllm
 VM
 VMD
 Voidforge

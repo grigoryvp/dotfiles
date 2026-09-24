@@ -3577,9 +3577,30 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
-                                            "^ru\\.keepcoder\\.Telegram$",
-                                            "^com\\.tdesktop\\.Telegram$",
                                             "^com\\.tinyspeck\\.slackmacgap$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "control-k => command-shift-u for Slack 'insert link' (mac-win consistency)",
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u",
+                                        "modifiers": ["right_command", "shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^ru\\.keepcoder\\.Telegram$",
+                                            "^com\\.tdesktop\\.Telegram$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }

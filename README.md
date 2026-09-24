@@ -90,25 +90,9 @@ pip install --upgrade pip
 # * Disable caps in "Modifier Keys"
 # In "Settings/Trackpad/More gestures":
 # * Disable gestures
-# For iTerm2 settings
-# * Enable /General/Magic/Enable Python API
-# * Disable /General/Closing/Confirm
-# * Disable /General/Selection/Clicking
+# For iTerm2 settings (the rest is applied by iterm/Scripts/AutoLaunch/settings.py)
 # * Enable "Enable Python API" in /General/Magic
-# * Set Appearance/General/Theme to "Dark"
-# * Set Appearance/Windows/Hide scrollbars
-# * Set Appearance/Tab bar to Left
-# * Enable "Show tab bar" in Appearance/Tabs
-# * Disable "Show tab numbers" in Appearance/Tabs
-# * Disable "Tabs have close button" in Appearance/Tabs
-# * Disable "Show activity indicator" (circle progress) in Appearance/Tabs
-# * Disable "Show new-output indicator" (blue dot) in Appearance/Tabs
-# * Enable Appearance/Dimming "inactive windows" and "affects text", 60%
-# * Set Profiles/General/Initial directory to "Reuse"
-# * Set Profiles/Colors/Color presets to "Solarized Dark", background to black
-# * Set Profiles/Text/Font to "JetBrainsMono Nerd Font" size 16
-# * Enable Profiles/Terminal "Silence bell"
-# * Set Filter Alerts in Profiles/Terminal to "Bell"
+# * Install Python runtime via Scripts/Manage/Install Python Runtime
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"
 # * In /Files views/extra

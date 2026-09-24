@@ -2,6 +2,9 @@
 -- Regenerate with `wox-cfg-export`, apply with `wox-cfg-import` (shell-cfg.sh).
 -- Booleans are stored by Wox as plain 'true'/'false' strings.
 
+-- Skip the first-run onboarding window on a fresh user data directory.
+INSERT OR REPLACE INTO wox_settings(key,value) VALUES('OnboardingFinished','true');
+
 -- Anonymous usage telemetry: daily presence ping to wox-telemetry.qlf.workers.dev.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAnonymousUsageStats','false');
 

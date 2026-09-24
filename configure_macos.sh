@@ -1,21 +1,24 @@
-open_port() {
-  local port=$1
-  nc -l localhost $port >/dev/null 2>&1 &
-  local pid=$!
-  for i in {1..20}; do
-    if nc -z localhost $port >/dev/null 2>&1; then
-      echo $pid
-      return 0
-    fi
-    sleep 0.05
-  done
-  kill $pid >/dev/null 2>&1
-  return 1
-}
-
+##  Wox stores settings in SQLite; the schema is created by Wox itself on first
+##  start, so start it once, wait for its control port, then quit it cleanly.
+##  Quit via AppleEvent: newer Wox runs under a crash supervisor that relaunches
+##  a child killed by signal, but treats exit code 0 as a clean exit.
 _configure_wox() {
-  pid=$(open_port 12345)
-  kill $pid >/dev/null 2>&1
+  db="$HOME/.wox/wox-user/wox.db"
+  if ! [ -e "$db" ]; then
+    open -a Wox
+    i=0
+    while [ $i -lt 100 ]; do
+      port=$(cat "$HOME/.wox/wox.lock" 2>/dev/null)
+      if [ -n "$port" ] && curl -sf -m 1 "http://127.0.0.1:$port/ping" >/dev/null; then
+        break
+      fi
+      sleep 0.2
+      i=$((i+1))
+    done
+    osascript -e 'quit app "Wox"'
+    while pgrep -x wox >/dev/null; do sleep 0.2; done
+  fi
+  sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"
 }
 
 test() {

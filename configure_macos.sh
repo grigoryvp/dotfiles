@@ -35,7 +35,7 @@ _brew_install() {
   done
   for pkg in "$@"; do
     if ! brew install $opts "$pkg"; then
-      echo "Failed to install $pkg, aborting" >&2
+      echo "❌ Failed to install $pkg, aborting" >&2
       exit 1
     fi
   done

@@ -1,3 +1,5 @@
+export HOMEBREW_NO_ASK=1
+
 ##  Wox stores settings in SQLite; the schema is created by Wox itself on first
 ##  start, so start it once, wait for its control port, then quit it cleanly.
 ##  Quit via AppleEvent: newer Wox runs under a crash supervisor that relaunches
@@ -19,6 +21,24 @@ _configure_wox() {
     while pgrep -x wox >/dev/null; do sleep 0.2; done
   fi
   sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"
+}
+
+# Install packages one by one: a failure then names the package and stops
+# the script instead of being lost in the output of a long brew install.
+_brew_install() {
+  opts=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --*) opts="$opts $1"; shift ;;
+      *) break ;;
+    esac
+  done
+  for pkg in "$@"; do
+    if ! brew install $opts "$pkg"; then
+      echo "Failed to install $pkg, aborting" >&2
+      exit 1
+    fi
+  done
 }
 
 test() {
@@ -96,16 +116,16 @@ configure() {
   # For Deskflow
   brew tap deskflow/homebrew-tap
   # For Python 3.10.0 on Apple Silicon
-  brew install readline openssl
+  _brew_install readline openssl
   # For PHP
-  brew install autoconf
+  _brew_install autoconf
   # For Ruby 3.2
-  brew install libyaml
+  _brew_install libyaml
   # For keepassxc-cli
-  brew install --build-from-source libgpg-error
+  _brew_install --build-from-source libgpg-error
   # Install into applications, not as a cli
-  brew install --cask mpv docker tailscale 
-  brew install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf
+  _brew_install --cask mpv docker tailscale
+  _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf
 
   # Need to check for network issues
   # brew install orbstack
@@ -146,7 +166,7 @@ configure() {
   mise use -g node@24.16.0
   mise use -g ruby@4.0.5
   # No prebuilt binaries, fails to compile from source
-  brew install php
+  _brew_install php
   mise use -g swift@6.3
 
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then

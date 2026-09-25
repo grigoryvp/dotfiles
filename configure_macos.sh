@@ -124,7 +124,7 @@ configure() {
   # For keepassxc-cli
   _brew_install --build-from-source libgpg-error
   # Install into applications, not as a cli
-  _brew_install --cask mpv docker tailscale
+  _brew_install --cask docker tailscale
   _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome qbittorrent obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar double-commander elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac deskflow zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf
 
   # Need to check for network issues
@@ -278,9 +278,6 @@ configure() {
   rm -rf "$VSCODE_DIR/snippets"
   ln -fs ~/dotfiles/vscode_snippets "$VSCODE_DIR/snippets"
 
-  mkdir -p ~/.config/mpv
-  echo "save-position-on-quit" > ~/.config/mpv/mpv.conf
-  echo "loop-file=inf" >> ~/.config/mpv/mpv.conf
   open /Applications/Karabiner-Elements.app
   echo "Add Karabiner to accessability and press enter"
   read -s

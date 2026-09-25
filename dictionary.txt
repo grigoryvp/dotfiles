@@ -185,6 +185,7 @@ blockable
 Bloodletter
 bonechill
 bookclub
+bootable
 bootstrapper
 Borgmon
 Borland
@@ -210,6 +211,7 @@ bunjs
 Bunq
 Bybit
 BYOK
+BYPASSNRO
 byteorder
 bzr
 cachetools
@@ -388,6 +390,7 @@ direnv
 discriminare
 Disfavour
 diskimages
+diskpart
 diskutil
 Displate
 displayport
@@ -719,8 +722,10 @@ ilograph
 ilvl
 ilvls
 im
+imager
 imagex
 IMG
+imgburn
 implicits
 impnattypo
 incapsulate
@@ -1073,6 +1078,7 @@ netfilter
 Netlink
 netplan
 netrc
+netsh
 networkd
 neuroenergetics
 Neuroscientists

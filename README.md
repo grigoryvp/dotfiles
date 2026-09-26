@@ -45,6 +45,7 @@ pip install --upgrade pip
 # touch ~/dotfiles/.secure
 # Install https://desktop.telegram.org/
 # Install https://flameshot.org/
+# Install https://www.qbittorrent.org/
 # * Enable autostart
 # * Disable menubar icon
 # * Set save dir to ~/Screenshots

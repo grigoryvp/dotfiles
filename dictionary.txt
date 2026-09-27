@@ -212,6 +212,7 @@ Bunq
 Bybit
 BYOK
 BYPASSNRO
+bytearray
 byteorder
 bzr
 cachetools
@@ -518,6 +519,8 @@ ffi
 fi
 Fidium
 fidonet
+findall
+finditer
 Fira
 Firesong
 firewalld
@@ -631,6 +634,7 @@ Greymake
 grigo
 grigory
 grigoryvp
+groupdict
 Gruthkul
 GTK
 GTX
@@ -858,6 +862,7 @@ langchain
 langgraph
 Lantador
 LARQL
+lastindex
 LDR
 leaguestart
 Leatherbound
@@ -920,6 +925,7 @@ lru
 LSMT
 lsp
 lsusb
+LTAP
 LTE
 lualatex
 luarocks
@@ -976,6 +982,7 @@ Memtable
 Merveil
 MESI
 mesos
+metacharacter
 metaclass
 metaclasses
 metainfo
@@ -1232,6 +1239,7 @@ pprint
 PPX
 PQ
 PQ-tablet
+prefixmatch
 preprod
 PREROUTING
 prestart
@@ -2530,6 +2538,7 @@ zx
 хостить
 хэндлу
 Цеттелькастен
+Чалмерс
 чанк
 чанки
 Чанпэн

@@ -424,6 +424,27 @@ configure() {
       "HIDKeyboardModifierMappingSrc": 0x700000039,
       "HIDKeyboardModifierMappingDst":0x0}]}' > /dev/null
 
+  # Free cmd+space for Wox by disabling the Spotlight search hotkey (id 64).
+  # Parameters are kept, otherwise the GUI shows the shortcut as unassigned
+  # instead of disabled.
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
+    <dict>
+      <key>enabled</key><false/>
+      <key>value</key>
+      <dict>
+        <key>type</key><string>standard</string>
+        <key>parameters</key>
+        <array>
+          <integer>32</integer>
+          <integer>49</integer>
+          <integer>1048576</integer>
+        </array>
+      </dict>
+    </dict>'
+  # Reload hotkeys so the change applies without a re-login
+  sysadmin=/System/Library/PrivateFrameworks/SystemAdministration.framework
+  "$sysadmin/Resources/activateSettings" -u
+
   # Apply changes
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true

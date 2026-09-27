@@ -6,6 +6,7 @@ export HOMEBREW_NO_ASK=1
 ##  a child killed by signal, but treats exit code 0 as a clean exit. Wox never
 ##  answers the event, so its reply is ignored to avoid an osascript timeout.
 _configure_wox() {
+  echo "Configuring Wox..."
   db="$HOME/.wox/wox-user/wox.db"
   if ! [ -e "$db" ]; then
     open -a Wox
@@ -33,6 +34,7 @@ _configure_wox() {
     done
   fi
   sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"
+  echo "Wox configured"
 }
 
 # Install packages one by one: a failure then names the package and stops

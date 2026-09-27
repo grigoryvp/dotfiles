@@ -46,6 +46,7 @@ pip install --upgrade pip
 # Install https://desktop.telegram.org/
 # Install https://flameshot.org/
 # Install https://www.qbittorrent.org/
+# Install https://doublecmd.sourceforge.io/
 # * Enable autostart
 # * Disable menubar icon
 # * Set save dir to ~/Screenshots

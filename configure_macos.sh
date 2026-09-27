@@ -1,10 +1,6 @@
 export HOMEBREW_NO_ASK=1
 
-##  Wox stores settings in SQLite; the schema is created by Wox itself on first
-##  start, so start it once, wait for its control port, then quit it cleanly.
-##  Quit via AppleEvent: newer Wox runs under a crash supervisor that relaunches
-##  a child killed by signal, but treats exit code 0 as a clean exit. Wox never
-##  answers the event, so its reply is ignored to avoid an osascript timeout.
+##  Wox runs under a crash supervisor that relaunches a child killed by signal
 _wox_quit() {
   if ! pgrep -x wox >/dev/null; then
     return 0
@@ -24,8 +20,6 @@ _wox_quit() {
   done
 }
 
-##  Both tables must exist: 'sqlite3' happily creates an empty database file
-##  and then fails every insert, which looks like a successful import.
 _wox_db_ready() {
   [ -e "$1" ] || return 1
   tables=$(sqlite3 "$1" "select name from sqlite_master where type='table'
@@ -59,7 +53,7 @@ _configure_wox() {
     done
   fi
   ##  A running Wox keeps settings in memory and writes them back on exit,
-  ##  silently discarding the import, so it must be down while we import.
+  ##  silently discarding the import
   _wox_quit
   if ! sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"; then
     echo "❌ Failed to import '$HOME/dotfiles/wox-settings.sql', aborting" >&2

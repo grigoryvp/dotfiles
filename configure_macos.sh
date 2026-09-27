@@ -3,7 +3,8 @@ export HOMEBREW_NO_ASK=1
 ##  Wox stores settings in SQLite; the schema is created by Wox itself on first
 ##  start, so start it once, wait for its control port, then quit it cleanly.
 ##  Quit via AppleEvent: newer Wox runs under a crash supervisor that relaunches
-##  a child killed by signal, but treats exit code 0 as a clean exit.
+##  a child killed by signal, but treats exit code 0 as a clean exit. Wox never
+##  answers the event, so its reply is ignored to avoid an osascript timeout.
 _configure_wox() {
   db="$HOME/.wox/wox-user/wox.db"
   if ! [ -e "$db" ]; then
@@ -17,8 +18,19 @@ _configure_wox() {
       sleep 0.2
       i=$((i+1))
     done
-    osascript -e 'quit app "Wox"'
-    while pgrep -x wox >/dev/null; do sleep 0.2; done
+    osascript \
+      -e 'ignoring application responses' \
+      -e 'tell application "Wox" to quit' \
+      -e 'end ignoring'
+    i=0
+    while pgrep -x wox >/dev/null; do
+      if [ $i -ge 100 ]; then
+        echo "❌ Wox did not quit, aborting" >&2
+        exit 1
+      fi
+      sleep 0.2
+      i=$((i+1))
+    done
   fi
   sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"
 }
@@ -180,7 +192,7 @@ configure() {
         break
       fi
     done
-    echo "Sign in to GitHub and press enter for TOTP code"
+    echo "Sign in to GitHub via Chrome and press enter for TOTP code"
     read -s
     while true; do
       keepassxc-cli show --totp ~/dotfiles/auth/passwords.kdbx github

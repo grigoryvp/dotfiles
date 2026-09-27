@@ -5,10 +5,38 @@ export HOMEBREW_NO_ASK=1
 ##  Quit via AppleEvent: newer Wox runs under a crash supervisor that relaunches
 ##  a child killed by signal, but treats exit code 0 as a clean exit. Wox never
 ##  answers the event, so its reply is ignored to avoid an osascript timeout.
+_wox_quit() {
+  if ! pgrep -x wox >/dev/null; then
+    return 0
+  fi
+  osascript \
+    -e 'ignoring application responses' \
+    -e 'tell application "Wox" to quit' \
+    -e 'end ignoring'
+  i=0
+  while pgrep -x wox >/dev/null; do
+    if [ $i -ge 100 ]; then
+      echo "❌ Wox did not quit, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+}
+
+##  Both tables must exist: 'sqlite3' happily creates an empty database file
+##  and then fails every insert, which looks like a successful import.
+_wox_db_ready() {
+  [ -e "$1" ] || return 1
+  tables=$(sqlite3 "$1" "select name from sqlite_master where type='table'
+    and name in ('wox_settings','plugin_settings');" 2>/dev/null | wc -l)
+  [ "$tables" -eq 2 ]
+}
+
 _configure_wox() {
   echo "Configuring Wox..."
   db="$HOME/.wox/wox-user/wox.db"
-  if ! [ -e "$db" ]; then
+  if ! _wox_db_ready "$db"; then
     open -a Wox
     i=0
     while [ $i -lt 100 ]; do
@@ -19,21 +47,24 @@ _configure_wox() {
       sleep 0.2
       i=$((i+1))
     done
-    osascript \
-      -e 'ignoring application responses' \
-      -e 'tell application "Wox" to quit' \
-      -e 'end ignoring'
+    ##  The control port answers before the schema is written.
     i=0
-    while pgrep -x wox >/dev/null; do
+    while ! _wox_db_ready "$db"; do
       if [ $i -ge 100 ]; then
-        echo "❌ Wox did not quit, aborting" >&2
+        echo "❌ Wox did not create the schema in '$db', aborting" >&2
         exit 1
       fi
       sleep 0.2
       i=$((i+1))
     done
   fi
-  sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"
+  ##  A running Wox keeps settings in memory and writes them back on exit,
+  ##  silently discarding the import, so it must be down while we import.
+  _wox_quit
+  if ! sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"; then
+    echo "❌ Failed to import '$HOME/dotfiles/wox-settings.sql', aborting" >&2
+    exit 1
+  fi
   echo "Wox configured"
 }
 

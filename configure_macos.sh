@@ -395,11 +395,13 @@ configure() {
   hidutil property --set '{
     "UserKeyMapping": [{
       "HIDKeyboardModifierMappingSrc": 0x700000039,
-      "HIDKeyboardModifierMappingDst":0x0}]}'
+      "HIDKeyboardModifierMappingDst":0x0}]}' > /dev/null
 
   # Apply changes
   killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true
+
+  echo "✅ configuration complete"
 }
 
 if [ "$1" = "--test" ]; then

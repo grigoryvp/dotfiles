@@ -314,23 +314,24 @@ configure() {
   echo "Configure Hammerspoon and press enter"
   read -s
 
-  code --install-extension grigoryvp.language-xi
-  code --install-extension grigoryvp.memory-theme
-  code --install-extension grigoryvp.goto-link-provider
-  code --install-extension grigoryvp.markdown-inline-fence
-  code --install-extension grigoryvp.markdown-python-repl-syntax
-  code --install-extension grigoryvp.markdown-pandoc-rawattr
-  code --install-extension vscodevim.vim
-  code --install-extension EditorConfig.EditorConfig
-  code --install-extension emmanuelbeziat.vscode-great-icons
-  code --install-extension esbenp.prettier-vscode
-  code --install-extension formulahendry.auto-close-tag
-  code --install-extension dnut.rewrap-revived
-  code --install-extension streetsidesoftware.code-spell-checker
-  code --install-extension streetsidesoftware.code-spell-checker-russian
-  code --install-extension mark-wiemer.vscode-autohotkey-plus-plus
-  code --install-extension charliermarsh.ruff
-  code --install-extension harrydowning.yaml-embedded-languages
+  code --install-extension grigoryvp.language-xi >/dev/null
+  code --install-extension grigoryvp.memory-theme >/dev/null
+  code --install-extension grigoryvp.goto-link-provider >/dev/null
+  code --install-extension grigoryvp.markdown-inline-fence >/dev/null
+  code --install-extension grigoryvp.markdown-python-repl-syntax >/dev/null
+  code --install-extension grigoryvp.markdown-pandoc-rawattr >/dev/null
+  code --install-extension vscodevim.vim >/dev/null
+  code --install-extension EditorConfig.EditorConfig >/dev/null
+  code --install-extension emmanuelbeziat.vscode-great-icons >/dev/null
+  code --install-extension esbenp.prettier-vscode >/dev/null
+  code --install-extension formulahendry.auto-close-tag >/dev/null
+  code --install-extension dnut.rewrap-revived >/dev/null
+  code --install-extension streetsidesoftware.code-spell-checker >/dev/null
+  code --install-extension streetsidesoftware.code-spell-checker-russian \
+    >/dev/null
+  code --install-extension mark-wiemer.vscode-autohotkey-plus-plus >/dev/null
+  code --install-extension charliermarsh.ruff >/dev/null
+  code --install-extension harrydowning.yaml-embedded-languages >/dev/null
   VSCODE_DIR=~/Library/Application\ Support/Code/User
   if [ -e "$VSCODE_DIR" ]; then
     echo "'$VSCODE_DIR' already exists"

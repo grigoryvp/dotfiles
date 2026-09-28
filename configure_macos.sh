@@ -261,7 +261,7 @@ configure() {
     touch ~/.ssh/.uploaded_to_github
   fi
 
-  if [ -e ~/xi ]; then
+  if [ -e ~/.xi ]; then
     echo "Knowledge base already cloned"
   elif [ -e ~/.ssh/.uploaded_to_github ]; then
     git clone git@github.com:grigoryvp/xi.git ~/.xi

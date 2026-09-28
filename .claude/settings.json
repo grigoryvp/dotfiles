@@ -68,6 +68,7 @@
   },
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
+  "theme": "dark",
   "preferredNotifChannel": "iterm2_with_bell",
   "terminalProgressBarEnabled": false,
   "messageIdleNotifThresholdMs": 5000,

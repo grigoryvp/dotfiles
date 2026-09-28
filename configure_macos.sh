@@ -333,6 +333,7 @@ configure() {
   echo "Configure Hammerspoon and press enter"
   read -s
 
+  echo "Configuring VSCode..."
   code --install-extension grigoryvp.language-xi >/dev/null
   code --install-extension grigoryvp.memory-theme >/dev/null
   code --install-extension grigoryvp.goto-link-provider >/dev/null
@@ -363,6 +364,7 @@ configure() {
   ln -fs ~/dotfiles/vscode_tasks.json "$VSCODE_DIR/tasks.json"
   rm -rf "$VSCODE_DIR/snippets"
   ln -fs ~/dotfiles/vscode_snippets "$VSCODE_DIR/snippets"
+  echo "VSCode configured"
 
   open /Applications/Karabiner-Elements.app
   echo "Add Karabiner to accessability and press enter"

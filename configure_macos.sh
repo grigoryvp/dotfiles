@@ -207,7 +207,7 @@ configure() {
   _brew_install --build-from-source libgpg-error
   # Install into applications, not as a cli
   _brew_install --cask docker tailscale
-  _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar elgato-control-center rode-central mimestream vlc zoom notion notion-calendar eqmac zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf
+  _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar elgato-control-center mimestream vlc zoom notion notion-calendar eqmac zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf
 
   # Need to check for network issues
   # brew install orbstack

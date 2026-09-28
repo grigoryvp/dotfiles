@@ -80,6 +80,32 @@ _brew_install() {
   done
 }
 
+_symbolic_hotkey() {
+  id=$1 enabled=$2 char=$3 keycode=$4 modifiers=$5
+  ##  A macOS system shortcut is a numeric id in the AppleSymbolicHotKeys
+  ##  dictionary. The key combination is always stored, even for a disabled
+  ##  shortcut: without it the GUI shows the shortcut as unassigned instead of
+  ##  disabled, and re-enabling it in the GUI is then impossible.
+  ##  "char" is the unicode code point the key produces without shift (-1 for
+  ##  keys that produce none), "keycode" is the hardware key and "modifiers" is
+  ##  a bit mask: shift 0x20000, control 0x40000, option 0x80000, cmd 0x100000.
+  ##  65535 in "char"/"keycode" means "no key".
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$id" "
+    <dict>
+      <key>enabled</key><$enabled/>
+      <key>value</key>
+      <dict>
+        <key>type</key><string>standard</string>
+        <key>parameters</key>
+        <array>
+          <integer>$char</integer>
+          <integer>$keycode</integer>
+          <integer>$modifiers</integer>
+        </array>
+      </dict>
+    </dict>"
+}
+
 test() {
   _configure_wox
 }
@@ -424,41 +450,11 @@ configure() {
       "HIDKeyboardModifierMappingSrc": 0x700000039,
       "HIDKeyboardModifierMappingDst":0x0}]}' > /dev/null
 
-  # Free cmd+space for Wox by disabling the Spotlight search hotkey (id 64).
-  # Parameters are kept, otherwise the GUI shows the shortcut as unassigned
-  # instead of disabled.
-  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
-    <dict>
-      <key>enabled</key><false/>
-      <key>value</key>
-      <dict>
-        <key>type</key><string>standard</string>
-        <key>parameters</key>
-        <array>
-          <integer>32</integer>
-          <integer>49</integer>
-          <integer>1048576</integer>
-        </array>
-      </dict>
-    </dict>'
+  # Free cmd+space for Wox by disabling the Spotlight search shortcut
+  _symbolic_hotkey 64 false 32 49 1048576   # cmd+space
 
-  # Assign shift+cmd+\ to "Mission Control / Notification Center" (id 163).
-  # Parameters are the unshifted character code, the key code and the modifier
-  # mask (shift 0x20000 + cmd 0x100000).
-  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 163 '
-    <dict>
-      <key>enabled</key><true/>
-      <key>value</key>
-      <dict>
-        <key>type</key><string>standard</string>
-        <key>parameters</key>
-        <array>
-          <integer>92</integer>
-          <integer>42</integer>
-          <integer>1179648</integer>
-        </array>
-      </dict>
-    </dict>'
+  # Notification Center
+  _symbolic_hotkey 163 true 92 42 1179648   # shift+cmd+backslash
 
   # Reload hotkeys so the change applies without a re-login
   sysadmin=/System/Library/PrivateFrameworks/SystemAdministration.framework

@@ -339,6 +339,8 @@ configure() {
   open -a Hammerspoon
   echo "Configure Hammerspoon, ENABLE ACCESSABILITY and press enter"
   read -s
+  ##  Autostart
+  hs -c "hs.autoLaunch(true)" >/dev/null
 
   echo "Configuring VSCode..."
   code --install-extension grigoryvp.language-xi >/dev/null

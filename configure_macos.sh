@@ -129,6 +129,43 @@ _symbolic_hotkey() {
     </dict>"
 }
 
+_input_source_layout() {
+  # Emits one "AppleEnabledInputSources" entry for a plain keyboard layout.
+  # The numeric id is Apple's id of the layout resource and must match the
+  # name, otherwise the system drops the entry.
+  cat <<EOF
+    <dict>
+      <key>InputSourceKind</key><string>Keyboard Layout</string>
+      <key>KeyboardLayout ID</key><integer>$2</integer>
+      <key>KeyboardLayout Name</key><string>$1</string>
+    </dict>
+EOF
+}
+
+_configure_input_sources() {
+  # Writing the whole array keeps this idempotent, unlike "-array-add".
+  # Order here is the order of the input menu. Kotoeri needs two entries:
+  # the input method itself and the mode it starts in; "RomajiTyping" plus
+  # the "Japanese" mode is what the GUI calls "Japanese - Romaji".
+  defaults write com.apple.HIToolbox AppleEnabledInputSources -array \
+    "$(_input_source_layout ABC 252)" \
+    "$(_input_source_layout RussianWin 19458)" \
+    '<dict>
+       <key>Bundle ID</key>
+       <string>com.apple.inputmethod.Kotoeri.RomajiTyping</string>
+       <key>Input Mode</key>
+       <string>com.apple.inputmethod.Japanese</string>
+       <key>InputSourceKind</key><string>Input Mode</string>
+     </dict>' \
+    '<dict>
+       <key>Bundle ID</key>
+       <string>com.apple.inputmethod.Kotoeri.RomajiTyping</string>
+       <key>InputSourceKind</key><string>Keyboard Input Method</string>
+     </dict>'
+  # The menu bar caches the list
+  killall TextInputMenuAgent 2>/dev/null || true
+}
+
 test() {
   _configure_wox
 }
@@ -430,6 +467,7 @@ configure() {
   # Input languages and locale
   defaults write -g AppleLanguages -array "en" "ru" "ja"
   defaults write -g AppleLocale -string "en_RU"
+  _configure_input_sources
   # Instant dock auto hiding
   defaults write com.apple.dock autohide true
   defaults write com.apple.dock autohide-delay -float 0

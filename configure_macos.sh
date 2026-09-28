@@ -1,6 +1,6 @@
 export HOMEBREW_NO_ASK=1
 
-##  Wox runs under a crash supervisor that relaunches a child killed by signal
+# Wox runs under a crash supervisor that relaunches a child killed by signal
 _wox_quit() {
   if ! pgrep -x wox >/dev/null; then
     return 0
@@ -29,9 +29,9 @@ _wox_db_ready() {
 
 _configure_wox() {
   echo "Configuring Wox..."
-  ##  Wox writes '~/Library/LaunchAgents/com.github.wox.plist' to autostart but
-  ##  does not create the directory, missing on a fresh macOS account: without
-  ##  it Wox reconciles the autostart setting back to "off" after the import
+  # Wox writes '~/Library/LaunchAgents/com.github.wox.plist' to autostart but
+  # does not create the directory, missing on a fresh macOS account: without
+  # it Wox reconciles the autostart setting back to "off" after the import
   mkdir -p "$HOME/Library/LaunchAgents"
   db="$HOME/.wox/wox-user/wox.db"
   if ! _wox_db_ready "$db"; then
@@ -45,7 +45,7 @@ _configure_wox() {
       sleep 0.2
       i=$((i+1))
     done
-    ##  The control port answers before the schema is written.
+    # The control port answers before the schema is written.
     i=0
     while ! _wox_db_ready "$db"; do
       if [ $i -ge 100 ]; then
@@ -56,8 +56,8 @@ _configure_wox() {
       i=$((i+1))
     done
   fi
-  ##  A running Wox keeps settings in memory and writes them back on exit,
-  ##  silently discarding the import
+  # A running Wox keeps settings in memory and writes them back on exit,
+  # silently discarding the import
   _wox_quit
   if ! sqlite3 "$db" < "$HOME/dotfiles/wox-settings.sql"; then
     echo "❌ Failed to import '$HOME/dotfiles/wox-settings.sql', aborting" >&2
@@ -85,9 +85,9 @@ _brew_install() {
 }
 
 _dock_tile() {
-  ##  Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
-  ##  Only the app url is given: the Dock fills in the rest of the fields
-  ##  ("GUID", "book", "file-label") on restart.
+  # Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
+  # Only the app url is given: the Dock fills in the rest of the fields
+  # ("GUID", "book", "file-label") on restart.
   cat <<EOF
     <dict>
       <key>tile-type</key><string>file-tile</string>
@@ -105,14 +105,14 @@ EOF
 
 _symbolic_hotkey() {
   id=$1 enabled=$2 char=$3 keycode=$4 modifiers=$5
-  ##  A macOS system shortcut is a numeric id in the AppleSymbolicHotKeys
-  ##  dictionary. The key combination is always stored, even for a disabled
-  ##  shortcut: without it the GUI shows the shortcut as unassigned instead of
-  ##  disabled, and re-enabling it in the GUI is then impossible.
-  ##  "char" is the unicode code point the key produces without shift (-1 for
-  ##  keys that produce none), "keycode" is the hardware key and "modifiers" is
-  ##  a bit mask: shift 0x20000, control 0x40000, option 0x80000, cmd 0x100000.
-  ##  65535 in "char"/"keycode" means "no key".
+  # A macOS system shortcut is a numeric id in the AppleSymbolicHotKeys
+  # dictionary. The key combination is always stored, even for a disabled
+  # shortcut: without it the GUI shows the shortcut as unassigned instead of
+  # disabled, and re-enabling it in the GUI is then impossible.
+  # "char" is the unicode code point the key produces without shift (-1 for
+  # keys that produce none), "keycode" is the hardware key and "modifiers" is
+  # a bit mask: shift 0x20000, control 0x40000, option 0x80000, cmd 0x100000.
+  # 65535 in "char"/"keycode" means "no key".
   defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$id" "
     <dict>
       <key>enabled</key><$enabled/>
@@ -339,7 +339,7 @@ configure() {
   open -a Hammerspoon
   echo "Configure Hammerspoon, ENABLE ACCESSABILITY and press enter"
   read -s
-  ##  Autostart
+  # Autostart
   hs -c "hs.autoLaunch(true)" >/dev/null
 
   echo "Configuring VSCode..."

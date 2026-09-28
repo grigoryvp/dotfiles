@@ -62,7 +62,7 @@ pip install --upgrade pip
 # * Disable backlit
 # * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/General"
-# * Add noTunes.app, hammerspoon, wox to "Login Items"
+# * Add noTunes.app, hammerspoon to "Login Items"
 # In "Settings/Accessibility"
 # * Disable "Siri/Settings/Intelligence"
 # In "Settings/Battery":

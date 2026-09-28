@@ -438,8 +438,23 @@ configure() {
   # Disable screen saver (manually turn off screen by locking the laptop)
   defaults -currentHost write com.apple.screensaver idleTime -int 0
 
-  # Remove all dock icons
-  defaults write com.apple.dock persistent-apps -array ""
+  # Replace all "keep in dock" icons with a single "System Settings" one.
+  # Finder is not a part of "persistent-apps" and is always shown first, so
+  # this lands right after it. The Dock fills in the rest of the tile fields
+  # ("GUID", "book", "file-label") on restart.
+  defaults write com.apple.dock persistent-apps -array '
+    <dict>
+      <key>tile-type</key><string>file-tile</string>
+      <key>tile-data</key>
+      <dict>
+        <key>file-data</key>
+        <dict>
+          <key>_CFURLString</key>
+          <string>file:///System/Applications/System Settings.app/</string>
+          <key>_CFURLStringType</key><integer>15</integer>
+        </dict>
+      </dict>
+    </dict>'
 
   # Disable caps lock alongside its hardware light indicator. Key itself
   # is used as meta by Karabiner. This option is available in Settings under

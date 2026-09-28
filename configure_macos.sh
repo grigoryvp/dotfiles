@@ -372,6 +372,7 @@ configure() {
   ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 
   _configure_wox
+  open -a Wox
 
   # Close any preferences so settings are not overwritten.
   osascript -e 'tell application "System Preferences" to quit'
@@ -449,7 +450,7 @@ configure() {
   # Auto-hide dock to get more vertical space (everything is on hotkeys)
   defaults write com.apple.dock autohide -bool true
   # Mute alerts
-  osascript -e "set volume alert volume 0"
+  osascript -e "set alert volume to 0"
   # Mute volume change feedback
   defaults write -g "com.apple.sound.beep.feedback" -bool false
   # Disable power attach chime

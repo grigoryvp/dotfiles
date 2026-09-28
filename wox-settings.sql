@@ -5,9 +5,12 @@
 -- Skip the first-run onboarding window on a fresh user data directory.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('OnboardingFinished','true');
 
--- Register Wox in HKCU Run on Windows; Wox reconciles the registry with this
--- key on every start. Platform-suffixed, ignored on macOS.
+-- Start with the OS. Wox reconciles the platform autostart mechanism with this
+-- key on every start: HKCU Run on Windows, the launch agent
+-- '~/Library/LaunchAgents/com.github.wox.plist' on macOS. The key is
+-- platform-suffixed and each platform reads only its own suffix.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAutostart@windows','true');
+INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAutostart@darwin','true');
 
 -- Anonymous usage telemetry: daily presence ping to wox-telemetry.qlf.workers.dev.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAnonymousUsageStats','false');

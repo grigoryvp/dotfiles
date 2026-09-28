@@ -58,6 +58,9 @@ pip install --upgrade pip
 # Dock left: Tailscale, Docker, Linear, Notion, ChatGPT, Slack, WhatsApp,
 #   HEY, Parallels, Discord, Steam
 # Menu: hammerspoon, lunar, tailscale, command center, time
+# In "Settings/Keyboard":
+# * Disable backlit
+# * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/General"
 # * Add noTunes.app, hammerspoon, wox to "Login Items"
 # In "Settings/Accessibility"
@@ -78,9 +81,6 @@ pip install --upgrade pip
 # * Disable "Apple Intelligence Report"
 # In "Settings/Lock Screen":
 # * Require password immediately after screen is locked
-# In "Settings/Keyboard":
-# * Disable backlit
-# * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/Keyboard/Shortcuts":
 # * Disable input source shortcuts in "Input sources"
 # * Remove "⇧⌘/" app shortcut from "App Shortcuts"

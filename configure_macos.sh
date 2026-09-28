@@ -330,6 +330,9 @@ configure() {
     mkdir -p ~/.config/powershell
   fi
   ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
+  if ! [ -e ~/Library/Application\ Support/iTerm2/Scripts]; then
+    mkdir -p ~/Library/Application\ Support/iTerm2/Scripts
+  fi
   ln -fs ~/dotfiles/iterm/Scripts/AutoLaunch \
          ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
 

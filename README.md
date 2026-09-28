@@ -82,7 +82,6 @@ pip install --upgrade pip
 # * Disable backlit
 # * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/Keyboard/Shortcuts":
-# * Add "⇧⌘\" for "Mission Control/Notification Center"
 # * Disable input source shortcuts in "Input sources"
 # * Remove "⇧⌘/" app shortcut from "App Shortcuts"
 # * Add "⌘W" to "Close Tab" for "Safari" app shortcut

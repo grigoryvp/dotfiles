@@ -441,6 +441,25 @@ configure() {
         </array>
       </dict>
     </dict>'
+
+  # Assign shift+cmd+\ to "Mission Control / Notification Center" (id 163).
+  # Parameters are the unshifted character code, the key code and the modifier
+  # mask (shift 0x20000 + cmd 0x100000).
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 163 '
+    <dict>
+      <key>enabled</key><true/>
+      <key>value</key>
+      <dict>
+        <key>type</key><string>standard</string>
+        <key>parameters</key>
+        <array>
+          <integer>92</integer>
+          <integer>42</integer>
+          <integer>1179648</integer>
+        </array>
+      </dict>
+    </dict>'
+
   # Reload hotkeys so the change applies without a re-login
   sysadmin=/System/Library/PrivateFrameworks/SystemAdministration.framework
   "$sysadmin/Resources/activateSettings" -u

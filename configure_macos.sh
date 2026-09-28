@@ -80,6 +80,25 @@ _brew_install() {
   done
 }
 
+_dock_tile() {
+  ##  Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
+  ##  Only the app url is given: the Dock fills in the rest of the fields
+  ##  ("GUID", "book", "file-label") on restart.
+  cat <<EOF
+    <dict>
+      <key>tile-type</key><string>file-tile</string>
+      <key>tile-data</key>
+      <dict>
+        <key>file-data</key>
+        <dict>
+          <key>_CFURLString</key><string>file://$1/</string>
+          <key>_CFURLStringType</key><integer>15</integer>
+        </dict>
+      </dict>
+    </dict>
+EOF
+}
+
 _symbolic_hotkey() {
   id=$1 enabled=$2 char=$3 keycode=$4 modifiers=$5
   ##  A macOS system shortcut is a numeric id in the AppleSymbolicHotKeys
@@ -439,23 +458,11 @@ configure() {
   # Disable screen saver (manually turn off screen by locking the laptop)
   defaults -currentHost write com.apple.screensaver idleTime -int 0
 
-  # Replace all "keep in dock" icons with a single "System Settings" one.
-  # Finder is not a part of "persistent-apps" and is always shown first, so
-  # this lands right after it. The Dock fills in the rest of the tile fields
-  # ("GUID", "book", "file-label") on restart.
-  defaults write com.apple.dock persistent-apps -array '
-    <dict>
-      <key>tile-type</key><string>file-tile</string>
-      <key>tile-data</key>
-      <dict>
-        <key>file-data</key>
-        <dict>
-          <key>_CFURLString</key>
-          <string>file:///System/Applications/System Settings.app/</string>
-          <key>_CFURLStringType</key><integer>15</integer>
-        </dict>
-      </dict>
-    </dict>'
+  # Replace all "keep in dock" icons with just these. Finder is not a part of
+  # "persistent-apps" and is always shown first, so these land after it.
+  defaults write com.apple.dock persistent-apps -array \
+    "$(_dock_tile "/System/Applications/System Settings.app")" \
+    "$(_dock_tile "/Applications/iTerm.app")"
 
   # Disable caps lock alongside its hardware light indicator. Key itself
   # is used as meta by Karabiner. This option is available in Settings under

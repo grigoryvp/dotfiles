@@ -321,6 +321,35 @@ _configure_input_sources() {
   killall TextInputMenuAgent 2>/dev/null || true
 }
 
+# Safari is sandboxed: "defaults" redirects this domain into the app container,
+# which TCC denies unless the calling terminal is granted Full Disk Access.
+# Under sudo the writes land in root's domain instead, which Safari never reads.
+_configure_safari() {
+  # Don't send search queries to Apple
+  defaults write com.apple.Safari UniversalSearchEnabled false
+  defaults write com.apple.Safari SuppressSearchSuggestions true
+  # Show full URL in Safari address bar
+  defaults write com.apple.Safari ShowFullURLInSmartSearchField true
+  # Safari home page
+  defaults write com.apple.Safari HomePage -string "about:blank"
+  # Do not open files after downloading in Safari
+  defaults write com.apple.Safari AutoOpenSafeDownloads false
+  # Enable Safari develop menu
+  defaults write com.apple.Safari IncludeDevelopMenu true
+  # Safari search on page with "contains"
+  defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly false
+  # Disable Safari auto correct
+  defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled false
+  # Disable Safari auto fill
+  defaults write com.apple.Safari AutoFillFromAddressBook false
+  defaults write com.apple.Safari AutoFillPasswords false
+  defaults write com.apple.Safari AutoFillCreditCardData false
+  defaults write com.apple.Safari AutoFillMiscellaneousForms false
+  # Safari must be closed: it rewrites its settings from memory on exit.
+  # cfprefsd caches the domain and respawns on its own.
+  killall cfprefsd 2>/dev/null || true
+}
+
 # Spotlight eats battery and SSD life. mdutil logs a line per volume even when
 # nothing changes, so its output is kept back unless it actually fails.
 _disable_spotlight() {
@@ -405,32 +434,8 @@ configure() {
   sudo pmset -a displaysleep 0
   sudo pmset -a sleep 0
 
-  # Don't send search queries to Apple
-  sudo defaults write com.apple.Safari UniversalSearchEnabled false
-  sudo defaults write com.apple.Safari SuppressSearchSuggestions true
-  # Show full URL in Safari address bar
-  sudo defaults write com.apple.Safari ShowFullURLInSmartSearchField true
-  # Safari home page
-  sudo defaults write com.apple.Safari HomePage -string "about:blank"
-  # Do not open files after downloading in Safari
-  sudo defaults write com.apple.Safari AutoOpenSafeDownloads false
-  # Hide Safari bookmarks bar
-  sudo defaults write com.apple.Safari ShowFavoritesBar false
-  # Enable Safari debug and develop menus.
-  sudo defaults write com.apple.Safari IncludeInternalDebugMenu true
-  sudo defaults write com.apple.Safari IncludeDevelopMenu true
-  # Safari search on page with "contains"
-  sudo defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly false
-  # Disable Safari auto correct
-  sudo defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled false
-  # Disable Safari auto fill
-  sudo defaults write com.apple.Safari AutoFillFromAddressBook false
-  sudo defaults write com.apple.Safari AutoFillPasswords false
-  sudo defaults write com.apple.Safari AutoFillCreditCardData false
-  sudo defaults write com.apple.Safari AutoFillMiscellaneousForms false
-  # Block pop-ups in Safari
-  sudo defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically false
-  sudo defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically false
+  # requires fda
+  # _configure_safari
 
   brew update --verbose
   # For Python 3.10.0 on Apple Silicon

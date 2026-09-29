@@ -126,6 +126,37 @@ _install_doublecmd() {
   fi
 }
 
+_install_hey() {
+  if [ -e /Applications/HEY.app ]; then
+    echo "HEY.com already installed"
+    return 0
+  fi
+  dmg="HEY-arm64.dmg"
+  url="https://www.hey.com/desktop/$dmg"
+  echo "Downloading HEY.com client..."
+  # Without -f curl happily saves an HTTP error page as the .dmg
+  if ! curl -fLSs -o "./$dmg" "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    exit 1
+  fi
+  # Volume name carries the version, so take it from the mount output
+  vol=$(hdiutil attach "./$dmg" -nobrowse | grep -o '/Volumes/.*' | tail -1)
+  if [ -z "$vol" ]; then
+    echo "❌ Failed to mount './$dmg', aborting" >&2
+    rm "./$dmg"
+    exit 1
+  fi
+  echo "Installing HEY.com..."
+  cp -R "$vol/HEY.app" /Applications/
+  ret=$?
+  hdiutil detach "$vol" 1>/dev/null
+  rm "./$dmg"
+  if [ $ret -ne 0 ]; then
+    echo "❌ Failed to copy HEY.app into /Applications, aborting" >&2
+    exit 1
+  fi
+}
+
 _dock_tile() {
   # Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
   # Only the app url is given: the Dock fills in the rest of the fields
@@ -310,19 +341,7 @@ configure() {
     rm -rf uvc-util
   fi
 
-  if [ -e /Applications/HEY.app ]; then
-    echo "HEY.com already installed"
-  else
-    # Download and install HEY.com mail app
-    echo "Downloading HEY.com client..."
-    curl -LOSs "https://hey-desktop.s3.amazonaws.com/HEY-arm64.dmg"
-    hdiutil attach "./HEY-arm64.dmg" 1>/dev/null
-    vol_name=$(ls /Volumes | grep -E "^HEY.+arm64$")
-    echo "Installing ${vol_name} ..."
-    cp -R "/Volumes/${vol_name}/HEY.app" /Applications/
-    hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
-    rm "./HEY-arm64.dmg"
-  fi
+  _install_hey
 
   _install_doublecmd
 

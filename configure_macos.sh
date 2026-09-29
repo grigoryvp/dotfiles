@@ -390,6 +390,50 @@ _dock_tile() {
 EOF
 }
 
+_dock_tile_count() {
+  defaults read com.apple.dock persistent-apps 2>/dev/null \
+    | grep -c '"_CFURLString" =' || true
+}
+
+_configure_dock_tiles() {
+  # Replace all "keep in dock" icons with just these. Finder is not a part of
+  # "persistent-apps" and is always shown first, so these land after it.
+  defaults write com.apple.dock persistent-apps -array \
+    "$(_dock_tile "/Applications/Steam.app")" \
+    "$(_dock_tile "/Applications/Discord.app")" \
+    "$(_dock_tile "/System/Applications/Mail.app")" \
+    "$(_dock_tile "/Applications/HEY.app")" \
+    "$(_dock_tile "/Applications/WhatsApp.app")" \
+    "$(_dock_tile "/Applications/Slack.app")" \
+    "$(_dock_tile "/Applications/ChatGPT.app")" \
+    "$(_dock_tile "/Applications/Notion.app")" \
+    "$(_dock_tile "/Applications/Linear.app")" \
+    "$(_dock_tile "/Applications/Docker.app")" \
+    "$(_dock_tile "/Applications/Tailscale.app")" \
+    "$(_dock_tile "/System/Applications/System Settings.app")" \
+    "$(_dock_tile "/Applications/iTerm.app")" \
+    "$(_dock_tile "/Applications/Visual Studio Code.app")" \
+    "$(_dock_tile "/Applications/Google Chrome.app")" \
+    "$(_dock_tile "/Applications/Double Commander.app")" \
+    "$(_dock_tile "/Applications/KeePassXC.app")" \
+    "$(_dock_tile "/Applications/Telegram.app")" \
+    "$(_dock_tile "/Applications/Mimestream.app")" \
+    "$(_dock_tile "/Applications/Notion Calendar.app")"
+  # The running Dock keeps its tiles in memory and writes them back, so it is
+  # restarted right after the write instead of at the end of the script.
+  killall Dock 2>/dev/null || true
+  i=0
+  while [ "$(_dock_tile_count)" -ne 20 ]; do
+    if [ $i -ge 50 ]; then
+      echo "❌ Dock kept $(_dock_tile_count) of 20 tiles, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+  echo "Dock tiles configured"
+}
+
 _symbolic_hotkey() {
   id=$1 enabled=$2 char=$3 keycode=$4 modifiers=$5
   # A macOS system shortcut is a numeric id in the AppleSymbolicHotKeys
@@ -941,30 +985,6 @@ configure() {
   defaults -currentHost write com.apple.screensaver idleTime -int 0
   _set_black_background
 
-  # Replace all "keep in dock" icons with just these. Finder is not a part of
-  # "persistent-apps" and is always shown first, so these land after it.
-  defaults write com.apple.dock persistent-apps -array \
-    "$(_dock_tile "/Applications/Steam.app")" \
-    "$(_dock_tile "/Applications/Discord.app")" \
-    "$(_dock_tile "/System/Applications/Mail.app")" \
-    "$(_dock_tile "/Applications/HEY.app")" \
-    "$(_dock_tile "/Applications/WhatsApp.app")" \
-    "$(_dock_tile "/Applications/Slack.app")" \
-    "$(_dock_tile "/Applications/ChatGPT.app")" \
-    "$(_dock_tile "/Applications/Notion.app")" \
-    "$(_dock_tile "/Applications/Linear.app")" \
-    "$(_dock_tile "/Applications/Docker.app")" \
-    "$(_dock_tile "/Applications/Tailscale.app")" \
-    "$(_dock_tile "/System/Applications/System Settings.app")" \
-    "$(_dock_tile "/Applications/iTerm.app")" \
-    "$(_dock_tile "/Applications/Visual Studio Code.app")" \
-    "$(_dock_tile "/Applications/Google Chrome.app")" \
-    "$(_dock_tile "/Applications/Double Commander.app")" \
-    "$(_dock_tile "/Applications/KeePassXC.app")" \
-    "$(_dock_tile "/Applications/Telegram.app")" \
-    "$(_dock_tile "/Applications/Mimestream.app")" \
-    "$(_dock_tile "/Applications/Notion Calendar.app")"
-
   # Disable caps lock alongside its hardware light indicator. Key itself
   # is used as meta by Karabiner. This option is available in Settings under
   # Keyboard/Keyboard Shortcuts/Modifier Keys/Caps Lock.
@@ -984,8 +1004,9 @@ configure() {
   sysadmin=/System/Library/PrivateFrameworks/SystemAdministration.framework
   "$sysadmin/Resources/activateSettings" -u
 
+  _configure_dock_tiles
+
   # Apply changes
-  killall Dock 2>/dev/null || true
   killall SystemUIServer 2>/dev/null || true
 
   echo "✅ configuration complete"

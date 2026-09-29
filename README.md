@@ -43,19 +43,14 @@ pip install --upgrade pip
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # touch ~/dotfiles/.secure
-# Configure flameshot
-# * Set save dir to ~/Screenshots
-# * Enable copy path to clipboard on save
 # Install Trello from App Store
 # Enable KeePass Chrome integration and connect Chrome to the correct DB
 # Command-drag-out menu icons except clock (until the "x" mark appears)
-# Dock: iTerm, VSCode, Chrome, Double, Pass, Telegram, Mail, NotionC, Trello
 # Dock left: Tailscale, Docker, Linear, Notion, ChatGPT, Slack, WhatsApp,
 #   HEY, Parallels, Discord, Steam
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # In "Settings/Keyboard":
 # * Disable backlit
-# * Add "Russian-PC" and "Japanese-Romaji" for "Input Sources"
 # In "Settings/General"
 # * Add noTunes.app to "Login Items"
 # In "Settings/Accessibility"

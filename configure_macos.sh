@@ -263,6 +263,20 @@ _login_items() {
   osascript -e "$sysev to get the name of every login item" 2>/dev/null
 }
 
+# There is no cli option for the save path, so the key is edited into the ini
+# in place, keeping whatever was set through the tray menu. QSettings sorts the
+# keys inside a section, so a new one is appended to "[General]".
+_flameshot_ini_set() {
+  ini="$HOME/.config/flameshot/flameshot.ini"
+  awk -v key="$1" -v value="$2" '
+    $0 ~ "^" key "=" { print key "=" value; done = 1; next }
+    /^\[/ && general && !done { print key "=" value; done = 1 }
+    /^\[General\]/ { general = 1 }
+    { print }
+    END { if (!done) print key "=" value }
+  ' "$ini" > "$ini.new" && mv "$ini.new" "$ini"
+}
+
 _configure_flameshot() {
   # "--autostart" writes the ini flag the tray checkbox reads and adds the
   # login item, but only while the flag is off, so an item removed later is
@@ -272,6 +286,17 @@ _configure_flameshot() {
   # "flameshot gui" command.
   /Applications/Flameshot.app/Contents/MacOS/flameshot \
     config --autostart true --trayicon false >/dev/null 2>&1
+  # Flameshot rejects a save path that does not exist and falls back to its
+  # default, so the directory is created first
+  mkdir -p "$HOME/Screenshots"
+  _flameshot_ini_set savePath "$HOME/Screenshots"
+  # "Copy file path after save" in the tray menu
+  _flameshot_ini_set copyPathAfterSave true
+  if ! /Applications/Flameshot.app/Contents/MacOS/flameshot config --check \
+    2>&1 | grep -q "No errors detected"; then
+    echo "❌ Flameshot rejected its configuration, aborting" >&2
+    exit 1
+  fi
   if _login_items | grep -q Flameshot; then
     echo "Flameshot autostart already enabled"
     return 0
@@ -577,6 +602,7 @@ configure() {
 
   _install_flameshot
   _configure_flameshot
+  open -a Flameshot
 
   _install_qbittorrent
 

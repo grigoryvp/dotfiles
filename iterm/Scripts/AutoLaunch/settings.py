@@ -38,6 +38,9 @@ PROFILE_FLAGS = {
     "send_terminal_generated_alerts": False,
 }
 
+# RPC served by split.py. iTerm's own shift-cmd-d splits 50/50.
+SPLIT_FUNCTION = "custom_horizontal_split"
+
 
 async def get_pref(connection, key: Key | str):
     # iterm2.async_get_preference() rejects plain strings; go through the RPC.
@@ -89,9 +92,40 @@ async def apply_profile(connection):
             await getattr(profile, f"async_set_{name}")(wanted)
 
 
+def make_split_key_binding():
+    return iterm2.KeyBinding(
+        # Shift makes charactersIgnoringModifiers uppercase, so iTerm looks up "D".
+        character=ord("D"),
+        modifiers=[iterm2.Modifier.SHIFT, iterm2.Modifier.COMMAND],
+        # Keycode lets iTerm match the physical key in non-Latin layouts
+        # when "language-agnostic key bindings" is enabled.
+        keycode=iterm2.Keycode.ANSI_D,
+        action=iterm2.BindingAction.INVOKE_SCRIPT_FUNCTION,
+        param=f"{SPLIT_FUNCTION}()",
+        version=None,
+        label=None,
+    )
+
+
+async def apply_key_bindings(connection):
+    """Bind shift-cmd-d in Preferences > Keys so new machines need no manual setup."""
+    wanted = make_split_key_binding()
+    # The helper fails to decode the "null" an unset map returns on a fresh install.
+    try:
+        bindings = await iterm2.async_get_global_key_bindings(connection)
+    except TypeError:
+        bindings = []
+    if wanted in bindings:
+        return
+    bindings = [b for b in bindings if b.key != wanted.key]
+    bindings.append(wanted)
+    await iterm2.async_set_global_key_bindings(connection, bindings)
+
+
 async def main(connection):
     await apply_global_prefs(connection)
     await apply_profile(connection)
+    await apply_key_bindings(connection)
 
 
 iterm2.run_until_complete(main)

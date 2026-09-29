@@ -321,6 +321,54 @@ _configure_input_sources() {
   killall TextInputMenuAgent 2>/dev/null || true
 }
 
+# Spotlight eats battery and SSD life. mdutil logs a line per volume even when
+# nothing changes, so its output is kept back unless it actually fails.
+_disable_spotlight() {
+  if ! out=$(sudo mdutil -a -i off 2>&1); then
+    echo "$out" >&2
+    echo "❌ Failed to disable Spotlight indexing, aborting" >&2
+    exit 1
+  fi
+  echo "Spotlight indexing disabled"
+}
+
+# Time zone from "sudo systemsetup -listtimezones"
+_set_timezone() {
+  tz="Europe/Amsterdam"
+  zone="/var/db/timezone/zoneinfo/$tz"
+  if [ "$(readlink /etc/localtime)" = "$zone" ]; then
+    echo "TimeZone already set to $tz"
+    return 0
+  fi
+  # systemsetup sets the zone and then logs an Admin framework error about it
+  # anyway, on stdout, and always exits 0: hide everything it says and judge
+  # by the symlink instead
+  out=$(sudo systemsetup -settimezone "$tz" 2>&1)
+  if [ "$(readlink /etc/localtime)" != "$zone" ]; then
+    echo "$out" >&2
+    echo "❌ Failed to set TimeZone to $tz, aborting" >&2
+    exit 1
+  fi
+  echo "TimeZone set to $tz"
+}
+
+# "Restart automatically if the computer freezes". Same deal as the time zone:
+# the setter exits 0 whatever happens and prints to stdout, so its output is
+# kept back and the result read back with the getter.
+_enable_restart_on_freeze() {
+  if sudo systemsetup -getrestartfreeze 2>&1 | grep -q "Freeze: On"; then
+    echo "Restart on freeze already enabled"
+    return 0
+  fi
+  out=$(sudo systemsetup -setrestartfreeze on 2>&1)
+  if ! sudo systemsetup -getrestartfreeze 2>&1 | grep -q "Freeze: On"; then
+    echo "$out" >&2
+    echo "❌ Failed to enable restart on freeze, aborting" >&2
+    exit 1
+  fi
+  echo "Restart on freeze enabled"
+}
+
 test() {
   _configure_wox
 }
@@ -346,17 +394,13 @@ configure() {
 
   # Group settings that require sudo together
 
-  # Disable spotlight for better battery and SSD life:
-  sudo mdutil -a -i off
+  _disable_spotlight
   # Tends to hang with 100% cpu load
   launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist 2>/dev/null
-  # Time zone from "sudo systemsetup -listtimezones"
-  #! This crashes AFTER setting time zone, this is normal
-  sudo systemsetup -settimezone "Europe/Amsterdam" 2>/dev/null
+  _set_timezone
   # Wake on lid open
   sudo pmset -a lidwake 1
-  # Restart on freeze
-  sudo systemsetup -setrestartfreeze on
+  _enable_restart_on_freeze
   # No sleep if not explicitly instructed to do so
   sudo pmset -a displaysleep 0
   sudo pmset -a sleep 0
@@ -543,12 +587,7 @@ configure() {
   code --install-extension charliermarsh.ruff >/dev/null
   code --install-extension harrydowning.yaml-embedded-languages >/dev/null
   VSCODE_DIR=~/Library/Application\ Support/Code/User
-  if [ -e "$VSCODE_DIR" ]; then
-    echo "'$VSCODE_DIR' already exists"
-  else
-    echo "Creating '$VSCODE_DIR' ..."
-    mkdir -p $VSCODE_DIR
-  fi
+  mkdir -p "$VSCODE_DIR"
   ln -fs ~/dotfiles/vscode_keybindings.json "$VSCODE_DIR/keybindings.json"
   ln -fs ~/dotfiles/vscode_settings.json "$VSCODE_DIR/settings.json"
   ln -fs ~/dotfiles/vscode_tasks.json "$VSCODE_DIR/tasks.json"

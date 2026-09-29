@@ -353,7 +353,8 @@ configure() {
   sudo mkdir -p /etc/codex
   sudo ln -fs ~/dotfiles/.codex/user-config.toml /etc/codex/config.toml
   ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
-  ln -fs ~/dotfiles/.claude/skills ~/.codex
+  rm -f ~/.codex/prompts ~/.codex/skills
+  ln -fs ~/dotfiles/.claude/skills ~/.codex/skills
   ln -fs ~/dotfiles/.claude/CLAUDE.md ~/.codex/AGENTS.md
 
   ln -fs ~/dotfiles/.screenrc ~/.screenrc
@@ -367,9 +368,10 @@ configure() {
     mkdir -p ~/.config/powershell
   fi
   ln -fs ~/dotfiles/profile.ps1 ~/.config/powershell/profile.ps1
-  if ! [ -e ~/Library/Application\ Support/iTerm2/Scripts]; then
+  if ! [ -e ~/Library/Application\ Support/iTerm2/Scripts ]; then
     mkdir -p ~/Library/Application\ Support/iTerm2/Scripts
   fi
+  rm -f ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
   ln -fs ~/dotfiles/iterm/Scripts/AutoLaunch \
          ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
 

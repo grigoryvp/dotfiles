@@ -258,6 +258,33 @@ _install_qbittorrent() {
   fi
 }
 
+_login_items() {
+  sysev='tell application "System Events"'
+  osascript -e "$sysev to get the name of every login item" 2>/dev/null
+}
+
+_configure_flameshot() {
+  # "--autostart" writes the ini flag the tray checkbox reads and adds the
+  # login item, but only while the flag is off, so an item removed later is
+  # restored below instead. It also misreads the reply from System Events and
+  # reports a failure while exiting 0: the login item list is what we judge by.
+  /Applications/Flameshot.app/Contents/MacOS/flameshot config --autostart true \
+    >/dev/null 2>&1
+  if _login_items | grep -q Flameshot; then
+    echo "Flameshot autostart already enabled"
+    return 0
+  fi
+  sysev='tell application "System Events"'
+  props='{name:"Flameshot", path:"/Applications/Flameshot.app", hidden:false}'
+  osascript -e "$sysev to make login item at end with properties $props" \
+    >/dev/null 2>&1
+  if ! _login_items | grep -q Flameshot; then
+    echo "❌ Failed to add Flameshot to login items, aborting" >&2
+    exit 1
+  fi
+  echo "Flameshot autostart enabled"
+}
+
 # Input method name lookup for debug purpose
 _install_im_select() {
   if [ -e ~/.local/bin/im-select ]; then
@@ -547,6 +574,7 @@ configure() {
   _install_telegram
 
   _install_flameshot
+  _configure_flameshot
 
   _install_qbittorrent
 

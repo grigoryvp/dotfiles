@@ -44,7 +44,6 @@ pip install --upgrade pip
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # touch ~/dotfiles/.secure
 # Configure flameshot
-# * Enable autostart
 # * Disable menubar icon
 # * Set save dir to ~/Screenshots
 # * Enable copy path to clipboard on save

@@ -685,7 +685,7 @@ configure() {
   # Auto-hide dock to get more vertical space (everything is on hotkeys)
   defaults write com.apple.dock autohide -bool true
   # Mute alerts
-  osascript -e "set alert volume to 0"
+  osascript -e "set volume alert volume 0"
   # Mute volume change feedback
   defaults write -g "com.apple.sound.beep.feedback" -bool false
   # Disable power attach chime
@@ -701,7 +701,11 @@ configure() {
     "$(_dock_tile "/Applications/iTerm.app")" \
     "$(_dock_tile "/Applications/Visual Studio Code.app")" \
     "$(_dock_tile "/Applications/Google Chrome.app")" \
-    "$(_dock_tile "/Applications/Double Commander.app")"
+    "$(_dock_tile "/Applications/Double Commander.app")" \
+    "$(_dock_tile "/Applications/KeePassXC.app")" \
+    "$(_dock_tile "/Applications/Telegram.app")" \
+    "$(_dock_tile "/Applications/Mimestream.app")" \
+    "$(_dock_tile "/Applications/Notion Calendar.app")"
 
   # Disable caps lock alongside its hardware light indicator. Key itself
   # is used as meta by Karabiner. This option is available in Settings under

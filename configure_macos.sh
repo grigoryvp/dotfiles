@@ -187,6 +187,77 @@ _install_telegram() {
   fi
 }
 
+# Hardcoded release from github.com/flameshot-org/flameshot/releases
+_install_flameshot() {
+  if [ -e /Applications/Flameshot.app ]; then
+    echo "Flameshot already installed"
+    return 0
+  fi
+  ver="14.0.0"
+  if [ "$(uname -m)" = "arm64" ]; then
+    dmg="Flameshot-14.0-macos-arm64.dmg"
+  else
+    dmg="Flameshot-14.0-macos-intel.dmg"
+  fi
+  url="https://github.com/flameshot-org/flameshot/releases/download"
+  url="$url/v$ver/$dmg"
+  echo "Downloading Flameshot $ver..."
+  if ! curl -fLSs -o "./$dmg" "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    exit 1
+  fi
+  vol=$(hdiutil attach "./$dmg" -nobrowse | grep -o '/Volumes/.*' | tail -1)
+  if [ -z "$vol" ]; then
+    echo "❌ Failed to mount './$dmg', aborting" >&2
+    rm "./$dmg"
+    exit 1
+  fi
+  echo "Installing Flameshot..."
+  cp -R "$vol/Flameshot.app" /Applications/
+  ret=$?
+  hdiutil detach "$vol" 1>/dev/null
+  rm "./$dmg"
+  if [ $ret -ne 0 ]; then
+    echo "❌ Failed to copy Flameshot.app into /Applications, aborting" >&2
+    exit 1
+  fi
+}
+
+# Hardcoded build from sourceforge.net/projects/qbittorrent/files/qbittorrent-mac
+# since the macOS build is not published on github with the other ones
+_install_qbittorrent() {
+  if [ -e /Applications/qBittorrent.app ]; then
+    echo "qBittorrent already installed"
+    return 0
+  fi
+  ver="5.2.3"
+  dmg="qbittorrent-$ver.dmg"
+  url="https://downloads.sourceforge.net/qbittorrent/qbittorrent-mac"
+  url="$url/qbittorrent-$ver/$dmg"
+  echo "Downloading qBittorrent $ver..."
+  if ! curl -fLSs -o "./$dmg" "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    exit 1
+  fi
+  vol=$(hdiutil attach "./$dmg" -nobrowse | grep -o '/Volumes/.*' | tail -1)
+  if [ -z "$vol" ]; then
+    echo "❌ Failed to mount './$dmg', aborting" >&2
+    rm "./$dmg"
+    exit 1
+  fi
+  echo "Installing qBittorrent..."
+  # App in the image is lowercase: name the copy so Finder and the Dock tile
+  # show the official spelling
+  cp -R "$vol/qbittorrent.app" /Applications/qBittorrent.app
+  ret=$?
+  hdiutil detach "$vol" 1>/dev/null
+  rm "./$dmg"
+  if [ $ret -ne 0 ]; then
+    echo "❌ Failed to copy qBittorrent.app into /Applications, aborting" >&2
+    exit 1
+  fi
+}
+
 # Input method name lookup for debug purpose
 _install_im_select() {
   if [ -e ~/.local/bin/im-select ]; then
@@ -474,6 +545,10 @@ configure() {
   _install_doublecmd
 
   _install_telegram
+
+  _install_flameshot
+
+  _install_qbittorrent
 
   _install_im_select
 

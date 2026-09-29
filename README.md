@@ -43,8 +43,7 @@ pip install --upgrade pip
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # touch ~/dotfiles/.secure
-# Install https://flameshot.org/
-# Install https://www.qbittorrent.org/
+# Configure flameshot
 # * Enable autostart
 # * Disable menubar icon
 # * Set save dir to ~/Screenshots

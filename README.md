@@ -55,8 +55,6 @@ pip install --upgrade pip
 # * Minimize windows into application icon
 # In "Settings/Displays":
 # * Turn off "automatically adjust brightness"
-# In "Settings/Wallpaper":
-# * Set black wallpaper
 # In "Settings/Sound":
 # * Disable startup sound
 # * Mute interface sound effects

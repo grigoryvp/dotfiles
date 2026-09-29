@@ -541,6 +541,84 @@ _disable_keyboard_backlight() {
   echo "Keyboard backlight disabled"
 }
 
+# Solid 64x64 black PNG: the wallpaper store can only point at an image file,
+# there is no "solid color" provider to name instead
+_write_black_png() {
+  mkdir -p "$HOME/.local/share"
+  base64 -d > "$HOME/.local/share/wallpaper-black.png" <<'EOF'
+iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAAIklEQVR42u3BAQ0A
+AADCoPdPbQ8HFAAAAAAAAAAAAAAA8G4wQAAB7OHIlwAAAABJRU5ErkJggg==
+EOF
+}
+
+# Desktop and lock screen pictures live in the wallpaper store, not in a
+# preferences domain.
+_set_black_background() {
+  img="$HOME/.local/share/wallpaper-black.png"
+  _write_black_png
+  dir=$(mktemp -d)
+  cat > "$dir/choice.xml" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0"><dict>
+  <key>type</key><string>imageFile</string>
+  <key>url</key><dict><key>relative</key><string>file://$img</string></dict>
+</dict></plist>
+EOF
+  # The store embeds the choice as a binary plist inside its own plist
+  plutil -convert binary1 -o "$dir/choice.bplist" "$dir/choice.xml"
+  cfg=$(base64 < "$dir/choice.bplist")
+  now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  # "$null" is how the store spells an unset option
+  content="<dict>
+        <key>Choices</key>
+        <array><dict>
+          <key>Configuration</key><data>$cfg</data>
+          <key>Files</key><array/>
+          <key>Provider</key><string>com.apple.wallpaper.choice.image</string>
+        </dict></array>
+        <key>EncodedOptionValues</key><string>\$null</string>
+        <key>Shuffle</key><string>\$null</string>
+      </dict>"
+  cat > "$dir/Index.xml" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0"><dict>
+  <key>AllSpacesAndDisplays</key>
+  <dict>
+    <key>Linked</key>
+    <dict>
+      <key>Content</key>$content
+      <key>LastSet</key><date>$now</date>
+      <key>LastUse</key><date>$now</date>
+    </dict>
+    <key>Type</key><string>linked</string>
+  </dict>
+  <key>Displays</key><dict/>
+  <key>Spaces</key><dict/>
+  <key>SystemDefault</key>
+  <dict>
+    <key>Linked</key>
+    <dict>
+      <key>Content</key>$content
+      <key>LastSet</key><date>$now</date>
+      <key>LastUse</key><date>$now</date>
+    </dict>
+    <key>Type</key><string>linked</string>
+  </dict>
+</dict></plist>
+EOF
+  store="$HOME/Library/Application Support/com.apple.wallpaper/Store"
+  mkdir -p "$store"
+  if ! plutil -convert binary1 -o "$store/Index.plist" "$dir/Index.xml"; then
+    echo "❌ Failed to write the wallpaper store, aborting" >&2
+    rm -rf "$dir"
+    exit 1
+  fi
+  rm -rf "$dir"
+  # The agent keeps the store in memory and only reads it on start
+  killall WallpaperAgent 2>/dev/null || true
+  echo "Black desktop and lock screen background set"
+}
+
 test() {
   _configure_wox
 }
@@ -852,6 +930,7 @@ configure() {
   killall PowerChime >/dev/null 2>&1
   # Disable screen saver (manually turn off screen by locking the laptop)
   defaults -currentHost write com.apple.screensaver idleTime -int 0
+  _set_black_background
 
   # Replace all "keep in dock" icons with just these. Finder is not a part of
   # "persistent-apps" and is always shown first, so these land after it.

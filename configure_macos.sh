@@ -451,6 +451,11 @@ _configure_input_sources() {
      </dict>'
   # The menu bar caches the list
   killall TextInputMenuAgent 2>/dev/null || true
+  # Writing the list with "defaults" posts no input source change notification,
+  # so Karabiner keeps the list it read at startup and "select_input_source"
+  # silently matches nothing. Restarting it makes the new layouts selectable.
+  karabiner_agent=org.pqrs.service.agent.Karabiner-Console-User-Server
+  launchctl kickstart -k "gui/$(id -u)/$karabiner_agent" 2>/dev/null || true
 }
 
 # Safari is sandboxed: "defaults" redirects this domain into the app container,

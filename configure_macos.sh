@@ -86,6 +86,39 @@ _brew_install() {
   done
 }
 
+# Homebrew dropped the cask: recent macOS refuses to run the unsigned app
+# installed by it. Hardcoded aarch64 build from
+# sourceforge.net/p/doublecmd/wiki/Download
+_install_doublecmd() {
+  if [ -e "/Applications/Double Commander.app" ]; then
+    echo "Double Commander already installed"
+    return 0
+  fi
+  ver="1.2.9"
+  dmg="doublecmd-$ver.cocoa.aarch64.dmg"
+  url="https://sourceforge.net/projects/doublecmd/files/Double%20Commander"
+  url="$url/v$ver/$dmg/download"
+  echo "Downloading Double Commander $ver..."
+  if ! curl -LSs -o "./$dmg" "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    exit 1
+  fi
+  if ! hdiutil attach "./$dmg" -nobrowse 1>/dev/null; then
+    echo "❌ Failed to mount './$dmg', aborting" >&2
+    rm "./$dmg"
+    exit 1
+  fi
+  echo "Installing Double Commander..."
+  cp -R "/Volumes/Double Commander/Double Commander.app" /Applications/
+  ret=$?
+  hdiutil detach "/Volumes/Double Commander" 1>/dev/null
+  rm "./$dmg"
+  if [ $ret -ne 0 ]; then
+    echo "❌ Failed to copy Double Commander into /Applications, aborting" >&2
+    exit 1
+  fi
+}
+
 _dock_tile() {
   # Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
   # Only the app url is given: the Dock fills in the rest of the fields
@@ -283,6 +316,8 @@ configure() {
     hdiutil detach "/Volumes/${vol_name}" 1>/dev/null
     rm "./HEY-arm64.dmg"
   fi
+
+  _install_doublecmd
 
   # Input method name lookup for debug purpose
   curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh

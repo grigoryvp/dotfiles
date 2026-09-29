@@ -530,6 +530,17 @@ _enable_restart_on_freeze() {
   echo "Restart on freeze enabled"
 }
 
+_disable_keyboard_backlight() {
+  plist=/Library/Preferences/com.apple.iokit.AmbientLightSensor
+  key="Automatic Keyboard Enabled"
+  sudo defaults write "$plist" "$key" -bool false
+  if [ "$(sudo defaults read "$plist" "$key" 2>/dev/null)" != "0" ]; then
+    echo "❌ Failed to disable keyboard backlight, aborting" >&2
+    exit 1
+  fi
+  echo "Keyboard backlight disabled"
+}
+
 test() {
   _configure_wox
 }
@@ -565,6 +576,7 @@ configure() {
   # No sleep if not explicitly instructed to do so
   sudo pmset -a displaysleep 0
   sudo pmset -a sleep 0
+  _disable_keyboard_backlight
 
   # requires fda
   # _configure_safari

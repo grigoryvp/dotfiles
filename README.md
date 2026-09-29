@@ -49,10 +49,6 @@ pip install --upgrade pip
 # Dock left: Tailscale, Docker, Linear, Notion, ChatGPT, Slack, WhatsApp,
 #   HEY, Parallels, Discord, Steam
 # Menu: hammerspoon, lunar, tailscale, command center, time
-# In "Settings/Keyboard":
-# * Disable backlit
-# In "Settings/General"
-# * Add noTunes.app to "Login Items"
 # In "Settings/Accessibility"
 # * Disable "Siri/Settings/Intelligence"
 # In "Settings/Battery":

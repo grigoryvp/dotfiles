@@ -268,8 +268,10 @@ _configure_flameshot() {
   # login item, but only while the flag is off, so an item removed later is
   # restored below instead. It also misreads the reply from System Events and
   # reports a failure while exiting 0: the login item list is what we judge by.
-  /Applications/Flameshot.app/Contents/MacOS/flameshot config --autostart true \
-    >/dev/null 2>&1
+  # Hiding the tray icon leaves the daemon running: capture is started by the
+  # "flameshot gui" command.
+  /Applications/Flameshot.app/Contents/MacOS/flameshot \
+    config --autostart true --trayicon false >/dev/null 2>&1
   if _login_items | grep -q Flameshot; then
     echo "Flameshot autostart already enabled"
     return 0

@@ -157,6 +157,36 @@ _install_hey() {
   fi
 }
 
+_install_telegram() {
+  if [ -e /Applications/Telegram.app ]; then
+    echo "Telegram already installed"
+    return 0
+  fi
+  dmg="telegram.dmg"
+  # Redirects to the latest versioned .dmg
+  url="https://telegram.org/dl/desktop/mac"
+  echo "Downloading Telegram client..."
+  if ! curl -fLSs -o "./$dmg" "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    exit 1
+  fi
+  vol=$(hdiutil attach "./$dmg" -nobrowse | grep -o '/Volumes/.*' | tail -1)
+  if [ -z "$vol" ]; then
+    echo "❌ Failed to mount './$dmg', aborting" >&2
+    rm "./$dmg"
+    exit 1
+  fi
+  echo "Installing Telegram..."
+  cp -R "$vol/Telegram.app" /Applications/
+  ret=$?
+  hdiutil detach "$vol" 1>/dev/null
+  rm "./$dmg"
+  if [ $ret -ne 0 ]; then
+    echo "❌ Failed to copy Telegram.app into /Applications, aborting" >&2
+    exit 1
+  fi
+}
+
 # Input method name lookup for debug purpose
 _install_im_select() {
   if [ -e ~/.local/bin/im-select ]; then
@@ -368,6 +398,8 @@ configure() {
   _install_hey
 
   _install_doublecmd
+
+  _install_telegram
 
   _install_im_select
 
@@ -604,7 +636,8 @@ configure() {
     "$(_dock_tile "/System/Applications/System Settings.app")" \
     "$(_dock_tile "/Applications/iTerm.app")" \
     "$(_dock_tile "/Applications/Visual Studio Code.app")" \
-    "$(_dock_tile "/Applications/Google Chrome.app")"
+    "$(_dock_tile "/Applications/Google Chrome.app")" \
+    "$(_dock_tile "/Applications/Double Commander.app")"
 
   # Disable caps lock alongside its hardware light indicator. Key itself
   # is used as meta by Karabiner. This option is available in Settings under

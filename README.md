@@ -43,10 +43,8 @@ pip install --upgrade pip
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_macos.sh)"
 # touch ~/dotfiles/.secure
-# Install https://desktop.telegram.org/
 # Install https://flameshot.org/
 # Install https://www.qbittorrent.org/
-# Install https://doublecmd.sourceforge.io/
 # * Enable autostart
 # * Disable menubar icon
 # * Set save dir to ~/Screenshots

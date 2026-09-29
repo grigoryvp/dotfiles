@@ -157,6 +157,30 @@ _install_hey() {
   fi
 }
 
+# Input method name lookup for debug purpose
+_install_im_select() {
+  if [ -e ~/.local/bin/im-select ]; then
+    echo "im-select already installed"
+    return 0
+  fi
+  # Upstream install_mac.sh writes into root-owned /usr/local/bin and ignores
+  # the failure, so fetch the binary ourselves
+  url="https://raw.githubusercontent.com/daipeihust/im-select/master/macOS/out"
+  if [ "$(uname -m)" = "arm64" ]; then
+    url="$url/apple/im-select"
+  else
+    url="$url/intel/im-select"
+  fi
+  echo "Downloading im-select..."
+  mkdir -p ~/.local/bin/
+  if ! curl -fLSs -o ~/.local/bin/im-select "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    rm -f ~/.local/bin/im-select
+    exit 1
+  fi
+  chmod +x ~/.local/bin/im-select
+}
+
 _dock_tile() {
   # Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
   # Only the app url is given: the Dock fills in the rest of the fields
@@ -345,8 +369,7 @@ configure() {
 
   _install_doublecmd
 
-  # Input method name lookup for debug purpose
-  curl -Ls https://raw.githubusercontent.com/daipeihust/im-select/master/install_mac.sh | sh
+  _install_im_select
 
   mise use -g python@3.14.5
   mise use -g node@24.16.0

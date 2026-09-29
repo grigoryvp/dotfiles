@@ -980,10 +980,13 @@ configure() {
   defaults write com.apple.dock wvous-br-corner -int 0
   # Auto-hide dock to get more vertical space (everything is on hotkeys)
   defaults write com.apple.dock autohide -bool true
-  # Battery is shown by the Hammerspoon menu bar item instead. 8 is what
-  # Settings/Control Center writes for "Don't Show in Menu Bar"; the
-  # "NSStatusItem Visible Battery" key of older macOS is ignored now.
+  # Battery and network state are shown by the Hammerspoon menu bar item
+  # instead. 8 is what Settings/Control Center writes for "Don't Show in Menu
+  # Bar"; the "NSStatusItem Visible ..." keys of older macOS are ignored now.
   defaults -currentHost write com.apple.controlcenter Battery -int 8
+  defaults -currentHost write com.apple.controlcenter WiFi -int 8
+  # Spotlight is not a Control Center module and keeps its own domain and key
+  defaults -currentHost write com.apple.Spotlight MenuItemHidden -int 1
   killall ControlCenter 2>/dev/null || true
   # Mute alerts
   osascript -e "set volume alert volume 0"

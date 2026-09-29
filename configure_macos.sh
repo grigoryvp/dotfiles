@@ -777,6 +777,7 @@ configure() {
   # Replace all "keep in dock" icons with just these. Finder is not a part of
   # "persistent-apps" and is always shown first, so these land after it.
   defaults write com.apple.dock persistent-apps -array \
+    "$(_dock_tile "/Applications/Tailscale.app")" \
     "$(_dock_tile "/System/Applications/System Settings.app")" \
     "$(_dock_tile "/Applications/iTerm.app")" \
     "$(_dock_tile "/Applications/Visual Studio Code.app")" \

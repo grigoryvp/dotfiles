@@ -211,6 +211,34 @@ _install_im_select() {
   chmod +x ~/.local/bin/im-select
 }
 
+_install_rosetta() {
+  if [ "$(uname -m)" != "arm64" ]; then
+    return 0
+  fi
+  # Installer itself is a no-op if already installed, but still needs network
+  # and a few seconds
+  if [ -e /Library/Apple/usr/share/rosetta/rosetta ]; then
+    echo "Rosetta already installed"
+    return 0
+  fi
+  if ! softwareupdate --install-rosetta --agree-to-license; then
+    echo "❌ Failed to install Rosetta, aborting" >&2
+    exit 1
+  fi
+}
+
+_install_xcode_tools() {
+  # Path is reported even when the directory is gone, so check both
+  path=$(xcode-select --print-path 2>/dev/null)
+  if [ -n "$path" ] && [ -e "$path" ]; then
+    echo "XCode command-line tools already installed"
+    return 0
+  fi
+  xcode-select --install
+  echo "Wait for the xcode-select GUI installer and press enter"
+  read -s
+}
+
 _dock_tile() {
   # Emits one "persistent-apps" tile, which is what a "keep in dock" icon is.
   # Only the app url is given: the Dock fills in the rest of the fields
@@ -305,12 +333,8 @@ configure() {
     # Allows git clone without fingerprint confirmation
     ssh-keyscan github.com >> ~/.ssh/known_hosts
   fi
-  # For Apple Silicon
-  softwareupdate --install-rosetta --agree-to-license
-  # XCode command-line tools
-  xcode-select --install
-  echo "Wait for the xcode-select GUI installer and press enter"
-  read -s
+  _install_rosetta
+  _install_xcode_tools
   if [ -e /opt/homebrew/bin/brew ]; then
     echo "Homebrew already installed"
   else

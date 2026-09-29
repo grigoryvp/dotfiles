@@ -263,6 +263,19 @@ _login_items() {
   osascript -e "$sysev to get the name of every login item" 2>/dev/null
 }
 
+# The first Apple Event to System Events raises the "control System Events"
+# TCC dialog, and the event itself gives up after two minutes: unattended, the
+# dialog goes unnoticed and the login item calls later in the script fail.
+_request_automation_access() {
+  echo "Press enter and confirm the System Events Control access"
+  read -s
+  if ! _login_items >/dev/null 2>&1; then
+    echo "❌ Error" >&2
+    exit 1
+  fi
+  echo "Success"
+}
+
 # System Events happily adds a second item with the same name, so the list is
 # checked first and read back after to judge the result: the "make" command
 # reports no error of its own.
@@ -676,6 +689,7 @@ test() {
 }
 
 configure() {
+  _request_automation_access
   if ! [ -e ~/.ssh/id_rsa.pub ]; then
     ssh-keygen -t rsa -f "$HOME/.ssh/id_rsa" -N ""
   fi

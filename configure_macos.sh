@@ -263,6 +263,25 @@ _login_items() {
   osascript -e "$sysev to get the name of every login item" 2>/dev/null
 }
 
+# System Events happily adds a second item with the same name, so the list is
+# checked first and read back after to judge the result: the "make" command
+# reports no error of its own.
+_add_login_item() {
+  if _login_items | grep -q "$1"; then
+    echo "$1 autostart already enabled"
+    return 0
+  fi
+  sysev='tell application "System Events"'
+  props="{name:\"$1\", path:\"$2\", hidden:false}"
+  osascript -e "$sysev to make login item at end with properties $props" \
+    >/dev/null 2>&1
+  if ! _login_items | grep -q "$1"; then
+    echo "❌ Failed to add $1 to login items, aborting" >&2
+    exit 1
+  fi
+  echo "$1 autostart enabled"
+}
+
 # There is no cli option for the save path, so the key is edited into the ini
 # in place, keeping whatever was set through the tray menu. QSettings sorts the
 # keys inside a section, so a new one is appended to "[General]".
@@ -297,19 +316,7 @@ _configure_flameshot() {
     echo "❌ Flameshot rejected its configuration, aborting" >&2
     exit 1
   fi
-  if _login_items | grep -q Flameshot; then
-    echo "Flameshot autostart already enabled"
-    return 0
-  fi
-  sysev='tell application "System Events"'
-  props='{name:"Flameshot", path:"/Applications/Flameshot.app", hidden:false}'
-  osascript -e "$sysev to make login item at end with properties $props" \
-    >/dev/null 2>&1
-  if ! _login_items | grep -q Flameshot; then
-    echo "❌ Failed to add Flameshot to login items, aborting" >&2
-    exit 1
-  fi
-  echo "Flameshot autostart enabled"
+  _add_login_item Flameshot /Applications/Flameshot.app
 }
 
 # Input method name lookup for debug purpose
@@ -605,6 +612,10 @@ configure() {
   open -a Flameshot
 
   _install_qbittorrent
+
+  # Keeps the play/pause key from launching Apple Music
+  _add_login_item noTunes /Applications/noTunes.app
+  open -a noTunes
 
   _install_im_select
 

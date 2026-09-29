@@ -79,6 +79,13 @@ _brew_install() {
     esac
   done
   for pkg in "$@"; do
+    # Tap-qualified names like "user/formula/pkg" are listed by the last part
+    name="${pkg##*/}"
+    if brew list --formula --versions "$name" > /dev/null 2>&1 \
+      || brew list --cask --versions "$name" > /dev/null 2>&1; then
+      echo "$name already installed"
+      continue
+    fi
     if ! brew install $opts "$pkg"; then
       echo "❌ Failed to install $pkg, aborting" >&2
       exit 1

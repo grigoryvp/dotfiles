@@ -593,7 +593,7 @@ configure() {
   # The "docker" and "tailscale" casks were renamed: those names now belong to
   # cli-only formulae
   _brew_install --cask docker-desktop tailscale-app
-  _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar elgato-control-center mimestream vlc zoom notion notion-calendar eqmac zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf claude-code codex
+  _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar elgato-control-center mimestream vlc zoom notion notion-calendar eqmac zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf claude-code codex steam
 
   # Need to check for network issues
   # brew install orbstack
@@ -856,6 +856,16 @@ configure() {
   # Replace all "keep in dock" icons with just these. Finder is not a part of
   # "persistent-apps" and is always shown first, so these land after it.
   defaults write com.apple.dock persistent-apps -array \
+    "$(_dock_tile "/Applications/Steam.app")" \
+    "$(_dock_tile "/Applications/Discord.app")" \
+    "$(_dock_tile "/System/Applications/Mail.app")" \
+    "$(_dock_tile "/Applications/HEY.app")" \
+    "$(_dock_tile "/Applications/WhatsApp.app")" \
+    "$(_dock_tile "/Applications/Slack.app")" \
+    "$(_dock_tile "/Applications/ChatGPT.app")" \
+    "$(_dock_tile "/Applications/Notion.app")" \
+    "$(_dock_tile "/Applications/Linear.app")" \
+    "$(_dock_tile "/Applications/Docker.app")" \
     "$(_dock_tile "/Applications/Tailscale.app")" \
     "$(_dock_tile "/System/Applications/System Settings.app")" \
     "$(_dock_tile "/Applications/iTerm.app")" \

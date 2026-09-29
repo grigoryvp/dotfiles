@@ -46,8 +46,6 @@ pip install --upgrade pip
 # Install Trello from App Store
 # Enable KeePass Chrome integration and connect Chrome to the correct DB
 # Command-drag-out menu icons except clock (until the "x" mark appears)
-# Dock left: Tailscale, Docker, Linear, Notion, ChatGPT, Slack, WhatsApp,
-#   HEY, Parallels, Discord, Steam
 # Menu: hammerspoon, lunar, tailscale, command center, time
 # In "Settings/Accessibility"
 # * Disable "Siri/Settings/Intelligence"

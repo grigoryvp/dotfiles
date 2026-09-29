@@ -116,6 +116,10 @@ end
 
 
 function App:clickDockItemByNum(number)
+  if not self.dockItems then
+    print("Dock items not available, is accessibility access granted?")
+    return
+  end
   local currentNumber = 1
   local isSeparatorFound = false
   for _, item in ipairs(self.dockItems) do
@@ -145,6 +149,10 @@ end
 
 
 function App:clickDockItemByName(name)
+  if not self.dockItems then
+    print("Dock items not available, is accessibility access granted?")
+    return
+  end
   for _, item in ipairs(self.dockItems) do
     if item.AXRoleDescription == "application dock item" then
       if item.AXTitle == name then
@@ -993,11 +1001,18 @@ end
 function App:getDockItems()
   -- Use exact name since there are "Dock Extra" etc.
   self.dock = hs.application.find("^Dock$")
+  if not self.dock then
+    return
+  end
   local dockElement = hs.axuielement.applicationElement(self.dock)
-  -- Fail if accessability access is not enabled
-  if dockElement.AXChildren then
+  -- Nil until accessibility access is granted in system settings
+  if not dockElement or not dockElement.AXChildren then
+    return
+  end
+  local firstChild = dockElement.AXChildren[1]
+  if firstChild then
     -- Re-read dock items for clicking them
-    self.dockItems = dockElement.AXChildren[1].AXChildren
+    self.dockItems = firstChild.AXChildren
   end
 end
 
@@ -1113,7 +1128,7 @@ function App:onHeartbeat()
      or not self.notionDock
      or not self.linearDock then
     -- Do not check too often, CPU expensive
-    if isBigTimeout then
+    if isBigTimeout and self.dockItems then
       for _, item in ipairs(self.dockItems) do
         if item.AXTitle == "Telegram" then
           self.tgDock = item

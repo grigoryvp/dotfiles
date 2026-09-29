@@ -806,6 +806,9 @@ configure() {
   hs -c "hs.autoLaunch(true)" >/dev/null
 
   echo "Configuring VSCode..."
+  # VSCode bundles its own node that prints deprecation warnings to stderr
+  NODE_NO_WARNINGS=1
+  export NODE_NO_WARNINGS
   code --install-extension grigoryvp.language-xi >/dev/null
   code --install-extension grigoryvp.memory-theme >/dev/null
   code --install-extension grigoryvp.goto-link-provider >/dev/null
@@ -824,6 +827,7 @@ configure() {
   code --install-extension mark-wiemer.vscode-autohotkey-plus-plus >/dev/null
   code --install-extension charliermarsh.ruff >/dev/null
   code --install-extension harrydowning.yaml-embedded-languages >/dev/null
+  unset NODE_NO_WARNINGS
   VSCODE_DIR=~/Library/Application\ Support/Code/User
   mkdir -p "$VSCODE_DIR"
   ln -fs ~/dotfiles/vscode_keybindings.json "$VSCODE_DIR/keybindings.json"

@@ -46,7 +46,9 @@ pip install --upgrade pip
 # Install Trello from App Store
 # Enable KeePass Chrome integration and connect Chrome to the correct DB
 # Command-drag-out menu icons except clock (until the "x" mark appears)
-# Menu: hammerspoon, lunar, tailscale, command center, time
+# For iTerm2 settings (rest via iterm/Scripts/AutoLaunch/settings.py)
+# * Check the "Enable Python API" in /General/Magic
+# * Install Python runtime via Scripts/Manage/Install Python Runtime
 # In "Settings/Accessibility"
 # * Disable "Siri/Settings/Intelligence"
 # In "Settings/Battery":
@@ -72,9 +74,6 @@ pip install --upgrade pip
 # * Disable caps in "Modifier Keys"
 # In "Settings/Trackpad/More gestures":
 # * Disable gestures
-# For iTerm2 settings (the rest is applied by iterm/Scripts/AutoLaunch/settings.py)
-# * Enable "Enable Python API" in /General/Magic
-# * Install Python runtime via Scripts/Manage/Install Python Runtime
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"
 # * In /Files views/extra

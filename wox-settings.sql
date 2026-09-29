@@ -12,6 +12,10 @@ INSERT OR REPLACE INTO wox_settings(key,value) VALUES('OnboardingFinished','true
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAutostart@windows','true');
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAutostart@darwin','true');
 
+-- Tray icon: Wox is opened by a hotkey, so the icon only takes up menu bar
+-- space. Hiding it leaves the app running.
+INSERT OR REPLACE INTO wox_settings(key,value) VALUES('ShowTray','false');
+
 -- Anonymous usage telemetry: daily presence ping to wox-telemetry.qlf.workers.dev.
 INSERT OR REPLACE INTO wox_settings(key,value) VALUES('EnableAnonymousUsageStats','false');
 

@@ -493,6 +493,9 @@ _configure_input_sources() {
        <string>com.apple.inputmethod.Kotoeri.RomajiTyping</string>
        <key>InputSourceKind</key><string>Keyboard Input Method</string>
      </dict>'
+  # The layout is switched by a Karabiner hotkey, so the menu bar indicator
+  # only takes up space.
+  defaults write com.apple.TextInputMenu visible -bool false
   # The menu bar caches the list
   killall TextInputMenuAgent 2>/dev/null || true
   # Writing the list with "defaults" posts no input source change notification,
@@ -754,6 +757,9 @@ configure() {
 
   # Keeps the play/pause key from launching Apple Music
   _add_login_item noTunes /Applications/noTunes.app
+  # Nothing to click in the menu bar icon: the app just blocks Music. Written
+  # before the app starts, since it rewrites the domain from memory on exit.
+  defaults write digital.twisted.noTunes hideIcon -bool true
   open -a noTunes
 
   _install_im_select
@@ -974,6 +980,11 @@ configure() {
   defaults write com.apple.dock wvous-br-corner -int 0
   # Auto-hide dock to get more vertical space (everything is on hotkeys)
   defaults write com.apple.dock autohide -bool true
+  # Battery is shown by the Hammerspoon menu bar item instead. 8 is what
+  # Settings/Control Center writes for "Don't Show in Menu Bar"; the
+  # "NSStatusItem Visible Battery" key of older macOS is ignored now.
+  defaults -currentHost write com.apple.controlcenter Battery -int 8
+  killall ControlCenter 2>/dev/null || true
   # Mute alerts
   osascript -e "set volume alert volume 0"
   # Mute volume change feedback

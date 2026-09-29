@@ -354,8 +354,8 @@ configure() {
   ln -fs ~/dotfiles/.codex ~/.codex
   sudo mkdir -p /etc/codex
   sudo ln -fs ~/dotfiles/.codex/user-config.toml /etc/codex/config.toml
-  ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
   rm -f ~/.codex/prompts ~/.codex/skills
+  ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
   ln -fs ~/dotfiles/.claude/skills ~/.codex/skills
   ln -fs ~/dotfiles/.claude/CLAUDE.md ~/.codex/AGENTS.md
 

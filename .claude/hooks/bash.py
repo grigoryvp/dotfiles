@@ -326,6 +326,9 @@ def is_command_allowed(sequence: list[str], state: State):
                     continue
             return AskPermission(f"comm {path}", state)
         return True
+    if cmd == "brew":
+        if args[:1] == ["list"]:
+            return True
 
     return AskPermission(" ".join(sequence), state)
 

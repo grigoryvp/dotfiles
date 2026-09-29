@@ -1,4 +1,6 @@
 export HOMEBREW_NO_ASK=1
+# Suppress "run brew ..." hints printed after each install
+export HOMEBREW_NO_ENV_HINTS=1
 
 # Wox runs under a crash supervisor that relaunches a child killed by signal
 _wox_quit() {
@@ -452,6 +454,8 @@ configure() {
   defaults write -g ApplePressAndHoldEnabled false
   defaults write NSGlobalDomain KeyRepeat -int 2
   defaults write NSGlobalDomain InitialKeyRepeat -int 15
+  # Use F1..F12 as plain function keys, media control needs "fn"
+  defaults write -g com.apple.keyboard.fnState -bool true
   # Prevent OS from changing text being entered.
   defaults write -g NSAutomaticCapitalizationEnabled false
   defaults write -g NSAutomaticDashSubstitutionEnabled false

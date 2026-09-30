@@ -438,10 +438,6 @@ _dock_tile_paths() {
     | sed -e 's|/*";$||' -e 's|%20| |g'
 }
 
-_dock_tile_count() {
-  _dock_tile_paths | wc -l | tr -d ' '
-}
-
 _dock_write_tiles() {
   set --
   while IFS= read -r app; do
@@ -452,21 +448,34 @@ EOF
   defaults write com.apple.dock persistent-apps -array "$@"
 }
 
-# The Dock keeps its tiles in memory and writes them back on exit, so one that
-# is still starting up flushes the tiles it read before the write over ours,
-# silently leaving the default Dock. Waiting for the count to hold still tells
-# that apart from a Dock that accepted the tiles.
-_dock_tiles_held() {
-  stable=0
+_dock_pid() {
+  pgrep -x -U "$(id -u)" Dock
+}
+
+_dock_mod_count() {
+  defaults read com.apple.dock mod-count 2>/dev/null
+}
+
+# A running Dock writes the tiles it holds in memory back over ours, silently
+# leaving the default Dock. Stopped, it can do nothing until SIGKILL, which
+# leaves no exit handler to run either; launchd then starts a fresh one.
+_dock_write_and_restart() {
+  pid=$(_dock_pid)
+  [ -n "$pid" ] && kill -STOP $pid
+  _dock_write_tiles
+  [ -n "$pid" ] && kill -KILL $pid
+}
+
+# A new Dock writes its state back a few seconds after start, bumping
+# "mod-count": the tiles are judged after that write, not before.
+_dock_settled() {
+  old_pid=$1 old_mod=$2
   i=0
   while [ $i -lt 100 ]; do
-    if [ "$(_dock_tile_count)" -eq "$1" ]; then
-      stable=$((stable+1))
-      if [ $stable -ge 15 ]; then
-        return 0
-      fi
-    else
-      stable=0
+    pid=$(_dock_pid)
+    if [ -n "$pid" ] && [ "$pid" != "$old_pid" ] \
+      && [ "$(_dock_mod_count)" != "$old_mod" ]; then
+      return 0
     fi
     sleep 0.2
     i=$((i+1))
@@ -474,6 +483,21 @@ _dock_tiles_held() {
   return 1
 }
 
+# Debug notes (macOS 27.0.1). After a fresh reset the old write-then-killall
+# version failed 5 times in a row with the Dock left at its default tiles,
+# while the same code worked fine on the same account 15 minutes later, so the
+# cause is still unknown. Ruled out by experiments on a non-fresh account:
+# - a Dock restarted right before the write (script order: killall Dock,
+#   activateSettings -u, then this);
+# - "defaults delete com.apple.dock", after which the Dock seeds the default
+#   tiles (their count depends on the installed apps: 17 or 20);
+# - a Dock "loc"/"region" mismatch after the AppleLocale change;
+# - a lowered "mod-count": the plist tiles win on start regardless;
+# - missing or quarantined apps: the Dock keeps such tiles in the plist;
+# - SIGTERM: the Dock does not write its in-memory tiles on exit.
+# Unified log shows nothing for the Dock process. On a new failure, check which
+# tiles the Dock has (default or not), the "mod-count" before and after a
+# restart, and whether a manual run of this function a few minutes later works.
 _configure_dock_tiles() {
   # The Dock drops a tile pointing at a missing app without a word, which looks
   # exactly like the write being lost: name the app instead.
@@ -485,23 +509,21 @@ _configure_dock_tiles() {
     echo "$missing" >&2
     exit 1
   fi
-  want=$(_dock_apps | wc -l | tr -d ' ')
+  want=$(_dock_apps)
   i=0
   while [ $i -lt 5 ]; do
-    _dock_write_tiles
-    killall Dock 2>/dev/null || true
-    if _dock_tiles_held "$want"; then
+    old_pid=$(_dock_pid)
+    _dock_write_and_restart
+    old_mod=$(_dock_mod_count)
+    _dock_settled "$old_pid" "$old_mod"
+    if [ "$(_dock_tile_paths)" = "$want" ]; then
       echo "Dock tiles configured"
       return 0
     fi
     i=$((i+1))
   done
-  echo "❌ Dock kept $(_dock_tile_count) of $want tiles, aborting" >&2
-  echo "Tiles it dropped:" >&2
-  kept=$(_dock_tile_paths)
-  _dock_apps | while IFS= read -r app; do
-    printf '%s\n' "$kept" | grep -qxF "$app" || echo "  $app" >&2
-  done
+  echo "❌ Dock did not keep the tiles, aborting. It has instead:" >&2
+  _dock_tile_paths | sed 's/^/  /' >&2
   exit 1
 }
 

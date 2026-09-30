@@ -403,48 +403,106 @@ _dock_tile() {
 EOF
 }
 
-_dock_tile_count() {
-  defaults read com.apple.dock persistent-apps 2>/dev/null \
-    | grep -c '"_CFURLString" =' || true
+# The "keep in dock" icons, in the order they are shown. Finder is not a part
+# of "persistent-apps" and is always shown first, so these land after it.
+_dock_apps() {
+  cat <<'EOF'
+/Applications/Steam.app
+/Applications/Discord.app
+/System/Applications/Mail.app
+/Applications/HEY.app
+/Applications/WhatsApp.app
+/Applications/Slack.app
+/Applications/ChatGPT.app
+/Applications/Notion.app
+/Applications/Linear.app
+/Applications/Docker.app
+/Applications/Tailscale.app
+/System/Applications/System Settings.app
+/Applications/iTerm.app
+/Applications/Visual Studio Code.app
+/Applications/Google Chrome.app
+/Applications/Double Commander.app
+/Applications/KeePassXC.app
+/Applications/Telegram.app
+/Applications/Mimestream.app
+/Applications/Notion Calendar.app
+EOF
 }
 
-_configure_dock_tiles() {
-  # Replace all "keep in dock" icons with just these. Finder is not a part of
-  # "persistent-apps" and is always shown first, so these land after it.
-  defaults write com.apple.dock persistent-apps -array \
-    "$(_dock_tile "/Applications/Steam.app")" \
-    "$(_dock_tile "/Applications/Discord.app")" \
-    "$(_dock_tile "/System/Applications/Mail.app")" \
-    "$(_dock_tile "/Applications/HEY.app")" \
-    "$(_dock_tile "/Applications/WhatsApp.app")" \
-    "$(_dock_tile "/Applications/Slack.app")" \
-    "$(_dock_tile "/Applications/ChatGPT.app")" \
-    "$(_dock_tile "/Applications/Notion.app")" \
-    "$(_dock_tile "/Applications/Linear.app")" \
-    "$(_dock_tile "/Applications/Docker.app")" \
-    "$(_dock_tile "/Applications/Tailscale.app")" \
-    "$(_dock_tile "/System/Applications/System Settings.app")" \
-    "$(_dock_tile "/Applications/iTerm.app")" \
-    "$(_dock_tile "/Applications/Visual Studio Code.app")" \
-    "$(_dock_tile "/Applications/Google Chrome.app")" \
-    "$(_dock_tile "/Applications/Double Commander.app")" \
-    "$(_dock_tile "/Applications/KeePassXC.app")" \
-    "$(_dock_tile "/Applications/Telegram.app")" \
-    "$(_dock_tile "/Applications/Mimestream.app")" \
-    "$(_dock_tile "/Applications/Notion Calendar.app")"
-  # The running Dock keeps its tiles in memory and writes them back, so it is
-  # restarted right after the write instead of at the end of the script.
-  killall Dock 2>/dev/null || true
+# Paths of the tiles the Dock currently keeps. The urls it writes back are
+# percent-encoded, and a space is the only such character in our paths.
+_dock_tile_paths() {
+  defaults read com.apple.dock persistent-apps 2>/dev/null \
+    | sed -n 's|.*"_CFURLString" = "file://||p' \
+    | sed -e 's|/*";$||' -e 's|%20| |g'
+}
+
+_dock_tile_count() {
+  _dock_tile_paths | wc -l | tr -d ' '
+}
+
+_dock_write_tiles() {
+  set --
+  while IFS= read -r app; do
+    set -- "$@" "$(_dock_tile "$app")"
+  done <<EOF
+$(_dock_apps)
+EOF
+  defaults write com.apple.dock persistent-apps -array "$@"
+}
+
+# The Dock keeps its tiles in memory and writes them back on exit, so one that
+# is still starting up flushes the tiles it read before the write over ours,
+# silently leaving the default Dock. Waiting for the count to hold still tells
+# that apart from a Dock that accepted the tiles.
+_dock_tiles_held() {
+  stable=0
   i=0
-  while [ "$(_dock_tile_count)" -ne 20 ]; do
-    if [ $i -ge 50 ]; then
-      echo "❌ Dock kept $(_dock_tile_count) of 20 tiles, aborting" >&2
-      exit 1
+  while [ $i -lt 100 ]; do
+    if [ "$(_dock_tile_count)" -eq "$1" ]; then
+      stable=$((stable+1))
+      if [ $stable -ge 15 ]; then
+        return 0
+      fi
+    else
+      stable=0
     fi
     sleep 0.2
     i=$((i+1))
   done
-  echo "Dock tiles configured"
+  return 1
+}
+
+_configure_dock_tiles() {
+  # The Dock drops a tile pointing at a missing app without a word, which looks
+  # exactly like the write being lost: name the app instead.
+  missing=$(_dock_apps | while IFS= read -r app; do
+    [ -e "$app" ] || echo "  $app"
+  done)
+  if [ -n "$missing" ]; then
+    echo "❌ Cannot fill the Dock, these apps are not installed:" >&2
+    echo "$missing" >&2
+    exit 1
+  fi
+  want=$(_dock_apps | wc -l | tr -d ' ')
+  i=0
+  while [ $i -lt 5 ]; do
+    _dock_write_tiles
+    killall Dock 2>/dev/null || true
+    if _dock_tiles_held "$want"; then
+      echo "Dock tiles configured"
+      return 0
+    fi
+    i=$((i+1))
+  done
+  echo "❌ Dock kept $(_dock_tile_count) of $want tiles, aborting" >&2
+  echo "Tiles it dropped:" >&2
+  kept=$(_dock_tile_paths)
+  _dock_apps | while IFS= read -r app; do
+    printf '%s\n' "$kept" | grep -qxF "$app" || echo "  $app" >&2
+  done
+  exit 1
 }
 
 _symbolic_hotkey() {

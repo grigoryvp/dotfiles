@@ -910,6 +910,7 @@ lmb
 lms
 lmstudio
 LNGB
+localtime
 lockfiles
 Lockpicking
 Lockpicks
@@ -1348,6 +1349,7 @@ reimplementation
 relogin
 remappable
 respawn
+respawns
 respin
 résumé
 retryable
@@ -1413,6 +1415,7 @@ safehouse
 safehouses
 Saitha
 Sambodhi
+sandboxed
 sandboxing
 Sandspit
 Sandstrider
@@ -1621,6 +1624,7 @@ taskschedulerview
 Tauri
 Tawhoan
 tcbox
+TCC
 TCO
 tcpdump
 TDP
@@ -1940,6 +1944,7 @@ zgo.at
 ZJIT
 zk
 Zod
+zoneinfo
 zx
 абиогенезом
 абырвалг

@@ -42,7 +42,8 @@ _configure_wox() {
     i=0
     while [ $i -lt 100 ]; do
       port=$(cat "$HOME/.wox/wox.lock" 2>/dev/null)
-      if [ -n "$port" ] && curl -sf -m 1 "http://127.0.0.1:$port/ping" >/dev/null; then
+      addr="http://127.0.0.1:$port/ping"
+      if [ -n "$port" ] && curl -sf -m 1 "$addr" >/dev/null; then
         break
       fi
       sleep 0.2
@@ -92,6 +93,59 @@ _brew_install() {
       exit 1
     fi
   done
+}
+
+_brew_install_packages() {
+  set --
+  while IFS= read -r pkg; do
+    set -- "$@" "$pkg"
+  done <<'EOF'
+mas
+keepassxc
+karabiner-elements
+hammerspoon
+visual-studio-code
+font-jetbrains-mono-nerd-font
+google-chrome
+obs
+iterm2
+gimp
+brave-browser
+the_silver_searcher
+michaeldfallen/formula/git-radar
+lsd
+eza
+bat
+diff-so-fancy
+uv
+notunes
+chatgpt
+slack
+whatsapp
+discord
+lunar
+elgato-control-center
+mimestream
+vlc
+zoom
+notion
+notion-calendar
+eqmac
+zsh-autosuggestions
+zsh-syntax-highlighting
+wox
+linearmouse
+llm
+mactop
+linear-linear
+mise
+fzf
+claude-code
+codex
+steam
+ollama
+EOF
+  _brew_install "$@"
 }
 
 # Homebrew dropped the cask: recent macOS refuses to run the unsigned app
@@ -224,7 +278,8 @@ _install_flameshot() {
   fi
 }
 
-# Hardcoded build from sourceforge.net/projects/qbittorrent/files/qbittorrent-mac
+# Hardcoded build from
+# sourceforge.net/projects/qbittorrent/files/qbittorrent-mac
 # since the macOS build is not published on github with the other ones
 _install_qbittorrent() {
   if [ -e /Applications/qBittorrent.app ]; then
@@ -297,8 +352,8 @@ _add_login_item() {
 }
 
 # There is no cli option for the save path, so the key is edited into the ini
-# in place, keeping whatever was set through the tray menu. QSettings sorts the
-# keys inside a section, so a new one is appended to "[General]".
+# in place, keeping whatever was set through the tray menu. QSettings sorts
+# the keys inside a section, so a new one is appended to "[General]".
 _flameshot_ini_set() {
   ini="$HOME/.config/flameshot/flameshot.ini"
   awk -v key="$1" -v value="$2" '
@@ -314,9 +369,9 @@ _configure_flameshot() {
   # "--autostart" writes the ini flag the tray checkbox reads and adds the
   # login item, but only while the flag is off, so an item removed later is
   # restored below instead. It also misreads the reply from System Events and
-  # reports a failure while exiting 0: the login item list is what we judge by.
-  # Hiding the tray icon leaves the daemon running: capture is started by the
-  # "flameshot gui" command.
+  # reports a failure while exiting 0: the login item list is what we judge
+  # by. Hiding the tray icon leaves the daemon running: capture is started by
+  # the "flameshot gui" command.
   /Applications/Flameshot.app/Contents/MacOS/flameshot \
     config --autostart true --trayicon false >/dev/null 2>&1
   # Flameshot rejects a save path that does not exist and falls back to its
@@ -341,7 +396,8 @@ _install_im_select() {
   fi
   # Upstream install_mac.sh writes into root-owned /usr/local/bin and ignores
   # the failure, so fetch the binary ourselves
-  url="https://raw.githubusercontent.com/daipeihust/im-select/master/macOS/out"
+  host="raw.githubusercontent.com"
+  url="https://$host/daipeihust/im-select/master/macOS/out"
   if [ "$(uname -m)" = "arm64" ]; then
     url="$url/apple/im-select"
   else
@@ -484,24 +540,9 @@ _dock_settled() {
   return 1
 }
 
-# Debug notes (macOS 27.0.1). After a fresh reset the old write-then-killall
-# version failed 5 times in a row with the Dock left at its default tiles,
-# while the same code worked fine on the same account 15 minutes later, so the
-# cause is still unknown. Ruled out by experiments on a non-fresh account:
-# - a Dock restarted right before the write (script order: killall Dock,
-#   activateSettings -u, then this);
-# - "defaults delete com.apple.dock", after which the Dock seeds the default
-#   tiles (their count depends on the installed apps: 17 or 20);
-# - a Dock "loc"/"region" mismatch after the AppleLocale change;
-# - a lowered "mod-count": the plist tiles win on start regardless;
-# - missing or quarantined apps: the Dock keeps such tiles in the plist;
-# - SIGTERM: the Dock does not write its in-memory tiles on exit.
-# Unified log shows nothing for the Dock process. On a new failure, check which
-# tiles the Dock has (default or not), the "mod-count" before and after a
-# restart, and whether a manual run of this function a few minutes later works.
 _configure_dock_tiles() {
-  # The Dock drops a tile pointing at a missing app without a word, which looks
-  # exactly like the write being lost: name the app instead.
+  # The Dock drops a tile pointing at a missing app without a word, which
+  # looks exactly like the write being lost: name the app instead.
   missing=$(_dock_apps | while IFS= read -r app; do
     [ -e "$app" ] || echo "  $app"
   done)
@@ -538,7 +579,8 @@ _symbolic_hotkey() {
   # keys that produce none), "keycode" is the hardware key and "modifiers" is
   # a bit mask: shift 0x20000, control 0x40000, option 0x80000, cmd 0x100000.
   # 65535 in "char"/"keycode" means "no key".
-  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$id" "
+  target="com.apple.symbolichotkeys"
+  defaults write $target AppleSymbolicHotKeys -dict-add "$id" "
     <dict>
       <key>enabled</key><$enabled/>
       <key>value</key>
@@ -592,16 +634,18 @@ _configure_input_sources() {
   defaults write com.apple.TextInputMenu visible -bool false
   # The menu bar caches the list
   killall TextInputMenuAgent 2>/dev/null || true
-  # Writing the list with "defaults" posts no input source change notification,
-  # so Karabiner keeps the list it read at startup and "select_input_source"
-  # silently matches nothing. Restarting it makes the new layouts selectable.
+  # Writing the list with "defaults" posts no input source change
+  # notification, so Karabiner keeps the list it read at startup and
+  # "select_input_source" silently matches nothing. Restarting it makes
+  # the new layouts selectable.
   karabiner_agent=org.pqrs.service.agent.Karabiner-Console-User-Server
   launchctl kickstart -k "gui/$(id -u)/$karabiner_agent" 2>/dev/null || true
 }
 
-# Safari is sandboxed: "defaults" redirects this domain into the app container,
-# which TCC denies unless the calling terminal is granted Full Disk Access.
-# Under sudo the writes land in root's domain instead, which Safari never reads.
+# Safari is sandboxed: "defaults" redirects this domain into the app
+# container, which TCC denies unless the calling terminal is granted
+# Full Disk Access. Under sudo the writes land in root's domain instead,
+# which Safari never reads.
 _configure_safari() {
   # Don't send search queries to Apple
   defaults write com.apple.Safari UniversalSearchEnabled false
@@ -784,7 +828,9 @@ configure() {
     echo "Homebrew already installed"
   else
     # This will require sudo access and waits for confirmation
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    host="raw.githubusercontent.com"
+    url="https://$host/Homebrew/install/HEAD/install.sh"
+    /bin/bash -c "$(curl -fsSL "$url")"
   fi
   # Add homebrew to path for the rest of the script
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -793,7 +839,8 @@ configure() {
 
   _disable_spotlight
   # Tends to hang with 100% cpu load
-  launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist 2>/dev/null
+  target="/System/Library/LaunchAgents/com.apple.ReportCrash.plist"
+  launchctl unload -w $target 2>/dev/null
   _set_timezone
   # Wake on lid open
   sudo pmset -a lidwake 1
@@ -818,7 +865,7 @@ configure() {
   # The "docker" and "tailscale" casks were renamed: those names now belong to
   # cli-only formulae
   _brew_install --cask docker-desktop tailscale-app
-  _brew_install mas keepassxc karabiner-elements hammerspoon visual-studio-code font-jetbrains-mono-nerd-font google-chrome obs iterm2 gimp brave-browser the_silver_searcher michaeldfallen/formula/git-radar lsd eza bat diff-so-fancy uv notunes chatgpt slack whatsapp discord lunar elgato-control-center mimestream vlc zoom notion notion-calendar eqmac zsh-autosuggestions zsh-syntax-highlighting wox linearmouse llm lm-studio mactop linear-linear mise fzf claude-code codex steam
+  _brew_install_packages
 
   # Need to check for network issues
   # brew install orbstack
@@ -830,7 +877,8 @@ configure() {
     CUR_DIR=$(pwd)
     git clone https://github.com/jtfrey/uvc-util.git
     cd uvc-util/src
-    gcc -o uvc-util -framework IOKit -framework Foundation uvc-util.m UVCController.m UVCType.m UVCValue.m
+    gcc -o uvc-util -framework IOKit -framework Foundation \
+      uvc-util.m UVCController.m UVCType.m UVCValue.m
     chmod +x uvc-util
     mkdir -p ~/.local/bin/
     cp uvc-util ~/.local/bin/

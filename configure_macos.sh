@@ -30,7 +30,8 @@ _wox_db_ready() {
 }
 
 _configure_wox() {
-  echo "Configuring Wox..."
+  echo "Press enter and confirm Wox start"
+  read -s
   # Wox writes '~/Library/LaunchAgents/com.github.wox.plist' to autostart but
   # does not create the directory, missing on a fresh macOS account: without
   # it Wox reconciles the autostart setting back to "off" after the import

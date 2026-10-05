@@ -720,14 +720,34 @@ _enable_restart_on_freeze() {
   echo "Restart on freeze enabled"
 }
 
+# Modern macOS ignores the "Automatic Keyboard Enabled" key in
+# "com.apple.iokit.AmbientLightSensor": the backlight is owned by
+# corebrightnessd and only its private client changes it. Auto brightness is
+# turned off first, otherwise it lights the keyboard back up in the dark.
 _disable_keyboard_backlight() {
-  plist=/Library/Preferences/com.apple.iokit.AmbientLightSensor
-  key="Automatic Keyboard Enabled"
-  sudo defaults write "$plist" "$key" -bool false
-  if [ "$(sudo defaults read "$plist" "$key" 2>/dev/null)" != "0" ]; then
-    echo "❌ Failed to disable keyboard backlight, aborting" >&2
-    exit 1
+  out=$(osascript -l JavaScript -e '
+    ObjC.import("Foundation");
+    $.NSBundle.bundleWithPath(
+      "/System/Library/PrivateFrameworks/CoreBrightness.framework").load;
+    const c = $.NSClassFromString("KeyboardBrightnessClient").alloc.init;
+    const ids = ObjC.deepUnwrap(c.copyKeyboardBacklightIDs) || [];
+    for (const id of ids) {
+      c.enableAutoBrightnessForKeyboard(false, id);
+      c.setBrightnessForKeyboard(0, id);
+    }
+    ids.map(id => c.isAutoBrightnessEnabledForKeyboard(id) ? 1
+      : c.brightnessForKeyboard(id)).join(" ")' 2>&1)
+  if [ -z "$out" ]; then
+    echo "No keyboard backlight found"
+    return 0
   fi
+  for level in $out; do
+    if [ "$level" != "0" ]; then
+      echo "$out" >&2
+      echo "❌ Failed to disable keyboard backlight, aborting" >&2
+      exit 1
+    fi
+  done
   echo "Keyboard backlight disabled"
 }
 
@@ -848,7 +868,6 @@ configure() {
   # No sleep if not explicitly instructed to do so
   sudo pmset -a displaysleep 0
   sudo pmset -a sleep 0
-  _disable_keyboard_backlight
 
   # requires fda
   # _configure_safari
@@ -1075,6 +1094,7 @@ configure() {
   defaults write NSGlobalDomain InitialKeyRepeat -int 15
   # Use F1..F12 as plain function keys, media control needs "fn"
   defaults write -g com.apple.keyboard.fnState -bool true
+  _disable_keyboard_backlight
   # Prevent OS from changing text being entered.
   defaults write -g NSAutomaticCapitalizationEnabled false
   defaults write -g NSAutomaticDashSubstitutionEnabled false

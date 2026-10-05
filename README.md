@@ -49,10 +49,6 @@ pip install --upgrade pip
 # For iTerm2 settings (rest via iterm/Scripts/AutoLaunch/settings.py)
 # * Check the "Enable Python API" in /General/Magic
 # * Install Python runtime via Scripts/Manage/Install Python Runtime
-# In "Settings/Accessibility"
-# * Disable "Siri/Settings/Intelligence"
-# In "Settings/Battery":
-# * Disable "dim screen" in "Options".
 # In "Settings/Dock":
 # * Minimize windows into application icon
 # In "Settings/Displays":

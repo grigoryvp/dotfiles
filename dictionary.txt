@@ -902,6 +902,7 @@ Liquibase
 listtimezones
 Litestar
 litestream
+litteralis
 livejournal
 Lizardscale
 LLM
@@ -963,6 +964,7 @@ Matryoshka
 Matsya
 Matz
 Mawr
+maxsplit
 Mazarine
 mbr
 mccabe
@@ -1354,6 +1356,7 @@ respin
 résumé
 retryable
 returncode
+reverseiterator
 rfid
 rfind
 RGB
@@ -2577,3 +2580,4 @@ zx
 эмбеддинги
 эмбеддингов
 юнит
+odict_keys

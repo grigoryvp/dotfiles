@@ -868,6 +868,8 @@ configure() {
   # No sleep if not explicitly instructed to do so
   sudo pmset -a displaysleep 0
   sudo pmset -a sleep 0
+  # "Slightly dim the display on battery"
+  sudo pmset -b lessbright 0
 
   # requires fda
   # _configure_safari

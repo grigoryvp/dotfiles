@@ -61,6 +61,9 @@ function App:new()
   inst.pingInetExt = false
   inst.karabinerState = {}
   inst.symbols = {}
+  inst.symbolPicker = nil
+  inst.symbolPickerHotkeys = {}
+  inst.symbolPickerOldLayout = nil
   -- Named clipboards, keys are slot numbers, values are pasteboard data
   inst.clipboards = {}
   -- Index and full title of the search result we opened in Telegram last
@@ -2360,53 +2363,67 @@ function App:createMenu()
   end)
 end
 
-function App:showSymbolPicker()
-  local chooser = nil
-  local hotkeys = {}
-  local oldLayout = hs.keycodes.currentLayout()
-  hs.keycodes.setLayout("ABC")
-
+function App:_createSymbolPicker()
   local choices = {}
   for _, pair in pairs(self.symbols) do
-    symbol = pair[1]
-    name = pair[2]
+    local symbol = pair[1]
+    local name = pair[2]
     table.insert(choices, {
       text = symbol .. " " .. name,
       symbol = symbol
     })
   end
 
-  function onConfirm()
-    if chooser and chooser:isVisible() then
-      local choice = chooser:selectedRow()
-      chooser:select(choice)
+  local function onConfirm()
+    local chooser = self.symbolPicker
+    if chooser:isVisible() then
+      chooser:select(chooser:selectedRow())
     end
   end
 
-  function onSelect(choice)
-    for _, hotkey in ipairs(hotkeys) do
+  local function onSelect(choice)
+    for _, hotkey in ipairs(self.symbolPickerHotkeys) do
       hotkey:disable()
     end
-    hotkeys = {}
     focusLastFocused()
 
     if not choice then
       return
     end
- 
+
     -- Focus comes back asynchronously, and pasting picks the app to send the
     -- keystroke to, so it waits for the chooser to be out of the way
     runLater(CLIP_FOCUS_DELAY, function()
       self:_paste(choice["symbol"])
     end)
-    hs.keycodes.setLayout(oldLayout)
+    hs.keycodes.setLayout(self.symbolPickerOldLayout)
   end
 
-  table.insert(hotkeys, hs.hotkey.bind({}, "return", onConfirm))
-  table.insert(hotkeys, hs.hotkey.bind({"cmd"}, "return", onConfirm))
-  table.insert(hotkeys, hs.hotkey.bind({"shift"}, "return", onConfirm))
+  self.symbolPickerHotkeys = {
+    hs.hotkey.new({}, "return", onConfirm),
+    hs.hotkey.new({"cmd"}, "return", onConfirm),
+    hs.hotkey.new({"shift"}, "return", onConfirm),
+  }
 
-  chooser = hs.chooser.new(onSelect)
-  chooser:choices(choices)
-  chooser:show()
+  self.symbolPicker = hs.chooser.new(onSelect)
+  self.symbolPicker:choices(choices)
+end
+
+
+-- Choosers are never freed, so a new one per call leaks a window and a
+-- run loop observer that costs CPU on every run loop iteration
+function App:showSymbolPicker()
+  if not self.symbolPicker then
+    self:_createSymbolPicker()
+  end
+
+  self.symbolPickerOldLayout = hs.keycodes.currentLayout()
+  hs.keycodes.setLayout("ABC")
+
+  for _, hotkey in ipairs(self.symbolPickerHotkeys) do
+    hotkey:enable()
+  end
+
+  self.symbolPicker:query("")
+  self.symbolPicker:show()
 end

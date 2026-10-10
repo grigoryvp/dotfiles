@@ -24,6 +24,8 @@ function App:new()
   inst.heartbeatCounter = -1
   inst.heartbeatTime = hs.timer.absoluteTime() / 1000000000
   inst.maxIcmpHistory = 20
+  inst.battery = nil
+  inst.isOnPower = false
   inst.lastBattery = nil
   inst.secondsSinceBatteryDec = 0
   inst.keepBrightness = false
@@ -1310,7 +1312,7 @@ function App:onHeartbeat()
     self.menuItem:addSpacer(8)
   end
 
-  local battery = hs.battery.percentage()
+  local battery = self.battery
   if not self.lastBattery then self.lastBattery = battery end
 
   -- 100 => 99 discharge takes too much time, assume "fully charged".
@@ -1392,7 +1394,7 @@ function App:onHeartbeat()
   self.menuItem:addSpacer(4)
   self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
   self.menuItem:addSpacer(4)
-  if hs.battery.isCharging() or hs.battery.isCharged() then
+  if self.isOnPower then
     self.menuItem:addText("🔌")
   elseif battery <= 20 then
     self.menuItem:addText("🪫")
@@ -1403,6 +1405,22 @@ function App:onHeartbeat()
   -- Fixed width font size for 3 characters so "1" and "100" take same space
   self.menuItem:addTextWithWidth(batteryText, 3 * 8)
   self.menuItem:update()
+end
+
+
+function App:_readBattery()
+  self.battery = hs.battery.percentage()
+  self.isOnPower = hs.battery.isCharging() or hs.battery.isCharged()
+end
+
+
+-- Reading the battery percentage takes ~8 ms, too much for every heartbeat
+function App:startBatteryWatcher()
+  self:_readBattery()
+  self.batteryWatcher = hs.battery.watcher.new(function()
+    self:_readBattery()
+  end)
+  self.batteryWatcher:start()
 end
 
 

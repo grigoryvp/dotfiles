@@ -259,6 +259,7 @@ choco
 chromakey
 chruby
 CI_PIPELINE_IID
+CIMD
 Cinderswallow
 Cingulate
 CIO
@@ -352,6 +353,7 @@ DBAPI
 dbname
 dbt
 dcmake
+DCR
 DDD
 DDL
 debuff
@@ -1679,6 +1681,7 @@ tonapps
 TONCOIN
 Tonkeeper
 Tonnel_Network_bot
+tontech
 Toolbelt
 Topotante
 TOTP

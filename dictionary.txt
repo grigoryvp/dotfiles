@@ -940,6 +940,7 @@ luxon
 lvl
 Lysah
 macbook
+macrodroid
 mactop
 Magebane
 Mageblood
@@ -1141,6 +1142,7 @@ Nygaard
 OCC
 OCI
 octothorp
+odict_keys
 offchain
 offlevel
 OFS
@@ -2580,4 +2582,3 @@ zx
 эмбеддинги
 эмбеддингов
 юнит
-odict_keys

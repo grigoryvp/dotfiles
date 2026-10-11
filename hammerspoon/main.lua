@@ -484,10 +484,6 @@ function App:startHttpServer()
       self:tgTypeUsername()
       return "", 200, {}
 
-    elseif json.command == "chrome_toggle_tabs" then
-      self:chromeToggleTabs()
-      return "", 200, {}
-
     elseif json.command == "copy_ax_tree" then
       self:copyAxTree()
       return "", 200, {}
@@ -1613,40 +1609,6 @@ function App:tgTypeUsername()
 end
 
 
-function App:findChildByNames(element, names, depth)
-  if not element or not names then
-    return nil
-  end
-
-  depth = depth or 0
-  if depth > 10 then
-    return nil
-  end
-
-  if element:attributeValue("AXRole") == "AXButton" then
-    local title = tostring(element:attributeValue("AXTitle") or "")
-    local descr = tostring(element:attributeValue("AXDescription") or "")
-    for _, name in ipairs(names) do
-      if title == name or descr == name then
-        return element
-      end
-    end
-  end
-
-  local children = element:attributeValue("AXChildren")
-  if children then
-    for _, child in ipairs(children) do
-      local res = self:findChildByNames(child, names, depth + 1)
-      if res then
-        return res
-      end
-    end
-  end
-
-  return nil
-end
-
-
 -- Attributes reported for every accessibility tree node, if not empty
 local AX_TREE_ATTRS = {
   "AXSubrole", "AXIdentifier", "AXTitle", "AXDescription", "AXValue",
@@ -2147,24 +2109,6 @@ function App:tgRemoveFromFolderAndNext()
   end
 end
 
-
-function App:chromeToggleTabs()
-  local wnd = hs.window.frontmostWindow()
-  if not wnd then
-    return
-  end
-
-  local element = hs.axuielement.windowElement(wnd)
-  if not element then
-    return
-  end
-
-  local NAMES = {"Collapse Tabs", "Expand Tabs"}
-  local button = self:findChildByNames(element, NAMES)
-  if button then
-    button:performAction("AXPress")
-  end
-end
 
 function App:createMenu()
 

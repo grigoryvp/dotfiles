@@ -2783,7 +2783,12 @@
                                     "key_code": "d",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"chrome_toggle_tabs\"}' 2>/dev/null" }],
+                                "to": [
+                                    {
+                                        "key_code": "l",
+                                        "modifiers": ["right_command", "right_shift"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {

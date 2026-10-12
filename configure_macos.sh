@@ -413,6 +413,7 @@ _install_im_select() {
   chmod +x ~/.local/bin/im-select
 }
 
+# Used by iTerm2 Python runtime
 _install_rosetta() {
   if [ "$(uname -m)" != "arm64" ]; then
     return 0

@@ -235,6 +235,16 @@ function App:startHttpServer()
           return "", 200, {}
         elseif json.app_id == "gpt" then
           self:clickDockItemByName("ChatGPT")
+          return "", 200, {}
+        elseif json.app_id == "claude" then
+          self:clickDockItemByName("Claude")
+          return "", 200, {}
+        elseif json.app_id == "obs" then
+          self:clickDockItemByName("OBS")
+          return "", 200, {}
+        elseif json.app_id == "zoom" then
+          self:clickDockItemByName("Zoom")
+          return "", 200, {}
         else
           return "unknown app_id", 400, {}
         end

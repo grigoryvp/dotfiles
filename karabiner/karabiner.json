@@ -1967,9 +1967,55 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-m2-5 for main ChatGPT window",
+                                "description": "m1-m2-5 for main OBS window",
                                 "from": { "key_code": "5" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"obs\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-m2-minus for main ChatGPT window",
+                                "from": { "key_code": "hyphen" },
                                 "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"gpt\"}' 2>/dev/null" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
+                                "description": "m1-m2-plus for main Claude window",
+                                "from": { "key_code": "equal_sign" },
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"claude\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {
@@ -2036,9 +2082,9 @@
                                         "value": 0
                                     }
                                 ],
-                                "description": "m1-m2-6 for Notion",
+                                "description": "m1-m2-6 for main Zoom window",
                                 "from": { "key_code": "6" },
-                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"notion\"}' 2>/dev/null" }],
+                                "to": [{ "shell_command": "curl http://localhost:2020 -d '{\"command\": \"switch_app\", \"app_id\": \"zoom\"}' 2>/dev/null" }],
                                 "type": "basic"
                             },
                             {

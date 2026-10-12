@@ -120,6 +120,7 @@ diff-so-fancy
 uv
 notunes
 chatgpt
+claude
 slack
 whatsapp
 discord
@@ -471,7 +472,10 @@ _dock_apps() {
 /Applications/HEY.app
 /Applications/WhatsApp.app
 /Applications/Slack.app
+/Applications/OBS.app
+/Applications/zoom.us.app
 /Applications/ChatGPT.app
+/Applications/Claude.app
 /Applications/Notion.app
 /Applications/Linear.app
 /Applications/Docker.app

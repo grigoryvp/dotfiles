@@ -429,8 +429,8 @@ _configure_telemost() {
     i=0
     while [ -z "$uid" ]; do
       if [ $i -ge 100 ]; then
-        echo "❌ Yandex Telemost has no signed in account, aborting" >&2
-        exit 1
+        echo "⚠️ Skipping Yandex Telemost settings: no signed in account"
+        return 0
       fi
       sleep 0.2
       i=$((i+1))

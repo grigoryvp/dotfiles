@@ -390,18 +390,51 @@ _configure_flameshot() {
   _add_login_item Flameshot /Applications/Flameshot.app
 }
 
+_telemost_quit() {
+  if ! pgrep -x Yandex.Telemost >/dev/null; then
+    return 0
+  fi
+  # Without "ignoring" the quit fails with "User canceled" while still quitting
+  osascript \
+    -e 'ignoring application responses' \
+    -e 'tell application "Yandex Telemost" to quit' \
+    -e 'end ignoring'
+  i=0
+  while pgrep -x Yandex.Telemost >/dev/null; do
+    if [ $i -ge 100 ]; then
+      echo "❌ Yandex Telemost did not quit, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+}
+
 # The menu bar icon setting is per account: Qt stores "<uid>/ShowTrayIcon" as
 # "<uid>.ShowTrayIcon", and the uid appears only after the first sign-in. A
-# top-level "ShowTrayIcon" is ignored. Telemost reads it on start.
+# top-level "ShowTrayIcon" is ignored. Telemost reads it only on start.
 _configure_telemost() {
   domain=ru.yandex.Telemost
   uid=$(defaults read $domain UID 2>/dev/null)
   if [ -z "$uid" ]; then
-    echo "Sign in to Yandex Telemost and rerun to hide its menu bar icon"
-    return 0
+    open -a "Yandex Telemost"
+    echo "Sign in to Yandex Telemost and press enter"
+    read -s
+    i=0
+    while [ -z "$uid" ]; do
+      if [ $i -ge 100 ]; then
+        echo "❌ Yandex Telemost has no signed in account, aborting" >&2
+        exit 1
+      fi
+      sleep 0.2
+      i=$((i+1))
+      uid=$(defaults read $domain UID 2>/dev/null)
+    done
   fi
+  _telemost_quit
   defaults write $domain "$uid.ShowTrayIcon" -bool false
-  echo "Yandex Telemost menu bar icon hidden"
+  open -a "Yandex Telemost"
+  echo "Yandex Telemost configured"
 }
 
 # Input method name lookup for debug purpose
@@ -940,8 +973,6 @@ configure() {
 
   _install_qbittorrent
 
-  _configure_telemost
-
   # Keeps the play/pause key from launching Apple Music
   _add_login_item noTunes /Applications/noTunes.app
   # Nothing to click in the menu bar icon: the app just blocks Music. Written
@@ -957,6 +988,8 @@ configure() {
   # No prebuilt binaries, fails to compile from source
   _brew_install php
   mise use -g swift@6.3
+
+  _configure_telemost
 
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
     echo "Dotfiles already cloned"

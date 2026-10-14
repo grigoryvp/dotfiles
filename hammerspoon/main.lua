@@ -46,6 +46,7 @@ function App:new()
   inst.slackDock = nil
   inst.discordDock = nil
   inst.waDock = nil
+  inst.telemostDock = nil
   inst.notionDock = nil
   inst.linearDock = nil
   inst.vkToken = nil
@@ -1136,6 +1137,7 @@ function App:onHeartbeat()
      or not self.slackDock
      or not self.discordDock
      or not self.waDock
+     or not self.telemostDock
      or not self.notionDock
      or not self.linearDock then
     -- Do not check too often, CPU expensive
@@ -1161,6 +1163,9 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "WhatsApp" then
           self.waDock = item
+        end
+        if item.AXTitle == "Yandex Telemost" then
+          self.telemostDock = item
         end
         if item.AXTitle == "Notion" then
           self.notionDock = item
@@ -1268,6 +1273,18 @@ function App:onHeartbeat()
   if self.indicateMissedMsgApps then
     if not self.waDock or not self.waDock.AXIsApplicationRunning then
       table.insert(notifications, "W͓")
+    end
+  end
+
+  if self.indicateNewMsg then
+    if self.telemostDock and self.telemostDock.AXStatusLabel then
+      table.insert(notifications, "t")
+    end
+  end
+  if self.indicateMissedMsgApps then
+    if not self.telemostDock
+       or not self.telemostDock.AXIsApplicationRunning then
+      table.insert(notifications, "t͓")
     end
   end
 

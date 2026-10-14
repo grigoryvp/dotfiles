@@ -443,6 +443,39 @@ _configure_telemost() {
   echo "Yandex Telemost configured"
 }
 
+_keepassxc_quit() {
+  if ! pgrep -x KeePassXC >/dev/null; then
+    return 0
+  fi
+  osascript \
+    -e 'ignoring application responses' \
+    -e 'tell application "KeePassXC" to quit' \
+    -e 'end ignoring'
+  i=0
+  while pgrep -x KeePassXC >/dev/null; do
+    if [ $i -ge 100 ]; then
+      echo "❌ KeePassXC did not quit, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+}
+
+# Copied, not symlinked: KeePassXC keeps its KeeShare private key in this
+# file, which must not end up in the repository. A running KeePassXC writes
+# its settings back on exit, overwriting the copy.
+_configure_keepassxc() {
+  _keepassxc_quit
+  dir="$HOME/Library/Application Support/KeePassXC"
+  mkdir -p "$dir"
+  if ! cp ~/dotfiles/keepassxc.ini "$dir/keepassxc.ini"; then
+    echo "❌ Failed to copy keepassxc.ini, aborting" >&2
+    exit 1
+  fi
+  echo "KeePassXC configured"
+}
+
 # Input method name lookup for debug purpose
 _install_im_select() {
   if [ -e ~/.local/bin/im-select ]; then
@@ -1105,6 +1138,7 @@ configure() {
   rm -f ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
   ln -fs ~/dotfiles/iterm/Scripts/AutoLaunch \
          ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
+  _configure_keepassxc
 
   open -a Hammerspoon
   echo "Configure Hammerspoon, ENABLE ACCESSABILITY and press enter"
@@ -1152,6 +1186,9 @@ configure() {
   ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 
   _configure_wox
+  # The launch agent Wox writes for its own autostart names the .app bundle as
+  # the program, which launchd cannot run (exit 78)
+  _add_login_item Wox /Applications/Wox.app
   open -a Wox
 
   _configure_telemost

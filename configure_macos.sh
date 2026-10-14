@@ -88,7 +88,9 @@ _brew_install() {
       echo "$name already installed"
       continue
     fi
-    if ! brew install $opts "$pkg"; then
+    # An app installed without brew is not listed above, and brew refuses to
+    # overwrite it: "--adopt" takes it over instead. Ignored for formulae.
+    if ! brew install --adopt $opts "$pkg"; then
       echo "❌ Failed to install $pkg, aborting" >&2
       exit 1
     fi
@@ -981,6 +983,9 @@ configure() {
   open -a noTunes
 
   _install_im_select
+
+  # For installing Swift
+  mise settings experimental=true
 
   mise use -g python@3.14.5
   mise use -g node@24.16.0

@@ -417,6 +417,10 @@ _telemost_quit() {
 # top-level "ShowTrayIcon" is ignored. Telemost reads it only on start.
 _configure_telemost() {
   domain=ru.yandex.Telemost
+  # Without this flag the first launch registers Telemost as a login item.
+  # There is no preference key for autostart: the app reads the state of its
+  # own login item back, and only the app itself can unregister it.
+  defaults write $domain AutostartInitialized -bool true
   uid=$(defaults read $domain UID 2>/dev/null)
   if [ -z "$uid" ]; then
     open -a "Yandex Telemost"
@@ -1019,8 +1023,6 @@ configure() {
   _brew_install php
   mise use -g swift@6.3
 
-  _configure_telemost
-
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
     echo "Dotfiles already cloned"
   else
@@ -1151,6 +1153,8 @@ configure() {
 
   _configure_wox
   open -a Wox
+
+  _configure_telemost
 
   # Close any preferences so settings are not overwritten.
   osascript -e 'tell application "System Preferences" to quit'

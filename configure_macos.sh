@@ -520,7 +520,7 @@ _dock_apps() {
 /Applications/Discord.app
 /System/Applications/Mail.app
 /Applications/HEY.app
-/Applications/Yandex\ Telemost.app
+/Applications/Yandex Telemost.app
 /Applications/WhatsApp.app
 /Applications/Slack.app
 /Applications/OBS.app

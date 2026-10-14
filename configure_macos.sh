@@ -728,6 +728,31 @@ _configure_safari() {
   killall cfprefsd 2>/dev/null || true
 }
 
+# Same TCC restriction as Safari. Unlike the "defaults" error, which only
+# names the path, the skip message says what to grant.
+_can_write_container_prefs() {
+  if ls "$HOME/Library/Containers/$1/Data/Library/Preferences" \
+    >/dev/null 2>&1; then
+    return 0
+  fi
+  echo "⚠️ Skipping $1 settings: grant the terminal Full Disk Access"
+  return 1
+}
+
+_configure_mail() {
+  _can_write_container_prefs com.apple.mail || return 0
+  # Copy email without name
+  defaults write com.apple.mail AddressesIncludeNameOnPasteboard false
+  # Disable inline attachments
+  defaults write com.apple.mail DisableInlineAttachmentViewing true
+}
+
+_configure_preview() {
+  _can_write_container_prefs com.apple.Preview || return 0
+  # "Continuos scroll" by default for PDF preview
+  defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
+}
+
 # Spotlight eats battery and SSD life. mdutil logs a line per volume even when
 # nothing changes, so its output is kept back unless it actually fails.
 _disable_spotlight() {
@@ -1185,12 +1210,8 @@ configure() {
   # Require password
   defaults write com.apple.screensaver askForPassword -int 1
   defaults write com.apple.screensaver askForPasswordDelay -int 0
-  # Copy email without name in Mail
-  defaults write com.apple.mail AddressesIncludeNameOnPasteboard false
-  # Disable inline attachments in Mail
-  defaults write com.apple.mail DisableInlineAttachmentViewing true
-  # "Continuos scroll" by default for PDF preview
-  defaults write com.apple.Preview kPVPDFDefaultPageViewModeOption 0
+  _configure_mail
+  _configure_preview
   # Don't auto-show dock on mouse hover (m1-slash instead)
   defaults write com.apple.dock autohide-delay -float 999999
   # Change slow "Genie" dock minimize animation to fast "Scale"

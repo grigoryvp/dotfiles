@@ -145,6 +145,7 @@ claude-code
 codex
 steam
 ollama
+yandextelemost
 EOF
   _brew_install "$@"
 }
@@ -316,8 +317,8 @@ _install_qbittorrent() {
 }
 
 _login_items() {
-  sysev='tell application "System Events"'
-  osascript -e "$sysev to get the name of every login item" 2>/dev/null
+  target='tell application "System Events"'
+  osascript -e "$target to get the name of every login item" 2>/dev/null
 }
 
 # The first Apple Event to System Events raises the "control System Events"
@@ -341,9 +342,9 @@ _add_login_item() {
     echo "$1 autostart already enabled"
     return 0
   fi
-  sysev='tell application "System Events"'
+  target='tell application "System Events"'
   props="{name:\"$1\", path:\"$2\", hidden:false}"
-  osascript -e "$sysev to make login item at end with properties $props" \
+  osascript -e "$target to make login item at end with properties $props" \
     >/dev/null 2>&1
   if ! _login_items | grep -q "$1"; then
     echo "❌ Failed to add $1 to login items, aborting" >&2
@@ -387,6 +388,20 @@ _configure_flameshot() {
     exit 1
   fi
   _add_login_item Flameshot /Applications/Flameshot.app
+}
+
+# The menu bar icon setting is per account: Qt stores "<uid>/ShowTrayIcon" as
+# "<uid>.ShowTrayIcon", and the uid appears only after the first sign-in. A
+# top-level "ShowTrayIcon" is ignored. Telemost reads it on start.
+_configure_telemost() {
+  domain=ru.yandex.Telemost
+  uid=$(defaults read $domain UID 2>/dev/null)
+  if [ -z "$uid" ]; then
+    echo "Sign in to Yandex Telemost and rerun to hide its menu bar icon"
+    return 0
+  fi
+  defaults write $domain "$uid.ShowTrayIcon" -bool false
+  echo "Yandex Telemost menu bar icon hidden"
 }
 
 # Input method name lookup for debug purpose
@@ -470,6 +485,7 @@ _dock_apps() {
 /Applications/Discord.app
 /System/Applications/Mail.app
 /Applications/HEY.app
+/Applications/Yandex\ Telemost.app
 /Applications/WhatsApp.app
 /Applications/Slack.app
 /Applications/OBS.app
@@ -923,6 +939,8 @@ configure() {
   open -a Flameshot
 
   _install_qbittorrent
+
+  _configure_telemost
 
   # Keeps the play/pause key from launching Apple Music
   _add_login_item noTunes /Applications/noTunes.app

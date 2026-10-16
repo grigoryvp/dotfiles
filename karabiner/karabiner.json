@@ -3688,7 +3688,8 @@
                                     {
                                         "bundle_identifiers": [
                                             "^ru\\.keepcoder\\.Telegram$",
-                                            "^com\\.tdesktop\\.Telegram$"
+                                            "^com\\.tdesktop\\.Telegram$",
+                                            "^ru\\.yandex\\.desktop\\.telemost$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }

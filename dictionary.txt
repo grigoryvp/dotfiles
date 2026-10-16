@@ -1289,6 +1289,8 @@ prestart
 println
 Progenesis
 programdata
+protobufjs
+protoc
 psql
 psu
 Psyco

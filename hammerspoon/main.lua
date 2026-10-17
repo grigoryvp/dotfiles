@@ -495,6 +495,10 @@ function App:startHttpServer()
       self:tgTypeUsername()
       return "", 200, {}
 
+    elseif json.command == "chrome_toggle_tabs" then
+      self:chromeToggleTabs()
+      return "", 200, {}
+
     elseif json.command == "copy_ax_tree" then
       self:copyAxTree()
       return "", 200, {}
@@ -2134,6 +2138,51 @@ function App:tgRemoveFromFolderAndNext()
     hs.alert.show("No search result frame")
     return "no search result frame", 404
   end
+end
+
+
+-- Native ⇧⌘L is not used since web apps like Google Sheets intercept it.
+-- Button title has a hotkey suffix like "Expand Tabs (⇧⌘L)", so match by
+-- prefix. Web content is skipped since the button is in the browser UI
+function App:chromeToggleTabs()
+  local wnd = hs.window.frontmostWindow()
+  if not wnd then
+    return
+  end
+  local root = hs.axuielement.windowElement(wnd)
+  if not root then
+    return
+  end
+
+  local NAMES = {"Collapse Tabs", "Expand Tabs"}
+  local queue = {root}
+  local head = 1
+  while head <= #queue do
+    local element = queue[head]
+    head = head + 1
+    local role = element:attributeValue("AXRole")
+    if role == "AXButton" then
+      local title = tostring(element:attributeValue("AXTitle") or "")
+      for _, name in ipairs(NAMES) do
+        if title:sub(1, #name) == name then
+          element:performAction("AXPress")
+          return
+        end
+      end
+    end
+    if role ~= "AXWebArea" then
+      local children = element:attributeValue("AXChildren")
+      if children then
+        for i, child in ipairs(children) do
+          if i > AX_TREE_MAX_CHILDREN or #queue >= AX_TREE_MAX_NODES then
+            break
+          end
+          queue[#queue + 1] = child
+        end
+      end
+    end
+  end
+  hs.alert.show("No collapse/expand tabs button")
 end
 
 

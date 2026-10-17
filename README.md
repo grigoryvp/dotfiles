@@ -70,6 +70,8 @@ pip install --upgrade pip
 # * Disable caps in "Modifier Keys"
 # In "Settings/Trackpad/More gestures":
 # * Disable gestures
+# For Telegram settings
+# * Disable all animations in Battery and Animations → Power saving
 # For DoubleCommander settings
 # * Disable all confirmations in "/File operations/confirmation"
 # * In /Files views/extra

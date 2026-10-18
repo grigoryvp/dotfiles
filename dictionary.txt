@@ -839,6 +839,7 @@ jpeek
 jquery
 jsonschema
 Juatalotli
+Junie
 Justicar
 JVM
 Jython
@@ -874,6 +875,7 @@ Kimi
 Kineticist
 Kingsmarch
 Kirac
+kiro
 Kishara
 kislyuk
 Kitava
@@ -1260,6 +1262,7 @@ PDR
 Pearlescent
 perma
 perps
+Personaplex
 PersQueue
 PersQueueReadBalancer
 Petrov
@@ -1580,6 +1583,8 @@ Soulbound
 Soulrend
 soundcloud
 spacebar
+SpaceXAI
+SpaceXSI
 Spellslinger
 SPH
 Spidersilk
@@ -2663,3 +2668,4 @@ zx
 эмбеддинги
 эмбеддингов
 юнит
+nvfp4

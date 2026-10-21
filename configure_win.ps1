@@ -309,6 +309,7 @@ class App {
       $this._installApp("Flameshot.Flameshot");
       # for g-helper
       $this._installApp("Microsoft.DotNet.DesktopRuntime.7");
+      $this._installApp("serge.g-helper");
       # for mosquitto_pub
       $this._installBinApp("EclipseFoundation.Mosquitto", $this._path(
         @($env:ProgramFiles, "mosquitto")));

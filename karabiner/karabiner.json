@@ -3871,7 +3871,8 @@
                                             "^com\\.google\\.Chrome$",
                                             "^ru\\.keepcoder\\.Telegram$",
                                             "^com\\.tdesktop\\.Telegram$",
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^com\\.tinyspeck\\.slackmacgap$",
+                                            "^ru\\.yandex\\.desktop\\.telemost$"
                                         ],
                                         "type": "frontmost_application_if"
                                     }
@@ -3884,6 +3885,28 @@
                                 "to": [
                                     {
                                         "key_code": "b",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^ru\\.yandex\\.desktop\\.telemost$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "control-u => command-u for mac-win consistency",
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": { "mandatory": ["right_control"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "u",
                                         "modifiers": ["right_command"]
                                     }
                                 ],

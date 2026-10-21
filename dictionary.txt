@@ -473,6 +473,7 @@ E͓
 Eagon
 EAPOL
 ebpf
+EDID
 EE
 Eelskin
 Effigial
@@ -738,6 +739,7 @@ HTAP
 htmx
 httpx
 HTX
+huggingface
 hvac
 HX
 Hydrascale
@@ -763,6 +765,7 @@ imager
 imagex
 IMG
 imgburn
+IMMUTABLETYPE
 implicits
 impnattypo
 incapsulate
@@ -983,6 +986,7 @@ Mageblood
 magicdns
 magick
 magicsock
+MAGNUS
 Mahuxotl
 Maingear
 Maji
@@ -1834,6 +1838,7 @@ Vagan
 Valdo
 valēre
 Valkey
+Vantoure
 Varargs
 Varashta
 vbus
@@ -1997,6 +2002,7 @@ ZJIT
 zk
 Zod
 zoneinfo
+Zotac
 zx
 абиогенезом
 абырвалг
@@ -2146,6 +2152,7 @@ zx
 донастройки
 дообучает
 дообучается
+дообучали
 дропает
 ДЦ
 еtcd
@@ -2603,6 +2610,8 @@ zx
 Хопкинса
 хостить
 хэндлу
+хэшей
+Хэши
 Цеттелькастен
 Чалмерс
 чанк

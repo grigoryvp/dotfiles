@@ -372,7 +372,7 @@ my_list() {
       -l \
       -a \
       --group-directories-first \
-      --ignore-glob .DS_Store\|desktop.ini\|PowerShell\|My\ Games \
+      --ignore-glob .DS_Store\|desktop.ini\|PowerShell\|My\ Games\|Codex \
       "$@"
   else
     ##! No spaces, '*' should be used instead.
@@ -380,6 +380,7 @@ my_list() {
       "WindowsPowerShell" \
       "PowerShell" \
       "desktop.ini" \
+      "Codex" \
       ".vscode" \
     )
     CMD_IGNORE=""

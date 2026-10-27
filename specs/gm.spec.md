@@ -4,9 +4,8 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: `gm new` clones, creates a worktree and opens or reuses its tab, but
-doesn't yet handle a branch that already has a worktree. Everything marked *planned* is not
-implemented yet.
+Status: `gm new` works end to end except dependency install. Everything
+marked *planned* is not implemented yet.
 
 ## Components
 
@@ -152,7 +151,11 @@ below). Dismissing either chooser or a failure does nothing.
   credentials come from the CLI's own config (gh: https, glab: ssh here). A
   failure prints the CLI's stderr to the Script Console.
 - **Worktree** (done): the branch name is checked with `git check-ref-format
-  --branch` (which also rejects a leading `-`), then `git fetch` runs with
+  --branch` (which also rejects a leading `-`). Then `git worktree prune`
+  drops entries whose directory was deleted by hand, and if `git worktree
+  list --porcelain` shows the branch checked out somewhere (the clone itself
+  included, e.g. for `main`), that path is used as is, without a fetch.
+  Otherwise `git fetch` runs with
   the host's CLI as the only credential helper (`-c credential.helper=` plus
   `-c 'credential.helper=!<cli> auth git-credential'`), the way `gh repo
   clone` does: plain git doesn't see the CLI's credentials for https remotes,
@@ -165,9 +168,10 @@ below). Dismissing either chooser or a failure does nothing.
     by default it would track the default branch and `git push` would target
     it.
 
-  An existing directory or a branch checked out elsewhere (including the
-  clone's own default branch) makes `git worktree add` fail; that is printed
-  to the Script Console.
+  The new path is returned resolved, in the same form `git worktree list`
+  gives, since tabs are matched by the exact string. An existing directory
+  that isn't a worktree of this branch makes `git worktree add` fail; that
+  is printed to the Script Console.
 - **`gm new`**: fuzzy-pick a project, enter a branch. Clone into `~/git` on
   first use, `git fetch`, then create a worktree in `~/Documents`: track the
   remote branch if it exists, otherwise branch off the fresh default branch.
@@ -203,21 +207,18 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Existing worktree.** If the branch already has a worktree, focus its
-   tab, opening one if it was closed. Check: `gm new` with the same branch
-   twice gives one worktree and one tab.
-2. **Dependencies.** Detect the stack by lockfiles and run the install
+1. **Dependencies.** Detect the stack by lockfiles and run the install
    command in the new tab. Check: a `uv` project gets `uv sync`, a project
    without lockfiles gets nothing.
-3. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+2. **`gm go`.** A chooser lists worktrees from `git worktree list` across
    `~/git`; selecting one focuses or opens its tab. Check: works for a tab
    that is open and for one that was closed.
-4. **`gm go` splits.** A newly opened tab gets the standard split layout.
+3. **`gm go` splits.** A newly opened tab gets the standard split layout.
    Check: the layout matches the one from shift-cmd-d.
-5. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+4. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
    changes and unpushed commits and asks for confirmation if any, then
    runs `git worktree remove` and closes the tab. Check: a clean worktree is
    removed at once, a dirty one only after confirmation.
-6. **Error reporting.** Failures in background work show an `hs.alert`
+5. **Error reporting.** Failures in background work show an `hs.alert`
    besides the Script Console. Check: a fetch with a broken CLI path shows
    an alert.

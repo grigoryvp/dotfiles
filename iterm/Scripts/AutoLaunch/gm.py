@@ -141,12 +141,33 @@ async def git_succeeds(*args: str) -> bool:
 WORKTREES_DIR = Path.home() / "Documents"
 
 
+async def find_worktree(repo: Path, branch: str) -> Path | None:
+    output = await run_cli("git", "-C", str(repo), "worktree", "list", "--porcelain")
+    if output is None:
+        return None
+    path = None
+    for line in output.splitlines():
+        if line.startswith("worktree "):
+            path = Path(line.removeprefix("worktree "))
+        elif line == f"branch refs/heads/{branch}":
+            return path
+    return None
+
+
 async def ensure_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
     # Also rejects names starting with "-" that git would take for options.
     if not await git_succeeds("check-ref-format", "--branch", branch):
         print(f"invalid branch name: {branch}")
         return None
     git = ["git", "-C", str(repo)]
+    # A worktree whose directory was deleted by hand still holds its branch
+    # until pruned.
+    if await run_cli(*git, "worktree", "prune") is None:
+        return None
+    # Git allows one worktree per branch, so reuse it, skipping the fetch.
+    existing = await find_worktree(repo, branch)
+    if existing is not None:
+        return existing
     # Plain git doesn't see the CLI's credentials for https remotes, so pass
     # the CLI as the only credential helper, the way `gh repo clone` does.
     auth = []
@@ -173,7 +194,8 @@ async def ensure_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
         args = ["--no-track", "-b", branch, str(worktree), default.strip()]
     if await run_cli(*git, "worktree", "add", *args) is None:
         return None
-    return worktree
+    # Same form as `git worktree list` gives, since tabs are matched by it.
+    return worktree.resolve()
 
 
 def call_hammerspoon(command: str) -> None:

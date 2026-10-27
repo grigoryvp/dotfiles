@@ -54,8 +54,9 @@ Hammerspoon: hideCallback -> hs.task osascript
 iTerm script: RPC gm_new_done() -> acts on the current session
 ```
 
-Stub behavior today: the chooser has one row, and `gm_new_done()` types
-`debug` into the current session with `async_send_text()`.
+Stub behavior today: the chooser lists projects from the cache (path as
+text, host as subtext, Hammerspoon's default filtering), and `gm_new_done()`
+types `debug` into the current session with `async_send_text()`.
 
 ### Transports
 
@@ -107,7 +108,8 @@ Stub behavior today: the chooser has one row, and `gm_new_done()` types
   cache. The CLIs own authentication and pagination, so GM needs no config
   or tokens; more hosts later are a `--hostname` parameter plus a host list.
   The UI reads the cache and shows it instantly; a refresh runs in the
-  background.
+  background. `gm:showNew()` re-reads the cache on every show (~10ms for
+  100 projects); a missing cache shows a single "No projects" row.
 - **Cache location**: `~/.cache/grigoryvp-gm/projects.json`. iTerm gives
   scripts no data directory, and the cache is written by the iTerm script
   but read by Hammerspoon and the Wox plugin, so it lives outside all three.
@@ -154,45 +156,42 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Project picker.** `gm:showNew()` fills the chooser from the cache
-   instead of the stub row. Check: `gm new` opens in under 0.5s and filters
-   projects as you type.
-2. **Pass the selection back.** `gm_new_done(project)` receives the selected
+1. **Pass the selection back.** `gm_new_done(project)` receives the selected
    project id, escaped for the `invoke API expression` string; dismissing
    sends nothing. Check: the typed debug text is the project id; Esc types
    nothing.
-3. **Branch input.** After a project is picked, a second chooser takes the
+2. **Branch input.** After a project is picked, a second chooser takes the
    branch name from its query text. Check: debug text is
    `<project> <branch>`; a pasted branch name works.
-4. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
+3. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
    Check: first run clones, second run skips cloning.
-5. **Worktree.** `git fetch`, then `git worktree add` in
+4. **Worktree.** `git fetch`, then `git worktree add` in
    `~/Documents/<repo>-<branch>`: track the remote branch if it exists,
    otherwise branch off the fresh default branch. Check: `git worktree list`
    shows it, for both an existing and a new branch.
-6. **Tab.** Open a tab in the worktree directory, name it after the
+5. **Tab.** Open a tab in the worktree directory, name it after the
    worktree and set its `user.worktree`. Replace the debug text. Check: the
    tab opens in the right directory with the right title; `user.worktree`
    survives an iTerm restart.
-7. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+6. **Existing tab.** If a tab's `user.worktree` already holds the worktree
    path, reuse it instead of opening another one. Check: remove the worktree
    manually, keep its tab, run `gm new` with the same branch: still one
    tab.
-8. **Existing worktree.** If the branch already has a worktree, focus its
+7. **Existing worktree.** If the branch already has a worktree, focus its
    tab, opening one if it was closed. Check: `gm new` with the same branch
    twice gives one worktree and one tab.
-9. **Dependencies.** Detect the stack by lockfiles and run the install
+8. **Dependencies.** Detect the stack by lockfiles and run the install
    command in the new tab. Check: a `uv` project gets `uv sync`, a project
    without lockfiles gets nothing.
-10. **`gm go`.** A chooser lists worktrees from `git worktree list` across
-    `~/git`; selecting one focuses or opens its tab. Check: works for a tab
-    that is open and for one that was closed.
-11. **`gm go` splits.** A newly opened tab gets the standard split layout.
+9. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+   `~/git`; selecting one focuses or opens its tab. Check: works for a tab
+   that is open and for one that was closed.
+10. **`gm go` splits.** A newly opened tab gets the standard split layout.
     Check: the layout matches the one from shift-cmd-d.
-12. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+11. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
     changes and unpushed commits and asks for confirmation if any, then
     runs `git worktree remove` and closes the tab. Check: a clean worktree is
     removed at once, a dirty one only after confirmation.
-13. **Error reporting.** Failures in background work show an `hs.alert`
+12. **Error reporting.** Failures in background work show an `hs.alert`
     besides the Script Console. Check: a fetch with a broken CLI path shows
     an alert.

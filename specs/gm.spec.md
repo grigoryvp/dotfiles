@@ -4,8 +4,8 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: `gm new` works end to end except dependency install. Everything
-marked *planned* is not implemented yet.
+Status: `gm new` works end to end. Everything marked *planned* is not
+implemented yet.
 
 ## Components
 
@@ -26,8 +26,8 @@ with first-class access to tabs and sessions.
 
 ## Commands
 
-- `gm new` (partial): picks a project and a branch, creates a worktree and a
-  tab.
+- `gm new` (done): picks a project and a branch, creates a worktree and a
+  tab, and installs dependencies there.
 - `gm rm` (planned): removes a worktree and closes its tab.
 - `gm go` (planned): focuses a worktree's tab, creating it and its splits if
   missing.
@@ -193,9 +193,17 @@ below). Dismissing either chooser or a failure does nothing.
   keeping its title. GM sends nothing to a reused tab, so if the worktree was
   removed and recreated, its shell still sits in the removed directory until
   `cd`.
-- **Dependencies**: detect the stack by lockfiles (`uv.lock` -> `uv sync`,
-  `pnpm-lock.yaml` -> `pnpm i`, `package-lock.json` -> `npm ci`, ...), with an
-  optional per-repo override; run the install in the new tab.
+- **Dependencies** (done, except the override): detect the stack by
+  lockfiles in the worktree root (`uv.lock` -> `uv sync`, `poetry.lock` ->
+  `poetry install`, `pnpm-lock.yaml` -> `pnpm i`, `package-lock.json` -> `npm
+  ci`, `yarn.lock` -> `yarn install`, `bun.lock` -> `bun install`); all
+  matches run, joined with `&&`. *Planned*: an optional per-repo override.
+  The command is typed with `async_send_text()` right after the tab opens,
+  before the shell starts, so the shell reads it as typeahead. It is typed
+  without a newline: the user reviews it and presses Enter. It is typed only
+  in a tab GM just opened for a worktree it just created: an existing
+  worktree presumably has its dependencies, and GM never types into a tab
+  that may be running something.
 - **`gm rm`**: refuse without confirmation when the worktree has uncommitted
   changes or unpushed commits; then `git worktree remove` and close the tab.
 - **Source of truth** for existing worktrees is `git worktree list` across the
@@ -207,18 +215,15 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Dependencies.** Detect the stack by lockfiles and run the install
-   command in the new tab. Check: a `uv` project gets `uv sync`, a project
-   without lockfiles gets nothing.
-2. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+1. **`gm go`.** A chooser lists worktrees from `git worktree list` across
    `~/git`; selecting one focuses or opens its tab. Check: works for a tab
    that is open and for one that was closed.
-3. **`gm go` splits.** A newly opened tab gets the standard split layout.
+2. **`gm go` splits.** A newly opened tab gets the standard split layout.
    Check: the layout matches the one from shift-cmd-d.
-4. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+3. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
    changes and unpushed commits and asks for confirmation if any, then
    runs `git worktree remove` and closes the tab. Check: a clean worktree is
    removed at once, a dirty one only after confirmation.
-5. **Error reporting.** Failures in background work show an `hs.alert`
+4. **Error reporting.** Failures in background work show an `hs.alert`
    besides the Script Console. Check: a fetch with a broken CLI path shows
    an alert.

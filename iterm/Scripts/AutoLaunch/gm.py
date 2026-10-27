@@ -142,6 +142,10 @@ WORKTREES_DIR = Path.home() / "Documents"
 
 
 async def find_worktree(repo: Path, branch: str) -> Path | None:
+    # A worktree whose directory was deleted by hand still holds its branch
+    # until pruned.
+    if await run_cli("git", "-C", str(repo), "worktree", "prune") is None:
+        return None
     output = await run_cli("git", "-C", str(repo), "worktree", "list", "--porcelain")
     if output is None:
         return None
@@ -154,20 +158,12 @@ async def find_worktree(repo: Path, branch: str) -> Path | None:
     return None
 
 
-async def ensure_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
+async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
     # Also rejects names starting with "-" that git would take for options.
     if not await git_succeeds("check-ref-format", "--branch", branch):
         print(f"invalid branch name: {branch}")
         return None
     git = ["git", "-C", str(repo)]
-    # A worktree whose directory was deleted by hand still holds its branch
-    # until pruned.
-    if await run_cli(*git, "worktree", "prune") is None:
-        return None
-    # Git allows one worktree per branch, so reuse it, skipping the fetch.
-    existing = await find_worktree(repo, branch)
-    if existing is not None:
-        return existing
     # Plain git doesn't see the CLI's credentials for https remotes, so pass
     # the CLI as the only credential helper, the way `gh repo clone` does.
     auth = []
@@ -196,6 +192,22 @@ async def ensure_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
         return None
     # Same form as `git worktree list` gives, since tabs are matched by it.
     return worktree.resolve()
+
+
+# All matches run, e.g. for a Python backend with a JS frontend.
+INSTALL_COMMANDS = [
+    ("uv.lock", "uv sync"),
+    ("poetry.lock", "poetry install"),
+    ("pnpm-lock.yaml", "pnpm i"),
+    ("package-lock.json", "npm ci"),
+    ("yarn.lock", "yarn install"),
+    ("bun.lock", "bun install"),
+]
+
+
+def install_command(worktree: Path) -> str | None:
+    commands = [cmd for name, cmd in INSTALL_COMMANDS if (worktree / name).exists()]
+    return " && ".join(commands) or None
 
 
 def call_hammerspoon(command: str) -> None:
@@ -253,11 +265,20 @@ async def main(connection):
         await tab.async_set_variable("user.worktree", str(worktree))
         return tab
 
-    async def open_tab(worktree: Path):
-        tab = await find_tab(worktree) or await create_tab(worktree)
+    # GM never types into a tab it didn't just create: something may be
+    # running there.
+    async def open_tab(worktree: Path, command: str | None):
+        tab = await find_tab(worktree)
         if tab is None:
-            print(f"failed to open a tab for {worktree}")
-            return
+            tab = await create_tab(worktree)
+            if tab is None:
+                print(f"failed to open a tab for {worktree}")
+                return
+            session = tab.current_session
+            if command is not None and session is not None:
+                # The shell reads it once started; no newline, so the user
+                # reviews it and presses Enter.
+                await session.async_send_text(command)
         await tab.async_activate()
         # The launcher or Hammerspoon is frontmost at this point.
         await app.async_activate(ignoring_other_apps=True)
@@ -268,9 +289,16 @@ async def main(connection):
         repo = await ensure_clone(host, path, cli)
         if repo is None:
             return
-        worktree = await ensure_worktree(repo, branch, cli)
-        if worktree is not None:
-            await open_tab(worktree)
+        # Git allows one worktree per branch, so an existing one is reused
+        # without a fetch, and its dependencies are presumably installed.
+        worktree = await find_worktree(repo, branch)
+        command = None
+        if worktree is None:
+            worktree = await create_worktree(repo, branch, cli)
+            if worktree is None:
+                return
+            command = install_command(worktree)
+        await open_tab(worktree, command)
 
     @iterm2.RPC
     async def gm_new():

@@ -2,11 +2,11 @@
 # Git Manager (GM): one git worktree and iTerm tab per task.
 #
 # Parts:
-# - Project list: periodically fetches repos from configured GitLab/GitHub
-#   hosts into a JSON cache that the Hammerspoon UI reads.
-# - RPC entry points: called by the Wox plugin (wox/plugins/single-file/gm.py)
-#   via AppleScript `invoke API expression`; they show UI through the
-#   Hammerspoon HTTP server (hammerspoon/gm.lua).
+# - Project list: periodically fetches repos from github.com and gitlab.com
+#   into a JSON cache that the Hammerspoon UI reads.
+# - RPC entry points: called via AppleScript `invoke API expression` by the
+#   Wox plugin (wox/plugins/single-file/gm.py) to show UI through the
+#   Hammerspoon HTTP server, and by hammerspoon/gm.lua with the user's pick.
 # - Worktrees: clones into ~/git on first use, creates worktrees in
 #   ~/Documents, removes them after checking for unpushed work.
 # - Tabs: opens a named tab per worktree, runs the stack's dependency
@@ -122,10 +122,13 @@ CLONES_DIR = Path.home() / "git"
 
 
 # The CLIs clone with the protocol and credentials from their own config.
-async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
+# Returns the clone and whether it was just made.
+async def ensure_clone(
+    host: str, path: str, cli: str | None
+) -> tuple[Path, bool] | None:
     repo = CLONES_DIR / host / path
     if repo.exists():
-        return repo
+        return repo, False
     if cli is None:
         report(f"no CLI to clone from {host}")
         return None
@@ -133,7 +136,7 @@ async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
     print(f"cloning {host}/{path}")
     if await run_cli(cli, "repo", "clone", path, str(repo)) is None:
         return None
-    return repo
+    return repo, True
 
 
 async def git_succeeds(*args: str) -> bool:
@@ -331,12 +334,13 @@ async def main(connection):
     run_in_background(refresh_projects(gh, glab))
     clone_clis = {"github.com": gh, "gitlab.com": glab}
 
-    async def find_tab(worktree: Path) -> iterm2.Tab | None:
+    async def find_tabs(worktree: Path) -> list[iterm2.Tab]:
+        tabs = []
         for window in app.windows:
             for tab in window.tabs:
                 if await tab.async_get_variable("user.worktree") == str(worktree):
-                    return tab
-        return None
+                    tabs.append(tab)
+        return tabs
 
     # Returns the top session; the bottom one is the shift-cmd-d split.
     async def create_tab(worktree: Path) -> iterm2.Session | None:
@@ -369,9 +373,9 @@ async def main(connection):
     # GM never types into a tab it didn't just create: something may be
     # running there.
     async def open_tab(worktree: Path, command: str | None):
-        tab = await find_tab(worktree)
-        if tab is not None:
-            await tab.async_activate()
+        tabs = await find_tabs(worktree)
+        if tabs:
+            await tabs[0].async_activate()
         else:
             session = await create_tab(worktree)
             if session is None:
@@ -389,19 +393,20 @@ async def main(connection):
     async def new_worktree(project: str, branch: str):
         host, path = project.split("/", 1)
         cli = clone_clis.get(host)
-        repo = await ensure_clone(host, path, cli)
-        if repo is None:
+        clone = await ensure_clone(host, path, cli)
+        if clone is None:
             return
+        repo, is_new = clone
         # Git allows one worktree per branch, so an existing one is reused
-        # without a fetch, and its dependencies are presumably installed.
+        # without a fetch, and its dependencies are presumably installed,
+        # unless it is the clone just made, e.g. for the default branch.
         worktree = await find_worktree(repo, branch)
-        command = None
         if worktree is None:
             worktree = await create_worktree(repo, branch, cli)
             if worktree is None:
                 return
-            command = install_command(worktree)
-        await open_tab(worktree, command)
+            is_new = True
+        await open_tab(worktree, install_command(worktree) if is_new else None)
 
     # urlopen() blocks and would stall the API connection.
     async def show_worktrees(command: str, with_clones: bool):
@@ -427,8 +432,7 @@ async def main(connection):
         git = ["git", "-C", str(clone), "worktree", "remove", *args, str(worktree)]
         if await run_cli(*git) is None:
             return
-        tab = await find_tab(worktree)
-        if tab is not None:
+        for tab in await find_tabs(worktree):
             # Without force iTerm still asks if something runs there.
             await tab.async_close()
 

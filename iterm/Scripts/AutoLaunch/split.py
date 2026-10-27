@@ -20,7 +20,6 @@ async def split_with_bottom_pane(
 
     if size is not None:
         pane.preferred_size = iterm2.Size(size.width, BOTTOM_ROWS)
-        # 1 line for separator
         session.preferred_size = iterm2.Size(size.width, size.height - BOTTOM_ROWS)
         await tab.async_update_layout()
     await window.async_set_frame(frame)

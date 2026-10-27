@@ -148,7 +148,7 @@ below). Dismissing either chooser or a failure does nothing.
 - `hammerspoon/init.lua` requires `gm` with the other modules.
 - The Wox plugin is single-file SDK type and needs Wox 2.4.2+.
 
-## Planned design
+## Design
 
 - **Project list**: the iTerm script periodically fetches repositories from
   github.com and gitlab.com through the `gh` and `glab` CLIs into a JSON
@@ -215,7 +215,8 @@ below). Dismissing either chooser or a failure does nothing.
   variable `user.worktree` holding the worktree path, not the title: shells
   and users rewrite titles, and titles of different projects can collide. A
   tab variable rather than a session one, so splits share it. If several
-  tabs match, the first one is used and the rest are left alone.
+  tabs match, the first one is reused and the rest are left alone; `gm rm`
+  closes them all.
   Opening (done): a new tab in the current window, or a new window if there
   is none, with the profile's initial directory overridden to the worktree.
   `Tab.async_set_title()` sets the worktree directory name as the title
@@ -240,10 +241,12 @@ below). Dismissing either chooser or a failure does nothing.
   `poetry install`, `pnpm-lock.yaml` -> `pnpm i`, `package-lock.json` -> `npm
   ci`, `yarn.lock` -> `yarn install`, `bun.lock` -> `bun install`); all
   matches run, joined with `&&`. *Planned*: an optional per-repo override.
-  The command is typed with `async_send_text()` right after the tab opens,
-  before the shell starts, so the shell reads it as typeahead. It is typed
+  The command is typed with `async_send_text()` once the tab, its split and
+  its title are set up; if the shell hasn't started by then, it reads the
+  command as typeahead. It is typed
   without a newline: the user reviews it and presses Enter. It is typed only
-  in a tab GM just opened for a worktree it just created: an existing
+  in a tab GM just opened for a worktree it just created, the clone itself
+  included (`gm new` with the default branch on first use): an existing
   worktree presumably has its dependencies, and GM never types into a tab
   that may be running something.
 - **`gm rm`** (done): the chooser lists worktrees as `gm go` does, minus the
@@ -257,11 +260,13 @@ below). Dismissing either chooser or a failure does nothing.
   with it, a confirmation chooser opens with "Keep" as the first row, so a
   reflexive Enter removes nothing, and "Remove anyway" runs `git worktree
   remove --force`. The local branch stays, so unpushed commits survive and a
-  later `gm new` with that branch checks it out again. After removal the
-  tab is closed with `Tab.async_close()` without force: iTerm still asks if
-  something runs there.
+  later `gm new` with that branch checks it out again. After removal all
+  its tabs are closed with `Tab.async_close()` without force: iTerm still
+  asks if something runs there.
 - **Source of truth** for existing worktrees is `git worktree list` across the
-  clones in `~/git`; GM keeps no separate state.
+  clones in `~/git`; GM keeps no separate state. Every listing, for `gm new`,
+  `gm go` and `gm rm` alike, runs `git worktree prune` first, so worktrees
+  whose directory was deleted by hand don't show up.
 - **Error reporting** (done): every failure described above as printed to
   the Script Console goes through `report()` in the iTerm script, which
   prints the message and appends it to `~/.cache/grigoryvp-gm/gm.log` as

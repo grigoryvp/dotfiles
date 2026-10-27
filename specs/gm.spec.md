@@ -9,11 +9,11 @@ with stub UI. Everything marked *planned* is not implemented yet.
 
 ## Components
 
-| Part | File | Role |
-| --- | --- | --- |
-| Wox plugin | `wox/plugins/single-file/gm.py` | Entry point: `gm` keyword and commands |
-| iTerm script | `iterm/Scripts/AutoLaunch/gm.py` | All logic: git, worktrees, tabs; RPC functions |
-| Hammerspoon module | `hammerspoon/gm.lua` | Native UI (`hs.chooser`) |
+- **Wox plugin** (`wox/plugins/single-file/gm.py`): entry point, `gm`
+  keyword and commands.
+- **iTerm script** (`iterm/Scripts/AutoLaunch/gm.py`): all logic (git,
+  worktrees, tabs) and the RPC functions.
+- **Hammerspoon module** (`hammerspoon/gm.lua`): native UI (`hs.chooser`).
 
 The UI layer never touches git, and the Wox plugin only forwards commands.
 All logic lives in the iTerm script so it can manage tabs through the iTerm
@@ -26,12 +26,13 @@ with first-class access to tabs and sessions.
 
 ## Commands
 
-| Command | Status | Behavior |
-| --- | --- | --- |
-| `gm new` | stub | Picks a project and a branch, creates a worktree and a tab |
-| `gm rm` | planned | Removes a worktree and closes its tab |
-| `gm go` | planned | Focuses a worktree's tab, creating it and its splits if missing |
-| `gm status` | done | Debug info: query fields, plugin Python, iTerm2/Hammerspoon running |
+- `gm new` (stub): picks a project and a branch, creates a worktree and a
+  tab.
+- `gm rm` (planned): removes a worktree and closes its tab.
+- `gm go` (planned): focuses a worktree's tab, creating it and its splits if
+  missing.
+- `gm status` (done): debug info: query fields, plugin Python, whether
+  iTerm2 and Hammerspoon are running.
 
 `gm` with no command lists the commands; selecting one changes the query to
 `gm <command> `. Wox also suggests commands itself from the `Commands`

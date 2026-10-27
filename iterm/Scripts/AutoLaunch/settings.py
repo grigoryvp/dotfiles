@@ -26,9 +26,11 @@ GLOBAL_PREFS: dict[Key | str, object] = {
 COLOR_PRESET = "Solarized Dark"
 BACKGROUND = iterm2.Color(0, 0, 0)
 # PostScript name of "JetBrainsMono Nerd Font Mono", as iTerm2 stores it.
-FONT = "JetBrainsMonoNFM-Regular 16"
+FONT = "JetBrainsMonoNFM-Regular 15"
 INITIAL_DIRECTORY = iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_RECYCLE
 PROFILE_FLAGS = {
+    "blinking_cursor": True,
+    "cursor_shadow": True,
     "silence_bell": True,
     # "Filter Alerts": notify on bell only.
     "send_bell_alert": True,
@@ -36,6 +38,20 @@ PROFILE_FLAGS = {
     "send_new_output_alert": False,
     "send_session_ended_alert": False,
     "send_terminal_generated_alerts": False,
+}
+# Raw profile keys the iterm2 module has no working accessors for.
+PROFILE_KEYS = {
+    # async_set_cursor_type() passes the enum to json.dumps() and raises.
+    "Cursor Type": iterm2.CursorType.CURSOR_TYPE_VERTICAL.value,
+    "Cursor Smooth Blink": True,
+    # Fades always reach zero alpha; skip the hidden dwell and ease so the
+    # cursor stays near-invisible only briefly.
+    "Cursor Blink Hidden Dwell": 0,
+    "Cursor Blink Visible Dwell": 0.2,
+    "Cursor Blink Fade In Duration": 0.2,
+    "Cursor Blink Fade Out Duration": 0.2,
+    "Cursor Blink Fade In Curve": 2,  # Ease out
+    "Cursor Blink Fade Out Curve": 1,  # Ease in
 }
 
 # RPC served by split.py. iTerm's own shift-cmd-d splits 50/50.
@@ -90,6 +106,9 @@ async def apply_profile(connection):
     for name, wanted in PROFILE_FLAGS.items():
         if getattr(profile, name) != wanted:
             await getattr(profile, f"async_set_{name}")(wanted)
+    for key, wanted in PROFILE_KEYS.items():
+        if profile._simple_get(key) != wanted:
+            await profile._async_simple_set(key, wanted)
 
 
 def make_split_key_binding():

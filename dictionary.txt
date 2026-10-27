@@ -482,6 +482,7 @@ EDID
 EE
 Eelskin
 Effigial
+EFILE
 egpu
 Einhar
 eink

@@ -1072,6 +1072,27 @@ class App {
       if (-not (Test-Path -Path "$exe")) { throw "$exe not found" }
     }
     $woxDir = $this._path(@("~", ".wox"));
+
+    # Entire user data dir is symlinked; git tracks only plugins. Wox writes
+    # in-memory state back on exit, so it must not run during the swap.
+    $this._stopWox();
+    $srcDir = $this._path(@($this._cfgDir, "wox"));
+    $linkDir = $this._path(@($woxDir, "wox-user"));
+    New-Dir -Path "$woxDir";
+    $item = Get-Item -Path "$linkDir" -Force -ErrorAction SilentlyContinue;
+    if ($item -and -not $item.LinkType) {
+      # Keep notes, clipboard history and other local data.
+      Copy-Item -Path "$linkDir\*" -Destination "$srcDir" -Recurse -Force;
+      Remove-Item "$linkDir" -Recurse -Force;
+    }
+    elseif ($item) {
+      # Windows PowerShell's 'Remove-Item -Recurse' on a dir symlink deletes
+      # the target's content.
+      $item.Delete();
+    }
+    Write-Host "Creating dir softlink $srcDir => $linkDir";
+    New-Softlink -Path "$woxDir" -Name "wox-user" -Value "$srcDir";
+
     $locFile = $this._path(@($woxDir, ".userdata.location"));
     $userDataDir = $this._path(@($woxDir, "wox-user"));
     if (Test-Path -Path "$locFile") {

@@ -1185,6 +1185,19 @@ configure() {
   rm -rf ~/.config/karabiner 
   ln -fs ~/dotfiles/karabiner ~/.config/karabiner
 
+  # Entire user data dir is symlinked; git tracks only plugins. Wox writes
+  # in-memory state back on exit, so it must not run during the swap.
+  _wox_quit
+  mkdir -p ~/.wox
+  if [ -d ~/.wox/wox-user ] && ! [ -L ~/.wox/wox-user ]; then
+    # Keep notes, clipboard history and other local data.
+    cp -R ~/.wox/wox-user/. ~/dotfiles/wox/
+    rm -rf ~/.wox/wox-user
+  fi
+  # 'ln -fs' over a symlink to a dir would create the link inside that dir.
+  rm -f ~/.wox/wox-user
+  ln -s ~/dotfiles/wox ~/.wox/wox-user
+
   _configure_wox
   # The launch agent Wox writes for its own autostart names the .app bundle as
   # the program, which launchd cannot run (exit 78)

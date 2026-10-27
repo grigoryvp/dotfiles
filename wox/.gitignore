@@ -1,0 +1,5 @@
+*
+!.gitignore
+!plugins/
+!plugins/single-file/
+!plugins/single-file/**

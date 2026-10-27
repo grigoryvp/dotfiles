@@ -201,29 +201,42 @@ async def main(connection):
     run_in_background(refresh_projects(gh, glab))
     clone_clis = {"github.com": gh, "gitlab.com": glab}
 
-    async def open_tab(worktree: Path):
+    async def find_tab(worktree: Path) -> iterm2.Tab | None:
+        for window in app.windows:
+            for tab in window.tabs:
+                if await tab.async_get_variable("user.worktree") == str(worktree):
+                    return tab
+        return None
+
+    async def create_tab(worktree: Path) -> iterm2.Tab | None:
         profile = iterm2.LocalWriteOnlyProfile()
         profile.set_initial_directory_mode(
             iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_CUSTOM
         )
         profile.set_custom_directory(str(worktree))
-        window = app.current_terminal_window
+        window = app.current_window
         if window is None:
             window = await iterm2.Window.async_create(
                 connection, profile_customizations=profile
             )
-            tab = window and window.current_tab
+            tab = window.current_tab if window else None
         else:
             tab = await window.async_create_tab(profile_customizations=profile)
-        if window is None or tab is None:
-            print(f"failed to open a tab for {worktree}")
-            return
+        if tab is None:
+            return None
         # The title is an interpolated string, but repo and branch names
         # can't contain the backslash that starts interpolation.
         await tab.async_set_title(worktree.name)
         # A tab variable rather than a session one, so splits share it.
         await tab.async_set_variable("user.worktree", str(worktree))
-        await window.async_activate()
+        return tab
+
+    async def open_tab(worktree: Path):
+        tab = await find_tab(worktree) or await create_tab(worktree)
+        if tab is None:
+            print(f"failed to open a tab for {worktree}")
+            return
+        await tab.async_activate()
         # The launcher or Hammerspoon is frontmost at this point.
         await app.async_activate(ignoring_other_apps=True)
 

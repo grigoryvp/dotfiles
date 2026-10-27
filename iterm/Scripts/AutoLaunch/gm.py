@@ -141,19 +141,36 @@ async def git_succeeds(*args: str) -> bool:
 WORKTREES_DIR = Path.home() / "Documents"
 
 
-async def find_worktree(repo: Path, branch: str) -> Path | None:
+# Clones are the dirs with .git under ~/git; their worktrees live elsewhere.
+def find_clones(root: Path = CLONES_DIR) -> list[Path]:
+    if (root / ".git").exists():
+        return [root]
+    if not root.is_dir():
+        return []
+    return [clone for child in sorted(root.iterdir()) for clone in find_clones(child)]
+
+
+# (path, branch) pairs, the clone itself included; branch is None when
+# detached.
+async def list_worktrees(repo: Path) -> list[tuple[Path, str | None]]:
     # A worktree whose directory was deleted by hand still holds its branch
     # until pruned.
     if await run_cli("git", "-C", str(repo), "worktree", "prune") is None:
-        return None
+        return []
     output = await run_cli("git", "-C", str(repo), "worktree", "list", "--porcelain")
     if output is None:
-        return None
-    path = None
-    for line in output.splitlines():
-        if line.startswith("worktree "):
-            path = Path(line.removeprefix("worktree "))
-        elif line == f"branch refs/heads/{branch}":
+        return []
+    worktrees = []
+    for entry in output.strip().split("\n\n"):
+        fields = dict(line.partition(" ")[::2] for line in entry.splitlines())
+        branch = fields.get("branch", "").removeprefix("refs/heads/") or None
+        worktrees.append((Path(fields["worktree"]), branch))
+    return worktrees
+
+
+async def find_worktree(repo: Path, branch: str) -> Path | None:
+    for path, worktree_branch in await list_worktrees(repo):
+        if worktree_branch == branch:
             return path
     return None
 
@@ -210,8 +227,8 @@ def install_command(worktree: Path) -> str | None:
     return " && ".join(commands) or None
 
 
-def call_hammerspoon(command: str) -> None:
-    body = json.dumps({"command": command}).encode()
+def call_hammerspoon(command: str, **params) -> None:
+    body = json.dumps({"command": command, **params}).encode()
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
 
 
@@ -300,6 +317,22 @@ async def main(connection):
             command = install_command(worktree)
         await open_tab(worktree, command)
 
+    async def show_go():
+        clones = find_clones()
+        worktrees = []
+        for clone, entries in zip(
+            clones, await asyncio.gather(*map(list_worktrees, clones))
+        ):
+            project = str(clone.relative_to(CLONES_DIR))
+            for path, branch in entries:
+                # Lua can't tell a JSON null from a missing key anyway.
+                worktree = {"path": str(path), "project": project}
+                if branch is not None:
+                    worktree["branch"] = branch
+                worktrees.append(worktree)
+        # urlopen() blocks and would stall the API connection.
+        await asyncio.to_thread(call_hammerspoon, "gm_go", worktrees=worktrees)
+
     @iterm2.RPC
     async def gm_new():
         # urlopen() blocks and would stall the API connection.
@@ -310,8 +343,19 @@ async def main(connection):
     async def gm_new_done(project: str, branch: str):
         run_in_background(new_worktree(project, branch))
 
+    @iterm2.RPC
+    async def gm_go():
+        run_in_background(show_go())
+
+    # Called by hammerspoon/gm.lua with the path of the picked worktree.
+    @iterm2.RPC
+    async def gm_go_done(worktree: str):
+        run_in_background(open_tab(Path(worktree), None))
+
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)
+    await gm_go.async_register(connection)
+    await gm_go_done.async_register(connection)
 
 
 iterm2.run_forever(main)

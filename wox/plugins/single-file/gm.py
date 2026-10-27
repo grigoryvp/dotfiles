@@ -100,7 +100,9 @@ class GitManager:
         if query.command == "status":
             results = await self.status(query)
         elif query.command == "new":
-            results = [self.new_result()]
+            results = [self.rpc_result("new", "Open the project picker")]
+        elif query.command == "go":
+            results = [self.rpc_result("go", "Open the worktree picker")]
         elif query.command in COMMANDS:
             results = [
                 Result(title=f"gm {query.command}: not implemented yet", icon=ICON)
@@ -132,15 +134,16 @@ class GitManager:
             ],
         )
 
-    def new_result(self) -> Result:
+    # Commands that only call gm_<name>() in iterm/Scripts/AutoLaunch/gm.py.
+    def rpc_result(self, name: str, sub_title: str) -> Result:
         async def run(ctx: Context, _: ActionContext) -> None:
-            error = await invoke_iterm("gm_new()")
+            error = await invoke_iterm(f"gm_{name}()")
             if error:
-                await self.api.notify(ctx, f"gm new: {error}")
+                await self.api.notify(ctx, f"gm {name}: {error}")
 
         return Result(
-            title="gm new",
-            sub_title="Open the project picker",
+            title=f"gm {name}",
+            sub_title=sub_title,
             icon=ICON,
             actions=[ResultAction(name="Open", action=run)],
         )

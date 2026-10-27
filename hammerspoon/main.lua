@@ -556,6 +556,13 @@ function App:startHttpServer()
       gm:showNew()
       return "", 200, {}
 
+    elseif json.command == "gm_go" then
+      if type(json.worktrees) ~= "table" then
+        return "gm_go without worktrees", 400, {}
+      end
+      gm:showGo(json.worktrees)
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end

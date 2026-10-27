@@ -3,6 +3,7 @@
 gm = {
   _newChooser = nil,
   _branchChooser = nil,
+  _goChooser = nil,
   -- "<host>/<path>" picked in _newChooser, waiting for a branch
   _newProject = nil
 }
@@ -105,4 +106,35 @@ function gm:_showBranch(project)
   self._branchChooser:query("")
   self._branchChooser:choices({})
   self._branchChooser:show()
+end
+
+
+-- Worktrees come from iterm/Scripts/AutoLaunch/gm.py as
+-- {path = ..., project = "<host>/<path>", branch = ... or nil if detached}
+function gm:showGo(worktrees)
+  if not self._goChooser then
+    self._goChooser = hs.chooser.new(function(choice)
+      if choice and choice.path then
+        self:_invokeIterm(
+          "gm_go_done(worktree: " .. self:_itermString(choice.path) .. ")"
+        )
+      end
+    end)
+    self._goChooser:searchSubText(true)
+  end
+  local choices = {}
+  for _, worktree in ipairs(worktrees) do
+    table.insert(choices, {
+      -- Same as the tab title
+      text = worktree.path:match("[^/]+$"),
+      subText = worktree.project .. " @ " .. (worktree.branch or "detached"),
+      path = worktree.path
+    })
+  end
+  if #choices == 0 then
+    choices = {{text = "No worktrees", subText = "Create one with gm new"}}
+  end
+  self._goChooser:choices(choices)
+  self._goChooser:query("")
+  self._goChooser:show()
 end

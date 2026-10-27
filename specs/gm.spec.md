@@ -29,8 +29,8 @@ with first-class access to tabs and sessions.
 - `gm new` (done): picks a project and a branch, creates a worktree and a
   tab, and installs dependencies there.
 - `gm rm` (planned): removes a worktree and closes its tab.
-- `gm go` (planned): focuses a worktree's tab, creating it and its splits if
-  missing.
+- `gm go` (done, except splits): focuses a worktree's tab, creating it and
+  its splits if missing.
 - `gm status` (done): debug info: query fields, plugin Python, whether
   iTerm2, the iTerm script and Hammerspoon are running, project cache age
   (file mtime) and project count per host.
@@ -55,6 +55,19 @@ Hammerspoon: completion callback -> hs.task osascript
   -> invoke API expression
        "gm_new_done(project: \"<host>/<path>\", branch: \"<branch>\")"
 iTerm script: RPC gm_new_done(project, branch) -> clone, worktree, tab
+```
+
+`gm go` follows the same chain with `gm_go()`, except that the iTerm script
+first collects the worktrees and passes them in the HTTP request, since the
+UI never touches git:
+
+```
+iTerm script: RPC gm_go() -> worktrees of all clones in ~/git
+  -> HTTP POST localhost:2020 {"command": "gm_go", "worktrees": [{"path":
+       ..., "project": "<host>/<path>", "branch": ...}, ...]}
+Hammerspoon: gm:showGo(worktrees) -> hs.chooser
+  -> invoke API expression "gm_go_done(worktree: \"<path>\")"
+iTerm script: RPC gm_go_done(worktree) -> focus or open its tab
 ```
 
 Behavior today: the chooser lists projects from the cache (path as
@@ -95,6 +108,11 @@ below). Dismissing either chooser or a failure does nothing.
   `queryChangedCallback` fires on typing, pasting and `show()`, but not on
   `query()`, so the branch chooser resets its rows explicitly before
   `show()`.
+- **`hs.chooser:show()` right after `select()` in the same run loop turn**
+  crashed Hammerspoon once in a test (AppKit layout exception in
+  `-[HSChooser resizeWindow]`). Real use shows and selects from separate
+  events, so GM does nothing about it; tests should space steps with
+  `hs.timer.doAfter` and keep the timers referenced, or they get collected.
 - **Hammerspoon -> iTerm uses `hs.task`**, not `hs.osascript`, so a pending
   Automation prompt doesn't block Hammerspoon's main thread.
 - **CLI lookup**: the iTerm script resolves `gh` and `glab` with
@@ -206,6 +224,15 @@ below). Dismissing either chooser or a failure does nothing.
   that may be running something.
 - **`gm rm`**: refuse without confirmation when the worktree has uncommitted
   changes or unpushed commits; then `git worktree remove` and close the tab.
+- **`gm go`** (done, except splits): clones are the directories with `.git`
+  under `~/git` (searched recursively, not descending into a clone, so
+  GitLab subgroups work). Their `git worktree list --porcelain` outputs,
+  after `git worktree prune`, are collected concurrently, the clones
+  themselves included; a detached worktree has no `branch`. The chooser row
+  is the directory name (same as the tab title) with `<host>/<path> @
+  <branch>` as subtext, and filtering searches the subtext too. Selecting a
+  row focuses or opens the tab as `gm new` does, but never types an install
+  command. No worktrees show a single "No worktrees" row.
 - **Source of truth** for existing worktrees is `git worktree list` across the
   clones in `~/git`; GM keeps no separate state.
 
@@ -215,15 +242,12 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **`gm go`.** A chooser lists worktrees from `git worktree list` across
-   `~/git`; selecting one focuses or opens its tab. Check: works for a tab
-   that is open and for one that was closed.
-2. **`gm go` splits.** A newly opened tab gets the standard split layout.
+1. **`gm go` splits.** A newly opened tab gets the standard split layout.
    Check: the layout matches the one from shift-cmd-d.
-3. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+2. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
    changes and unpushed commits and asks for confirmation if any, then
    runs `git worktree remove` and closes the tab. Check: a clean worktree is
    removed at once, a dirty one only after confirmation.
-4. **Error reporting.** Failures in background work show an `hs.alert`
+3. **Error reporting.** Failures in background work show an `hs.alert`
    besides the Script Console. Check: a fetch with a broken CLI path shows
    an alert.

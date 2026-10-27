@@ -21,6 +21,9 @@ from pathlib import Path
 
 import iterm2
 
+# split.py is in the same AutoLaunch dir, which Python puts on sys.path.
+from split import split_with_bottom_pane
+
 # Started by App:startHttpServer() in hammerspoon/main.lua.
 HAMMERSPOON_URL = "http://localhost:2020"
 
@@ -259,7 +262,8 @@ async def main(connection):
                     return tab
         return None
 
-    async def create_tab(worktree: Path) -> iterm2.Tab | None:
+    # Returns the top session; the bottom one is the shift-cmd-d split.
+    async def create_tab(worktree: Path) -> iterm2.Session | None:
         profile = iterm2.LocalWriteOnlyProfile()
         profile.set_initial_directory_mode(
             iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_CUSTOM
@@ -273,30 +277,36 @@ async def main(connection):
             tab = window.current_tab if window else None
         else:
             tab = await window.async_create_tab(profile_customizations=profile)
-        if tab is None:
+        session = tab.current_session if tab else None
+        if window is None or tab is None or session is None:
             return None
+        await split_with_bottom_pane(
+            window, tab, session, profile_customizations=profile
+        )
         # The title is an interpolated string, but repo and branch names
         # can't contain the backslash that starts interpolation.
         await tab.async_set_title(worktree.name)
         # A tab variable rather than a session one, so splits share it.
         await tab.async_set_variable("user.worktree", str(worktree))
-        return tab
+        return session
 
     # GM never types into a tab it didn't just create: something may be
     # running there.
     async def open_tab(worktree: Path, command: str | None):
         tab = await find_tab(worktree)
-        if tab is None:
-            tab = await create_tab(worktree)
-            if tab is None:
+        if tab is not None:
+            await tab.async_activate()
+        else:
+            session = await create_tab(worktree)
+            if session is None:
                 print(f"failed to open a tab for {worktree}")
                 return
-            session = tab.current_session
-            if command is not None and session is not None:
+            if command is not None:
                 # The shell reads it once started; no newline, so the user
                 # reviews it and presses Enter.
                 await session.async_send_text(command)
-        await tab.async_activate()
+            # Selects the tab too; focus goes where the command is.
+            await session.async_activate()
         # The launcher or Hammerspoon is frontmost at this point.
         await app.async_activate(ignoring_other_apps=True)
 

@@ -29,8 +29,8 @@ with first-class access to tabs and sessions.
 - `gm new` (done): picks a project and a branch, creates a worktree and a
   tab, and installs dependencies there.
 - `gm rm` (planned): removes a worktree and closes its tab.
-- `gm go` (done, except splits): focuses a worktree's tab, creating it and
-  its splits if missing.
+- `gm go` (done): focuses a worktree's tab, creating it and its splits if
+  missing.
 - `gm status` (done): debug info: query fields, plugin Python, whether
   iTerm2, the iTerm script and Hammerspoon are running, project cache age
   (file mtime) and project count per host.
@@ -206,6 +206,14 @@ below). Dismissing either chooser or a failure does nothing.
   (an interpolated string, but repo and branch names can't contain `\`),
   then the window and iTerm are activated with `ignoring_other_apps`, since
   Wox or Hammerspoon is frontmost at that point.
+  Splits (done): every tab GM opens, for `gm new` and `gm go` alike, gets
+  the shift-cmd-d layout: a bottom pane of 10 rows. The layout lives in
+  `split_with_bottom_pane()` in `iterm/Scripts/AutoLaunch/split.py`, which
+  `gm.py` imports (the AutoLaunch dir is on `sys.path`) rather than calling
+  its RPC, so GM doesn't depend on that script running. The bottom pane gets
+  the same initial directory as the tab, since the profile's "recycle" mode
+  would depend on the top shell having started. The install command goes to
+  the top pane, which is then focused.
   Reuse (done): before opening, all tabs of all windows are searched for
   `user.worktree`; a match is selected with `Tab.async_activate()` instead,
   keeping its title. GM sends nothing to a reused tab, so if the worktree was
@@ -224,7 +232,7 @@ below). Dismissing either chooser or a failure does nothing.
   that may be running something.
 - **`gm rm`**: refuse without confirmation when the worktree has uncommitted
   changes or unpushed commits; then `git worktree remove` and close the tab.
-- **`gm go`** (done, except splits): clones are the directories with `.git`
+- **`gm go`** (done): clones are the directories with `.git`
   under `~/git` (searched recursively, not descending into a clone, so
   GitLab subgroups work). Their `git worktree list --porcelain` outputs,
   after `git worktree prune`, are collected concurrently, the clones
@@ -242,12 +250,10 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **`gm go` splits.** A newly opened tab gets the standard split layout.
-   Check: the layout matches the one from shift-cmd-d.
-2. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+1. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
    changes and unpushed commits and asks for confirmation if any, then
    runs `git worktree remove` and closes the tab. Check: a clean worktree is
    removed at once, a dirty one only after confirmation.
-3. **Error reporting.** Failures in background work show an `hs.alert`
+2. **Error reporting.** Failures in background work show an `hs.alert`
    besides the Script Console. Check: a fetch with a broken CLI path shows
    an alert.

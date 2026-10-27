@@ -61,9 +61,10 @@ Stub behavior today: the chooser lists projects from the cache (path as
 text, host as subtext, Hammerspoon's default filtering); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
-that row calls `gm_new_done()`, which types `<host>/<path> <branch>` into the
-current session with `async_send_text()`. Dismissing either chooser calls
-nothing.
+that row calls `gm_new_done()`, which clones the project if needed (see
+**Clone** below) and then types `<host>/<path> <branch>` into the current
+session with `async_send_text()`. Dismissing either chooser or a failed
+clone types nothing.
 
 ### Transports
 
@@ -146,6 +147,13 @@ nothing.
   - GitLab: `glab api 'projects?membership=true&simple=true&per_page=100'
     --paginate`, taking `path_with_namespace`. glab merges pages into a
     single array itself.
+- **Clone** (done): into `~/git/<host>/<path>` unless that directory
+  exists, with `gh repo clone` or `glab repo clone`, so the protocol and
+  credentials come from the CLI's own config (gh: https, glab: ssh here). A
+  failure prints the CLI's stderr to the Script Console. `gh repo clone`
+  doesn't configure gh as git's credential helper, so a later plain `git
+  fetch` of a private GitHub repo relies on the system helper (osxkeychain)
+  unless `gh auth setup-git` was run.
 - **`gm new`**: fuzzy-pick a project, enter a branch. Clone into `~/git` on
   first use, `git fetch`, then create a worktree in `~/Documents`: track the
   remote branch if it exists, otherwise branch off the fresh default branch.
@@ -170,35 +178,34 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
-   Check: first run clones, second run skips cloning.
-2. **Worktree.** `git fetch`, then `git worktree add` in
+1. **Worktree.** `git fetch`, then `git worktree add` in
    `~/Documents/<repo>-<branch>`: track the remote branch if it exists,
    otherwise branch off the fresh default branch. Check: `git worktree list`
-   shows it, for both an existing and a new branch.
-3. **Tab.** Open a tab in the worktree directory, name it after the
+   shows it, for both an existing and a new branch; `git fetch` works for a
+   private GitHub repo cloned over https.
+2. **Tab.** Open a tab in the worktree directory, name it after the
    worktree and set its `user.worktree`. Replace the debug text. Check: the
    tab opens in the right directory with the right title; `user.worktree`
    survives an iTerm restart.
-4. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+3. **Existing tab.** If a tab's `user.worktree` already holds the worktree
    path, reuse it instead of opening another one. Check: remove the worktree
    manually, keep its tab, run `gm new` with the same branch: still one
    tab.
-5. **Existing worktree.** If the branch already has a worktree, focus its
+4. **Existing worktree.** If the branch already has a worktree, focus its
    tab, opening one if it was closed. Check: `gm new` with the same branch
    twice gives one worktree and one tab.
-6. **Dependencies.** Detect the stack by lockfiles and run the install
+5. **Dependencies.** Detect the stack by lockfiles and run the install
    command in the new tab. Check: a `uv` project gets `uv sync`, a project
    without lockfiles gets nothing.
-7. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+6. **`gm go`.** A chooser lists worktrees from `git worktree list` across
    `~/git`; selecting one focuses or opens its tab. Check: works for a tab
    that is open and for one that was closed.
-8. **`gm go` splits.** A newly opened tab gets the standard split layout.
+7. **`gm go` splits.** A newly opened tab gets the standard split layout.
    Check: the layout matches the one from shift-cmd-d.
-9. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+8. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
    changes and unpushed commits and asks for confirmation if any, then
    runs `git worktree remove` and closes the tab. Check: a clean worktree is
    removed at once, a dirty one only after confirmation.
-10. **Error reporting.** Failures in background work show an `hs.alert`
-    besides the Script Console. Check: a fetch with a broken CLI path shows
-    an alert.
+9. **Error reporting.** Failures in background work show an `hs.alert`
+   besides the Script Console. Check: a fetch with a broken CLI path shows
+   an alert.

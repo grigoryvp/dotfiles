@@ -109,6 +109,24 @@ async def refresh_projects(gh: str | None, glab: str | None) -> None:
         await asyncio.sleep(REFRESH_INTERVAL_SEC)
 
 
+CLONES_DIR = Path.home() / "git"
+
+
+# The CLIs clone with the protocol and credentials from their own config.
+async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
+    repo = CLONES_DIR / host / path
+    if repo.exists():
+        return repo
+    if cli is None:
+        print(f"no CLI to clone from {host}")
+        return None
+    repo.parent.mkdir(parents=True, exist_ok=True)
+    print(f"cloning {host}/{path}")
+    if await run_cli(cli, "repo", "clone", path, str(repo)) is None:
+        return None
+    return repo
+
+
 def call_hammerspoon(command: str) -> None:
     body = json.dumps({"command": command}).encode()
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
@@ -132,6 +150,7 @@ async def main(connection):
     glab = find_cli("glab")
     print(f"gh: {gh}, glab: {glab}")
     run_in_background(refresh_projects(gh, glab))
+    clone_clis = {"github.com": gh, "gitlab.com": glab}
 
     async def send_debug(text: str):
         window = app.current_terminal_window
@@ -141,6 +160,11 @@ async def main(connection):
         if session is not None:
             await session.async_send_text(text)
 
+    async def new_worktree(project: str, branch: str):
+        host, path = project.split("/", 1)
+        if await ensure_clone(host, path, clone_clis.get(host)) is not None:
+            await send_debug(f"{project} {branch}")
+
     @iterm2.RPC
     async def gm_new():
         # urlopen() blocks and would stall the API connection.
@@ -149,7 +173,7 @@ async def main(connection):
     # Called by hammerspoon/gm.lua with "<host>/<path>" of the picked project.
     @iterm2.RPC
     async def gm_new_done(project: str, branch: str):
-        run_in_background(send_debug(f"{project} {branch}"))
+        run_in_background(new_worktree(project, branch))
 
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)

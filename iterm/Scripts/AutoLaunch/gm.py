@@ -13,12 +13,20 @@
 #   install there, and closes it when the worktree is removed.
 import asyncio
 import json
+import shutil
 import urllib.request
 
 import iterm2
 
 # Started by App:startHttpServer() in hammerspoon/main.lua.
 HAMMERSPOON_URL = "http://localhost:2020"
+
+# iTerm launched from the Dock may lack Homebrew in PATH.
+HOMEBREW_BIN = "/opt/homebrew/bin"
+
+
+def find_cli(name: str) -> str | None:
+    return shutil.which(name) or shutil.which(name, path=HOMEBREW_BIN)
 
 
 def call_hammerspoon(command: str) -> None:
@@ -40,6 +48,9 @@ def run_in_background(coro) -> None:
 
 async def main(connection):
     app = await iterm2.async_get_app(connection)
+    gh = find_cli("gh")
+    glab = find_cli("glab")
+    print(f"gh: {gh}, glab: {glab}")
 
     async def send_debug():
         window = app.current_terminal_window

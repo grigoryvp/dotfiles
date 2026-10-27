@@ -16,6 +16,8 @@ import json
 import os
 import shlex
 import shutil
+import time
+import traceback
 import urllib.request
 from pathlib import Path
 
@@ -37,6 +39,9 @@ def find_cli(name: str) -> str | None:
 
 # Written here, read by hammerspoon/gm.lua and wox/plugins/single-file/gm.py.
 CACHE_PATH = Path.home() / ".cache" / "grigoryvp-gm" / "projects.json"
+# Written here and by hammerspoon/gm.lua, read by wox/plugins/single-file/gm.py.
+LOG_PATH = CACHE_PATH.parent / "gm.log"
+LOG_MAX_BYTES = 1024 * 1024
 
 
 # Synchronous so that concurrent fetches can't interleave read and write.
@@ -64,7 +69,7 @@ async def run_cli(*args: str) -> str | None:
     )
     stdout, stderr = await proc.communicate()
     if proc.returncode != 0:
-        print(f"{Path(args[0]).name} failed: {stderr.decode().strip()}")
+        report(f"{Path(args[0]).name} failed: {stderr.decode().strip()}")
         return None
     return stdout.decode()
 
@@ -109,7 +114,7 @@ async def refresh_projects(gh: str | None, glab: str | None) -> None:
         # An exception in one fetch must not stop the refresh loop.
         for result in await asyncio.gather(*fetches, return_exceptions=True):
             if isinstance(result, Exception):
-                print(f"fetch failed: {result!r}")
+                report(f"fetch failed: {result!r}")
         await asyncio.sleep(REFRESH_INTERVAL_SEC)
 
 
@@ -122,7 +127,7 @@ async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
     if repo.exists():
         return repo
     if cli is None:
-        print(f"no CLI to clone from {host}")
+        report(f"no CLI to clone from {host}")
         return None
     repo.parent.mkdir(parents=True, exist_ok=True)
     print(f"cloning {host}/{path}")
@@ -228,7 +233,7 @@ async def find_worktree(repo: Path, branch: str) -> Path | None:
 async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
     # Also rejects names starting with "-" that git would take for options.
     if not await git_succeeds("check-ref-format", "--branch", branch):
-        print(f"invalid branch name: {branch}")
+        report(f"invalid branch name: {branch}")
         return None
     git = ["git", "-C", str(repo)]
     # Plain git doesn't see the CLI's credentials for https remotes, so pass
@@ -282,16 +287,40 @@ def call_hammerspoon(command: str, **params) -> None:
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
 
 
+# Background work has no caller to return errors to, so they go to the
+# Script Console and to a log that `gm status` shows.
+def report(message: str) -> None:
+    print(message)
+    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    if LOG_PATH.exists() and LOG_PATH.stat().st_size > LOG_MAX_BYTES:
+        os.replace(LOG_PATH, LOG_PATH.with_suffix(".log.1"))
+    # One entry per line, so readers can take the last lines.
+    entry = " | ".join(message.splitlines())
+    with LOG_PATH.open("a") as log:
+        log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {entry}\n")
+
+
 # iTerm suspends an AppleScript `invoke API expression` until the called RPC
 # returns, queueing all other AppleEvents, and an RPC that calls the iTerm API
 # meanwhile never returns. So RPCs only schedule their work.
 _background: set[asyncio.Task] = set()
 
 
+def _finish_background(task: asyncio.Task) -> None:
+    _background.discard(task)
+    # Nobody awaits these tasks, so their exceptions would otherwise be lost.
+    if task.cancelled():
+        return
+    error = task.exception()
+    if error is not None:
+        traceback.print_exception(error)
+        report(f"failed: {error!r}")
+
+
 def run_in_background(coro) -> None:
     task = asyncio.create_task(coro)
     _background.add(task)
-    task.add_done_callback(_background.discard)
+    task.add_done_callback(_finish_background)
 
 
 async def main(connection):
@@ -346,7 +375,7 @@ async def main(connection):
         else:
             session = await create_tab(worktree)
             if session is None:
-                print(f"failed to open a tab for {worktree}")
+                report(f"failed to open a tab for {worktree}")
                 return
             if command is not None:
                 # The shell reads it once started; no newline, so the user
@@ -382,7 +411,7 @@ async def main(connection):
     async def remove_worktree(worktree: Path, force: bool):
         clone = await find_clone_of(worktree)
         if clone is None:
-            print(f"not a removable worktree: {worktree}")
+            report(f"not a removable worktree: {worktree}")
             return
         if not force:
             reasons = await unsaved_work(worktree)

@@ -17,7 +17,7 @@ gm = {
 function gm:_invokeIterm(expression)
   local task = hs.task.new("/usr/bin/osascript", function(exitCode, _, stdErr)
     if exitCode ~= 0 then
-      print("ERROR: gm " .. expression .. ": " .. stdErr)
+      self:_logError(expression .. ": " .. stdErr)
     end
   end, {
     "-e", "on run argv",
@@ -27,6 +27,19 @@ function gm:_invokeIterm(expression)
     expression
   })
   task:start()
+end
+
+
+-- Same format as report() in iterm/Scripts/AutoLaunch/gm.py, which also
+-- rotates the file
+function gm:_logError(message)
+  print("ERROR: gm " .. message)
+  local entry = message:gsub("%s*\n%s*", " | "):gsub("[ |]+$", "")
+  local log = io.open(self.LOG_PATH, "a")
+  if log then
+    log:write(os.date("%Y-%m-%d %H:%M:%S") .. " " .. entry .. "\n")
+    log:close()
+  end
 end
 
 
@@ -40,6 +53,9 @@ end
 -- Written by iterm/Scripts/AutoLaunch/gm.py, read here and by
 -- wox/plugins/single-file/gm.py
 gm.CACHE_PATH = os.getenv("HOME") .. "/.cache/grigoryvp-gm/projects.json"
+-- Written here and by iterm/Scripts/AutoLaunch/gm.py, read by
+-- wox/plugins/single-file/gm.py
+gm.LOG_PATH = os.getenv("HOME") .. "/.cache/grigoryvp-gm/gm.log"
 
 
 function gm:_projectChoices()

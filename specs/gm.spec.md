@@ -33,7 +33,7 @@ with first-class access to tabs and sessions.
   missing.
 - `gm status` (done): debug info: query fields, plugin Python, whether
   iTerm2, the iTerm script and Hammerspoon are running, project cache age
-  (file mtime) and project count per host.
+  (file mtime), project count per host and the last 5 logged errors.
 
 `gm` with no command lists the commands; selecting one changes the query to
 `gm <command> `. Wox also suggests commands itself from the `Commands`
@@ -109,7 +109,8 @@ below). Dismissing either chooser or a failure does nothing.
   AppleEvent meanwhile. An RPC that calls the iTerm API before returning
   never returns, and iTerm stops answering AppleScript until the script is
   killed. RPCs therefore only schedule work with `run_in_background()`.
-  Downside: errors in that work show up only in iTerm's Script Console.
+  Downside: nobody awaits that work, so its errors have to be reported
+  separately (see **Error reporting**).
 - **Blocking calls** (`urllib`) run in `asyncio.to_thread()` so they don't
   stall the API connection.
 - **`hs.chooser` objects are never freed**, so each chooser is created once and
@@ -125,6 +126,8 @@ below). Dismissing either chooser or a failure does nothing.
   `-[HSChooser resizeWindow]`). Real use shows and selects from separate
   events, so GM does nothing about it; tests should space steps with
   `hs.timer.doAfter` and keep the timers referenced, or they get collected.
+  Also, `hs -c` with non-ASCII text in the command hung the CLI in a test;
+  build such strings with `string.char()`.
 - **Hammerspoon -> iTerm uses `hs.task`**, not `hs.osascript`, so a pending
   Automation prompt doesn't block Hammerspoon's main thread.
 - **CLI lookup**: the iTerm script resolves `gh` and `glab` with
@@ -154,9 +157,10 @@ below). Dismissing either chooser or a failure does nothing.
   The UI reads the cache and shows it instantly; a refresh runs in the
   background. `gm:showNew()` re-reads the cache on every show (~10ms for
   100 projects); a missing cache shows a single "No projects" row.
-- **Cache location**: `~/.cache/grigoryvp-gm/projects.json`. iTerm gives
-  scripts no data directory, and the cache is written by the iTerm script
-  but read by Hammerspoon and the Wox plugin, so it lives outside all three.
+- **Cache location**: `~/.cache/grigoryvp-gm/projects.json`, with the error
+  log (see **Error reporting**) next to it. iTerm gives scripts no data
+  directory, and the cache is written by the iTerm script but read by
+  Hammerspoon and the Wox plugin, so it lives outside all three.
   The prefix avoids clashes with other tools named `gm`. Each part keeps the
   path in a constant that names the other users.
 - **Cache format**: `{"projects": [{"host": "github.com", "path":
@@ -258,13 +262,14 @@ below). Dismissing either chooser or a failure does nothing.
   something runs there.
 - **Source of truth** for existing worktrees is `git worktree list` across the
   clones in `~/git`; GM keeps no separate state.
-
-## Implementation plan
-
-Each step adds one small piece and ends with a manual check. Delete a step
-once it's done and its decisions are reflected above; delete the section
-when it's empty.
-
-1. **Error reporting.** Failures in background work show an `hs.alert`
-   besides the Script Console. Check: a fetch with a broken CLI path shows
-   an alert.
+- **Error reporting** (done): every failure described above as printed to
+  the Script Console goes through `report()` in the iTerm script, which
+  prints the message and appends it to `~/.cache/grigoryvp-gm/gm.log` as
+  `<date> <time> <message>`, one entry per line (multi-line stderr is joined
+  with ` | `), so readers can take the last lines. `gm status` shows the
+  last 5 entries, newest first. `run_in_background()` reports unhandled
+  exceptions of its tasks too, with the traceback in the console only.
+  Hammerspoon's own failures to call iTerm (`osascript` exit code) go to the
+  same file via `gm:_logError()`. Not alerts: a periodic fetch fails every
+  10 minutes while offline. Over 1 MB the iTerm script renames the log to
+  `gm.log.1`, keeping one previous file.

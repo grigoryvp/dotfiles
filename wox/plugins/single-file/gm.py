@@ -50,6 +50,9 @@ COMMANDS = {
 # Written by iterm/Scripts/AutoLaunch/gm.py, read here and by
 # hammerspoon/gm.lua.
 CACHE_PATH = Path.home() / ".cache" / "grigoryvp-gm" / "projects.json"
+# Written by iterm/Scripts/AutoLaunch/gm.py and hammerspoon/gm.lua.
+LOG_PATH = CACHE_PATH.parent / "gm.log"
+LOG_ROWS = 5
 
 
 def cache_status() -> dict[str, str]:
@@ -63,6 +66,21 @@ def cache_status() -> dict[str, str]:
         "Cache": f"updated {age // 60}m {age % 60}s ago",
         "Projects": ", ".join(f"{host}: {n}" for host, n in sorted(counts.items())),
     }
+
+
+# Pairs rather than a dict: entries from the same second share a time.
+def log_status() -> list[tuple[str, str]]:
+    try:
+        lines = LOG_PATH.read_text().splitlines()[-LOG_ROWS:]
+    except FileNotFoundError:
+        lines = []
+    if not lines:
+        return [("Errors", "none")]
+    # Newest first; each line is "<date> <time> <message>".
+    return [
+        (f"Error at {date} {clock}", message)
+        for date, clock, message in (line.split(" ", 2) for line in reversed(lines))
+    ]
 
 
 async def running_status(*pgrep_args: str) -> str:
@@ -158,7 +176,7 @@ class GitManager:
         }
         return [
             Result(title=value, sub_title=name, icon=ICON)
-            for name, value in rows.items()
+            for name, value in [*rows.items(), *log_status()]
         ]
 
 

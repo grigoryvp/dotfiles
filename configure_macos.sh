@@ -145,6 +145,7 @@ mise
 fzf
 claude-code
 codex
+qwen-code
 steam
 ollama
 yandextelemost

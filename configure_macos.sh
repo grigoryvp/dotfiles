@@ -581,6 +581,14 @@ _dock_apps() {
 EOF
 }
 
+# The Dock drops a tile pointing at a missing app without a word, which looks
+# exactly like the write being lost: such apps are left out up front.
+_dock_installed_apps() {
+  _dock_apps | while IFS= read -r app; do
+    if [ -e "$app" ]; then echo "$app"; fi
+  done
+}
+
 # Paths of the tiles the Dock currently keeps. The urls it writes back are
 # percent-encoded, and a space is the only such character in our paths.
 _dock_tile_paths() {
@@ -594,7 +602,7 @@ _dock_write_tiles() {
   while IFS= read -r app; do
     set -- "$@" "$(_dock_tile "$app")"
   done <<EOF
-$(_dock_apps)
+$(_dock_installed_apps)
 EOF
   defaults write com.apple.dock persistent-apps -array "$@"
 }
@@ -635,17 +643,14 @@ _dock_settled() {
 }
 
 _configure_dock_tiles() {
-  # The Dock drops a tile pointing at a missing app without a word, which
-  # looks exactly like the write being lost: name the app instead.
   missing=$(_dock_apps | while IFS= read -r app; do
     [ -e "$app" ] || echo "  $app"
   done)
   if [ -n "$missing" ]; then
-    echo "❌ Cannot fill the Dock, these apps are not installed:" >&2
+    echo "⚠️ Not adding Dock tiles for apps that are not installed:" >&2
     echo "$missing" >&2
-    exit 1
   fi
-  want=$(_dock_apps)
+  want=$(_dock_installed_apps)
   i=0
   while [ $i -lt 5 ]; do
     old_pid=$(_dock_pid)

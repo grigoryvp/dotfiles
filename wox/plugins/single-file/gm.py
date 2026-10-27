@@ -103,10 +103,8 @@ class GitManager:
             results = [self.rpc_result("new", "Open the project picker")]
         elif query.command == "go":
             results = [self.rpc_result("go", "Open the worktree picker")]
-        elif query.command in COMMANDS:
-            results = [
-                Result(title=f"gm {query.command}: not implemented yet", icon=ICON)
-            ]
+        elif query.command == "rm":
+            results = [self.rpc_result("rm", "Open the worktree picker")]
         else:
             results = [self.command_result(query, name) for name in COMMANDS]
         return QueryResponse(results=results)

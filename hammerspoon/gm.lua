@@ -4,6 +4,8 @@ gm = {
   _newChooser = nil,
   _branchChooser = nil,
   _goChooser = nil,
+  _rmChooser = nil,
+  _rmConfirmChooser = nil,
   -- "<host>/<path>" picked in _newChooser, waiting for a branch
   _newProject = nil
 }
@@ -111,17 +113,7 @@ end
 
 -- Worktrees come from iterm/Scripts/AutoLaunch/gm.py as
 -- {path = ..., project = "<host>/<path>", branch = ... or nil if detached}
-function gm:showGo(worktrees)
-  if not self._goChooser then
-    self._goChooser = hs.chooser.new(function(choice)
-      if choice and choice.path then
-        self:_invokeIterm(
-          "gm_go_done(worktree: " .. self:_itermString(choice.path) .. ")"
-        )
-      end
-    end)
-    self._goChooser:searchSubText(true)
-  end
+function gm:_worktreeChoices(worktrees)
   local choices = {}
   for _, worktree in ipairs(worktrees) do
     table.insert(choices, {
@@ -134,7 +126,68 @@ function gm:showGo(worktrees)
   if #choices == 0 then
     choices = {{text = "No worktrees", subText = "Create one with gm new"}}
   end
-  self._goChooser:choices(choices)
+  return choices
+end
+
+
+function gm:showGo(worktrees)
+  if not self._goChooser then
+    self._goChooser = hs.chooser.new(function(choice)
+      if choice and choice.path then
+        self:_invokeIterm(
+          "gm_go_done(worktree: " .. self:_itermString(choice.path) .. ")"
+        )
+      end
+    end)
+    self._goChooser:searchSubText(true)
+  end
+  self._goChooser:choices(self:_worktreeChoices(worktrees))
   self._goChooser:query("")
   self._goChooser:show()
+end
+
+
+function gm:showRm(worktrees)
+  if not self._rmChooser then
+    self._rmChooser = hs.chooser.new(function(choice)
+      if choice and choice.path then
+        self:_invokeIterm(
+          "gm_rm_done(worktree: " .. self:_itermString(choice.path) .. ")"
+        )
+      end
+    end)
+    self._rmChooser:searchSubText(true)
+    self._rmChooser:placeholderText("Worktree to remove")
+  end
+  self._rmChooser:choices(self:_worktreeChoices(worktrees))
+  self._rmChooser:query("")
+  self._rmChooser:show()
+end
+
+
+-- Shown by iterm/Scripts/AutoLaunch/gm.py when the picked worktree has
+-- unsaved work; reasons describes it
+function gm:showRmConfirm(worktree, reasons)
+  if not self._rmConfirmChooser then
+    self._rmConfirmChooser = hs.chooser.new(function(choice)
+      if choice and choice.path then
+        self:_invokeIterm(
+          "gm_rm_force(worktree: " .. self:_itermString(choice.path) .. ")"
+        )
+      end
+    end)
+  end
+  local name = worktree:match("[^/]+$")
+  self._rmConfirmChooser:placeholderText(name .. ": " .. reasons)
+  -- Keep goes first, so a reflexive Enter removes nothing
+  self._rmConfirmChooser:choices({
+    {text = "Keep " .. name, subText = reasons},
+    {
+      text = "Remove " .. name .. " anyway",
+      subText = "Loses " .. reasons,
+      path = worktree
+    }
+  })
+  self._rmConfirmChooser:query("")
+  self._rmConfirmChooser:show()
 end

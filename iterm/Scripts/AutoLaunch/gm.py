@@ -171,6 +171,53 @@ async def list_worktrees(repo: Path) -> list[tuple[Path, str | None]]:
     return worktrees
 
 
+# For hammerspoon/gm.lua. Git lists the clone itself first; gm rm skips it,
+# since `git worktree remove` refuses the main worktree.
+async def collect_worktrees(with_clones: bool) -> list[dict[str, str]]:
+    clones = find_clones()
+    worktrees = []
+    for clone, entries in zip(
+        clones, await asyncio.gather(*map(list_worktrees, clones))
+    ):
+        project = str(clone.relative_to(CLONES_DIR))
+        for path, branch in entries if with_clones else entries[1:]:
+            # Lua can't tell a JSON null from a missing key anyway.
+            worktree = {"path": str(path), "project": project}
+            if branch is not None:
+                worktree["branch"] = branch
+            worktrees.append(worktree)
+    return worktrees
+
+
+# The clone a removable worktree belongs to. The path comes over RPC, so
+# only worktrees of clones in ~/git qualify.
+async def find_clone_of(worktree: Path) -> Path | None:
+    clones = find_clones()
+    for clone, entries in zip(
+        clones, await asyncio.gather(*map(list_worktrees, clones))
+    ):
+        if any(path == worktree for path, _ in entries[1:]):
+            return clone
+    return None
+
+
+# A description of what removal would lose, or None if nothing.
+async def unsaved_work(worktree: Path) -> str | None:
+    git = ["git", "-C", str(worktree)]
+    status = await run_cli(*git, "status", "--porcelain")
+    # Commits that no remote-tracking branch has, as of the last fetch.
+    unpushed = await run_cli(*git, "rev-list", "--count", "HEAD", "--not", "--remotes")
+    if status is None or unpushed is None:
+        return "unknown state, git failed"
+    reasons = []
+    changes = len(status.splitlines())
+    if changes:
+        reasons.append(f"{changes} uncommitted changes")
+    if int(unpushed):
+        reasons.append(f"{int(unpushed)} unpushed commits")
+    return ", ".join(reasons) or None
+
+
 async def find_worktree(repo: Path, branch: str) -> Path | None:
     for path, worktree_branch in await list_worktrees(repo):
         if worktree_branch == branch:
@@ -327,21 +374,34 @@ async def main(connection):
             command = install_command(worktree)
         await open_tab(worktree, command)
 
-    async def show_go():
-        clones = find_clones()
-        worktrees = []
-        for clone, entries in zip(
-            clones, await asyncio.gather(*map(list_worktrees, clones))
-        ):
-            project = str(clone.relative_to(CLONES_DIR))
-            for path, branch in entries:
-                # Lua can't tell a JSON null from a missing key anyway.
-                worktree = {"path": str(path), "project": project}
-                if branch is not None:
-                    worktree["branch"] = branch
-                worktrees.append(worktree)
-        # urlopen() blocks and would stall the API connection.
-        await asyncio.to_thread(call_hammerspoon, "gm_go", worktrees=worktrees)
+    # urlopen() blocks and would stall the API connection.
+    async def show_worktrees(command: str, with_clones: bool):
+        worktrees = await collect_worktrees(with_clones)
+        await asyncio.to_thread(call_hammerspoon, command, worktrees=worktrees)
+
+    async def remove_worktree(worktree: Path, force: bool):
+        clone = await find_clone_of(worktree)
+        if clone is None:
+            print(f"not a removable worktree: {worktree}")
+            return
+        if not force:
+            reasons = await unsaved_work(worktree)
+            if reasons is not None:
+                await asyncio.to_thread(
+                    call_hammerspoon,
+                    "gm_rm_confirm",
+                    worktree=str(worktree),
+                    reasons=reasons,
+                )
+                return
+        args = ["--force"] if force else []
+        git = ["git", "-C", str(clone), "worktree", "remove", *args, str(worktree)]
+        if await run_cli(*git) is None:
+            return
+        tab = await find_tab(worktree)
+        if tab is not None:
+            # Without force iTerm still asks if something runs there.
+            await tab.async_close()
 
     @iterm2.RPC
     async def gm_new():
@@ -355,17 +415,34 @@ async def main(connection):
 
     @iterm2.RPC
     async def gm_go():
-        run_in_background(show_go())
+        run_in_background(show_worktrees("gm_go", with_clones=True))
 
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
     async def gm_go_done(worktree: str):
         run_in_background(open_tab(Path(worktree), None))
 
+    @iterm2.RPC
+    async def gm_rm():
+        run_in_background(show_worktrees("gm_rm", with_clones=False))
+
+    # Called by hammerspoon/gm.lua with the path of the picked worktree.
+    @iterm2.RPC
+    async def gm_rm_done(worktree: str):
+        run_in_background(remove_worktree(Path(worktree), force=False))
+
+    # Called by hammerspoon/gm.lua once removal with unsaved work is confirmed.
+    @iterm2.RPC
+    async def gm_rm_force(worktree: str):
+        run_in_background(remove_worktree(Path(worktree), force=True))
+
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)
     await gm_go.async_register(connection)
     await gm_go_done.async_register(connection)
+    await gm_rm.async_register(connection)
+    await gm_rm_done.async_register(connection)
+    await gm_rm_force.async_register(connection)
 
 
 iterm2.run_forever(main)

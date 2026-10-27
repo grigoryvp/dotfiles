@@ -563,6 +563,20 @@ function App:startHttpServer()
       gm:showGo(json.worktrees)
       return "", 200, {}
 
+    elseif json.command == "gm_rm" then
+      if type(json.worktrees) ~= "table" then
+        return "gm_rm without worktrees", 400, {}
+      end
+      gm:showRm(json.worktrees)
+      return "", 200, {}
+
+    elseif json.command == "gm_rm_confirm" then
+      if type(json.worktree) ~= "string" or type(json.reasons) ~= "string" then
+        return "gm_rm_confirm without worktree or reasons", 400, {}
+      end
+      gm:showRmConfirm(json.worktree, json.reasons)
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end

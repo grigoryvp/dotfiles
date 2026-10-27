@@ -4,8 +4,8 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: `gm new` works end to end. Everything marked *planned* is not
-implemented yet.
+Status: `gm new`, `gm go` and `gm rm` work end to end. Everything marked
+*planned* is not implemented yet.
 
 ## Components
 
@@ -28,7 +28,7 @@ with first-class access to tabs and sessions.
 
 - `gm new` (done): picks a project and a branch, creates a worktree and a
   tab, and installs dependencies there.
-- `gm rm` (planned): removes a worktree and closes its tab.
+- `gm rm` (done): removes a worktree and closes its tab.
 - `gm go` (done): focuses a worktree's tab, creating it and its splits if
   missing.
 - `gm status` (done): debug info: query fields, plugin Python, whether
@@ -68,6 +68,18 @@ iTerm script: RPC gm_go() -> worktrees of all clones in ~/git
 Hammerspoon: gm:showGo(worktrees) -> hs.chooser
   -> invoke API expression "gm_go_done(worktree: \"<path>\")"
 iTerm script: RPC gm_go_done(worktree) -> focus or open its tab
+```
+
+`gm rm` is the same with `gm_rm()` and `gm_rm_done(worktree)`, plus a
+confirmation round trip when the worktree has unsaved work:
+
+```
+iTerm script: RPC gm_rm_done(worktree) -> unsaved work found
+  -> HTTP POST localhost:2020 {"command": "gm_rm_confirm", "worktree": ...,
+       "reasons": "2 uncommitted changes, 1 unpushed commits"}
+Hammerspoon: gm:showRmConfirm() -> hs.chooser
+  -> invoke API expression "gm_rm_force(worktree: \"<path>\")"
+iTerm script: RPC gm_rm_force(worktree) -> remove with --force, close tab
 ```
 
 Behavior today: the chooser lists projects from the cache (path as
@@ -230,17 +242,20 @@ below). Dismissing either chooser or a failure does nothing.
   in a tab GM just opened for a worktree it just created: an existing
   worktree presumably has its dependencies, and GM never types into a tab
   that may be running something.
-- **`gm rm`**: refuse without confirmation when the worktree has uncommitted
-  changes or unpushed commits; then `git worktree remove` and close the tab.
-- **`gm go`** (done): clones are the directories with `.git`
-  under `~/git` (searched recursively, not descending into a clone, so
-  GitLab subgroups work). Their `git worktree list --porcelain` outputs,
-  after `git worktree prune`, are collected concurrently, the clones
-  themselves included; a detached worktree has no `branch`. The chooser row
-  is the directory name (same as the tab title) with `<host>/<path> @
-  <branch>` as subtext, and filtering searches the subtext too. Selecting a
-  row focuses or opens the tab as `gm new` does, but never types an install
-  command. No worktrees show a single "No worktrees" row.
+- **`gm rm`** (done): the chooser lists worktrees as `gm go` does, minus the
+  clones themselves, which `git worktree remove` refuses. The picked path
+  comes back over RPC, so it is removed only if it is a non-main worktree of
+  a clone in `~/git`. Unsaved work is `git status --porcelain` lines
+  (uncommitted and untracked; ignored files like `node_modules` don't count)
+  and `git rev-list --count HEAD --not --remotes` (commits on no
+  remote-tracking branch, as of the last fetch, so a new branch without own
+  commits is clean). Without unsaved work the worktree is removed at once;
+  with it, a confirmation chooser opens with "Keep" as the first row, so a
+  reflexive Enter removes nothing, and "Remove anyway" runs `git worktree
+  remove --force`. The local branch stays, so unpushed commits survive and a
+  later `gm new` with that branch checks it out again. After removal the
+  tab is closed with `Tab.async_close()` without force: iTerm still asks if
+  something runs there.
 - **Source of truth** for existing worktrees is `git worktree list` across the
   clones in `~/git`; GM keeps no separate state.
 
@@ -250,10 +265,6 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
-   changes and unpushed commits and asks for confirmation if any, then
-   runs `git worktree remove` and closes the tab. Check: a clean worktree is
-   removed at once, a dirty one only after confirmation.
-2. **Error reporting.** Failures in background work show an `hs.alert`
+1. **Error reporting.** Failures in background work show an `hs.alert`
    besides the Script Console. Check: a fetch with a broken CLI path shows
    an alert.

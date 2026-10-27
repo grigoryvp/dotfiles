@@ -14,6 +14,7 @@
 import asyncio
 import json
 import os
+import shlex
 import shutil
 import urllib.request
 from pathlib import Path
@@ -127,6 +128,54 @@ async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
     return repo
 
 
+async def git_succeeds(*args: str) -> bool:
+    proc = await asyncio.create_subprocess_exec(
+        "git",
+        *args,
+        stdout=asyncio.subprocess.DEVNULL,
+        stderr=asyncio.subprocess.DEVNULL,
+    )
+    return await proc.wait() == 0
+
+
+WORKTREES_DIR = Path.home() / "Documents"
+
+
+async def ensure_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
+    # Also rejects names starting with "-" that git would take for options.
+    if not await git_succeeds("check-ref-format", "--branch", branch):
+        print(f"invalid branch name: {branch}")
+        return None
+    git = ["git", "-C", str(repo)]
+    # Plain git doesn't see the CLI's credentials for https remotes, so pass
+    # the CLI as the only credential helper, the way `gh repo clone` does.
+    auth = []
+    if cli is not None:
+        helper = f"!{shlex.quote(cli)} auth git-credential"
+        auth = ["-c", "credential.helper=", "-c", f"credential.helper={helper}"]
+    if await run_cli(*git, *auth, "fetch") is None:
+        return None
+    worktree = WORKTREES_DIR / f"{repo.name}-{branch.replace('/', '-')}"
+    if await git_succeeds("-C", str(repo), "show-ref", "-q", f"refs/heads/{branch}"):
+        args = [str(worktree), branch]
+    elif await git_succeeds(
+        "-C", str(repo), "show-ref", "-q", f"refs/remotes/origin/{branch}"
+    ):
+        args = ["--track", "-b", branch, str(worktree), f"origin/{branch}"]
+    else:
+        default = await run_cli(
+            *git, "symbolic-ref", "--short", "refs/remotes/origin/HEAD"
+        )
+        if default is None:
+            return None
+        # Otherwise the new branch would track the default one, and `git push`
+        # would target it.
+        args = ["--no-track", "-b", branch, str(worktree), default.strip()]
+    if await run_cli(*git, "worktree", "add", *args) is None:
+        return None
+    return worktree
+
+
 def call_hammerspoon(command: str) -> None:
     body = json.dumps({"command": command}).encode()
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
@@ -162,8 +211,13 @@ async def main(connection):
 
     async def new_worktree(project: str, branch: str):
         host, path = project.split("/", 1)
-        if await ensure_clone(host, path, clone_clis.get(host)) is not None:
-            await send_debug(f"{project} {branch}")
+        cli = clone_clis.get(host)
+        repo = await ensure_clone(host, path, cli)
+        if repo is None:
+            return
+        worktree = await ensure_worktree(repo, branch, cli)
+        if worktree is not None:
+            await send_debug(str(worktree))
 
     @iterm2.RPC
     async def gm_new():

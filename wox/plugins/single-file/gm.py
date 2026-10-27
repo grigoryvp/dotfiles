@@ -54,6 +54,24 @@ async def is_running(process_name: str) -> bool:
     return await proc.wait() == 0
 
 
+# Returns the error text, or None on success. RPCs return before doing their
+# work, so errors in it show up only in iTerm's Script Console.
+async def invoke_iterm(expression: str) -> str | None:
+    script = (
+        'tell application id "com.googlecode.iterm2" to '
+        f'invoke API expression "{expression}"'
+    )
+    proc = await asyncio.create_subprocess_exec(
+        "osascript",
+        "-e",
+        script,
+        stdout=asyncio.subprocess.DEVNULL,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    _, stderr = await proc.communicate()
+    return stderr.decode().strip() if proc.returncode else None
+
+
 class GitManager:
     async def init(self, ctx: Context, params: PluginInitParams) -> None:
         self.api = params.api
@@ -61,6 +79,8 @@ class GitManager:
     async def query(self, ctx: Context, query: Query) -> QueryResponse:
         if query.command == "status":
             results = await self.status(query)
+        elif query.command == "new":
+            results = [self.new_result()]
         elif query.command in COMMANDS:
             results = [
                 Result(title=f"gm {query.command}: not implemented yet", icon=ICON)
@@ -90,6 +110,19 @@ class GitManager:
                     prevent_hide_after_action=True,
                 )
             ],
+        )
+
+    def new_result(self) -> Result:
+        async def run(ctx: Context, _: ActionContext) -> None:
+            error = await invoke_iterm("gm_new()")
+            if error:
+                await self.api.notify(ctx, f"gm new: {error}")
+
+        return Result(
+            title="gm new",
+            sub_title="Open the project picker",
+            icon=ICON,
+            actions=[ResultAction(name="Open", action=run)],
         )
 
     async def status(self, query: Query) -> list[Result]:

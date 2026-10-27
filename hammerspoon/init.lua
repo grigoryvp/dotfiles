@@ -20,6 +20,7 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "netstat"
   require "elgato"
   require "menuitem"
+  require "gm"
   require "main"
 
   app = App:new()

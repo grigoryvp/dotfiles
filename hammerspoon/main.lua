@@ -552,6 +552,10 @@ function App:startHttpServer()
       hs.eventtap.keyStroke(mods, key)
       return "", 200, {}
 
+    elseif json.command == "gm_new" then
+      gm:showNew()
+      return "", 200, {}
+
     else
       return "unknown command", 400, {}
     end

@@ -201,13 +201,31 @@ async def main(connection):
     run_in_background(refresh_projects(gh, glab))
     clone_clis = {"github.com": gh, "gitlab.com": glab}
 
-    async def send_debug(text: str):
+    async def open_tab(worktree: Path):
+        profile = iterm2.LocalWriteOnlyProfile()
+        profile.set_initial_directory_mode(
+            iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_CUSTOM
+        )
+        profile.set_custom_directory(str(worktree))
         window = app.current_terminal_window
-        if window is None or window.current_tab is None:
+        if window is None:
+            window = await iterm2.Window.async_create(
+                connection, profile_customizations=profile
+            )
+            tab = window and window.current_tab
+        else:
+            tab = await window.async_create_tab(profile_customizations=profile)
+        if window is None or tab is None:
+            print(f"failed to open a tab for {worktree}")
             return
-        session = window.current_tab.current_session
-        if session is not None:
-            await session.async_send_text(text)
+        # The title is an interpolated string, but repo and branch names
+        # can't contain the backslash that starts interpolation.
+        await tab.async_set_title(worktree.name)
+        # A tab variable rather than a session one, so splits share it.
+        await tab.async_set_variable("user.worktree", str(worktree))
+        await window.async_activate()
+        # The launcher or Hammerspoon is frontmost at this point.
+        await app.async_activate(ignoring_other_apps=True)
 
     async def new_worktree(project: str, branch: str):
         host, path = project.split("/", 1)
@@ -217,7 +235,7 @@ async def main(connection):
             return
         worktree = await ensure_worktree(repo, branch, cli)
         if worktree is not None:
-            await send_debug(str(worktree))
+            await open_tab(worktree)
 
     @iterm2.RPC
     async def gm_new():

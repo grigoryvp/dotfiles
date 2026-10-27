@@ -4,8 +4,9 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: the Wox -> iTerm -> Hammerspoon -> iTerm call chain works end to end
-with stub UI. Everything marked *planned* is not implemented yet.
+Status: `gm new` clones, creates a worktree and opens its tab, but doesn't
+yet reuse existing tabs or worktrees. Everything marked *planned* is not
+implemented yet.
 
 ## Components
 
@@ -26,7 +27,7 @@ with first-class access to tabs and sessions.
 
 ## Commands
 
-- `gm new` (stub): picks a project and a branch, creates a worktree and a
+- `gm new` (partial): picks a project and a branch, creates a worktree and a
   tab.
 - `gm rm` (planned): removes a worktree and closes its tab.
 - `gm go` (planned): focuses a worktree's tab, creating it and its splits if
@@ -54,17 +55,16 @@ Hammerspoon: completion callback -> gm:_showBranch() -> branch hs.chooser
 Hammerspoon: completion callback -> hs.task osascript
   -> invoke API expression
        "gm_new_done(project: \"<host>/<path>\", branch: \"<branch>\")"
-iTerm script: RPC gm_new_done(project, branch) -> acts on the current session
+iTerm script: RPC gm_new_done(project, branch) -> clone, worktree, tab
 ```
 
-Stub behavior today: the chooser lists projects from the cache (path as
+Behavior today: the chooser lists projects from the cache (path as
 text, host as subtext, Hammerspoon's default filtering); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
 that row calls `gm_new_done()`, which clones the project if needed and
-creates the worktree (see **Clone** and **Worktree** below), then types the
-worktree path into the current session with `async_send_text()`. Dismissing
-either chooser or a failure types nothing.
+creates the worktree and its tab (see **Clone**, **Worktree** and **Tabs**
+below). Dismissing either chooser or a failure does nothing.
 
 ### Transports
 
@@ -178,6 +178,12 @@ either chooser or a failure types nothing.
   and users rewrite titles, and titles of different projects can collide. A
   tab variable rather than a session one, so splits share it. If several
   tabs match, the first one is used and the rest are left alone.
+  Opening (done): a new tab in the current window, or a new window if there
+  is none, with the profile's initial directory overridden to the worktree.
+  `Tab.async_set_title()` sets the worktree directory name as the title
+  (an interpolated string, but repo and branch names can't contain `\`),
+  then the window and iTerm are activated with `ignoring_other_apps`, since
+  Wox or Hammerspoon is frontmost at that point.
 - **Dependencies**: detect the stack by lockfiles (`uv.lock` -> `uv sync`,
   `pnpm-lock.yaml` -> `pnpm i`, `package-lock.json` -> `npm ci`, ...), with an
   optional per-repo override; run the install in the new tab.
@@ -192,29 +198,25 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Tab.** Open a tab in the worktree directory, name it after the
-   worktree and set its `user.worktree`. Replace the debug text. Check: the
-   tab opens in the right directory with the right title; `user.worktree`
-   survives an iTerm restart.
-2. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+1. **Existing tab.** If a tab's `user.worktree` already holds the worktree
    path, reuse it instead of opening another one. Check: remove the worktree
    manually, keep its tab, run `gm new` with the same branch: still one
    tab.
-3. **Existing worktree.** If the branch already has a worktree, focus its
+2. **Existing worktree.** If the branch already has a worktree, focus its
    tab, opening one if it was closed. Check: `gm new` with the same branch
    twice gives one worktree and one tab.
-4. **Dependencies.** Detect the stack by lockfiles and run the install
+3. **Dependencies.** Detect the stack by lockfiles and run the install
    command in the new tab. Check: a `uv` project gets `uv sync`, a project
    without lockfiles gets nothing.
-5. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+4. **`gm go`.** A chooser lists worktrees from `git worktree list` across
    `~/git`; selecting one focuses or opens its tab. Check: works for a tab
    that is open and for one that was closed.
-6. **`gm go` splits.** A newly opened tab gets the standard split layout.
+5. **`gm go` splits.** A newly opened tab gets the standard split layout.
    Check: the layout matches the one from shift-cmd-d.
-7. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+6. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
    changes and unpushed commits and asks for confirmation if any, then
    runs `git worktree remove` and closes the tab. Check: a clean worktree is
    removed at once, a dirty one only after confirmation.
-8. **Error reporting.** Failures in background work show an `hs.alert`
+7. **Error reporting.** Failures in background work show an `hs.alert`
    besides the Script Console. Check: a fetch with a broken CLI path shows
    an alert.

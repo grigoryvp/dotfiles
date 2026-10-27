@@ -44,14 +44,13 @@ COMMANDS = {
 }
 
 
-async def is_running(process_name: str) -> bool:
+async def running_status(*pgrep_args: str) -> str:
     proc = await asyncio.create_subprocess_exec(
         "pgrep",
-        "-x",
-        process_name,
+        *pgrep_args,
         stdout=asyncio.subprocess.DEVNULL,
     )
-    return await proc.wait() == 0
+    return "running" if await proc.wait() == 0 else "not running"
 
 
 # Returns the error text, or None on success. RPCs return before doing their
@@ -130,10 +129,9 @@ class GitManager:
             "Query": repr(query.raw_query),
             "Search": repr(query.search),
             "Python": sys.version.split()[0],
-            "iTerm2": "running" if await is_running("iTerm2") else "not running",
-            "Hammerspoon": (
-                "running" if await is_running("Hammerspoon") else "not running"
-            ),
+            "iTerm2": await running_status("-x", "iTerm2"),
+            "iTerm script": await running_status("-f", "AutoLaunch/gm.py"),
+            "Hammerspoon": await running_status("-x", "Hammerspoon"),
         }
         return [
             Result(title=value, sub_title=name, icon=ICON)

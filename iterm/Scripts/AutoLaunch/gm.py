@@ -92,6 +92,23 @@ async def fetch_gitlab(glab: str) -> None:
         update_cache("gitlab.com", paths)
 
 
+REFRESH_INTERVAL_SEC = 10 * 60
+
+
+async def refresh_projects(gh: str | None, glab: str | None) -> None:
+    while True:
+        fetches = []
+        if gh is not None:
+            fetches.append(fetch_github(gh))
+        if glab is not None:
+            fetches.append(fetch_gitlab(glab))
+        # An exception in one fetch must not stop the refresh loop.
+        for result in await asyncio.gather(*fetches, return_exceptions=True):
+            if isinstance(result, Exception):
+                print(f"fetch failed: {result!r}")
+        await asyncio.sleep(REFRESH_INTERVAL_SEC)
+
+
 def call_hammerspoon(command: str) -> None:
     body = json.dumps({"command": command}).encode()
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
@@ -114,10 +131,7 @@ async def main(connection):
     gh = find_cli("gh")
     glab = find_cli("glab")
     print(f"gh: {gh}, glab: {glab}")
-    if gh is not None:
-        run_in_background(fetch_github(gh))
-    if glab is not None:
-        run_in_background(fetch_gitlab(glab))
+    run_in_background(refresh_projects(gh, glab))
 
     async def send_debug():
         window = app.current_terminal_window

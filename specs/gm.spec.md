@@ -32,7 +32,8 @@ with first-class access to tabs and sessions.
 - `gm go` (planned): focuses a worktree's tab, creating it and its splits if
   missing.
 - `gm status` (done): debug info: query fields, plugin Python, whether
-  iTerm2, the iTerm script and Hammerspoon are running.
+  iTerm2, the iTerm script and Hammerspoon are running, project cache age
+  (file mtime) and project count per host.
 
 `gm` with no command lists the commands; selecting one changes the query to
 `gm <command> `. Wox also suggests commands itself from the `Commands`
@@ -117,9 +118,10 @@ Stub behavior today: the chooser has one row, and `gm_new_done()` types
   `os.replace()`) so readers never see a partial file. Each fetch replaces
   only its host's entries; the read-modify-write has no `await` inside, so
   concurrent fetches don't lose each other's entries.
-- **Fetch** (done, on script start only): both CLIs run concurrently via
-  `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to the
-  Script Console and leaves the host's entries as is.
+- **Fetch** (done): on script start and then every 10 minutes, both CLIs
+  run concurrently via `asyncio.create_subprocess_exec()`. A non-zero exit
+  prints stderr to the Script Console and leaves the host's entries as is;
+  an exception is printed too and doesn't stop the refresh loop.
   - GitHub: `gh api
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
     --paginate --jq '.[].full_name'`. `--jq` is needed because plain
@@ -152,49 +154,45 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Periodic refresh.** Re-fetch every 10 minutes; a failed fetch (non-zero
-   CLI exit) keeps the previous cache. `gm status` shows the cache age and
-   project count. Check: the age resets after 10 minutes; with the network
-   off the cache survives.
-2. **Project picker.** `gm:showNew()` fills the chooser from the cache
+1. **Project picker.** `gm:showNew()` fills the chooser from the cache
    instead of the stub row. Check: `gm new` opens in under 0.5s and filters
    projects as you type.
-3. **Pass the selection back.** `gm_new_done(project)` receives the selected
+2. **Pass the selection back.** `gm_new_done(project)` receives the selected
    project id, escaped for the `invoke API expression` string; dismissing
    sends nothing. Check: the typed debug text is the project id; Esc types
    nothing.
-4. **Branch input.** After a project is picked, a second chooser takes the
+3. **Branch input.** After a project is picked, a second chooser takes the
    branch name from its query text. Check: debug text is
    `<project> <branch>`; a pasted branch name works.
-5. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
+4. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
    Check: first run clones, second run skips cloning.
-6. **Worktree.** `git fetch`, then `git worktree add` in
+5. **Worktree.** `git fetch`, then `git worktree add` in
    `~/Documents/<repo>-<branch>`: track the remote branch if it exists,
    otherwise branch off the fresh default branch. Check: `git worktree list`
    shows it, for both an existing and a new branch.
-7. **Tab.** Open a tab in the worktree directory, name it after the
+6. **Tab.** Open a tab in the worktree directory, name it after the
    worktree and set its `user.worktree`. Replace the debug text. Check: the
    tab opens in the right directory with the right title; `user.worktree`
    survives an iTerm restart.
-8. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+7. **Existing tab.** If a tab's `user.worktree` already holds the worktree
    path, reuse it instead of opening another one. Check: remove the worktree
    manually, keep its tab, run `gm new` with the same branch: still one
    tab.
-9. **Existing worktree.** If the branch already has a worktree, focus its
+8. **Existing worktree.** If the branch already has a worktree, focus its
    tab, opening one if it was closed. Check: `gm new` with the same branch
    twice gives one worktree and one tab.
-10. **Dependencies.** Detect the stack by lockfiles and run the install
-    command in the new tab. Check: a `uv` project gets `uv sync`, a project
-    without lockfiles gets nothing.
-11. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+9. **Dependencies.** Detect the stack by lockfiles and run the install
+   command in the new tab. Check: a `uv` project gets `uv sync`, a project
+   without lockfiles gets nothing.
+10. **`gm go`.** A chooser lists worktrees from `git worktree list` across
     `~/git`; selecting one focuses or opens its tab. Check: works for a tab
     that is open and for one that was closed.
-12. **`gm go` splits.** A newly opened tab gets the standard split layout.
+11. **`gm go` splits.** A newly opened tab gets the standard split layout.
     Check: the layout matches the one from shift-cmd-d.
-13. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+12. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
     changes and unpushed commits and asks for confirmation if any, then
     runs `git worktree remove` and closes the tab. Check: a clean worktree is
     removed at once, a dirty one only after confirmation.
-14. **Error reporting.** Failures in background work show an `hs.alert`
+13. **Error reporting.** Failures in background work show an `hs.alert`
     besides the Script Console. Check: a fetch with a broken CLI path shows
     an alert.

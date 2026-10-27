@@ -20,7 +20,11 @@
 # Wox front end of Git Manager; the logic lives in iterm/Scripts/AutoLaunch/gm.py.
 
 import asyncio
+import json
 import sys
+import time
+from collections import Counter
+from pathlib import Path
 
 from wox_plugin import (
     ActionContext,
@@ -42,6 +46,23 @@ COMMANDS = {
     "go": "Switch to a worktree's iTerm tab",
     "status": "Show debug info",
 }
+
+# Written by iterm/Scripts/AutoLaunch/gm.py, read here and by
+# hammerspoon/gm.lua.
+CACHE_PATH = Path.home() / ".cache" / "grigoryvp-gm" / "projects.json"
+
+
+def cache_status() -> dict[str, str]:
+    try:
+        age = int(time.time() - CACHE_PATH.stat().st_mtime)
+        projects = json.loads(CACHE_PATH.read_text())["projects"]
+    except FileNotFoundError:
+        return {"Cache": "missing"}
+    counts = Counter(p["host"] for p in projects)
+    return {
+        "Cache": f"updated {age // 60}m {age % 60}s ago",
+        "Projects": ", ".join(f"{host}: {n}" for host, n in sorted(counts.items())),
+    }
 
 
 async def running_status(*pgrep_args: str) -> str:
@@ -132,6 +153,7 @@ class GitManager:
             "iTerm2": await running_status("-x", "iTerm2"),
             "iTerm script": await running_status("-f", "AutoLaunch/gm.py"),
             "Hammerspoon": await running_status("-x", "Hammerspoon"),
+            **cache_status(),
         }
         return [
             Result(title=value, sub_title=name, icon=ICON)

@@ -327,6 +327,7 @@ _login_items() {
 # TCC dialog, and the event itself gives up after two minutes: unattended, the
 # dialog goes unnoticed and the login item calls later in the script fail.
 _request_automation_access() {
+  echo "For non-secure install touch ~/.ssh/.uploaded_to_github"
   echo "Press enter and confirm the System Events Control access"
   read -s
   if ! _login_items >/dev/null 2>&1; then
@@ -1099,7 +1100,10 @@ configure() {
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
   printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
-  printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
+  # Don't break existing git config, if any
+  if ! [ -e ~/.gitconfig ]; then
+    printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
+  fi
   if ! [ -e ~/.hammerspoon ]; then
     mkdir ~/.hammerspoon
   fi

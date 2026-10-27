@@ -133,23 +133,23 @@ async def main(connection):
     print(f"gh: {gh}, glab: {glab}")
     run_in_background(refresh_projects(gh, glab))
 
-    async def send_debug():
+    async def send_debug(text: str):
         window = app.current_terminal_window
         if window is None or window.current_tab is None:
             return
         session = window.current_tab.current_session
         if session is not None:
-            await session.async_send_text("debug")
+            await session.async_send_text(text)
 
     @iterm2.RPC
     async def gm_new():
         # urlopen() blocks and would stall the API connection.
         run_in_background(asyncio.to_thread(call_hammerspoon, "gm_new"))
 
-    # Called by hammerspoon/gm.lua when the picker closes.
+    # Called by hammerspoon/gm.lua with "<host>/<path>" of the picked project.
     @iterm2.RPC
-    async def gm_new_done():
-        run_in_background(send_debug())
+    async def gm_new_done(project: str):
+        run_in_background(send_debug(project))
 
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)

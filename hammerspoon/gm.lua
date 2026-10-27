@@ -1,22 +1,33 @@
 -- Git Manager UI, shown on requests from iterm/Scripts/AutoLaunch/gm.py
 
 gm = {
-  _newChooser = nil,
-  _newShown = false
+  _newChooser = nil
 }
 
 
 -- Calls an RPC registered by iterm/Scripts/AutoLaunch/gm.py. A task, since
 -- osascript would block the main thread on the first automation prompt.
+-- The expression goes in argv, so it needs no AppleScript escaping.
 function gm:_invokeIterm(expression)
-  local script = 'tell application id "com.googlecode.iterm2" to ' ..
-    'invoke API expression "' .. expression .. '"'
   local task = hs.task.new("/usr/bin/osascript", function(exitCode, _, stdErr)
     if exitCode ~= 0 then
       print("ERROR: gm " .. expression .. ": " .. stdErr)
     end
-  end, {"-e", script})
+  end, {
+    "-e", "on run argv",
+    "-e", 'tell application id "com.googlecode.iterm2" to ' ..
+      "invoke API expression (item 1 of argv)",
+    "-e", "end run",
+    expression
+  })
   task:start()
+end
+
+
+-- String literal for an iTerm expression, where a backslash also starts
+-- \(...) interpolation
+function gm:_itermString(value)
+  return '"' .. value:gsub('[\\"]', "\\%0") .. '"'
 end
 
 
@@ -32,7 +43,11 @@ function gm:_projectChoices()
   end
   local choices = {}
   for _, project in ipairs(cache.projects) do
-    table.insert(choices, {text = project.path, subText = project.host})
+    table.insert(choices, {
+      text = project.path,
+      subText = project.host,
+      id = project.host .. "/" .. project.path
+    })
   end
   return choices
 end
@@ -41,20 +56,18 @@ end
 function gm:showNew()
   -- Choosers are never freed, see App:showSymbolPicker
   if not self._newChooser then
-    self._newChooser = hs.chooser.new(function() end)
-    -- Called on selection, cancel and programmatic hide alike, and twice
-    -- per hide, so only the first call after show() counts
-    self._newChooser:hideCallback(function()
-      if not self._newShown then
-        return
+    -- Called once with the row on selection, and with nil on dismissal,
+    -- up to twice per hide
+    self._newChooser = hs.chooser.new(function(choice)
+      if choice and choice.id then
+        self:_invokeIterm(
+          "gm_new_done(project: " .. self:_itermString(choice.id) .. ")"
+        )
       end
-      self._newShown = false
-      self:_invokeIterm("gm_new_done()")
     end)
   end
   -- Re-read on each show since the iTerm script refreshes the cache
   self._newChooser:choices(self:_projectChoices())
   self._newChooser:query("")
-  self._newShown = true
   self._newChooser:show()
 end

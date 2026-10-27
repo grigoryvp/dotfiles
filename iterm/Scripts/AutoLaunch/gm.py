@@ -35,35 +35,61 @@ def find_cli(name: str) -> str | None:
 CACHE_PATH = Path.home() / ".cache" / "grigoryvp-gm" / "projects.json"
 
 
-def write_cache(projects: list[dict]) -> None:
+# Synchronous so that concurrent fetches can't interleave read and write.
+def update_cache(host: str, paths: list[str]) -> None:
+    try:
+        projects = json.loads(CACHE_PATH.read_text())["projects"]
+    except FileNotFoundError:
+        projects = []
+    projects = [p for p in projects if p["host"] != host]
+    projects += [{"host": host, "path": path} for path in paths]
+    projects.sort(key=lambda p: p["path"])
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     # Readers must never see a partially written file.
     tmp_path = CACHE_PATH.with_suffix(".tmp")
     tmp_path.write_text(json.dumps({"projects": projects}, indent=2))
     os.replace(tmp_path, CACHE_PATH)
+    print(f"{host}: {len(paths)} projects")
+
+
+async def run_cli(*args: str) -> str | None:
+    proc = await asyncio.create_subprocess_exec(
+        *args,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    stdout, stderr = await proc.communicate()
+    if proc.returncode != 0:
+        print(f"{Path(args[0]).name} failed: {stderr.decode().strip()}")
+        return None
+    return stdout.decode()
 
 
 async def fetch_github(gh: str) -> None:
     # --jq flattens pages: plain --paginate prints one JSON array per page.
-    proc = await asyncio.create_subprocess_exec(
+    output = await run_cli(
         gh,
         "api",
         "user/repos?affiliation=owner,collaborator,organization_member&per_page=100",
         "--paginate",
         "--jq",
         ".[].full_name",
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
     )
-    stdout, stderr = await proc.communicate()
-    if proc.returncode != 0:
-        print(f"gh failed: {stderr.decode().strip()}")
-        return
-    projects = [
-        {"host": "github.com", "path": path} for path in sorted(stdout.decode().split())
-    ]
-    write_cache(projects)
-    print(f"github.com: {len(projects)} projects")
+    if output is not None:
+        update_cache("github.com", output.split())
+
+
+async def fetch_gitlab(glab: str) -> None:
+    # Unlike gh, glab merges pages into a single JSON array.
+    output = await run_cli(
+        glab,
+        "api",
+        "projects?membership=true&simple=true&per_page=100",
+        "--paginate",
+    )
+    if output is not None:
+        paths = [p["path_with_namespace"] for p in json.loads(output)]
+        update_cache("gitlab.com", paths)
 
 
 def call_hammerspoon(command: str) -> None:
@@ -90,6 +116,8 @@ async def main(connection):
     print(f"gh: {gh}, glab: {glab}")
     if gh is not None:
         run_in_background(fetch_github(gh))
+    if glab is not None:
+        run_in_background(fetch_gitlab(glab))
 
     async def send_debug():
         window = app.current_terminal_window

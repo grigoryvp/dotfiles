@@ -114,14 +114,20 @@ Stub behavior today: the chooser has one row, and `gm_new_done()` types
   path in a constant that names the other users.
 - **Cache format**: `{"projects": [{"host": "github.com", "path":
   "owner/repo"}, ...]}`, sorted by path, written atomically (temp file +
-  `os.replace()`) so readers never see a partial file. A host's entries are
-  replaced as a whole on each fetch.
-- **GitHub fetch** (done, on script start only): `gh api
-  'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
-  --paginate --jq '.[].full_name'` via `asyncio.create_subprocess_exec()`.
-  `--jq` is needed because plain `--paginate` prints one JSON array per page,
-  which is not valid JSON as a whole. A non-zero exit prints stderr to the
-  Script Console and leaves the cache as is.
+  `os.replace()`) so readers never see a partial file. Each fetch replaces
+  only its host's entries; the read-modify-write has no `await` inside, so
+  concurrent fetches don't lose each other's entries.
+- **Fetch** (done, on script start only): both CLIs run concurrently via
+  `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to the
+  Script Console and leaves the host's entries as is.
+  - GitHub: `gh api
+    'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
+    --paginate --jq '.[].full_name'`. `--jq` is needed because plain
+    `--paginate` prints one JSON array per page, which is not valid JSON as
+    a whole.
+  - GitLab: `glab api 'projects?membership=true&simple=true&per_page=100'
+    --paginate`, taking `path_with_namespace`. glab merges pages into a
+    single array itself.
 - **`gm new`**: fuzzy-pick a project, enter a branch. Clone into `~/git` on
   first use, `git fetch`, then create a worktree in `~/Documents`: track the
   remote branch if it exists, otherwise branch off the fresh default branch.
@@ -146,52 +152,49 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **GitLab fetch.** Same with `glab api 'projects?membership=true'
-   --paginate`, merged into the same cache. Check: gitlab.com projects
-   appear alongside GitHub ones.
-2. **Periodic refresh.** Re-fetch every 10 minutes; a failed fetch (non-zero
+1. **Periodic refresh.** Re-fetch every 10 minutes; a failed fetch (non-zero
    CLI exit) keeps the previous cache. `gm status` shows the cache age and
    project count. Check: the age resets after 10 minutes; with the network
    off the cache survives.
-3. **Project picker.** `gm:showNew()` fills the chooser from the cache
+2. **Project picker.** `gm:showNew()` fills the chooser from the cache
    instead of the stub row. Check: `gm new` opens in under 0.5s and filters
    projects as you type.
-4. **Pass the selection back.** `gm_new_done(project)` receives the selected
+3. **Pass the selection back.** `gm_new_done(project)` receives the selected
    project id, escaped for the `invoke API expression` string; dismissing
    sends nothing. Check: the typed debug text is the project id; Esc types
    nothing.
-5. **Branch input.** After a project is picked, a second chooser takes the
+4. **Branch input.** After a project is picked, a second chooser takes the
    branch name from its query text. Check: debug text is
    `<project> <branch>`; a pasted branch name works.
-6. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
+5. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
    Check: first run clones, second run skips cloning.
-7. **Worktree.** `git fetch`, then `git worktree add` in
+6. **Worktree.** `git fetch`, then `git worktree add` in
    `~/Documents/<repo>-<branch>`: track the remote branch if it exists,
    otherwise branch off the fresh default branch. Check: `git worktree list`
    shows it, for both an existing and a new branch.
-8. **Tab.** Open a tab in the worktree directory, name it after the
+7. **Tab.** Open a tab in the worktree directory, name it after the
    worktree and set its `user.worktree`. Replace the debug text. Check: the
    tab opens in the right directory with the right title; `user.worktree`
    survives an iTerm restart.
-9. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+8. **Existing tab.** If a tab's `user.worktree` already holds the worktree
    path, reuse it instead of opening another one. Check: remove the worktree
    manually, keep its tab, run `gm new` with the same branch: still one
    tab.
-10. **Existing worktree.** If the branch already has a worktree, focus its
-    tab, opening one if it was closed. Check: `gm new` with the same branch
-    twice gives one worktree and one tab.
-11. **Dependencies.** Detect the stack by lockfiles and run the install
+9. **Existing worktree.** If the branch already has a worktree, focus its
+   tab, opening one if it was closed. Check: `gm new` with the same branch
+   twice gives one worktree and one tab.
+10. **Dependencies.** Detect the stack by lockfiles and run the install
     command in the new tab. Check: a `uv` project gets `uv sync`, a project
     without lockfiles gets nothing.
-12. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+11. **`gm go`.** A chooser lists worktrees from `git worktree list` across
     `~/git`; selecting one focuses or opens its tab. Check: works for a tab
     that is open and for one that was closed.
-13. **`gm go` splits.** A newly opened tab gets the standard split layout.
+12. **`gm go` splits.** A newly opened tab gets the standard split layout.
     Check: the layout matches the one from shift-cmd-d.
-14. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+13. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
     changes and unpushed commits and asks for confirmation if any, then
     runs `git worktree remove` and closes the tab. Check: a clean worktree is
     removed at once, a dirty one only after confirmation.
-15. **Error reporting.** Failures in background work show an `hs.alert`
+14. **Error reporting.** Failures in background work show an `hs.alert`
     besides the Script Console. Check: a fetch with a broken CLI path shows
     an alert.

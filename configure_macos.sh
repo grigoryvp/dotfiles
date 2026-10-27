@@ -148,6 +148,8 @@ codex
 steam
 ollama
 yandextelemost
+gh
+glab
 EOF
   _brew_install "$@"
 }

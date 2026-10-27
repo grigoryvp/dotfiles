@@ -98,15 +98,26 @@ Stub behavior today: the chooser has one row, and `gm_new_done()` types
 ## Planned design
 
 - **Project list**: the iTerm script periodically fetches repositories from
-  GitLab and GitHub hosts listed in a config into a JSON cache. The
-  UI reads the cache and shows it instantly; a refresh runs in the background.
+  github.com and gitlab.com through the `gh` and `glab` CLIs into a JSON
+  cache. The CLIs own authentication and pagination, so GM needs no config
+  or tokens; more hosts later are a `--hostname` parameter plus a host list.
+  The UI reads the cache and shows it instantly; a refresh runs in the
+  background.
+- **Cache location**: `~/.cache/grigoryvp-gm/projects.json`. iTerm gives
+  scripts no data directory, and the cache is written by the iTerm script
+  but read by Hammerspoon and the Wox plugin, so it lives outside all three.
+  The prefix avoids clashes with other tools named `gm`. Each part keeps the
+  path in a constant that names the other users.
 - **`gm new`**: fuzzy-pick a project, enter a branch. Clone into `~/git` on
   first use, `git fetch`, then create a worktree in `~/Documents`: track the
   remote branch if it exists, otherwise branch off the fresh default branch.
   If the branch already has a worktree, switch to its tab instead (git allows
   one worktree per branch).
-- **Tabs**: one named tab per worktree. The tab <-> worktree link is a session
-  user variable (e.g. `user.worktree`), so it survives an iTerm restart.
+- **Tabs**: one named tab per worktree. The tab <-> worktree link is the tab
+  variable `user.worktree` holding the worktree path, not the title: shells
+  and users rewrite titles, and titles of different projects can collide. A
+  tab variable rather than a session one, so splits share it. If several
+  tabs match, the first one is used and the rest are left alone.
 - **Dependencies**: detect the stack by lockfiles (`uv.lock` -> `uv sync`,
   `pnpm-lock.yaml` -> `pnpm i`, `package-lock.json` -> `npm ci`, ...), with an
   optional per-repo override; run the install in the new tab.
@@ -124,21 +135,23 @@ when it's empty.
 1. **Script liveness in `gm status`.** The Wox plugin shows whether the iTerm
    script is running (`pgrep -f AutoLaunch/gm.py`). Check: kill the script,
    `gm status` says "not running"; restart it, "running".
-2. **Config.** The iTerm script loads a config with the list of hosts
-   (type, URL, token source) and prints the parsed hosts to the Script
-   Console. Location and token storage are open questions (see below).
-   Check: Script Console shows the hosts after a restart.
-3. **GitHub fetch.** Fetch repositories of one GitHub host through the REST
-   API (`urllib` in `asyncio.to_thread()`) on script start and write them to
-   the JSON cache atomically (temp file + rename). Check: the cache file
-   lists the expected repositories.
-4. **GitLab fetch.** Same for GitLab hosts (`/projects?membership=true`,
-   paginated), merged into the same cache. Check: GitLab projects appear in
-   the cache alongside GitHub ones.
-5. **Periodic refresh.** Re-fetch every 10 minutes; a failed fetch keeps the
-   previous cache. `gm status` shows the cache age and project count.
-   Check: the age resets after 10 minutes; with the network off the cache
-   survives.
+2. **CLI lookup.** The iTerm script resolves `gh` and `glab` with
+   `shutil.which()`, falling back to `/opt/homebrew/bin` since GUI-launched
+   scripts may lack Homebrew in `PATH`, and prints both paths to the Script
+   Console. Check: both paths are printed after a script restart.
+3. **GitHub fetch.** On script start run
+   `gh api 'user/repos?affiliation=owner,collaborator,organization_member'
+   --paginate` (`asyncio.create_subprocess_exec()`) and write the
+   repositories to `~/.cache/grigoryvp-gm/projects.json` atomically (temp
+   file + rename). Check: the cache lists own, collaborator and organization
+   repositories.
+4. **GitLab fetch.** Same with `glab api 'projects?membership=true'
+   --paginate`, merged into the same cache. Check: gitlab.com projects
+   appear alongside GitHub ones.
+5. **Periodic refresh.** Re-fetch every 10 minutes; a failed fetch (non-zero
+   CLI exit) keeps the previous cache. `gm status` shows the cache age and
+   project count. Check: the age resets after 10 minutes; with the network
+   off the cache survives.
 6. **Project picker.** `gm:showNew()` fills the chooser from the cache
    instead of the stub row. Check: `gm new` opens in under 0.5s and filters
    projects as you type.
@@ -156,30 +169,28 @@ when it's empty.
     otherwise branch off the fresh default branch. Check: `git worktree list`
     shows it, for both an existing and a new branch.
 11. **Tab.** Open a tab in the worktree directory, name it after the
-    worktree and set `user.worktree`. Replace the debug text. Check: the tab
-    opens in the right directory with the right title.
-12. **Existing worktree.** If the branch already has a worktree, focus its
+    worktree and set its `user.worktree`. Replace the debug text. Check: the
+    tab opens in the right directory with the right title; `user.worktree`
+    survives an iTerm restart.
+12. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+    path, reuse it instead of opening another one. Check: remove the worktree
+    manually, keep its tab, run `gm new` with the same branch: still one
+    tab.
+13. **Existing worktree.** If the branch already has a worktree, focus its
     tab, opening one if it was closed. Check: `gm new` with the same branch
     twice gives one worktree and one tab.
-13. **Dependencies.** Detect the stack by lockfiles and run the install
+14. **Dependencies.** Detect the stack by lockfiles and run the install
     command in the new tab. Check: a `uv` project gets `uv sync`, a project
     without lockfiles gets nothing.
-14. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+15. **`gm go`.** A chooser lists worktrees from `git worktree list` across
     `~/git`; selecting one focuses or opens its tab. Check: works for a tab
     that is open and for one that was closed.
-15. **`gm go` splits.** A newly opened tab gets the standard split layout.
+16. **`gm go` splits.** A newly opened tab gets the standard split layout.
     Check: the layout matches the one from shift-cmd-d.
-16. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+17. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
     changes and unpushed commits and asks for confirmation if any, then
     runs `git worktree remove` and closes the tab. Check: a clean worktree is
     removed at once, a dirty one only after confirmation.
-17. **Error reporting.** Failures in background work show an `hs.alert`
-    besides the Script Console. Check: a fetch with a bad token shows an
-    alert.
-
-Open questions:
-
-- Where the config lives: in dotfiles (hosts are then public) or outside
-  them, e.g. `~/.config/gm/`.
-- Where tokens come from: macOS Keychain, environment variables or the
-  config file.
+18. **Error reporting.** Failures in background work show an `hs.alert`
+    besides the Script Console. Check: a fetch with a broken CLI path shows
+    an alert.

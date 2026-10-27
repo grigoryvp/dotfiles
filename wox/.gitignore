@@ -1,5 +1,6 @@
-*
-!.gitignore
-!plugins/
-!plugins/single-file/
-!plugins/single-file/**
+/notes/
+/screenshots/
+/settings/
+/themes/
+/plugins/scripts/
+/wox.db

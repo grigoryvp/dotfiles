@@ -1,7 +1,18 @@
-*
-!.gitignore
-!user.config.toml
-!skills/
-!skills/**
-!rules/
-!rules/**
+/.codex-global-state.json
+/.codex-global-state.json.bak
+/.tmp/
+/tmp/
+/ipc/
+/computer-use/
+/sqlite/
+/vendor_imports/
+/AGENTS.md
+/config.toml
+/installation_id
+/models_cache.json
+/*.sqlite
+/*.sqlite-shm
+/*.sqlite-wal
+# Symlinks to ~/.claude, tracked there.
+/prompts
+/skills

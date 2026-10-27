@@ -1628,6 +1628,7 @@ Stormrider
 Stormshroud
 Stranglegasp
 strconv
+Streamable
 strenv
 stress-ng
 Strix
@@ -1775,6 +1776,7 @@ triphosphate
 trixie
 trmnl
 truecrypt
+trunc
 Tsaurus
 tsbash
 tsc
@@ -2101,6 +2103,7 @@ zx
 видеопроигрывателя
 Виммер
 виртуалках
+ВМ
 внетелесного
 врапперов
 вспомогательности

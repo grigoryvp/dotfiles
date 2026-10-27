@@ -148,8 +148,8 @@ async def main(connection):
 
     # Called by hammerspoon/gm.lua with "<host>/<path>" of the picked project.
     @iterm2.RPC
-    async def gm_new_done(project: str):
-        run_in_background(send_debug(project))
+    async def gm_new_done(project: str, branch: str):
+        run_in_background(send_debug(f"{project} {branch}"))
 
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)

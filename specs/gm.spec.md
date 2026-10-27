@@ -47,17 +47,23 @@ Wox (gm new, Enter)
        to invoke API expression "gm_new()"
 iTerm script: RPC gm_new()
   -> HTTP POST localhost:2020 {"command": "gm_new"}
-Hammerspoon: App:startHttpServer() -> gm:showNew() -> hs.chooser
-  ... user selects or dismisses ...
+Hammerspoon: App:startHttpServer() -> gm:showNew() -> project hs.chooser
+  ... user selects a project or dismisses ...
+Hammerspoon: completion callback -> gm:_showBranch() -> branch hs.chooser
+  ... user types or pastes a branch and presses Enter, or dismisses ...
 Hammerspoon: completion callback -> hs.task osascript
-  -> invoke API expression "gm_new_done(project: \"<host>/<path>\")"
-iTerm script: RPC gm_new_done(project) -> acts on the current session
+  -> invoke API expression
+       "gm_new_done(project: \"<host>/<path>\", branch: \"<branch>\")"
+iTerm script: RPC gm_new_done(project, branch) -> acts on the current session
 ```
 
 Stub behavior today: the chooser lists projects from the cache (path as
-text, host as subtext, Hammerspoon's default filtering); selecting one calls
-`gm_new_done()` with its `<host>/<path>`, which types it into the current
-session with `async_send_text()`. Dismissing the chooser calls nothing.
+text, host as subtext, Hammerspoon's default filtering); selecting one opens
+the branch chooser, whose only row mirrors the query with surrounding
+whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
+that row calls `gm_new_done()`, which types `<host>/<path> <branch>` into the
+current session with `async_send_text()`. Dismissing either chooser calls
+nothing.
 
 ### Transports
 
@@ -86,6 +92,9 @@ session with `async_send_text()`. Dismissing the chooser calls nothing.
 - **`hs.chooser` callbacks**: `hideCallback` fires on every hide, sometimes
   twice. GM uses the completion callback instead: it gets the row once on
   selection and `nil` on dismissal (twice on Esc), so `nil` is ignored.
+  `queryChangedCallback` fires on typing, pasting and `show()`, but not on
+  `query()`, so the branch chooser resets its rows explicitly before
+  `show()`.
 - **Hammerspoon -> iTerm uses `hs.task`**, not `hs.osascript`, so a pending
   Automation prompt doesn't block Hammerspoon's main thread.
 - **CLI lookup**: the iTerm script resolves `gh` and `glab` with
@@ -161,38 +170,35 @@ Each step adds one small piece and ends with a manual check. Delete a step
 once it's done and its decisions are reflected above; delete the section
 when it's empty.
 
-1. **Branch input.** After a project is picked, a second chooser takes the
-   branch name from its query text. Check: debug text is
-   `<project> <branch>`; a pasted branch name works.
-2. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
+1. **Clone.** If the project is not in `~/git/<host>/<path>`, clone it.
    Check: first run clones, second run skips cloning.
-3. **Worktree.** `git fetch`, then `git worktree add` in
+2. **Worktree.** `git fetch`, then `git worktree add` in
    `~/Documents/<repo>-<branch>`: track the remote branch if it exists,
    otherwise branch off the fresh default branch. Check: `git worktree list`
    shows it, for both an existing and a new branch.
-4. **Tab.** Open a tab in the worktree directory, name it after the
+3. **Tab.** Open a tab in the worktree directory, name it after the
    worktree and set its `user.worktree`. Replace the debug text. Check: the
    tab opens in the right directory with the right title; `user.worktree`
    survives an iTerm restart.
-5. **Existing tab.** If a tab's `user.worktree` already holds the worktree
+4. **Existing tab.** If a tab's `user.worktree` already holds the worktree
    path, reuse it instead of opening another one. Check: remove the worktree
    manually, keep its tab, run `gm new` with the same branch: still one
    tab.
-6. **Existing worktree.** If the branch already has a worktree, focus its
+5. **Existing worktree.** If the branch already has a worktree, focus its
    tab, opening one if it was closed. Check: `gm new` with the same branch
    twice gives one worktree and one tab.
-7. **Dependencies.** Detect the stack by lockfiles and run the install
+6. **Dependencies.** Detect the stack by lockfiles and run the install
    command in the new tab. Check: a `uv` project gets `uv sync`, a project
    without lockfiles gets nothing.
-8. **`gm go`.** A chooser lists worktrees from `git worktree list` across
+7. **`gm go`.** A chooser lists worktrees from `git worktree list` across
    `~/git`; selecting one focuses or opens its tab. Check: works for a tab
    that is open and for one that was closed.
-9. **`gm go` splits.** A newly opened tab gets the standard split layout.
+8. **`gm go` splits.** A newly opened tab gets the standard split layout.
    Check: the layout matches the one from shift-cmd-d.
-10. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
-    changes and unpushed commits and asks for confirmation if any, then
-    runs `git worktree remove` and closes the tab. Check: a clean worktree is
-    removed at once, a dirty one only after confirmation.
-11. **Error reporting.** Failures in background work show an `hs.alert`
+9. **`gm rm`.** A chooser lists worktrees; removal checks for uncommitted
+   changes and unpushed commits and asks for confirmation if any, then
+   runs `git worktree remove` and closes the tab. Check: a clean worktree is
+   removed at once, a dirty one only after confirmation.
+10. **Error reporting.** Failures in background work show an `hs.alert`
     besides the Script Console. Check: a fetch with a broken CLI path shows
     an alert.

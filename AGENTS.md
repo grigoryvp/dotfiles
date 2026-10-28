@@ -1,5 +1,9 @@
 # Sub-projects
 
+If a sub-project is implemented according to a spec then keep spec in sync
+with the project code and keep it as short as possible: only key decisions
+that are not observable from code.
+
 ## Git Manager
 
 Provides fast switching between worktrees. Implemented according to
@@ -8,5 +12,8 @@ Provides fast switching between worktrees. Implemented according to
 tabs), Wox plugin `wox/plugins/single-file/gm.py` for command access and
 hammerspoon code `hammerspoon/gm.lua` for UI.
 
-Keep spec in sync with the code and keep it as short as possible: only key
-decisions that are not observable from code.
+## iTerm Status Bar
+
+Provides a single "status bar" which is displayed as a window title. Used
+by other iTerm-based projects to write logs to. Implemented according to
+`specs/status.spec.md` as `iterm/Scripts/AutoLaunch/status.py` plugin.

@@ -61,9 +61,8 @@ status must not break the workflow.
   entries expire before hours), so a step that hangs or a command that
   crashed shows a growing number, or the age of a final one (`5m ago`).
 - **Idle**: with no entry, or after it expires in 1 hour, the title is
-  `iTerm2 status plugin on Python <runtime>, <sys.version>`, where the
-  runtime is the name of the venv iTerm runs scripts in (e.g.
-  `uv/venvs/3.12`). It shows that `status.py` runs and on what. iTerm's
+  `iTerm2 status plugin on Python <sys.version>`, which shows that
+  `status.py` runs and on what. iTerm's
   default window title isn't needed: the user works in a single window with
   tabs and never edits the window title.
 - **Rendering**: once a second and right after `status_add()`, every window

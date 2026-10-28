@@ -7,7 +7,6 @@
 import asyncio
 import sys
 import time
-from pathlib import Path
 
 import iterm2
 
@@ -48,9 +47,8 @@ def format_age(seconds: float) -> str:
     return f"{int(seconds // 60)}m"
 
 
-# Shown without entries. iTerm runs scripts in a venv named after its Python
-# runtime, e.g. uv/venvs/3.12.
-IDLE_TITLE = f"iTerm2 status plugin on Python {Path(sys.prefix).name}, {sys.version}"
+# Shown without entries.
+IDLE_TITLE = f"iTerm2 status plugin on Python {sys.version}"
 
 # Keeps the render loop from being garbage collected.
 _render_task: asyncio.Task | None = None

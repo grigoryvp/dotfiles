@@ -1,0 +1,19 @@
+{
+  "colorScheme": "solarized dark",
+  "permissions": {
+    "allow": [
+      "command(ls)",
+      "command(find)",
+      "command(grep)",
+      "command(pgrep)",
+      "command(uname)",
+      "command(git status)",
+      "command(git log)",
+      "command(git check-ref-format)"
+    ]
+  },
+  "trustedWorkspaces": [
+    "/Users/user/Documents",
+    "/Users/user/dotfiles"
+  ]
+}

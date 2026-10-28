@@ -1131,6 +1131,10 @@ configure() {
   ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
   ln -fs ~/dotfiles/.claude/skills ~/.codex/skills
   ln -fs ~/dotfiles/.claude/CLAUDE.md ~/.codex/AGENTS.md
+  if [ -e ~/.gemini ]; then
+    rm -rf ~/.gemini
+  fi
+  ln -fs ~/dotfiles/.gemini ~/.gemini
 
   ln -fs ~/dotfiles/.screenrc ~/.screenrc
   ln -fs ~/dotfiles/.gitattributes ~/.gitattributes

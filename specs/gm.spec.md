@@ -4,8 +4,8 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: `gm new`, `gm create`, `gm go` and `gm rm` work end to end. Everything marked
-*planned* is not implemented yet.
+Status: `gm new`, `gm create`, `gm go`, `gm rm` and `gm refresh` work end
+to end. Everything marked *planned* is not implemented yet.
 
 ## Components
 
@@ -33,6 +33,8 @@ with first-class access to tabs and sessions.
 - `gm rm` (done): removes a worktree and closes its tab.
 - `gm go` (done): focuses a worktree's tab, creating it and its splits if
   missing.
+- `gm refresh` (done): fetches the project list now instead of waiting
+  for the periodic refresh.
 - `gm status` (done): debug info: query fields, plugin Python, whether
   iTerm2, the iTerm script and Hammerspoon are running, project cache age
   (file mtime), project count per host and the last 5 logged errors.
@@ -178,10 +180,11 @@ below). Dismissing either chooser or a failure does nothing.
   `os.replace()`) so readers never see a partial file. Each fetch replaces
   only its host's entries; the read-modify-write has no `await` inside, so
   concurrent fetches don't lose each other's entries.
-- **Fetch** (done): on script start and then every 10 minutes, both CLIs
-  run concurrently via `asyncio.create_subprocess_exec()`. A non-zero exit
-  prints stderr to the Script Console and leaves the host's entries as is;
-  an exception is printed too and doesn't stop the refresh loop.
+- **Fetch** (done): on script start, then every 10 minutes and on `gm
+  refresh` (RPC `gm_refresh()`, no UI), both CLIs run concurrently via
+  `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to the
+  Script Console and leaves the host's entries as is; an exception is
+  printed too and doesn't stop the refresh loop.
   - GitHub: `gh api
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
     --paginate --jq '.[].full_name'`. `--jq` is needed because plain

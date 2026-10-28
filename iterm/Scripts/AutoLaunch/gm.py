@@ -2,8 +2,8 @@
 # Git Manager (GM): one git worktree and iTerm tab per task.
 #
 # Parts:
-# - Project list: periodically fetches repos from github.com and gitlab.com
-#   into a JSON cache that the Hammerspoon UI reads.
+# - Project list: periodically and on `gm refresh` fetches repos from
+#   github.com and gitlab.com into a JSON cache that the Hammerspoon UI reads.
 # - RPC entry points: called via AppleScript `invoke API expression` by the
 #   Wox plugin (wox/plugins/single-file/gm.py) to show UI through the
 #   Hammerspoon HTTP server, and by hammerspoon/gm.lua with the user's pick.
@@ -106,17 +106,21 @@ async def fetch_gitlab(glab: str) -> None:
 REFRESH_INTERVAL_SEC = 10 * 60
 
 
+async def fetch_projects(gh: str | None, glab: str | None) -> None:
+    fetches = []
+    if gh is not None:
+        fetches.append(fetch_github(gh))
+    if glab is not None:
+        fetches.append(fetch_gitlab(glab))
+    # An exception in one fetch must not stop the refresh loop.
+    for result in await asyncio.gather(*fetches, return_exceptions=True):
+        if isinstance(result, Exception):
+            report(f"fetch failed: {result!r}")
+
+
 async def refresh_projects(gh: str | None, glab: str | None) -> None:
     while True:
-        fetches = []
-        if gh is not None:
-            fetches.append(fetch_github(gh))
-        if glab is not None:
-            fetches.append(fetch_gitlab(glab))
-        # An exception in one fetch must not stop the refresh loop.
-        for result in await asyncio.gather(*fetches, return_exceptions=True):
-            if isinstance(result, Exception):
-                report(f"fetch failed: {result!r}")
+        await fetch_projects(gh, glab)
         await asyncio.sleep(REFRESH_INTERVAL_SEC)
 
 
@@ -474,6 +478,11 @@ async def main(connection):
     async def gm_create(name: str):
         run_in_background(create_project(name))
 
+    # Called by wox/plugins/single-file/gm.py; no UI, results land in the cache.
+    @iterm2.RPC
+    async def gm_refresh():
+        run_in_background(fetch_projects(gh, glab))
+
     @iterm2.RPC
     async def gm_go():
         run_in_background(show_worktrees("gm_go"))
@@ -500,6 +509,7 @@ async def main(connection):
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)
     await gm_create.async_register(connection)
+    await gm_refresh.async_register(connection)
     await gm_go.async_register(connection)
     await gm_go_done.async_register(connection)
     await gm_rm.async_register(connection)

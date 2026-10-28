@@ -14,6 +14,7 @@
 #     {"Command": "create", "Description": "Create a private repo and its worktree"},
 #     {"Command": "rm", "Description": "Remove a worktree and its iTerm tab"},
 #     {"Command": "go", "Description": "Switch to a worktree's iTerm tab"},
+#     {"Command": "refresh", "Description": "Refresh the project list"},
 #     {"Command": "status", "Description": "Show debug info"}
 #   ]
 # }
@@ -47,6 +48,7 @@ COMMANDS = {
     "create": "Create a private repo and its worktree",
     "rm": "Remove a worktree and its iTerm tab",
     "go": "Switch to a worktree's iTerm tab",
+    "refresh": "Refresh the project list",
     "status": "Show debug info",
 }
 
@@ -135,6 +137,10 @@ class GitManager:
             results = [self.rpc_result("go", "Open the worktree picker")]
         elif query.command == "rm":
             results = [self.rpc_result("rm", "Open the worktree picker")]
+        elif query.command == "refresh":
+            results = [
+                self.rpc_result("refresh", "Fetch projects from GitHub and GitLab")
+            ]
         else:
             results = [self.command_result(query, name) for name in COMMANDS]
         return QueryResponse(results=results)

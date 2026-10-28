@@ -5,6 +5,7 @@
       "command(ls)",
       "command(find)",
       "command(grep)",
+      "command(head)",
       "command(pgrep)",
       "command(uname)",
       "command(git status)",

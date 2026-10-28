@@ -247,7 +247,7 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
         auth = ["-c", "credential.helper=", "-c", f"credential.helper={helper}"]
     if await run_cli(*git, *auth, "fetch") is None:
         return None
-    worktree = WORKTREES_DIR / f"{repo.name}-{branch.replace('/', '-')}"
+    worktree = WORKTREES_DIR / f"{repo.name}--{branch.replace('/', '-')}"
     if await git_succeeds("-C", str(repo), "show-ref", "-q", f"refs/heads/{branch}"):
         args = [str(worktree), branch]
     elif await git_succeeds(

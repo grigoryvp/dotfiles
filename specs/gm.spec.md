@@ -194,7 +194,7 @@ below). Dismissing either chooser or a failure does nothing.
   `-c 'credential.helper=!<cli> auth git-credential'`), the way `gh repo
   clone` does: plain git doesn't see the CLI's credentials for https remotes,
   and gh doesn't register itself as git's helper. A failed fetch aborts. The
-  worktree goes to `~/Documents/<repo>-<branch>` with `/` in the branch
+  worktree goes to `~/Documents/<repo>--<branch>` with `/` in the branch
   replaced by `-`:
   - a local branch is checked out as is;
   - otherwise `origin/<branch>` is tracked with `--track -b`;

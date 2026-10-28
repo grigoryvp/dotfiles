@@ -1270,6 +1270,7 @@ PersQueue
 PersQueueReadBalancer
 Petrov
 pfctl
+pgrep
 PGSSLMODE
 pgvector
 phantomsection

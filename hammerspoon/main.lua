@@ -49,6 +49,7 @@ function App:new()
   inst.telemostDock = nil
   inst.notionDock = nil
   inst.linearDock = nil
+  inst.itermDock = nil
   inst.vkToken = nil
   inst.tinyurlToken = nil
   -- Can't get if not connected to the network.
@@ -1168,7 +1169,8 @@ function App:onHeartbeat()
      or not self.waDock
      or not self.telemostDock
      or not self.notionDock
-     or not self.linearDock then
+     or not self.linearDock
+     or not self.itermDock then
     -- Do not check too often, CPU expensive
     if isBigTimeout and self.dockItems then
       for _, item in ipairs(self.dockItems) do
@@ -1201,6 +1203,9 @@ function App:onHeartbeat()
         end
         if item.AXTitle == "Linear" then
           self.linearDock = item
+        end
+        if item.AXTitle == "iTerm" then
+          self.itermDock = item
         end
       end
     end
@@ -1307,13 +1312,13 @@ function App:onHeartbeat()
 
   if self.indicateNewMsg then
     if self.telemostDock and self.telemostDock.AXStatusLabel then
-      table.insert(notifications, "t")
+      table.insert(notifications, "y")
     end
   end
   if self.indicateMissedMsgApps then
     if not self.telemostDock
        or not self.telemostDock.AXIsApplicationRunning then
-      table.insert(notifications, "t͓")
+      table.insert(notifications, "y͓")
     end
   end
 
@@ -1352,6 +1357,12 @@ function App:onHeartbeat()
   if self.indicateNewMsg then
     if self.linearDock and self.linearDock.AXStatusLabel then
       table.insert(notifications, "L")
+    end
+  end
+
+  if self.indicateNewMsg then
+    if self.itermDock and self.itermDock.AXStatusLabel then
+      table.insert(notifications, "t")
     end
   end
 

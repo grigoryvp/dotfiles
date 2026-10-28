@@ -8,7 +8,8 @@
 #   Wox plugin (wox/plugins/single-file/gm.py) to show UI through the
 #   Hammerspoon HTTP server, and by hammerspoon/gm.lua with the user's pick.
 # - Worktrees: clones into ~/git on first use, creates worktrees in
-#   ~/Documents, removes them after checking for unpushed work.
+#   ~/Documents, merges them into the default branch, removes them after
+#   checking for unpushed work.
 # - New projects: creates private GitHub repos and their first worktree.
 # - Tabs: opens a named tab per worktree, runs the stack's dependency
 #   install there, and closes it when the worktree is removed.
@@ -71,7 +72,9 @@ async def run_cli(*args: str) -> str | None:
     )
     stdout, stderr = await proc.communicate()
     if proc.returncode != 0:
-        report(f"{Path(args[0]).name} failed: {stderr.decode().strip()}")
+        # git merge prints conflicts to stdout.
+        output = (stderr or stdout).decode().strip()
+        report(f"{Path(args[0]).name} failed: {output}")
         return None
     return stdout.decode()
 
@@ -206,28 +209,34 @@ async def collect_worktrees() -> list[dict[str, str]]:
     return worktrees
 
 
-# The clone a removable worktree belongs to. The path comes over RPC, so
-# only worktrees of clones in ~/git qualify.
-async def find_clone_of(worktree: Path) -> Path | None:
+# The clone and branch of a worktree picked in the UI. The path comes over
+# RPC, so only worktrees of clones in ~/git qualify.
+async def locate_worktree(worktree: Path) -> tuple[Path, str | None] | None:
     clones = find_clones()
     for clone, entries in zip(
         clones, await asyncio.gather(*map(list_worktrees, clones))
     ):
-        if any(path == worktree for path, _ in entries):
-            return clone
+        for path, branch in entries:
+            if path == worktree:
+                return clone, branch
     return None
+
+
+async def count_uncommitted(worktree: Path) -> int | None:
+    status = await run_cli("git", "-C", str(worktree), "status", "--porcelain")
+    return None if status is None else len(status.splitlines())
 
 
 # A description of what removal would lose, or None if nothing.
 async def unsaved_work(worktree: Path) -> str | None:
-    git = ["git", "-C", str(worktree)]
-    status = await run_cli(*git, "status", "--porcelain")
+    changes = await count_uncommitted(worktree)
     # Commits that no remote-tracking branch has, as of the last fetch.
-    unpushed = await run_cli(*git, "rev-list", "--count", "HEAD", "--not", "--remotes")
-    if status is None or unpushed is None:
+    unpushed = await run_cli(
+        "git", "-C", str(worktree), "rev-list", "--count", "HEAD", "--not", "--remotes"
+    )
+    if changes is None or unpushed is None:
         return "unknown state, git failed"
     reasons = []
-    changes = len(status.splitlines())
     if changes:
         reasons.append(f"{changes} uncommitted changes")
     if int(unpushed):
@@ -242,19 +251,22 @@ async def find_worktree(repo: Path, branch: str) -> Path | None:
     return None
 
 
+# Plain git doesn't see the CLI's credentials for https remotes, so pass the
+# CLI as the only credential helper, the way `gh repo clone` does.
+def credential_args(cli: str | None) -> list[str]:
+    if cli is None:
+        return []
+    helper = f"!{shlex.quote(cli)} auth git-credential"
+    return ["-c", "credential.helper=", "-c", f"credential.helper={helper}"]
+
+
 async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
     # Also rejects names starting with "-" that git would take for options.
     if not await git_succeeds("check-ref-format", "--branch", branch):
         report(f"invalid branch name: {branch}")
         return None
     git = ["git", "-C", str(repo)]
-    # Plain git doesn't see the CLI's credentials for https remotes, so pass
-    # the CLI as the only credential helper, the way `gh repo clone` does.
-    auth = []
-    if cli is not None:
-        helper = f"!{shlex.quote(cli)} auth git-credential"
-        auth = ["-c", "credential.helper=", "-c", f"credential.helper={helper}"]
-    if await run_cli(*git, *auth, "fetch") is None:
+    if await run_cli(*git, *credential_args(cli), "fetch") is None:
         return None
     # A fresh clone holds the default branch, and git checks out a branch in
     # one worktree only.
@@ -280,6 +292,40 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
         return None
     # Same form as `git worktree list` gives, since tabs are matched by it.
     return worktree.resolve()
+
+
+# Returns why the worktree's branch wasn't merged and pushed, or None.
+async def merge_to_default(
+    clone: Path, worktree: Path, branch: str | None, cli: str | None
+) -> str | None:
+    if branch is None:
+        return "detached HEAD, no branch to merge"
+    changes = await count_uncommitted(worktree)
+    if changes is None:
+        return "unknown state, git failed"
+    if changes:
+        return f"{changes} uncommitted changes"
+    git = ["git", "-C", str(clone)]
+    auth = credential_args(cli)
+    if await run_cli(*git, *auth, "fetch") is None:
+        return "fetch failed, see gm status"
+    default = await run_cli(*git, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
+    if default is None:
+        return "no default branch, see gm status"
+    default = default.strip()
+    # The merge runs in the clone: it is detached and otherwise unused, while
+    # the local default branch may be checked out in some worktree.
+    if await run_cli(*git, "switch", "--detach", default) is None:
+        return f"switch to {default} failed, see gm status"
+    # Detached HEAD would make git say "into HEAD" in the default message.
+    message = f"Merge branch '{branch}'"
+    if await run_cli(*git, "merge", "-m", message, branch) is None:
+        await git_succeeds("-C", str(clone), "merge", "--abort")
+        return f"merge into {default} failed, see gm status"
+    target = f"HEAD:refs/heads/{default.removeprefix('origin/')}"
+    if await run_cli(*git, *auth, "push", "origin", target) is None:
+        return "push failed, see gm status"
+    return None
 
 
 # All matches run, e.g. for a Python backend with a JS frontend.
@@ -436,15 +482,25 @@ async def main(connection):
         await new_worktree(f"github.com/{path}", CREATE_BRANCH)
 
     # urlopen() blocks and would stall the API connection.
-    async def show_worktrees(command: str):
+    async def show_worktrees(command: str, **params):
         worktrees = await collect_worktrees()
-        await asyncio.to_thread(call_hammerspoon, command, worktrees=worktrees)
+        await asyncio.to_thread(
+            call_hammerspoon, command, worktrees=worktrees, **params
+        )
+
+    async def show_merge():
+        window = app.current_window
+        tab = window.current_tab if window else None
+        active = await tab.async_get_variable("user.worktree") if tab else None
+        # Lua can't tell a JSON null from a missing key anyway.
+        await show_worktrees("gm_merge", **({"active": active} if active else {}))
 
     async def remove_worktree(worktree: Path, force: bool):
-        clone = await find_clone_of(worktree)
-        if clone is None:
+        found = await locate_worktree(worktree)
+        if found is None:
             report(f"not a removable worktree: {worktree}")
             return
+        clone, _ = found
         if not force:
             reasons = await unsaved_work(worktree)
             if reasons is not None:
@@ -492,6 +548,34 @@ async def main(connection):
     async def gm_go_done(worktree: str):
         run_in_background(open_tab(Path(worktree), None))
 
+    async def merge_worktree(worktree: Path):
+        found = await locate_worktree(worktree)
+        if found is None:
+            report(f"not a mergeable worktree: {worktree}")
+            return
+        clone, branch = found
+        host = clone.relative_to(CLONES_DIR).parts[0]
+        reason = await merge_to_default(clone, worktree, branch, clone_clis.get(host))
+        if reason is not None:
+            await asyncio.to_thread(
+                call_hammerspoon,
+                "gm_merge_failed",
+                worktree=str(worktree),
+                reason=reason,
+            )
+            return
+        # Pushed, so nothing is unsaved and no confirmation shows up.
+        await remove_worktree(worktree, force=False)
+
+    @iterm2.RPC
+    async def gm_merge():
+        run_in_background(show_merge())
+
+    # Called by hammerspoon/gm.lua with the path of the picked worktree.
+    @iterm2.RPC
+    async def gm_merge_done(worktree: str):
+        run_in_background(merge_worktree(Path(worktree)))
+
     @iterm2.RPC
     async def gm_rm():
         run_in_background(show_worktrees("gm_rm"))
@@ -512,6 +596,8 @@ async def main(connection):
     await gm_refresh.async_register(connection)
     await gm_go.async_register(connection)
     await gm_go_done.async_register(connection)
+    await gm_merge.async_register(connection)
+    await gm_merge_done.async_register(connection)
     await gm_rm.async_register(connection)
     await gm_rm_done.async_register(connection)
     await gm_rm_force.async_register(connection)

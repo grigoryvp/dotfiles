@@ -571,6 +571,20 @@ function App:startHttpServer()
       gm:showRm(json.worktrees)
       return "", 200, {}
 
+    elseif json.command == "gm_merge" then
+      if type(json.worktrees) ~= "table" then
+        return "gm_merge without worktrees", 400, {}
+      end
+      gm:showMerge(json.worktrees, json.active)
+      return "", 200, {}
+
+    elseif json.command == "gm_merge_failed" then
+      if type(json.worktree) ~= "string" or type(json.reason) ~= "string" then
+        return "gm_merge_failed without worktree or reason", 400, {}
+      end
+      gm:showMergeFailed(json.worktree, json.reason)
+      return "", 200, {}
+
     elseif json.command == "gm_rm_confirm" then
       if type(json.worktree) ~= "string" or type(json.reasons) ~= "string" then
         return "gm_rm_confirm without worktree or reasons", 400, {}

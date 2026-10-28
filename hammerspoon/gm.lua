@@ -6,6 +6,8 @@ gm = {
   _goChooser = nil,
   _rmChooser = nil,
   _rmConfirmChooser = nil,
+  _mergeChooser = nil,
+  _mergeFailedChooser = nil,
   -- "<host>/<path>" picked in _newChooser, waiting for a branch
   _newProject = nil
 }
@@ -222,4 +224,47 @@ function gm:showRmConfirm(worktree, reasons)
   })
   self._rmConfirmChooser:query("")
   self._rmConfirmChooser:show()
+end
+
+
+-- active is the path of the active iTerm tab's worktree, if any
+function gm:showMerge(worktrees, active)
+  if not self._mergeChooser then
+    self._mergeChooser = hs.chooser.new(function(choice)
+      if choice and choice.path then
+        self:_invokeIterm(
+          "gm_merge_done(worktree: " .. self:_itermString(choice.path) .. ")"
+        )
+      end
+    end)
+    self._mergeChooser:searchSubText(true)
+    self._mergeChooser:placeholderText("Worktree to merge and remove")
+  end
+  local choices = self:_worktreeChoices(worktrees)
+  -- The first row is selected on show
+  for i, choice in ipairs(choices) do
+    if choice.path == active then
+      table.insert(choices, 1, table.remove(choices, i))
+      break
+    end
+  end
+  self._mergeChooser:choices(choices)
+  self._mergeChooser:query("")
+  self._mergeChooser:show()
+end
+
+
+-- Shown by iterm/Scripts/AutoLaunch/gm.py when the picked worktree wasn't
+-- merged; nothing to pick, any choice just hides it
+function gm:showMergeFailed(worktree, reason)
+  if not self._mergeFailedChooser then
+    self._mergeFailedChooser = hs.chooser.new(function() end)
+  end
+  local name = worktree:match("[^/]+$")
+  self._mergeFailedChooser:placeholderText(name .. ": " .. reason)
+  self._mergeFailedChooser:choices({
+    {text = name .. " not merged", subText = reason}
+  })
+  self._mergeFailedChooser:query("")
+  self._mergeFailedChooser:show()
 end

@@ -4,8 +4,8 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: `gm new`, `gm create`, `gm go`, `gm rm` and `gm refresh` work end
-to end. Everything marked *planned* is not implemented yet.
+Status: `gm new`, `gm create`, `gm go`, `gm rm`, `gm merge` and `gm
+refresh` work end to end. Everything marked *planned* is not implemented yet.
 
 ## Components
 
@@ -31,6 +31,8 @@ with first-class access to tabs and sessions.
 - `gm create <name>` (done): creates a private GitHub repo and continues
   as `gm new` with branch `new`.
 - `gm rm` (done): removes a worktree and closes its tab.
+- `gm merge` (done): merges a worktree's branch into the default one,
+  pushes it, then removes the worktree as `gm rm` does.
 - `gm go` (done): focuses a worktree's tab, creating it and its splits if
   missing.
 - `gm refresh` (done): fetches the project list now instead of waiting
@@ -92,6 +94,17 @@ iTerm script: RPC gm_rm_done(worktree) -> unsaved work found
 Hammerspoon: gm:showRmConfirm() -> hs.chooser
   -> invoke API expression "gm_rm_force(worktree: \"<path>\")"
 iTerm script: RPC gm_rm_force(worktree) -> remove with --force, close tab
+```
+
+`gm merge` is the same with `gm_merge()` and `gm_merge_done(worktree)`; the
+request also carries `"active": "<path>"`, the worktree of iTerm's active
+tab, if any. A failure is shown instead of a confirmation:
+
+```
+iTerm script: RPC gm_merge_done(worktree) -> not merged
+  -> HTTP POST localhost:2020 {"command": "gm_merge_failed", "worktree": ...,
+       "reason": "2 uncommitted changes"}
+Hammerspoon: gm:showMergeFailed() -> hs.chooser with a single row
 ```
 
 Behavior today: the chooser lists projects from the cache (path as
@@ -298,14 +311,29 @@ below). Dismissing either chooser or a failure does nothing.
   later `gm new` with that branch checks it out again. After removal all
   its tabs are closed with `Tab.async_close()` without force: iTerm still
   asks if something runs there.
+- **`gm merge`** (done): the chooser lists worktrees as `gm go` does, with
+  the active tab's worktree moved to the first row, which the chooser
+  selects. The picked worktree is refused if it is detached or has
+  uncommitted changes (counted as in `gm rm`; unpushed commits are what gets
+  merged). Then, in the clone, `git fetch` with the CLI's credentials as in
+  **Worktree**, `git switch --detach origin/<default>`, `git merge -m "Merge
+  branch '<branch>'"` (detached HEAD would make git's own message say "into
+  HEAD") and `git push origin HEAD:refs/heads/<default>`. The clone is
+  used because it is detached and otherwise unused, while the local default
+  branch may be checked out in some worktree; the local default branch is
+  left behind. A failed merge is aborted with `git merge --abort`. Any
+  refusal or failure opens a chooser with the reason, details are in `gm
+  status`. After the push the worktree has no unsaved work, so `gm rm` logic
+  removes it without a confirmation and closes its tabs.
 - **Source of truth** for existing worktrees is `git worktree list` across the
   clones in `~/git`; GM keeps no separate state. Every listing, for `gm new`,
-  `gm go` and `gm rm` alike, runs `git worktree prune` first, so worktrees
+  `gm go`, `gm rm` and `gm merge` alike, runs `git worktree prune` first, so worktrees
   whose directory was deleted by hand don't show up.
 - **Error reporting** (done): every failure described above as printed to
   the Script Console goes through `report()` in the iTerm script, which
   prints the message and appends it to `~/.cache/grigoryvp-gm/gm.log` as
-  `<date> <time> <message>`, one entry per line (multi-line stderr is joined
+  `<date> <time> <message>`, one entry per line (multi-line stderr, or stdout
+  if stderr is empty, since git merge prints conflicts there, is joined
   with ` | `), so readers can take the last lines. `gm status` shows the
   last 5 entries, newest first. `run_in_background()` reports unhandled
   exceptions of its tasks too, with the traceback in the console only.

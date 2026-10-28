@@ -58,6 +58,22 @@ gm.CACHE_PATH = os.getenv("HOME") .. "/.cache/grigoryvp-gm/projects.json"
 gm.LOG_PATH = os.getenv("HOME") .. "/.cache/grigoryvp-gm/gm.log"
 
 
+-- Muted to sit next to the chooser's default gray subtext
+gm.HOST_COLORS = {
+  ["github.com"] = {hex = "#4A9A62"},
+  ["gitlab.com"] = {hex = "#D2692F"}
+}
+
+
+function gm:_hostText(host)
+  local color = self.HOST_COLORS[host]
+  if not color then
+    return host
+  end
+  return hs.styledtext.new(host, {color = color})
+end
+
+
 function gm:_projectChoices()
   local cache = hs.json.read(self.CACHE_PATH)
   if not cache then
@@ -67,7 +83,7 @@ function gm:_projectChoices()
   for _, project in ipairs(cache.projects) do
     table.insert(choices, {
       text = project.path,
-      subText = project.host,
+      subText = self:_hostText(project.host),
       id = project.host .. "/" .. project.path
     })
   end

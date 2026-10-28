@@ -95,7 +95,8 @@ iTerm script: RPC gm_rm_force(worktree) -> remove with --force, close tab
 ```
 
 Behavior today: the chooser lists projects from the cache (path as
-text, host as subtext, Hammerspoon's default filtering); selecting one opens
+text, host as subtext colored per host, since the same path can exist on
+both hosts, Hammerspoon's default filtering); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
 that row calls `gm_new_done()`, which clones the project if needed and

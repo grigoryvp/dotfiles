@@ -4,6 +4,8 @@ If a sub-project is implemented according to a spec then keep spec in sync
 with the project code and keep it as short as possible: only key decisions
 that are not observable from code.
 
+For iTerm plugins we write Python 3.12 code.
+
 ## Git Manager
 
 Provides fast switching between worktrees. Implemented according to

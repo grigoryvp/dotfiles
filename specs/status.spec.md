@@ -5,7 +5,7 @@ command (e.g. `gm merge` from Wox) the user can watch its progress and see
 whether it failed: `⌛ git push test-project (12s)`, `⚠️ git push failed:
 503 (2m ago)`, `✅ gm merge test-project (5m ago)`.
 
-Status: planned, nothing is implemented yet.
+Status: `status.py` is done; no script calls `add_log()` yet.
 
 ## Components
 
@@ -57,21 +57,22 @@ status must not break the workflow.
   the RPC returns at once (see "iTerm RPCs must return immediately" in
   `specs/gm.spec.md`).
 - **Title**: `<emoji> <text> (<time>)`, where the emoji is ⌛, ✅ or ⚠️ by
-  kind, and the time is the elapsed time of a progress entry (`12s`, `5m`,
-  `2h`), so a step that hangs or a command that crashed shows a growing
-  number, or the age of a final one (`5m ago`).
-- **Expiry**: an entry older than 1 hour is dropped, and the title is reset
-  with `Window.async_set_title("")` to iTerm's default (the current tab's
-  title).
+  kind, and the time is the elapsed time of a progress entry (`12s`, `5m`;
+  entries expire before hours), so a step that hangs or a command that
+  crashed shows a growing number, or the age of a final one (`5m ago`).
+- **Idle**: with no entry, or after it expires in 1 hour, the title is
+  `iTerm2 status plugin on Python <runtime>, <sys.version>`, where the
+  runtime is the name of the venv iTerm runs scripts in (e.g.
+  `uv/venvs/3.12`). It shows that `status.py` runs and on what. iTerm's
+  default window title isn't needed: the user works in a single window with
+  tabs and never edits the window title.
 - **Rendering**: once a second and right after `status_add()`, every window
   in `app.terminal_windows` gets the title with `Window.async_set_title()`,
   which also covers windows opened since the last tick. It is the same
   override as Window > Edit Window Title, so terminal escape sequences (e.g.
   Claude Code's session title) don't replace it, while pane titles and tab
   statuses keep working. The title is an interpolated string, so `\` in the
-  text is escaped as `\\`. A manual Edit Window Title is overwritten.
-- **Start**: titles of all windows are reset, since an override may survive
-  in a restored window from a previous run.
+  text is escaped as `\\`.
 
 ## Users
 

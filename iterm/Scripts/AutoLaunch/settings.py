@@ -21,6 +21,9 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     Key.DIM_BACKGROUND_WINDOWS: True,
     Key.DIM_ONLY_TEXT: True,
     Key.SPLIT_PANE_DIMMING_AMOUNT: 0.6,
+    # Advanced setting, absent from the enum. macOS can leave secure input
+    # stuck on loginwindow until logout, keeping the icon in every session.
+    "ShowSecureKeyboardEntryIndicator": False,
 }
 
 COLOR_PRESET = "Solarized Dark"

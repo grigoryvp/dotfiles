@@ -9,11 +9,13 @@
 #   Hammerspoon HTTP server, and by hammerspoon/gm.lua with the user's pick.
 # - Worktrees: clones into ~/git on first use, creates worktrees in
 #   ~/Documents, removes them after checking for unpushed work.
+# - New projects: creates private GitHub repos and their first worktree.
 # - Tabs: opens a named tab per worktree, runs the stack's dependency
 #   install there, and closes it when the worktree is removed.
 import asyncio
 import json
 import os
+import re
 import shlex
 import shutil
 import time
@@ -120,15 +122,18 @@ async def refresh_projects(gh: str | None, glab: str | None) -> None:
 
 CLONES_DIR = Path.home() / "git"
 
+# Characters GitHub keeps in repo names; no leading "-", which gh would take
+# for an option. Same as in wox/plugins/single-file/gm.py.
+REPO_NAME = re.compile(r"[A-Za-z0-9_.][A-Za-z0-9_.-]*")
+# Branch of the first worktree of a project made by gm create.
+CREATE_BRANCH = "new"
+
 
 # The CLIs clone with the protocol and credentials from their own config.
-# Returns the clone and whether it was just made.
-async def ensure_clone(
-    host: str, path: str, cli: str | None
-) -> tuple[Path, bool] | None:
+async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
     repo = CLONES_DIR / host / path
     if repo.exists():
-        return repo, False
+        return repo
     if cli is None:
         report(f"no CLI to clone from {host}")
         return None
@@ -136,7 +141,7 @@ async def ensure_clone(
     print(f"cloning {host}/{path}")
     if await run_cli(cli, "repo", "clone", path, str(repo)) is None:
         return None
-    return repo, True
+    return repo
 
 
 async def git_succeeds(*args: str) -> bool:
@@ -161,8 +166,9 @@ def find_clones(root: Path = CLONES_DIR) -> list[Path]:
     return [clone for child in sorted(root.iterdir()) for clone in find_clones(child)]
 
 
-# (path, branch) pairs, the clone itself included; branch is None when
-# detached.
+# (path, branch) pairs of linked worktrees; branch is None when detached.
+# Git lists the clone itself first, but clones are only a cache to make
+# worktrees from.
 async def list_worktrees(repo: Path) -> list[tuple[Path, str | None]]:
     # A worktree whose directory was deleted by hand still holds its branch
     # until pruned.
@@ -176,19 +182,18 @@ async def list_worktrees(repo: Path) -> list[tuple[Path, str | None]]:
         fields = dict(line.partition(" ")[::2] for line in entry.splitlines())
         branch = fields.get("branch", "").removeprefix("refs/heads/") or None
         worktrees.append((Path(fields["worktree"]), branch))
-    return worktrees
+    return worktrees[1:]
 
 
-# For hammerspoon/gm.lua. Git lists the clone itself first; gm rm skips it,
-# since `git worktree remove` refuses the main worktree.
-async def collect_worktrees(with_clones: bool) -> list[dict[str, str]]:
+# For hammerspoon/gm.lua.
+async def collect_worktrees() -> list[dict[str, str]]:
     clones = find_clones()
     worktrees = []
     for clone, entries in zip(
         clones, await asyncio.gather(*map(list_worktrees, clones))
     ):
         project = str(clone.relative_to(CLONES_DIR))
-        for path, branch in entries if with_clones else entries[1:]:
+        for path, branch in entries:
             # Lua can't tell a JSON null from a missing key anyway.
             worktree = {"path": str(path), "project": project}
             if branch is not None:
@@ -204,7 +209,7 @@ async def find_clone_of(worktree: Path) -> Path | None:
     for clone, entries in zip(
         clones, await asyncio.gather(*map(list_worktrees, clones))
     ):
-        if any(path == worktree for path, _ in entries[1:]):
+        if any(path == worktree for path, _ in entries):
             return clone
     return None
 
@@ -246,6 +251,10 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
         helper = f"!{shlex.quote(cli)} auth git-credential"
         auth = ["-c", "credential.helper=", "-c", f"credential.helper={helper}"]
     if await run_cli(*git, *auth, "fetch") is None:
+        return None
+    # A fresh clone holds the default branch, and git checks out a branch in
+    # one worktree only.
+    if await run_cli(*git, "switch", "--detach") is None:
         return None
     worktree = WORKTREES_DIR / f"{repo.name}--{branch.replace('/', '-')}"
     if await git_succeeds("-C", str(repo), "show-ref", "-q", f"refs/heads/{branch}"):
@@ -393,24 +402,38 @@ async def main(connection):
     async def new_worktree(project: str, branch: str):
         host, path = project.split("/", 1)
         cli = clone_clis.get(host)
-        clone = await ensure_clone(host, path, cli)
-        if clone is None:
+        repo = await ensure_clone(host, path, cli)
+        if repo is None:
             return
-        repo, is_new = clone
         # Git allows one worktree per branch, so an existing one is reused
-        # without a fetch, and its dependencies are presumably installed,
-        # unless it is the clone just made, e.g. for the default branch.
+        # without a fetch, and its dependencies are presumably installed.
         worktree = await find_worktree(repo, branch)
-        if worktree is None:
-            worktree = await create_worktree(repo, branch, cli)
-            if worktree is None:
-                return
-            is_new = True
-        await open_tab(worktree, install_command(worktree) if is_new else None)
+        if worktree is not None:
+            await open_tab(worktree, None)
+            return
+        worktree = await create_worktree(repo, branch, cli)
+        if worktree is not None:
+            await open_tab(worktree, install_command(worktree))
+
+    async def create_project(name: str):
+        if gh is None:
+            report("no gh to create a repo")
+            return
+        if not REPO_NAME.fullmatch(name):
+            report(f"invalid repo name: {name}")
+            return
+        output = await run_cli(gh, "repo", "create", name, "--private", "--add-readme")
+        if output is None:
+            return
+        # Without a TTY gh prints only the URL: https://github.com/<owner>/<name>.
+        path = "/".join(output.strip().split("/")[-2:])
+        # So that gm new lists it before the periodic refresh.
+        run_in_background(fetch_github(gh))
+        await new_worktree(f"github.com/{path}", CREATE_BRANCH)
 
     # urlopen() blocks and would stall the API connection.
-    async def show_worktrees(command: str, with_clones: bool):
-        worktrees = await collect_worktrees(with_clones)
+    async def show_worktrees(command: str):
+        worktrees = await collect_worktrees()
         await asyncio.to_thread(call_hammerspoon, command, worktrees=worktrees)
 
     async def remove_worktree(worktree: Path, force: bool):
@@ -446,9 +469,14 @@ async def main(connection):
     async def gm_new_done(project: str, branch: str):
         run_in_background(new_worktree(project, branch))
 
+    # Called by wox/plugins/single-file/gm.py with the new repo's name.
+    @iterm2.RPC
+    async def gm_create(name: str):
+        run_in_background(create_project(name))
+
     @iterm2.RPC
     async def gm_go():
-        run_in_background(show_worktrees("gm_go", with_clones=True))
+        run_in_background(show_worktrees("gm_go"))
 
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
@@ -457,7 +485,7 @@ async def main(connection):
 
     @iterm2.RPC
     async def gm_rm():
-        run_in_background(show_worktrees("gm_rm", with_clones=False))
+        run_in_background(show_worktrees("gm_rm"))
 
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
@@ -471,6 +499,7 @@ async def main(connection):
 
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)
+    await gm_create.async_register(connection)
     await gm_go.async_register(connection)
     await gm_go_done.async_register(connection)
     await gm_rm.async_register(connection)

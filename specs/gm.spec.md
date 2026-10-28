@@ -4,7 +4,7 @@ Housekeeping for many parallel tasks: one git worktree and one iTerm tab per
 task. Repositories are cloned once into `~/git`, each task gets a worktree in
 `~/Documents`, a named iTerm tab and its runtime dependencies installed.
 
-Status: `gm new`, `gm go` and `gm rm` work end to end. Everything marked
+Status: `gm new`, `gm create`, `gm go` and `gm rm` work end to end. Everything marked
 *planned* is not implemented yet.
 
 ## Components
@@ -28,6 +28,8 @@ with first-class access to tabs and sessions.
 
 - `gm new` (done): picks a project and a branch, creates a worktree and a
   tab, and installs dependencies there.
+- `gm create <name>` (done): creates a private GitHub repo and continues
+  as `gm new` with branch `new`.
 - `gm rm` (done): removes a worktree and closes its tab.
 - `gm go` (done): focuses a worktree's tab, creating it and its splits if
   missing.
@@ -55,6 +57,14 @@ Hammerspoon: completion callback -> hs.task osascript
   -> invoke API expression
        "gm_new_done(project: \"<host>/<path>\", branch: \"<branch>\")"
 iTerm script: RPC gm_new_done(project, branch) -> clone, worktree, tab
+```
+
+`gm create` takes the name in Wox itself, so there is no Hammerspoon UI:
+
+```
+Wox (gm create <name>, Enter)
+  -> osascript: invoke API expression "gm_create(name: \"<name>\")"
+iTerm script: RPC gm_create(name) -> gh repo create, then as gm_new_done()
 ```
 
 `gm go` follows the same chain with `gm_go()`, except that the iTerm script
@@ -183,17 +193,22 @@ below). Dismissing either chooser or a failure does nothing.
 - **Clone** (done): into `~/git/<host>/<path>` unless that directory
   exists, with `gh repo clone` or `glab repo clone`, so the protocol and
   credentials come from the CLI's own config (gh: https, glab: ssh here). A
-  failure prints the CLI's stderr to the Script Console.
+  failure prints the CLI's stderr to the Script Console. A clone is only a
+  cache to make worktrees from: no command lists it, opens a tab in it or
+  removes it.
 - **Worktree** (done): the branch name is checked with `git check-ref-format
   --branch` (which also rejects a leading `-`). Then `git worktree prune`
   drops entries whose directory was deleted by hand, and if `git worktree
-  list --porcelain` shows the branch checked out somewhere (the clone itself
-  included, e.g. for `main`), that path is used as is, without a fetch.
+  list --porcelain` shows the branch checked out in a worktree other than
+  the clone, that path is used as is, without a fetch.
   Otherwise `git fetch` runs with
   the host's CLI as the only credential helper (`-c credential.helper=` plus
   `-c 'credential.helper=!<cli> auth git-credential'`), the way `gh repo
   clone` does: plain git doesn't see the CLI's credentials for https remotes,
-  and gh doesn't register itself as git's helper. A failed fetch aborts. The
+  and gh doesn't register itself as git's helper. A failed fetch aborts.
+  Then `git switch --detach` in the clone frees whatever branch it holds
+  (a fresh clone holds the default one), since git checks out a branch in
+  one worktree only; the clone's files stay as they are. The
   worktree goes to `~/Documents/<repo>--<branch>` with `/` in the branch
   replaced by `-`:
   - a local branch is checked out as is;
@@ -245,14 +260,30 @@ below). Dismissing either chooser or a failure does nothing.
   its title are set up; if the shell hasn't started by then, it reads the
   command as typeahead. It is typed
   without a newline: the user reviews it and presses Enter. It is typed only
-  in a tab GM just opened for a worktree it just created, the clone itself
-  included (`gm new` with the default branch on first use): an existing
+  in a tab GM just opened for a worktree it just created: an existing
   worktree presumably has its dependencies, and GM never types into a tab
   that may be running something.
-- **`gm rm`** (done): the chooser lists worktrees as `gm go` does, minus the
-  clones themselves, which `git worktree remove` refuses. The picked path
-  comes back over RPC, so it is removed only if it is a non-main worktree of
-  a clone in `~/git`. Unsaved work is `git status --porcelain` lines
+- **`gm create`** (done): the name must match
+  `[A-Za-z0-9_.][A-Za-z0-9_.-]*` (characters GitHub keeps, no leading `-`
+  that gh would take for an option), checked by both the Wox plugin and the
+  iTerm script; it also needs no escaping in the iTerm expression. `gh repo
+  create <name> --private --add-readme` creates it under the gh user; the
+  README gives it a default branch to start from. Without a TTY gh prints
+  only the repo URL, whose last two parts are `<owner>/<name>`. Then a
+  GitHub fetch for the project list runs in the background, and the rest is
+  `gm new` with branch `new`: clone, worktree `~/Documents/<name>--new` off
+  `origin/HEAD`, tab. A failure is reported as everywhere else.
+- **`gm go`** (done): the chooser lists the worktrees in `~/Documents`,
+  i.e. the linked worktrees of all clones in `~/git` (`git worktree list
+  --porcelain` minus its first entry, the clone itself), collected
+  concurrently; a detached worktree has no `branch`. The chooser row is the
+  directory name (same as the tab title) with `<host>/<path> @ <branch>` as
+  subtext, and filtering searches the subtext too. Selecting a row focuses
+  or opens the tab as `gm new` does, but never types an install command. No
+  worktrees show a single "No worktrees" row.
+- **`gm rm`** (done): the chooser lists worktrees as `gm go` does. The
+  picked path comes back over RPC, so it is removed only if it is a linked
+  worktree of a clone in `~/git`. Unsaved work is `git status --porcelain` lines
   (uncommitted and untracked; ignored files like `node_modules` don't count)
   and `git rev-list --count HEAD --not --remotes` (commits on no
   remote-tracking branch, as of the last fetch, so a new branch without own

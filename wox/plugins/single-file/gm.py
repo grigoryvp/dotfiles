@@ -11,6 +11,7 @@
 #   "SupportedOS": ["Macos"],
 #   "Commands": [
 #     {"Command": "new", "Description": "Create a worktree and its iTerm tab"},
+#     {"Command": "create", "Description": "Create a private repo and its worktree"},
 #     {"Command": "rm", "Description": "Remove a worktree and its iTerm tab"},
 #     {"Command": "go", "Description": "Switch to a worktree's iTerm tab"},
 #     {"Command": "status", "Description": "Show debug info"}
@@ -21,6 +22,7 @@
 
 import asyncio
 import json
+import re
 import sys
 import time
 from collections import Counter
@@ -42,6 +44,7 @@ from wox_plugin import (
 ICON = WoxImage.new_emoji("🌳")
 COMMANDS = {
     "new": "Create a worktree and its iTerm tab",
+    "create": "Create a private repo and its worktree",
     "rm": "Remove a worktree and its iTerm tab",
     "go": "Switch to a worktree's iTerm tab",
     "status": "Show debug info",
@@ -53,6 +56,10 @@ CACHE_PATH = Path.home() / ".cache" / "grigoryvp-gm" / "projects.json"
 # Written by iterm/Scripts/AutoLaunch/gm.py and hammerspoon/gm.lua.
 LOG_PATH = CACHE_PATH.parent / "gm.log"
 LOG_ROWS = 5
+
+# Same as in iterm/Scripts/AutoLaunch/gm.py; also keeps the name free of
+# characters that would need escaping in the iTerm expression.
+REPO_NAME = re.compile(r"[A-Za-z0-9_.][A-Za-z0-9_.-]*")
 
 
 def cache_status() -> dict[str, str]:
@@ -94,15 +101,18 @@ async def running_status(*pgrep_args: str) -> str:
 
 # Returns the error text, or None on success. RPCs return before doing their
 # work, so errors in it show up only in iTerm's Script Console.
+# The expression goes in argv, so it needs no AppleScript escaping.
 async def invoke_iterm(expression: str) -> str | None:
-    script = (
-        'tell application id "com.googlecode.iterm2" to '
-        f'invoke API expression "{expression}"'
-    )
     proc = await asyncio.create_subprocess_exec(
         "osascript",
         "-e",
-        script,
+        "on run argv",
+        "-e",
+        'tell application id "com.googlecode.iterm2" to '
+        "invoke API expression (item 1 of argv)",
+        "-e",
+        "end run",
+        expression,
         stdout=asyncio.subprocess.DEVNULL,
         stderr=asyncio.subprocess.PIPE,
     )
@@ -119,6 +129,8 @@ class GitManager:
             results = await self.status(query)
         elif query.command == "new":
             results = [self.rpc_result("new", "Open the project picker")]
+        elif query.command == "create":
+            results = [self.create_result(query.search.strip())]
         elif query.command == "go":
             results = [self.rpc_result("go", "Open the worktree picker")]
         elif query.command == "rm":
@@ -162,6 +174,23 @@ class GitManager:
             sub_title=sub_title,
             icon=ICON,
             actions=[ResultAction(name="Open", action=run)],
+        )
+
+    def create_result(self, name: str) -> Result:
+        if not REPO_NAME.fullmatch(name):
+            sub_title = "Invalid name" if name else "Type a name"
+            return Result(title="gm create <name>", sub_title=sub_title, icon=ICON)
+
+        async def run(ctx: Context, _: ActionContext) -> None:
+            error = await invoke_iterm(f'gm_create(name: "{name}")')
+            if error:
+                await self.api.notify(ctx, f"gm create: {error}")
+
+        return Result(
+            title=f"gm create {name}",
+            sub_title="Create a private GitHub repo with a README, branch new",
+            icon=ICON,
+            actions=[ResultAction(name="Create", action=run)],
         )
 
     async def status(self, query: Query) -> list[Result]:

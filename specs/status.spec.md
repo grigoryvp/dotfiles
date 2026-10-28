@@ -3,9 +3,9 @@
 A one-line log in the title of every iTerm window, so that after giving a
 command (e.g. `gm merge` from Wox) the user can watch its progress and see
 whether it failed: `⌛ git push test-project (12s)`, `⚠️ git push failed:
-503 (2m ago)`, `✅ gm merge test-project (5m ago)`.
+503`, `✅ gm merge test-project`.
 
-Status: `status.py` is done; no script calls `add_log()` yet.
+Status: done, used by GM.
 
 ## Components
 
@@ -56,10 +56,10 @@ status must not break the workflow.
 - **`status_add()`** only updates the state and wakes the render loop, so
   the RPC returns at once (see "iTerm RPCs must return immediately" in
   `specs/gm.spec.md`).
-- **Title**: `<emoji> <text> (<time>)`, where the emoji is ⌛, ✅ or ⚠️ by
-  kind, and the time is the elapsed time of a progress entry (`12s`, `5m`;
-  entries expire before hours), so a step that hangs or a command that
-  crashed shows a growing number, or the age of a final one (`5m ago`).
+- **Title**: `<emoji> <text>`, where the emoji is ⌛, ✅ or ⚠️ by kind. A
+  progress entry also gets its elapsed time, `(12s)` or `(5m)` (entries
+  expire before hours), so a step that hangs or a command that crashed
+  shows a growing number. A final entry has no time.
 - **Idle**: with no entry, or after it expires in 1 hour, the title is
   `iTerm2 status plugin on Python <sys.version>`, which shows that
   `status.py` runs and on what. iTerm's
@@ -75,9 +75,4 @@ status must not break the workflow.
 
 ## Users
 
-- **GM** (planned): writes entries only for commands the user gave (`gm
-  new`, `gm create`, `gm go`, `gm rm`, `gm merge`, `gm refresh`): a
-  progress entry per step (clone, fetch, worktree, merge, push, remove) and
-  a final success or error. The periodic project
-  refresh doesn't write: offline it would show ⚠️ all the time. Errors keep
-  going to `gm.log` too.
+- **GM**: see **Status line** in `specs/gm.spec.md`.

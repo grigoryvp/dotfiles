@@ -329,6 +329,20 @@ below). Dismissing either chooser or a failure does nothing.
   clones in `~/git`; GM keeps no separate state. Every listing, for `gm new`,
   `gm go`, `gm rm` and `gm merge` alike, runs `git worktree prune` first, so worktrees
   whose directory was deleted by hand don't show up.
+- **Status line** (done): the user's commands write to the window title
+  through `status.py` (`specs/status.spec.md`): progress before steps that
+  can take long or fail on the network (clone, fetch, push, `gh repo
+  create`, `gm refresh`), the command name on success and `<command>:
+  <message>` on the first failure. `gm go` writes nothing, it is quick and
+  local; the periodic refresh neither, offline it would show an error all
+  the time. RPCs start commands with `run_command()`, which sets a
+  `ContextVar` the command's tasks and their done callback copy, so
+  `report()` marks the running command failed and shows its message with
+  no error plumbing through the steps; later failures are usually
+  consequences and aren't shown. A merge refusal isn't reported and goes to
+  the status line explicitly. Success comes from the step that ends the
+  command, so `gm merge` succeeds in the removal it ends with, and `gm rm`
+  waiting for a confirmation shows nothing.
 - **Error reporting** (done): every failure described above as printed to
   the Script Console goes through `report()` in the iTerm script, which
   prints the message and appends it to `~/.cache/grigoryvp-gm/gm.log` as

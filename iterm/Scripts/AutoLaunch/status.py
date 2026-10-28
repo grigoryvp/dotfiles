@@ -69,9 +69,9 @@ async def main(connection):
             text = IDLE_TITLE
         else:
             kind, text, start = entry
-            age = format_age(time.monotonic() - start)
-            suffix = "" if kind == "progress" else " ago"
-            text = f"{EMOJI[kind]} {text} ({age}{suffix})"
+            text = f"{EMOJI[kind]} {text}"
+            if kind == "progress":
+                text += f" ({format_age(time.monotonic() - start)})"
         # The window title is an interpolated string.
         return text.replace("\\", "\\\\")
 

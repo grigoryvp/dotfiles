@@ -13,7 +13,10 @@
 # - New projects: creates private GitHub repos and their first worktree.
 # - Tabs: opens a named tab per worktree, runs the stack's dependency
 #   install there, and closes it when the worktree is removed.
+# - Status: progress and outcome of the user's commands go to the window
+#   title through status.py.
 import asyncio
+import contextvars
 import json
 import os
 import re
@@ -22,11 +25,14 @@ import shutil
 import time
 import traceback
 import urllib.request
+from dataclasses import dataclass
 from pathlib import Path
 
 import iterm2
 
-# split.py is in the same AutoLaunch dir, which Python puts on sys.path.
+# split.py and status.py are in the same AutoLaunch dir, which Python puts on
+# sys.path.
+import status
 from split import split_with_bottom_pane
 
 # Started by App:startHttpServer() in hammerspoon/main.lua.
@@ -145,7 +151,7 @@ async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
         report(f"no CLI to clone from {host}")
         return None
     repo.parent.mkdir(parents=True, exist_ok=True)
-    print(f"cloning {host}/{path}")
+    await status.add_log("progress", f"cloning {path}")
     if await run_cli(cli, "repo", "clone", path, str(repo)) is None:
         return None
     return repo
@@ -223,8 +229,8 @@ async def locate_worktree(worktree: Path) -> tuple[Path, str | None] | None:
 
 
 async def count_uncommitted(worktree: Path) -> int | None:
-    status = await run_cli("git", "-C", str(worktree), "status", "--porcelain")
-    return None if status is None else len(status.splitlines())
+    output = await run_cli("git", "-C", str(worktree), "status", "--porcelain")
+    return None if output is None else len(output.splitlines())
 
 
 # A description of what removal would lose, or None if nothing.
@@ -266,6 +272,7 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
         report(f"invalid branch name: {branch}")
         return None
     git = ["git", "-C", str(repo)]
+    await status.add_log("progress", f"fetching {repo.name}")
     if await run_cli(*git, *credential_args(cli), "fetch") is None:
         return None
     # A fresh clone holds the default branch, and git checks out a branch in
@@ -307,6 +314,7 @@ async def merge_to_default(
         return f"{changes} uncommitted changes"
     git = ["git", "-C", str(clone)]
     auth = credential_args(cli)
+    await status.add_log("progress", f"fetching {clone.name}")
     if await run_cli(*git, *auth, "fetch") is None:
         return "fetch failed, see gm status"
     default = await run_cli(*git, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
@@ -322,7 +330,9 @@ async def merge_to_default(
     if await run_cli(*git, "merge", "-m", message, branch) is None:
         await git_succeeds("-C", str(clone), "merge", "--abort")
         return f"merge into {default} failed, see gm status"
-    target = f"HEAD:refs/heads/{default.removeprefix('origin/')}"
+    default_name = default.removeprefix("origin/")
+    await status.add_log("progress", f"pushing {branch} to {default_name}")
+    target = f"HEAD:refs/heads/{default_name}"
     if await run_cli(*git, *auth, "push", "origin", target) is None:
         return "push failed, see gm status"
     return None
@@ -349,8 +359,37 @@ def call_hammerspoon(command: str, **params) -> None:
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
 
 
+@dataclass
+class Command:
+    name: str
+    failed: bool = False
+
+
+# The user's command being run. Its failures go to the status line, unlike
+# those of the periodic refresh, which would show an error all the time
+# while offline.
+_command: contextvars.ContextVar[Command | None] = contextvars.ContextVar(
+    "command", default=None
+)
+
+
+# Only the first failure is shown: later ones are usually its consequences.
+def fail_command(text: str) -> None:
+    command = _command.get()
+    if command is None or command.failed:
+        return
+    command.failed = True
+    run_in_background(status.add_log("error", f"{command.name}: {text}"))
+
+
+async def finish_command() -> None:
+    command = _command.get()
+    if command is not None and not command.failed:
+        await status.add_log("success", command.name)
+
+
 # Background work has no caller to return errors to, so they go to the
-# Script Console and to a log that `gm status` shows.
+# Script Console, to a log that `gm status` shows and to the status line.
 def report(message: str) -> None:
     print(message)
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -360,6 +399,7 @@ def report(message: str) -> None:
     entry = " | ".join(message.splitlines())
     with LOG_PATH.open("a") as log:
         log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {entry}\n")
+    fail_command(entry)
 
 
 # iTerm suspends an AppleScript `invoke API expression` until the called RPC
@@ -385,7 +425,18 @@ def run_in_background(coro) -> None:
     task.add_done_callback(_finish_background)
 
 
+def run_command(name: str, coro) -> None:
+    # The task and its done callback copy the current context, so the
+    # command is seen by everything it runs, unhandled exceptions included.
+    token = _command.set(Command(name))
+    try:
+        run_in_background(coro)
+    finally:
+        _command.reset(token)
+
+
 async def main(connection):
+    status.init(connection)
     app = await iterm2.async_get_app(connection)
     gh = find_cli("gh")
     glab = find_cli("glab")
@@ -460,10 +511,12 @@ async def main(connection):
         worktree = await find_worktree(repo, branch)
         if worktree is not None:
             await open_tab(worktree, None)
-            return
-        worktree = await create_worktree(repo, branch, cli)
-        if worktree is not None:
+        else:
+            worktree = await create_worktree(repo, branch, cli)
+            if worktree is None:
+                return
             await open_tab(worktree, install_command(worktree))
+        await finish_command()
 
     async def create_project(name: str):
         if gh is None:
@@ -472,6 +525,7 @@ async def main(connection):
         if not REPO_NAME.fullmatch(name):
             report(f"invalid repo name: {name}")
             return
+        await status.add_log("progress", f"creating {name}")
         output = await run_cli(gh, "repo", "create", name, "--private", "--add-readme")
         if output is None:
             return
@@ -518,6 +572,7 @@ async def main(connection):
         for tab in await find_tabs(worktree):
             # Without force iTerm still asks if something runs there.
             await tab.async_close()
+        await finish_command()
 
     @iterm2.RPC
     async def gm_new():
@@ -527,17 +582,24 @@ async def main(connection):
     # Called by hammerspoon/gm.lua with "<host>/<path>" of the picked project.
     @iterm2.RPC
     async def gm_new_done(project: str, branch: str):
-        run_in_background(new_worktree(project, branch))
+        # Same name as the worktree directory.
+        name = f"{Path(project).name}--{branch.replace('/', '-')}"
+        run_command(f"gm new {name}", new_worktree(project, branch))
 
     # Called by wox/plugins/single-file/gm.py with the new repo's name.
     @iterm2.RPC
     async def gm_create(name: str):
-        run_in_background(create_project(name))
+        run_command(f"gm create {name}", create_project(name))
+
+    async def refresh_now():
+        await status.add_log("progress", "refreshing projects")
+        await fetch_projects(gh, glab)
+        await finish_command()
 
     # Called by wox/plugins/single-file/gm.py; no UI, results land in the cache.
     @iterm2.RPC
     async def gm_refresh():
-        run_in_background(fetch_projects(gh, glab))
+        run_command("gm refresh", refresh_now())
 
     @iterm2.RPC
     async def gm_go():
@@ -557,6 +619,8 @@ async def main(connection):
         host = clone.relative_to(CLONES_DIR).parts[0]
         reason = await merge_to_default(clone, worktree, branch, clone_clis.get(host))
         if reason is not None:
+            # A no-op if a reported git failure is the reason.
+            fail_command(reason)
             await asyncio.to_thread(
                 call_hammerspoon,
                 "gm_merge_failed",
@@ -564,7 +628,8 @@ async def main(connection):
                 reason=reason,
             )
             return
-        # Pushed, so nothing is unsaved and no confirmation shows up.
+        # Pushed, so nothing is unsaved and no confirmation shows up. Removal
+        # also logs the command's success.
         await remove_worktree(worktree, force=False)
 
     @iterm2.RPC
@@ -574,7 +639,7 @@ async def main(connection):
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
     async def gm_merge_done(worktree: str):
-        run_in_background(merge_worktree(Path(worktree)))
+        run_command(f"gm merge {Path(worktree).name}", merge_worktree(Path(worktree)))
 
     @iterm2.RPC
     async def gm_rm():
@@ -583,12 +648,16 @@ async def main(connection):
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
     async def gm_rm_done(worktree: str):
-        run_in_background(remove_worktree(Path(worktree), force=False))
+        run_command(
+            f"gm rm {Path(worktree).name}", remove_worktree(Path(worktree), force=False)
+        )
 
     # Called by hammerspoon/gm.lua once removal with unsaved work is confirmed.
     @iterm2.RPC
     async def gm_rm_force(worktree: str):
-        run_in_background(remove_worktree(Path(worktree), force=True))
+        run_command(
+            f"gm rm {Path(worktree).name}", remove_worktree(Path(worktree), force=True)
+        )
 
     await gm_new.async_register(connection)
     await gm_new_done.async_register(connection)

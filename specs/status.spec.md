@@ -57,20 +57,25 @@ status must not break the workflow.
   the RPC returns at once (see "iTerm RPCs must return immediately" in
   `specs/gm.spec.md`).
 - **Title**: `<emoji> <text>`, where the emoji is ⌛, ✅ or ⚠️ by kind. A
-  progress entry also gets its elapsed time, `(12s)` or `(5m)` (entries
-  expire before hours), so a step that hangs or a command that crashed
-  shows a growing number. A final entry has no time.
-- **Idle**: with no entry, or after it expires in 1 hour, the title is
-  `iTerm2 status plugin on Python <sys.version>`, which shows that
-  `status.py` runs and on what. iTerm's
-  default window title isn't needed: the user works in a single window with
-  tabs and never edits the window title.
-- **Rendering**: once a second and right after `status_add()`, every window
+  progress entry also gets its elapsed time, `(12s)`, so a step that
+  hangs or a command that crashed shows a growing number. Steps take less
+  than a minute, so after one it stops ticking and shows `(>1m)` until the
+  next entry. A final entry has no time.
+- **Expiry**: a success or error entry after 10 minutes; a progress entry
+  never, so a hang stays visible.
+- **Idle**: with no entry or after expiry the title is `iTerm2 status
+  plugin on Python <sys.version>`, which shows that `status.py` runs and on
+  what. iTerm's default window title isn't needed: the user works in a
+  single window with tabs and never edits the window title.
+- **Rendering**: to save battery the title is set only when it changes: on
+  start, on `status_add()`, every second during a progress entry's first
+  minute, and on expiry. The render loop sleeps until the earliest of
+  these; a new entry cuts the sleep short and sets a new one. Every window
   in `app.terminal_windows` gets the title with `Window.async_set_title()`,
-  which also covers windows opened since the last tick. It is the same
-  override as Window > Edit Window Title, so terminal escape sequences (e.g.
-  Claude Code's session title) don't replace it, while pane titles and tab
-  statuses keep working. The title is an interpolated string, so `\` in the
+  so a window opened while idle gets it with the next entry. It is the same
+  override as Window > Edit Window Title, so terminal escape sequences
+  (e.g. Claude Code's session title) don't replace it, while pane titles
+  and tab statuses keep working. The title is an interpolated string, so `\` in the
   text is escaped as `\\`.
 
 ## Users

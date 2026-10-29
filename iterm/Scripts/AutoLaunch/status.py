@@ -11,8 +11,10 @@ import time
 import iterm2
 
 EMOJI = {"progress": "⌛", "success": "✅", "error": "⚠️"}
-EXPIRY_SEC = 60 * 60
-RENDER_INTERVAL_SEC = 1
+PROGRESS_INTERVAL_SEC = 1
+# Steps take less, so a longer one has hung and needs no ticking.
+PROGRESS_TICK_SEC = 60
+RESULT_EXPIRY_SEC = 10 * 60
 # A missing status must not stall the caller's workflow.
 INVOKE_TIMEOUT_SEC = 2
 
@@ -40,13 +42,6 @@ async def add_log(kind: str, text: str) -> None:
         print(f"status {kind}: {text}: {error!r}")
 
 
-def format_age(seconds: float) -> str:
-    # Entries expire within an hour, so no hours.
-    if seconds < 60:
-        return f"{int(seconds)}s"
-    return f"{int(seconds // 60)}m"
-
-
 # Shown without entries.
 IDLE_TITLE = f"iTerm2 status plugin on Python {sys.version}"
 
@@ -61,27 +56,37 @@ async def main(connection):
     entry: tuple[str, str, float] | None = None
     changed = asyncio.Event()
 
-    def title() -> str:
+    # The title and the seconds until it changes, None if it doesn't.
+    def title() -> tuple[str, float | None]:
         nonlocal entry
-        if entry is not None and time.monotonic() - entry[2] > EXPIRY_SEC:
-            entry = None
-        if entry is None:
-            text = IDLE_TITLE
-        else:
-            kind, text, start = entry
-            text = f"{EMOJI[kind]} {text}"
-            if kind == "progress":
-                text += f" ({format_age(time.monotonic() - start)})"
+        text = IDLE_TITLE
+        wait: float | None = None
+        if entry is not None:
+            kind, entry_text, start = entry
+            age = time.monotonic() - start
+            if kind == "progress" and age < PROGRESS_TICK_SEC:
+                text = f"{EMOJI[kind]} {entry_text} ({int(age)}s)"
+                wait = PROGRESS_INTERVAL_SEC
+            elif kind == "progress":
+                # Stays until the next entry.
+                text = f"{EMOJI[kind]} {entry_text} (>{PROGRESS_TICK_SEC // 60}m)"
+            elif age < RESULT_EXPIRY_SEC:
+                text = f"{EMOJI[kind]} {entry_text}"
+                wait = RESULT_EXPIRY_SEC - age
+            else:
+                entry = None
         # The window title is an interpolated string.
-        return text.replace("\\", "\\\\")
+        return text.replace("\\", "\\\\"), wait
 
+    # Sleeps until the title changes, to save battery: a new entry, the next
+    # second of a progress entry, its last tick or expiry. A window opened while idle gets
+    # the title with the next entry.
     async def render():
         while True:
             # Cleared before reading the state, so a status_add() during the
             # pass isn't lost.
             changed.clear()
-            current = title()
-            # Each pass also covers windows opened since the previous one.
+            current, wait = title()
             for window in app.terminal_windows:
                 try:
                     await window.async_set_title(current)
@@ -89,7 +94,8 @@ async def main(connection):
                     # E.g. the window closed meanwhile.
                     print(f"failed to set the title: {error!r}")
             try:
-                await asyncio.wait_for(changed.wait(), RENDER_INTERVAL_SEC)
+                # A new entry cuts the wait short and sets a new one.
+                await asyncio.wait_for(changed.wait(), wait)
             except TimeoutError:
                 pass
 

@@ -3,7 +3,7 @@
 A one-line log in the title of every iTerm window, so that after giving a
 command (e.g. `gm merge` from Wox) the user can watch its progress and see
 whether it failed: `⌛ git push test-project (12s)`, `⚠️ git push failed:
-503`, `✅ gm merge test-project`.
+503`, `✅ gm MERGE test-project`.
 
 Status: done, used by GM.
 

@@ -584,12 +584,12 @@ async def main(connection):
     async def gm_new_done(project: str, branch: str):
         # Same name as the worktree directory.
         name = f"{Path(project).name}--{branch.replace('/', '-')}"
-        run_command(f"gm new {name}", new_worktree(project, branch))
+        run_command(f"gm NEW {name}", new_worktree(project, branch))
 
     # Called by wox/plugins/single-file/gm.py with the new repo's name.
     @iterm2.RPC
     async def gm_create(name: str):
-        run_command(f"gm create {name}", create_project(name))
+        run_command(f"gm CREATE {name}", create_project(name))
 
     async def refresh_now():
         await status.add_log("progress", "refreshing projects")
@@ -599,16 +599,20 @@ async def main(connection):
     # Called by wox/plugins/single-file/gm.py; no UI, results land in the cache.
     @iterm2.RPC
     async def gm_refresh():
-        run_command("gm refresh", refresh_now())
+        run_command("gm REFRESH", refresh_now())
 
     @iterm2.RPC
     async def gm_go():
         run_in_background(show_worktrees("gm_go"))
 
+    async def go_worktree(worktree: Path):
+        await open_tab(worktree, None)
+        await finish_command()
+
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
     async def gm_go_done(worktree: str):
-        run_in_background(open_tab(Path(worktree), None))
+        run_command(f"gm GO {Path(worktree).name}", go_worktree(Path(worktree)))
 
     async def merge_worktree(worktree: Path):
         found = await locate_worktree(worktree)
@@ -639,7 +643,7 @@ async def main(connection):
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
     @iterm2.RPC
     async def gm_merge_done(worktree: str):
-        run_command(f"gm merge {Path(worktree).name}", merge_worktree(Path(worktree)))
+        run_command(f"gm MERGE {Path(worktree).name}", merge_worktree(Path(worktree)))
 
     @iterm2.RPC
     async def gm_rm():
@@ -649,14 +653,14 @@ async def main(connection):
     @iterm2.RPC
     async def gm_rm_done(worktree: str):
         run_command(
-            f"gm rm {Path(worktree).name}", remove_worktree(Path(worktree), force=False)
+            f"gm RM {Path(worktree).name}", remove_worktree(Path(worktree), force=False)
         )
 
     # Called by hammerspoon/gm.lua once removal with unsaved work is confirmed.
     @iterm2.RPC
     async def gm_rm_force(worktree: str):
         run_command(
-            f"gm rm {Path(worktree).name}", remove_worktree(Path(worktree), force=True)
+            f"gm RM {Path(worktree).name}", remove_worktree(Path(worktree), force=True)
         )
 
     await gm_new.async_register(connection)

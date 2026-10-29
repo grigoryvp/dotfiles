@@ -332,11 +332,13 @@ below). Dismissing either chooser or a failure does nothing.
 - **Status line** (done): the user's commands write to the window title
   through `status.py` (`specs/status.spec.md`): progress before steps that
   can take long or fail on the network (clone, fetch, push, `gh repo
-  create`, `gm refresh`), the command name on success and `<command>:
-  <message>` on the first failure. `gm go` writes nothing, it is quick and
-  local; the periodic refresh neither, offline it would show an error all
-  the time. RPCs start commands with `run_command()`, which sets a
-  `ContextVar` the command's tasks and their done callback copy, so
+  create`, `gm refresh`), the command on success and `<command>:
+  <message>` on the first failure. Every command, including future ones,
+  must write its success, so the title confirms that it ran. The command
+  is written with its name in caps, e.g. `gm RM pycon25`, to stand out in
+  the title. The periodic refresh writes nothing, offline it would show an
+  error all the time. RPCs start commands with `run_command()`, which sets
+  a `ContextVar` the command's tasks and their done callback copy, so
   `report()` marks the running command failed and shows its message with
   no error plumbing through the steps; later failures are usually
   consequences and aren't shown. A merge refusal isn't reported and goes to

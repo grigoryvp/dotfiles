@@ -12,6 +12,7 @@
 #   ~/Documents, merges them into the default branch, removes them after
 #   checking for unpushed work.
 # - New projects: creates private GitHub repos and their first worktree.
+# - Archive: archives projects on GitHub and GitLab.
 # - Tabs: opens a named tab per worktree, runs the stack's dependency
 #   install there, and closes it when the worktree is removed.
 # - Status: progress and outcome of the user's commands go to the window
@@ -29,6 +30,7 @@ import urllib.request
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import quote
 
 import iterm2
 
@@ -662,6 +664,29 @@ async def main(connection):
         run_in_background(fetch_github(gh, "github.com"))
         await new_worktree(f"github.com/{path}", CREATE_BRANCH)
 
+    async def archive_project(project: str):
+        host, path = project.split("/", 1)
+        cli = host_cli(host)
+        if cli is None:
+            report(f"no CLI to archive on {host}")
+            return
+        await status.add_log("progress", f"archiving {path}")
+        fetch: Callable[[str, str], Awaitable[int | None]]
+        if cli == gh:
+            # Without --yes gh waits for a confirmation it can't read.
+            args = [cli, "repo", "archive", f"{host}/{path}", "--yes"]
+            fetch = fetch_github
+        else:
+            # `glab repo archive` downloads a tarball instead.
+            endpoint = f"projects/{quote(path, safe='')}/archive"
+            args = [cli, "api", "--hostname", host, "--method", "POST", endpoint]
+            fetch = fetch_gitlab
+        if await run_cli(*args) is None:
+            return
+        # So that the pickers stop listing it before the periodic refresh.
+        run_in_background(fetch(cli, host))
+        await finish_command()
+
     # urlopen() blocks and would stall the API connection.
     async def show_worktrees(command: str, **params):
         worktrees = await collect_worktrees()
@@ -726,6 +751,16 @@ async def main(connection):
     @iterm2.RPC
     async def gm_refresh():
         run_command("gm REFRESH", refresh_now())
+
+    @iterm2.RPC
+    async def gm_archive():
+        run_in_background(asyncio.to_thread(call_hammerspoon, "gm_archive"))
+
+    # Called by hammerspoon/gm.lua with "<host>/<path>" of the picked project,
+    # public ones after a confirmation.
+    @iterm2.RPC
+    async def gm_archive_done(project: str):
+        run_command(f"gm ARCHIVE {project.split('/', 1)[1]}", archive_project(project))
 
     @iterm2.RPC
     async def gm_go():
@@ -793,6 +828,8 @@ async def main(connection):
     await gm_new_done.async_register(connection)
     await gm_create.async_register(connection)
     await gm_refresh.async_register(connection)
+    await gm_archive.async_register(connection)
+    await gm_archive_done.async_register(connection)
     await gm_go.async_register(connection)
     await gm_go_done.async_register(connection)
     await gm_merge.async_register(connection)

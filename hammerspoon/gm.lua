@@ -8,6 +8,8 @@ gm = {
   _rmConfirmChooser = nil,
   _mergeChooser = nil,
   _mergeFailedChooser = nil,
+  _archiveChooser = nil,
+  _archiveConfirmChooser = nil,
   -- "<host>/<path>" picked in _newChooser, waiting for a branch
   _newProject = nil
 }
@@ -86,7 +88,8 @@ function gm:_projectChoices()
     table.insert(choices, {
       text = project.private and "🔐 " .. project.path or project.path,
       subText = self:_hostText(project.host),
-      id = project.host .. "/" .. project.path
+      id = project.host .. "/" .. project.path,
+      private = project.private
     })
   end
   return choices
@@ -267,4 +270,54 @@ function gm:showMergeFailed(worktree, reason)
   })
   self._mergeFailedChooser:query("")
   self._mergeFailedChooser:show()
+end
+
+
+function gm:showArchive()
+  if not self._archiveChooser then
+    self._archiveChooser = hs.chooser.new(function(choice)
+      if not (choice and choice.id) then
+        return
+      end
+      if choice.private then
+        self:_invokeIterm(
+          "gm_archive_done(project: " .. self:_itermString(choice.id) .. ")"
+        )
+      else
+        self:_showArchiveConfirm(choice.id)
+      end
+    end)
+    self._archiveChooser:placeholderText("Project to archive")
+  end
+  self._archiveChooser:choices(self:_projectChoices())
+  self._archiveChooser:query("")
+  self._archiveChooser:show()
+end
+
+
+-- project is "<host>/<path>" of a public project
+function gm:_showArchiveConfirm(project)
+  if not self._archiveConfirmChooser then
+    self._archiveConfirmChooser = hs.chooser.new(function(choice)
+      if choice and choice.project then
+        self:_invokeIterm(
+          "gm_archive_done(project: " ..
+            self:_itermString(choice.project) .. ")"
+        )
+      end
+    end)
+  end
+  local path = project:match("^[^/]+/(.+)$")
+  self._archiveConfirmChooser:placeholderText(path .. " is public")
+  -- Keep goes first, so a reflexive Enter archives nothing
+  self._archiveConfirmChooser:choices({
+    {text = "Keep " .. path, subText = "Public project"},
+    {
+      text = "Archive " .. path .. " anyway",
+      subText = "Public project",
+      project = project
+    }
+  })
+  self._archiveConfirmChooser:query("")
+  self._archiveConfirmChooser:show()
 end

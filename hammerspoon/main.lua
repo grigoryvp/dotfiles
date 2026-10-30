@@ -557,6 +557,10 @@ function App:startHttpServer()
       gm:showNew()
       return "", 200, {}
 
+    elseif json.command == "gm_archive" then
+      gm:showArchive()
+      return "", 200, {}
+
     elseif json.command == "gm_go" then
       if type(json.worktrees) ~= "table" then
         return "gm_go without worktrees", 400, {}

@@ -15,6 +15,7 @@
 #     {"Command": "rm", "Description": "Remove a worktree and its iTerm tab"},
 #     {"Command": "merge", "Description": "Merge a worktree into the default branch and remove it"},
 #     {"Command": "go", "Description": "Switch to a worktree's iTerm tab"},
+#     {"Command": "archive", "Description": "Archive a project on GitHub or GitLab"},
 #     {"Command": "refresh", "Description": "Refresh the project list"},
 #     {"Command": "status", "Description": "Show debug info"}
 #   ]
@@ -50,6 +51,7 @@ COMMANDS = {
     "rm": "Remove a worktree and its iTerm tab",
     "merge": "Merge a worktree into the default branch and remove it",
     "go": "Switch to a worktree's iTerm tab",
+    "archive": "Archive a project on GitHub or GitLab",
     "refresh": "Refresh the project list",
     "status": "Show debug info",
 }
@@ -141,6 +143,8 @@ class GitManager:
             results = [self.rpc_result("rm", "Open the worktree picker")]
         elif query.command == "merge":
             results = [self.rpc_result("merge", "Open the worktree picker")]
+        elif query.command == "archive":
+            results = [self.rpc_result("archive", "Open the project picker")]
         elif query.command == "refresh":
             results = [
                 self.rpc_result("refresh", "Fetch projects from GitHub and GitLab")

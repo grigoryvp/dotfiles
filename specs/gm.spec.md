@@ -35,6 +35,8 @@ with first-class access to tabs and sessions.
   pushes it, then removes the worktree as `gm rm` does.
 - `gm go` (done): focuses a worktree's tab, creating it and its splits if
   missing.
+- `gm archive` (done, not tested end to end): picks a project and
+  archives it on its host; a public one only after a confirmation.
 - `gm refresh` (done): fetches the project list now instead of waiting
   for the periodic refresh.
 - `gm status` (done): debug info: query fields, plugin Python, whether
@@ -105,6 +107,20 @@ iTerm script: RPC gm_merge_done(worktree) -> not merged
   -> HTTP POST localhost:2020 {"command": "gm_merge_failed", "worktree": ...,
        "reason": "2 uncommitted changes"}
 Hammerspoon: gm:showMergeFailed() -> hs.chooser with a single row
+```
+
+`gm archive` picks from the same project list as `gm new`. The cache tells
+public projects apart, so Hammerspoon confirms them itself:
+
+```
+Wox (gm archive, Enter)
+  -> osascript: invoke API expression "gm_archive()"
+iTerm script: RPC gm_archive()
+  -> HTTP POST localhost:2020 {"command": "gm_archive"}
+Hammerspoon: gm:showArchive() -> project hs.chooser
+  ... a public project: gm:_showArchiveConfirm() -> hs.chooser, Keep first ...
+  -> invoke API expression "gm_archive_done(project: \"<host>/<path>\")"
+iTerm script: RPC gm_archive_done(project) -> archive, refetch the host
 ```
 
 Behavior today: the chooser lists projects from the cache (path as
@@ -235,6 +251,12 @@ below). Dismissing either chooser or a failure does nothing.
     private, as `internal` projects are visible only to the instance's
     users. Plain `--paginate` prints one JSON array per page, despite `glab
     api --help` promising a single array (glab 1.106).
+- **Archive** (done): `gh repo archive <host>/<path> --yes`, since without
+  `--yes` gh waits for a confirmation it can't read; for GitLab `glab api
+  --hostname <host> --method POST projects/<url-encoded path>/archive`, as
+  `glab repo archive` downloads a tarball instead (glab 1.124). The host is
+  then refetched, so the project leaves the cache and the pickers before
+  the periodic refresh. Local clones and worktrees stay as they are.
 - **Clone** (done): into `~/git/<host>/<path>` unless that directory
   exists, with `gh repo clone` or `glab repo clone`, so the protocol and
   credentials come from the CLI's own config (gh: https, glab: ssh here).

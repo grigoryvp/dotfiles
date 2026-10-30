@@ -32,7 +32,8 @@ BACKGROUND = iterm2.Color(0, 0, 0)
 FONT = "JetBrainsMonoNFM-Regular 15"
 INITIAL_DIRECTORY = iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_RECYCLE
 PROFILE_FLAGS = {
-    "blinking_cursor": True,
+    # High CPU load
+    "blinking_cursor": False,
     "cursor_shadow": True,
     "silence_bell": True,
     # "Filter Alerts": notify on bell only.

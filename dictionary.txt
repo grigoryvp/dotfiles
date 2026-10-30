@@ -1821,6 +1821,7 @@ unc
 uncollegiate
 underlinecolor
 undropped
+ungroup
 unhashable
 unicodedata
 unpackings

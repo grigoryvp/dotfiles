@@ -56,20 +56,21 @@ LOG_MAX_BYTES = 1024 * 1024
 
 
 # Synchronous so that concurrent fetches can't interleave read and write.
-def update_cache(host: str, paths: list[str]) -> None:
+# Each fetched project is {"path": str, "private": bool}.
+def update_cache(host: str, fetched: list[dict]) -> None:
     try:
         projects = json.loads(CACHE_PATH.read_text())["projects"]
     except FileNotFoundError:
         projects = []
     projects = [p for p in projects if p["host"] != host]
-    projects += [{"host": host, "path": path} for path in paths]
+    projects += [{"host": host, **p} for p in fetched]
     projects.sort(key=lambda p: p["path"])
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     # Readers must never see a partially written file.
     tmp_path = CACHE_PATH.with_suffix(".tmp")
     tmp_path.write_text(json.dumps({"projects": projects}, indent=2))
     os.replace(tmp_path, CACHE_PATH)
-    print(f"{host}: {len(paths)} projects")
+    print(f"{host}: {len(fetched)} projects")
 
 
 async def run_cli(*args: str, env: dict[str, str] | None = None) -> str | None:
@@ -100,13 +101,13 @@ async def fetch_github(gh: str, host: str) -> int | None:
         "user/repos?affiliation=owner,collaborator,organization_member&per_page=100",
         "--paginate",
         "--jq",
-        ".[] | select(.archived | not) | .full_name",
+        ".[] | select(.archived | not) | {path: .full_name, private}",
     )
     if output is None:
         return None
-    paths = output.split()
-    update_cache(host, paths)
-    return len(paths)
+    fetched = [json.loads(line) for line in output.splitlines()]
+    update_cache(host, fetched)
+    return len(fetched)
 
 
 async def fetch_gitlab(glab: str, host: str) -> int | None:
@@ -124,9 +125,13 @@ async def fetch_gitlab(glab: str, host: str) -> int | None:
     )
     if output is None:
         return None
-    paths = [json.loads(line)["path_with_namespace"] for line in output.splitlines()]
-    update_cache(host, paths)
-    return len(paths)
+    # "internal" projects are visible only to the instance's users.
+    fetched = [
+        {"path": p["path_with_namespace"], "private": p["visibility"] != "public"}
+        for p in map(json.loads, output.splitlines())
+    ]
+    update_cache(host, fetched)
+    return len(fetched)
 
 
 # Parsed by hand to avoid installing a YAML parser into iTerm's Python

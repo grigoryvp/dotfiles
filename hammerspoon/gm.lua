@@ -84,7 +84,7 @@ function gm:_projectChoices()
   local choices = {}
   for _, project in ipairs(cache.projects) do
     table.insert(choices, {
-      text = project.path,
+      text = project.private and "🔐 " .. project.path or project.path,
       subText = self:_hostText(project.host),
       id = project.host .. "/" .. project.path
     })

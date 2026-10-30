@@ -108,8 +108,9 @@ Hammerspoon: gm:showMergeFailed() -> hs.chooser with a single row
 ```
 
 Behavior today: the chooser lists projects from the cache (path as
-text, host as subtext colored per host, since the same path can exist on
-several hosts, Hammerspoon's default filtering); selecting one opens
+text, prefixed with 🔐 for private projects, host as subtext colored per
+host, since the same path can exist on several hosts, Hammerspoon's
+default filtering); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
 that row calls `gm_new_done()`, which clones the project if needed and
@@ -190,10 +191,11 @@ below). Dismissing either chooser or a failure does nothing.
   The prefix avoids clashes with other tools named `gm`. Each part keeps the
   path in a constant that names the other users.
 - **Cache format**: `{"projects": [{"host": "github.com", "path":
-  "owner/repo"}, ...]}`, sorted by path, written atomically (temp file +
-  `os.replace()`) so readers never see a partial file. Each fetch replaces
-  only its host's entries; the read-modify-write has no `await` inside, so
-  concurrent fetches don't lose each other's entries.
+  "owner/repo", "private": true}, ...]}`, sorted by path, written
+  atomically (temp file + `os.replace()`) so readers never see a partial
+  file. Each fetch replaces only its host's entries; the read-modify-write
+  has no `await` inside, so concurrent fetches don't lose each other's
+  entries.
 - **Fetch** (done): on script start, then every 10 minutes and on `gm
   refresh` (RPC `gm_refresh()`, no UI), all hosts are fetched concurrently
   via `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to
@@ -221,14 +223,17 @@ below). Dismissing either chooser or a failure does nothing.
     logged in to`.
   - GitHub: `gh api --hostname <host>
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
-    --paginate --jq '.[] | select(.archived | not) | .full_name'`. `--jq` is
-    needed because plain `--paginate` prints one JSON array per page, which
-    is not valid JSON as a whole; it also skips archived repos, which the
+    --paginate --jq '.[] | select(.archived | not) | {path: .full_name,
+    private}'`, one JSON object per line. `--jq` is needed because plain
+    `--paginate` prints one JSON array per page, which is not valid JSON
+    as a whole; it also skips archived repos, which the
     endpoint can't filter.
   - GitLab: `glab api --hostname <host>
     'projects?membership=true&archived=false&simple=true&per_page=100'
-    --paginate --output ndjson`, taking `path_with_namespace` from each
-    line. Plain `--paginate` prints one JSON array per page, despite `glab
+    --paginate --output ndjson`, taking `path_with_namespace` and
+    `visibility` from each line; any visibility but `public` counts as
+    private, as `internal` projects are visible only to the instance's
+    users. Plain `--paginate` prints one JSON array per page, despite `glab
     api --help` promising a single array (glab 1.106).
 - **Clone** (done): into `~/git/<host>/<path>` unless that directory
   exists, with `gh repo clone` or `glab repo clone`, so the protocol and

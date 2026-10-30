@@ -225,8 +225,10 @@ below). Dismissing either chooser or a failure does nothing.
     `--paginate` prints one JSON array per page, which is not valid JSON as
     a whole.
   - GitLab: `glab api --hostname <host>
-    'projects?membership=true&simple=true&per_page=100' --paginate`, taking
-    `path_with_namespace`. glab merges pages into a single array itself.
+    'projects?membership=true&simple=true&per_page=100' --paginate --output
+    ndjson`, taking `path_with_namespace` from each line. Plain `--paginate`
+    prints one JSON array per page, despite `glab api --help` promising a
+    single array (glab 1.106).
 - **Clone** (done): into `~/git/<host>/<path>` unless that directory
   exists, with `gh repo clone` or `glab repo clone`, so the protocol and
   credentials come from the CLI's own config (gh: https, glab: ssh here).

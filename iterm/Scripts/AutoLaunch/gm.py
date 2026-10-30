@@ -109,7 +109,8 @@ async def fetch_github(gh: str, host: str) -> int | None:
 
 
 async def fetch_gitlab(glab: str, host: str) -> int | None:
-    # Unlike gh, glab merges pages into a single JSON array.
+    # Plain --paginate prints one JSON array per page, despite what
+    # `glab api --help` says.
     output = await run_cli(
         glab,
         "api",
@@ -117,10 +118,12 @@ async def fetch_gitlab(glab: str, host: str) -> int | None:
         host,
         "projects?membership=true&simple=true&per_page=100",
         "--paginate",
+        "--output",
+        "ndjson",
     )
     if output is None:
         return None
-    paths = [p["path_with_namespace"] for p in json.loads(output)]
+    paths = [json.loads(line)["path_with_namespace"] for line in output.splitlines()]
     update_cache(host, paths)
     return len(paths)
 

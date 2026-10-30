@@ -352,7 +352,7 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
     return worktree.resolve()
 
 
-# Returns why the worktree's branch wasn't merged and pushed, or None.
+# Returns why the worktree's branch isn't in the remote default one, or None.
 async def merge_to_default(
     clone: Path, worktree: Path, branch: str | None, cli: str | None
 ) -> str | None:
@@ -372,6 +372,11 @@ async def merge_to_default(
     if default is None:
         return "no default branch, see gm status"
     default = default.strip()
+    # E.g. merged by a pull request: removal is all that's left.
+    if await git_succeeds(
+        "-C", str(clone), "merge-base", "--is-ancestor", branch, default
+    ):
+        return None
     # The merge runs in the clone: it is detached and otherwise unused, while
     # the local default branch may be checked out in some worktree.
     if await run_cli(*git, "switch", "--detach", default) is None:
@@ -683,7 +688,7 @@ async def main(connection):
                 reason=reason,
             )
             return
-        # Pushed, so nothing is unsaved and no confirmation shows up. Removal
+        # On the remote, so nothing is unsaved and no confirmation shows up. Removal
         # also logs the command's success.
         await remove_worktree(worktree, force=False)
 

@@ -326,15 +326,18 @@ below). Dismissing either chooser or a failure does nothing.
   selects. The picked worktree is refused if it is detached or has
   uncommitted changes (counted as in `gm rm`; unpushed commits are what gets
   merged). Then, in the clone, `git fetch` with the CLI's credentials as in
-  **Worktree**, `git switch --detach origin/<default>`, `git merge -m "Merge
-  branch '<branch>'"` (detached HEAD would make git's own message say "into
-  HEAD") and `git push origin HEAD:refs/heads/<default>`. The clone is
-  used because it is detached and otherwise unused, while the local default
-  branch may be checked out in some worktree; the local default branch is
-  left behind. A failed merge is aborted with `git merge --abort`. Any
-  refusal or failure opens a chooser with the reason, details are in `gm
-  status`. After the push the worktree has no unsaved work, so `gm rm` logic
-  removes it without a confirmation and closes its tabs.
+  **Worktree**. If the branch is already in `origin/<default>` (`git
+  merge-base --is-ancestor`, e.g. merged by a pull request), the worktree is
+  just removed. Otherwise `git switch --detach origin/<default>`, `git merge
+  -m "Merge branch '<branch>'"` (detached HEAD would make git's own message
+  say "into HEAD") and `git push origin HEAD:refs/heads/<default>`. The
+  clone is used because it is detached and otherwise unused, while the local
+  default branch may be checked out in some worktree; the local default
+  branch is left behind. A failed merge is aborted with `git merge --abort`.
+  Any refusal or failure opens a chooser with the reason, details are in `gm
+  status`. After the push, or if already merged, the worktree has no unsaved
+  work, so `gm rm` logic removes it without a confirmation and closes its
+  tabs.
 - **Source of truth** for existing worktrees is `git worktree list` across the
   clones in `~/git`; GM keeps no separate state. Every listing, for `gm new`,
   `gm go`, `gm rm` and `gm merge` alike, runs `git worktree prune` first, so worktrees

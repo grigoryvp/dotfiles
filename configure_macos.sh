@@ -150,6 +150,7 @@ ollama
 yandextelemost
 gh
 glab
+yq
 EOF
   _brew_install "$@"
 }

@@ -364,6 +364,8 @@ alias tox='tox -q'
 # For windows consistensy
 alias rmf='rm -rf'
 
+##  Single source of truth for globs hidden by 'll', shared with lsd.
+LS_IGNORE_CFG="${HOME}/dotfiles/lsd.config.yaml"
 my_list() {
   if [ -e /opt/homebrew/bin/lsd ]; then
     /opt/homebrew/bin/lsd "$@"
@@ -372,28 +374,21 @@ my_list() {
       -l \
       -a \
       --group-directories-first \
-      --ignore-glob .DS_Store\|desktop.ini\|PowerShell\|My\ Games\|Codex \
+      --ignore-glob "$(yq '.["ignore-globs"] | join("|")' "$LS_IGNORE_CFG")" \
       "$@"
   else
-    ##! No spaces, '*' should be used instead.
-    IGNORED=( \
-      "WindowsPowerShell" \
-      "PowerShell" \
-      "desktop.ini" \
-      "Codex" \
-      ".vscode" \
-    )
-    CMD_IGNORE=""
     IGNORED_COUNT=0
     ##  OSX does not support advanced keys
     if [ "$(uname)" != "Darwin" ]; then
-      for CUR in "${IGNORED[@]}"; do
-        ##! No quotes to match things like "Diablo*"
-        if [ -e ${CUR} ]; then
-          ((IGNORED_COUNT++))
-        fi
-        CMD_IGNORE="${CMD_IGNORE} -I ${CUR}"
-      done
+      ALL_COUNT=$(ls -A "$@" | wc -l)
+      ##  Prepend "-I <glob>" to the args; a here-doc keeps the loop in the
+      ##  current shell, so 'set' changes our positional parameters.
+      while IFS= read -r CUR; do
+        set -- -I "$CUR" "$@"
+      done <<EOF
+$(yq '.["ignore-globs"][]' "$LS_IGNORE_CFG")
+EOF
+      IGNORED_COUNT=$((ALL_COUNT - $(ls -A "$@" | wc -l)))
       LS_ARG_COLOR="--color"
       LS_ARG_GROUP="--group-directories-first"
     fi
@@ -404,8 +399,8 @@ my_list() {
     ##  -F: Append indicators.
     ##  --color: Color output for linux (CLICOLOR for OSX).
     ##  --group-directories-first: Show dirs first.
-    ##  -I: Ignore files.
-    ##  "$@": quote args so "ll Visual\ Studio\ 2015" will work.
+    ##  "$@": "-I <glob>" pairs followed by user args, quoted so
+    ##  "ll Visual\ Studio\ 2015" will work.
     ls \
       -l \
       -h \
@@ -413,11 +408,10 @@ my_list() {
       -F \
       ${LS_ARG_COLOR} \
       ${LS_ARG_GROUP} \
-      ${CMD_IGNORE} \
       "$@" \
       | less
-    if ((IGNORED_COUNT > 0)); then
-      echo -e "${R}${IGNORED_COUNT} items ignored${N}"
+    if [ "$IGNORED_COUNT" -gt 0 ]; then
+      echo "${IGNORED_COUNT} items ignored"
     fi
   fi
 }

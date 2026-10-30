@@ -10,6 +10,7 @@ color:
 ignore-globs:
   - .DS_Store
   - .vscode
+  - .env
   - desktop.ini
   - Diablo *
   - Steelrising

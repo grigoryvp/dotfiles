@@ -24,11 +24,6 @@
     ]
   },
   "model": "opus",
-  "modelSettings": {
-    "opus": {
-      "effortLevel": "medium"
-    }
-  },
   "hooks": {
     "PermissionRequest": [
       {
@@ -66,6 +61,11 @@
   },
   "outputStyle": "Concise",
   "effortLevel": "high",
+  "modelSettings": {
+    "opus": {
+      "effortLevel": "medium"
+    }
+  },
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",

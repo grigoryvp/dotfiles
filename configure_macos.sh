@@ -1122,8 +1122,9 @@ configure() {
     echo "Not cloning knowledge base since ssh keys are not uploaded"
   fi
 
-  # Machine-specific Claude config
+  printf '# Machine-specific claude config\n' > ~/.env
   printf 'export ANTHROPIC_MODEL=opus\n' > ~/.env
+  printf 'export CLAUDE_CODE_EFFORT_LEVEL=high\n' > ~/.env
 
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc

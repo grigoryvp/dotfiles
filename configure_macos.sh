@@ -1064,6 +1064,9 @@ configure() {
   _brew_install php
   mise use -g swift@6.3
 
+  # For agents
+  uv tool install ruff
+
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
     echo "Dotfiles already cloned"
   else

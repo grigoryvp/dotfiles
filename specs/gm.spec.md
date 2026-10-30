@@ -199,6 +199,16 @@ below). Dismissing either chooser or a failure does nothing.
   `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to the
   Script Console and leaves the host's entries as is; an exception is
   printed too and doesn't stop the refresh loop.
+  - Authentication: a CLI without a token for its host isn't called and its
+    entries stay as is; that's not an error, only a line in the Script
+    Console. The check is local, `gh auth token --hostname github.com`
+    (non-zero exit without a token) and `glab config get token --host
+    gitlab.com` (empty output without a token): `auth status` calls the API
+    and offline reports a valid token as invalid. An expired or revoked
+    token passes the check and fails the fetch as above.
+  - `gm refresh` writes its success with the outcome per host, e.g. `gm
+    REFRESH: github.com 99 projects, gitlab.com not authenticated`; a host
+    whose CLI isn't found shows `no CLI`.
   - GitHub: `gh api
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
     --paginate --jq '.[].full_name'`. `--jq` is needed because plain

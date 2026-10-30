@@ -25,6 +25,7 @@ import shutil
 import time
 import traceback
 import urllib.request
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -85,7 +86,8 @@ async def run_cli(*args: str) -> str | None:
     return stdout.decode()
 
 
-async def fetch_github(gh: str) -> None:
+# Returns the project count, None on failure.
+async def fetch_github(gh: str) -> int | None:
     # --jq flattens pages: plain --paginate prints one JSON array per page.
     output = await run_cli(
         gh,
@@ -95,11 +97,14 @@ async def fetch_github(gh: str) -> None:
         "--jq",
         ".[].full_name",
     )
-    if output is not None:
-        update_cache("github.com", output.split())
+    if output is None:
+        return None
+    paths = output.split()
+    update_cache("github.com", paths)
+    return len(paths)
 
 
-async def fetch_gitlab(glab: str) -> None:
+async def fetch_gitlab(glab: str) -> int | None:
     # Unlike gh, glab merges pages into a single JSON array.
     output = await run_cli(
         glab,
@@ -107,24 +112,70 @@ async def fetch_gitlab(glab: str) -> None:
         "projects?membership=true&simple=true&per_page=100",
         "--paginate",
     )
-    if output is not None:
-        paths = [p["path_with_namespace"] for p in json.loads(output)]
-        update_cache("gitlab.com", paths)
+    if output is None:
+        return None
+    paths = [p["path_with_namespace"] for p in json.loads(output)]
+    update_cache("gitlab.com", paths)
+    return len(paths)
 
 
 REFRESH_INTERVAL_SEC = 10 * 60
 
 
-async def fetch_projects(gh: str | None, glab: str | None) -> None:
-    fetches = []
-    if gh is not None:
-        fetches.append(fetch_github(gh))
-    if glab is not None:
-        fetches.append(fetch_gitlab(glab))
-    # An exception in one fetch must not stop the refresh loop.
-    for result in await asyncio.gather(*fetches, return_exceptions=True):
-        if isinstance(result, Exception):
+# Checks only for a token locally: `auth status` calls the API, and offline
+# reports a valid token as invalid.
+async def has_token(*args: str) -> bool:
+    proc = await asyncio.create_subprocess_exec(
+        *args,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.DEVNULL,
+    )
+    stdout, _ = await proc.communicate()
+    # glab prints nothing and succeeds without a token.
+    return proc.returncode == 0 and bool(stdout.strip())
+
+
+# Returns the outcome for the status line. A CLI that isn't logged in isn't
+# an error, so it's skipped without reporting.
+async def fetch_host(
+    host: str,
+    cli: str | None,
+    token_args: list[str],
+    fetch: Callable[[str], Awaitable[int | None]],
+) -> str:
+    if cli is None:
+        return f"{host} no CLI"
+    if not await has_token(cli, *token_args):
+        print(f"{host}: not authenticated")
+        return f"{host} not authenticated"
+    count = await fetch(cli)
+    return f"{host} failed" if count is None else f"{host} {count} projects"
+
+
+async def fetch_projects(gh: str | None, glab: str | None) -> str:
+    results = await asyncio.gather(
+        fetch_host(
+            "github.com",
+            gh,
+            ["auth", "token", "--hostname", "github.com"],
+            fetch_github,
+        ),
+        fetch_host(
+            "gitlab.com",
+            glab,
+            ["config", "get", "token", "--host", "gitlab.com"],
+            fetch_gitlab,
+        ),
+        # An exception in one fetch must not stop the refresh loop.
+        return_exceptions=True,
+    )
+    outcomes = []
+    for result in results:
+        if isinstance(result, BaseException):
             report(f"fetch failed: {result!r}")
+        else:
+            outcomes.append(result)
+    return ", ".join(outcomes)
 
 
 async def refresh_projects(gh: str | None, glab: str | None) -> None:
@@ -382,10 +433,11 @@ def fail_command(text: str) -> None:
     run_in_background(status.add_log("error", f"{command.name}: {text}"))
 
 
-async def finish_command() -> None:
+async def finish_command(details: str = "") -> None:
     command = _command.get()
     if command is not None and not command.failed:
-        await status.add_log("success", command.name)
+        text = f"{command.name}: {details}" if details else command.name
+        await status.add_log("success", text)
 
 
 # Background work has no caller to return errors to, so they go to the
@@ -593,8 +645,7 @@ async def main(connection):
 
     async def refresh_now():
         await status.add_log("progress", "refreshing projects")
-        await fetch_projects(gh, glab)
-        await finish_command()
+        await finish_command(await fetch_projects(gh, glab))
 
     # Called by wox/plugins/single-file/gm.py; no UI, results land in the cache.
     @iterm2.RPC

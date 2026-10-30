@@ -109,7 +109,7 @@ Hammerspoon: gm:showMergeFailed() -> hs.chooser with a single row
 
 Behavior today: the chooser lists projects from the cache (path as
 text, host as subtext colored per host, since the same path can exist on
-both hosts, Hammerspoon's default filtering); selecting one opens
+several hosts, Hammerspoon's default filtering); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
 that row calls `gm_new_done()`, which clones the project if needed and
@@ -177,9 +177,9 @@ below). Dismissing either chooser or a failure does nothing.
 ## Design
 
 - **Project list**: the iTerm script periodically fetches repositories from
-  github.com and gitlab.com through the `gh` and `glab` CLIs into a JSON
-  cache. The CLIs own authentication and pagination, so GM needs no config
-  or tokens; more hosts later are a `--hostname` parameter plus a host list.
+  the hosts the `gh` and `glab` CLIs are logged in to into a JSON cache.
+  The CLIs own hosts, authentication and pagination, so GM needs no config
+  or tokens.
   The UI reads the cache and shows it instantly; a refresh runs in the
   background. `gm:showNew()` re-reads the cache on every show (~10ms for
   100 projects); a missing cache shows a single "No projects" row.
@@ -195,31 +195,44 @@ below). Dismissing either chooser or a failure does nothing.
   only its host's entries; the read-modify-write has no `await` inside, so
   concurrent fetches don't lose each other's entries.
 - **Fetch** (done): on script start, then every 10 minutes and on `gm
-  refresh` (RPC `gm_refresh()`, no UI), both CLIs run concurrently via
-  `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to the
-  Script Console and leaves the host's entries as is; an exception is
+  refresh` (RPC `gm_refresh()`, no UI), all hosts are fetched concurrently
+  via `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to
+  the Script Console and leaves the host's entries as is; an exception is
   printed too and doesn't stop the refresh loop.
-  - Authentication: a CLI without a token for its host isn't called and its
-    entries stay as is; that's not an error, only a line in the Script
-    Console. The check is local, `gh auth token --hostname github.com`
-    (non-zero exit without a token) and `glab config get token --host
-    gitlab.com` (empty output without a token): `auth status` calls the API
-    and offline reports a valid token as invalid. An expired or revoked
-    token passes the check and fails the fetch as above.
+  - Hosts: read from the CLIs' configs on every refresh, so a new login
+    needs no restart: the top-level keys of gh's `hosts.yml` and the keys of
+    the `hosts` section of glab's `config.yml`. The config dirs are
+    `$GH_CONFIG_DIR` and `$GLAB_CONFIG_DIR`, else `gh` and `glab-cli` in
+    `$XDG_CONFIG_HOME` or `~/.config`. Neither CLI has a command that lists
+    hosts without calling the API (`glab auth status --all` does). The YAML
+    is parsed by hand: only the mapping keys are needed, and that avoids
+    installing a YAML parser into iTerm's Python runtime.
+  - Authentication: a host without a token isn't called and its entries
+    stay as is; that's not an error, only a line in the Script Console. A
+    config may list a host without a token, e.g. glab lists gitlab.com by
+    default. The check is local, `gh auth token --hostname <host>` (non-zero
+    exit without a token) and `glab config get token --host <host>` (empty
+    output without a token): `auth status` calls the API and offline
+    reports a valid token as invalid. An expired or revoked token passes the
+    check and fails the fetch as above.
   - `gm refresh` writes its success with the outcome per host, e.g. `gm
     REFRESH: github.com 99 projects, gitlab.com not authenticated`; a host
-    whose CLI isn't found shows `no CLI`.
-  - GitHub: `gh api
+    whose CLI isn't found shows `no CLI`, and no hosts at all show `no hosts
+    logged in to`.
+  - GitHub: `gh api --hostname <host>
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
     --paginate --jq '.[].full_name'`. `--jq` is needed because plain
     `--paginate` prints one JSON array per page, which is not valid JSON as
     a whole.
-  - GitLab: `glab api 'projects?membership=true&simple=true&per_page=100'
-    --paginate`, taking `path_with_namespace`. glab merges pages into a
-    single array itself.
+  - GitLab: `glab api --hostname <host>
+    'projects?membership=true&simple=true&per_page=100' --paginate`, taking
+    `path_with_namespace`. glab merges pages into a single array itself.
 - **Clone** (done): into `~/git/<host>/<path>` unless that directory
   exists, with `gh repo clone` or `glab repo clone`, so the protocol and
-  credentials come from the CLI's own config (gh: https, glab: ssh here). A
+  credentials come from the CLI's own config (gh: https, glab: ssh here).
+  The CLI is the one whose config lists the host (see **Fetch**), and as
+  `repo clone` has no `--hostname`, the host goes in `GH_HOST` and
+  `GITLAB_HOST`, each CLI reading only its own. A
   failure prints the CLI's stderr to the Script Console. A clone is only a
   cache to make worktrees from: no command lists it, opens a tab in it or
   removes it.

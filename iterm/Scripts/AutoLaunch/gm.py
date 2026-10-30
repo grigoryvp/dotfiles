@@ -2,8 +2,9 @@
 # Git Manager (GM): one git worktree and iTerm tab per task.
 #
 # Parts:
-# - Project list: periodically and on `gm refresh` fetches repos from
-#   github.com and gitlab.com into a JSON cache that the Hammerspoon UI reads.
+# - Project list: periodically and on `gm refresh` fetches repos from the
+#   hosts gh and glab are logged in to into a JSON cache that the Hammerspoon
+#   UI reads.
 # - RPC entry points: called via AppleScript `invoke API expression` by the
 #   Wox plugin (wox/plugins/single-file/gm.py) to show UI through the
 #   Hammerspoon HTTP server, and by hammerspoon/gm.lua with the user's pick.
@@ -71,11 +72,12 @@ def update_cache(host: str, paths: list[str]) -> None:
     print(f"{host}: {len(paths)} projects")
 
 
-async def run_cli(*args: str) -> str | None:
+async def run_cli(*args: str, env: dict[str, str] | None = None) -> str | None:
     proc = await asyncio.create_subprocess_exec(
         *args,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
+        env={**os.environ, **env} if env else None,
     )
     stdout, stderr = await proc.communicate()
     if proc.returncode != 0:
@@ -87,11 +89,13 @@ async def run_cli(*args: str) -> str | None:
 
 
 # Returns the project count, None on failure.
-async def fetch_github(gh: str) -> int | None:
+async def fetch_github(gh: str, host: str) -> int | None:
     # --jq flattens pages: plain --paginate prints one JSON array per page.
     output = await run_cli(
         gh,
         "api",
+        "--hostname",
+        host,
         "user/repos?affiliation=owner,collaborator,organization_member&per_page=100",
         "--paginate",
         "--jq",
@@ -100,23 +104,78 @@ async def fetch_github(gh: str) -> int | None:
     if output is None:
         return None
     paths = output.split()
-    update_cache("github.com", paths)
+    update_cache(host, paths)
     return len(paths)
 
 
-async def fetch_gitlab(glab: str) -> int | None:
+async def fetch_gitlab(glab: str, host: str) -> int | None:
     # Unlike gh, glab merges pages into a single JSON array.
     output = await run_cli(
         glab,
         "api",
+        "--hostname",
+        host,
         "projects?membership=true&simple=true&per_page=100",
         "--paginate",
     )
     if output is None:
         return None
     paths = [p["path_with_namespace"] for p in json.loads(output)]
-    update_cache("gitlab.com", paths)
+    update_cache(host, paths)
     return len(paths)
+
+
+# Parsed by hand to avoid installing a YAML parser into iTerm's Python
+# runtime. Hosts map to their settings, so a host line ends with the colon,
+# while a port may add another colon before it.
+def yaml_mapping_keys(lines: list[str]) -> list[str]:
+    entries = [
+        (len(line) - len(line.lstrip()), line.strip())
+        for line in lines
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    if not entries:
+        return []
+    indent = min(i for i, _ in entries)
+    return [
+        text[:-1].strip("'\"")
+        for i, text in entries
+        if i == indent and text.endswith(":")
+    ]
+
+
+def cli_config_dir(env_var: str, name: str) -> Path:
+    if env_var in os.environ:
+        return Path(os.environ[env_var])
+    xdg = os.environ.get("XDG_CONFIG_HOME")
+    return (Path(xdg) if xdg else Path.home() / ".config") / name
+
+
+def read_lines(path: Path) -> list[str]:
+    try:
+        return path.read_text().splitlines()
+    except FileNotFoundError:
+        return []
+
+
+# Hosts the CLIs were logged in to; the token check tells if they still are.
+def gh_hosts() -> list[str]:
+    path = cli_config_dir("GH_CONFIG_DIR", "gh") / "hosts.yml"
+    return yaml_mapping_keys(read_lines(path))
+
+
+def glab_hosts() -> list[str]:
+    lines = read_lines(cli_config_dir("GLAB_CONFIG_DIR", "glab-cli") / "config.yml")
+    starts = [i + 1 for i, line in enumerate(lines) if line.rstrip() == "hosts:"]
+    if not starts:
+        return []
+    section = []
+    for line in lines[starts[0] :]:
+        # The next top-level key ends the section.
+        if line[:1] not in ("", " ", "#"):
+            break
+        section.append(line)
+    return yaml_mapping_keys(section)
 
 
 REFRESH_INTERVAL_SEC = 10 * 60
@@ -141,41 +200,35 @@ async def fetch_host(
     host: str,
     cli: str | None,
     token_args: list[str],
-    fetch: Callable[[str], Awaitable[int | None]],
+    fetch: Callable[[str, str], Awaitable[int | None]],
 ) -> str:
     if cli is None:
         return f"{host} no CLI"
     if not await has_token(cli, *token_args):
         print(f"{host}: not authenticated")
         return f"{host} not authenticated"
-    count = await fetch(cli)
+    count = await fetch(cli, host)
     return f"{host} failed" if count is None else f"{host} {count} projects"
 
 
+# Hosts are read on every refresh, so a new login needs no restart.
 async def fetch_projects(gh: str | None, glab: str | None) -> str:
-    results = await asyncio.gather(
-        fetch_host(
-            "github.com",
-            gh,
-            ["auth", "token", "--hostname", "github.com"],
-            fetch_github,
-        ),
-        fetch_host(
-            "gitlab.com",
-            glab,
-            ["config", "get", "token", "--host", "gitlab.com"],
-            fetch_gitlab,
-        ),
-        # An exception in one fetch must not stop the refresh loop.
-        return_exceptions=True,
-    )
+    fetches = [
+        fetch_host(host, gh, ["auth", "token", "--hostname", host], fetch_github)
+        for host in gh_hosts()
+    ] + [
+        fetch_host(host, glab, ["config", "get", "token", "--host", host], fetch_gitlab)
+        for host in glab_hosts()
+    ]
+    # An exception in one fetch must not stop the refresh loop.
+    results = await asyncio.gather(*fetches, return_exceptions=True)
     outcomes = []
     for result in results:
         if isinstance(result, BaseException):
             report(f"fetch failed: {result!r}")
         else:
             outcomes.append(result)
-    return ", ".join(outcomes)
+    return ", ".join(outcomes) or "no hosts logged in to"
 
 
 async def refresh_projects(gh: str | None, glab: str | None) -> None:
@@ -203,7 +256,9 @@ async def ensure_clone(host: str, path: str, cli: str | None) -> Path | None:
         return None
     repo.parent.mkdir(parents=True, exist_ok=True)
     await status.add_log("progress", f"cloning {path}")
-    if await run_cli(cli, "repo", "clone", path, str(repo)) is None:
+    # `repo clone` has no --hostname; each CLI reads only its own variable.
+    env = {"GH_HOST": host, "GITLAB_HOST": host}
+    if await run_cli(cli, "repo", "clone", path, str(repo), env=env) is None:
         return None
     return repo
 
@@ -499,7 +554,13 @@ async def main(connection):
     glab = find_cli("glab")
     print(f"gh: {gh}, glab: {glab}")
     run_in_background(refresh_projects(gh, glab))
-    clone_clis = {"github.com": gh, "gitlab.com": glab}
+
+    def host_cli(host: str) -> str | None:
+        if host in gh_hosts():
+            return gh
+        if host in glab_hosts():
+            return glab
+        return None
 
     async def find_tabs(worktree: Path) -> list[iterm2.Tab]:
         tabs = []
@@ -559,7 +620,7 @@ async def main(connection):
 
     async def new_worktree(project: str, branch: str):
         host, path = project.split("/", 1)
-        cli = clone_clis.get(host)
+        cli = host_cli(host)
         repo = await ensure_clone(host, path, cli)
         if repo is None:
             return
@@ -589,7 +650,7 @@ async def main(connection):
         # Without a TTY gh prints only the URL: https://github.com/<owner>/<name>.
         path = "/".join(output.strip().split("/")[-2:])
         # So that gm new lists it before the periodic refresh.
-        run_in_background(fetch_github(gh))
+        run_in_background(fetch_github(gh, "github.com"))
         await new_worktree(f"github.com/{path}", CREATE_BRANCH)
 
     # urlopen() blocks and would stall the API connection.
@@ -677,7 +738,7 @@ async def main(connection):
             return
         clone, branch = found
         host = clone.relative_to(CLONES_DIR).parts[0]
-        reason = await merge_to_default(clone, worktree, branch, clone_clis.get(host))
+        reason = await merge_to_default(clone, worktree, branch, host_cli(host))
         if reason is not None:
             # A no-op if a reported git failure is the reason.
             fail_command(reason)

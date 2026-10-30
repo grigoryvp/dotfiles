@@ -24,6 +24,11 @@
     ]
   },
   "model": "opus",
+  "modelSettings": {
+    "opus": {
+      "effortLevel": "medium"
+    }
+  },
   "hooks": {
     "PermissionRequest": [
       {
@@ -61,11 +66,6 @@
   },
   "outputStyle": "Concise",
   "effortLevel": "high",
-  "modelSettings": {
-    "claude-fable-5-1": {
-      "effortLevel": "high"
-    }
-  },
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",

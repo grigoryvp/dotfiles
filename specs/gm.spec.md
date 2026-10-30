@@ -123,10 +123,10 @@ Hammerspoon: gm:showArchive() -> project hs.chooser
 iTerm script: RPC gm_archive_done(project) -> archive, refetch the host
 ```
 
-Behavior today: the chooser lists projects from the cache (path as
-text, prefixed with 🔐 for private projects, host as subtext colored per
-host, since the same path can exist on several hosts, Hammerspoon's
-default filtering); selecting one opens
+Behavior today: the chooser lists projects from the cache in its order (path
+as text, prefixed with 🔐 for private projects, host as subtext colored per
+host, since the same path can exist on several hosts, Hammerspoon's default
+filtering); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
 that row calls `gm_new_done()`, which clones the project if needed and
@@ -207,11 +207,13 @@ below). Dismissing either chooser or a failure does nothing.
   The prefix avoids clashes with other tools named `gm`. Each part keeps the
   path in a constant that names the other users.
 - **Cache format**: `{"projects": [{"host": "github.com", "path":
-  "owner/repo", "private": true}, ...]}`, sorted by path, written
-  atomically (temp file + `os.replace()`) so readers never see a partial
-  file. Each fetch replaces only its host's entries; the read-modify-write
-  has no `await` inside, so concurrent fetches don't lose each other's
-  entries.
+  "owner/repo", "private": true, "own": true}, ...]}`, `own` meaning the
+  project is in the user's namespace on that host. Sorted into own private,
+  own public, others' private and others' public; within each, github.com,
+  then gitlab.com, then other hosts by name, then by path. Written atomically
+  (temp file + `os.replace()`) so readers never see a partial file. Each fetch
+  replaces only its host's entries; the read-modify-write has no `await`
+  inside, so concurrent fetches don't lose each other's entries.
 - **Fetch** (done): on script start, then every 10 minutes and on `gm
   refresh` (RPC `gm_refresh()`, no UI), all hosts are fetched concurrently
   via `asyncio.create_subprocess_exec()`. A non-zero exit prints stderr to
@@ -237,20 +239,24 @@ below). Dismissing either chooser or a failure does nothing.
     REFRESH: github.com 99 projects, gitlab.com not authenticated`; a host
     whose CLI isn't found shows `no CLI`, and no hosts at all show `no hosts
     logged in to`.
+  - Each fetch first asks the host for the user's login (`gh api user
+    --jq .login`, `glab api user` with `username`) to tell own projects.
   - GitHub: `gh api --hostname <host>
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
     --paginate --jq '.[] | select(.archived | not) | {path: .full_name,
-    private}'`, one JSON object per line. `--jq` is needed because plain
+    private, owner: .owner.login}'`, one JSON object per line; own means
+    `owner` is the login. `--jq` is needed because plain
     `--paginate` prints one JSON array per page, which is not valid JSON
     as a whole; it also skips archived repos, which the
     endpoint can't filter.
   - GitLab: `glab api --hostname <host>
     'projects?membership=true&archived=false&simple=true&per_page=100'
-    --paginate --output ndjson`, taking `path_with_namespace` and
-    `visibility` from each line; any visibility but `public` counts as
-    private, as `internal` projects are visible only to the instance's
-    users. Plain `--paginate` prints one JSON array per page, despite `glab
-    api --help` promising a single array (glab 1.106).
+    --paginate --output ndjson`, taking `path_with_namespace` and `visibility`
+    from each line; any visibility but `public` counts as private, as
+    `internal` projects are visible only to the instance's users. Own means
+    `namespace.full_path` is the login. Plain `--paginate` prints one JSON
+    array per page, despite `glab api --help` promising a single array (glab
+    1.106).
 - **Archive** (done): `gh repo archive <host>/<path> --yes`, since without
   `--yes` gh waits for a confirmation it can't read; for GitLab `glab api
   --hostname <host> --method POST projects/<url-encoded path>/archive`, as

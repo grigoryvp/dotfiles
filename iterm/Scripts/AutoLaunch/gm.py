@@ -57,8 +57,22 @@ LOG_PATH = CACHE_PATH.parent / "gm.log"
 LOG_MAX_BYTES = 1024 * 1024
 
 
+# Hosts not listed here go after them, by name.
+HOST_ORDER = ["github.com", "gitlab.com"]
+
+
+# Own private, own public, others' private, others' public; GitHub first
+# within each. Entries of other hosts in an old cache may lack the flags.
+def project_order(project: dict) -> tuple:
+    host = project["host"]
+    rank = HOST_ORDER.index(host) if host in HOST_ORDER else len(HOST_ORDER)
+    own, private = project.get("own"), project.get("private")
+    return (not own, not private, rank, host, project["path"])
+
+
 # Synchronous so that concurrent fetches can't interleave read and write.
-# Each fetched project is {"path": str, "private": bool}.
+# Each fetched project is {"path": str, "private": bool, "own": bool}, own
+# meaning it's in the user's namespace.
 def update_cache(host: str, fetched: list[dict]) -> None:
     try:
         projects = json.loads(CACHE_PATH.read_text())["projects"]
@@ -66,7 +80,7 @@ def update_cache(host: str, fetched: list[dict]) -> None:
         projects = []
     projects = [p for p in projects if p["host"] != host]
     projects += [{"host": host, **p} for p in fetched]
-    projects.sort(key=lambda p: p["path"])
+    projects.sort(key=project_order)
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     # Readers must never see a partially written file.
     tmp_path = CACHE_PATH.with_suffix(".tmp")
@@ -93,6 +107,10 @@ async def run_cli(*args: str, env: dict[str, str] | None = None) -> str | None:
 
 # Returns the project count, None on failure.
 async def fetch_github(gh: str, host: str) -> int | None:
+    output = await run_cli(gh, "api", "--hostname", host, "user", "--jq", ".login")
+    if output is None:
+        return None
+    login = output.strip()
     # --jq flattens pages: plain --paginate prints one JSON array per page.
     # The endpoint has no filter for archived repos.
     output = await run_cli(
@@ -103,16 +121,24 @@ async def fetch_github(gh: str, host: str) -> int | None:
         "user/repos?affiliation=owner,collaborator,organization_member&per_page=100",
         "--paginate",
         "--jq",
-        ".[] | select(.archived | not) | {path: .full_name, private}",
+        ".[] | select(.archived | not)"
+        " | {path: .full_name, private, owner: .owner.login}",
     )
     if output is None:
         return None
-    fetched = [json.loads(line) for line in output.splitlines()]
+    fetched = [
+        {"path": p["path"], "private": p["private"], "own": p["owner"] == login}
+        for p in map(json.loads, output.splitlines())
+    ]
     update_cache(host, fetched)
     return len(fetched)
 
 
 async def fetch_gitlab(glab: str, host: str) -> int | None:
+    user = await run_cli(glab, "api", "--hostname", host, "user")
+    if user is None:
+        return None
+    login = json.loads(user)["username"]
     # Plain --paginate prints one JSON array per page, despite what
     # `glab api --help` says.
     output = await run_cli(
@@ -129,7 +155,11 @@ async def fetch_gitlab(glab: str, host: str) -> int | None:
         return None
     # "internal" projects are visible only to the instance's users.
     fetched = [
-        {"path": p["path_with_namespace"], "private": p["visibility"] != "public"}
+        {
+            "path": p["path_with_namespace"],
+            "private": p["visibility"] != "public",
+            "own": p["namespace"]["full_path"] == login,
+        }
         for p in map(json.loads, output.splitlines())
     ]
     update_cache(host, fetched)

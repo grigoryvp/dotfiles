@@ -91,6 +91,7 @@ async def run_cli(*args: str, env: dict[str, str] | None = None) -> str | None:
 # Returns the project count, None on failure.
 async def fetch_github(gh: str, host: str) -> int | None:
     # --jq flattens pages: plain --paginate prints one JSON array per page.
+    # The endpoint has no filter for archived repos.
     output = await run_cli(
         gh,
         "api",
@@ -99,7 +100,7 @@ async def fetch_github(gh: str, host: str) -> int | None:
         "user/repos?affiliation=owner,collaborator,organization_member&per_page=100",
         "--paginate",
         "--jq",
-        ".[].full_name",
+        ".[] | select(.archived | not) | .full_name",
     )
     if output is None:
         return None
@@ -116,7 +117,7 @@ async def fetch_gitlab(glab: str, host: str) -> int | None:
         "api",
         "--hostname",
         host,
-        "projects?membership=true&simple=true&per_page=100",
+        "projects?membership=true&archived=false&simple=true&per_page=100",
         "--paginate",
         "--output",
         "ndjson",

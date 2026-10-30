@@ -221,14 +221,15 @@ below). Dismissing either chooser or a failure does nothing.
     logged in to`.
   - GitHub: `gh api --hostname <host>
     'user/repos?affiliation=owner,collaborator,organization_member&per_page=100'
-    --paginate --jq '.[].full_name'`. `--jq` is needed because plain
-    `--paginate` prints one JSON array per page, which is not valid JSON as
-    a whole.
+    --paginate --jq '.[] | select(.archived | not) | .full_name'`. `--jq` is
+    needed because plain `--paginate` prints one JSON array per page, which
+    is not valid JSON as a whole; it also skips archived repos, which the
+    endpoint can't filter.
   - GitLab: `glab api --hostname <host>
-    'projects?membership=true&simple=true&per_page=100' --paginate --output
-    ndjson`, taking `path_with_namespace` from each line. Plain `--paginate`
-    prints one JSON array per page, despite `glab api --help` promising a
-    single array (glab 1.106).
+    'projects?membership=true&archived=false&simple=true&per_page=100'
+    --paginate --output ndjson`, taking `path_with_namespace` from each
+    line. Plain `--paginate` prints one JSON array per page, despite `glab
+    api --help` promising a single array (glab 1.106).
 - **Clone** (done): into `~/git/<host>/<path>` unless that directory
   exists, with `gh repo clone` or `glab repo clone`, so the protocol and
   credentials come from the CLI's own config (gh: https, glab: ssh here).

@@ -155,6 +155,22 @@ EOF
   _brew_install "$@"
 }
 
+# macOS does not register fonts carrying the quarantine attribute that brew
+# casks set, so they are missing from font pickers. Homebrew dropped its
+# "--no-quarantine" option. fontd caches the font list and respawns on its own.
+_unquarantine_fonts() {
+  for font in "$HOME/Library/Fonts/"*; do
+    if xattr -p com.apple.quarantine "$font" >/dev/null 2>&1; then
+      if ! xattr -d com.apple.quarantine "$font"; then
+        echo "❌ Failed to unquarantine '$font', aborting" >&2
+        exit 1
+      fi
+    fi
+  done
+  killall fontd 2>/dev/null || true
+  echo "Fonts unquarantined"
+}
+
 # Homebrew dropped the cask: recent macOS refuses to run the unsigned app
 # installed by it. Hardcoded aarch64 build from
 # sourceforge.net/p/doublecmd/wiki/Download
@@ -1014,6 +1030,7 @@ configure() {
   # cli-only formulae
   _brew_install --cask docker-desktop tailscale-app
   _brew_install_packages
+  _unquarantine_fonts
 
   # Need to check for network issues
   # brew install orbstack

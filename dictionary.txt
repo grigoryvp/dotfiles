@@ -895,6 +895,7 @@ Kopec
 Korell
 Kosis
 KQP
+Krackan
 Kristian
 ksh
 KTC
@@ -2184,6 +2185,7 @@ zx
 дообучает
 дообучается
 дообучали
+драйверная
 дропает
 ДЦ
 еtcd

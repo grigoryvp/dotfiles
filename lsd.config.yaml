@@ -11,6 +11,7 @@ ignore-globs:
   - .DS_Store
   - .vscode
   - .env
+  - .localized
   - desktop.ini
   - Diablo *
   - Steelrising

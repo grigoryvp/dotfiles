@@ -14,6 +14,10 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     Key.TAP_BAR_POSTIION: 2,  # Left
     Key.HIDE_TAB_BAR_WHEN_ONLY_ONE_TAB: False,
     Key.HIDE_TAB_NUMBER: True,
+    # Absent from the enum. On a 16" MacBook Pro with the 15pt font this
+    # leaves claude in a vertical split an 82-column text area (+2 columns
+    # it reserves on the left).
+    "LeftTabBarWidth": 230,
     # The enum's HIDE_TAB_CLOSE_BUTTON maps to a key iTerm2 3.7 no longer reads.
     "TabsHaveCloseButton": False,
     Key.HIDE_TAB_ACTIVITY_INDICATOR: True,

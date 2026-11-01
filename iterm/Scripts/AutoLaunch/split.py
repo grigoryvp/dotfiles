@@ -13,7 +13,12 @@ async def _split_with_fixed_pane(
     profile_customizations: iterm2.LocalWriteOnlyProfile | None = None,
 ) -> None:
     frame = await window.async_get_frame()
-    size = session.grid_size
+
+    # Refreshes the app state, so grid sizes below are post-split.
+    pane = await session.async_split_pane(
+        vertical=vertical, profile_customizations=profile_customizations
+    )
+
     # The library seeds preferred_size from grid_size only when it first sees
     # a session, and async_update_layout() sends it for every pane, so a pane
     # resized since then (e.g. gm.py's bottom one) would snap back.
@@ -21,19 +26,20 @@ async def _split_with_fixed_pane(
         if other.grid_size is not None:
             other.preferred_size = other.grid_size
 
-    pane = await session.async_split_pane(
-        vertical=vertical, profile_customizations=profile_customizations
-    )
-
-    if size is not None:
+    a, b = session.grid_size, pane.grid_size
+    if a is not None and b is not None:
+        # Split from the post-split total: the divider takes cells, and an
+        # oversized layout makes iTerm refit the window, shrinking other panes.
         if vertical:
-            pane.preferred_size = iterm2.Size(RIGHT_COLUMNS, size.height)
+            pane.preferred_size = iterm2.Size(RIGHT_COLUMNS, a.height)
             session.preferred_size = iterm2.Size(
-                size.width - RIGHT_COLUMNS, size.height
+                a.width + b.width - RIGHT_COLUMNS, a.height
             )
         else:
-            pane.preferred_size = iterm2.Size(size.width, BOTTOM_ROWS)
-            session.preferred_size = iterm2.Size(size.width, size.height - BOTTOM_ROWS)
+            pane.preferred_size = iterm2.Size(a.width, BOTTOM_ROWS)
+            session.preferred_size = iterm2.Size(
+                a.width, a.height + b.height - BOTTOM_ROWS
+            )
         await tab.async_update_layout()
     await window.async_set_frame(frame)
 

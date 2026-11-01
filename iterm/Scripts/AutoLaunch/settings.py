@@ -19,7 +19,7 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     # leaves claude in a vertical split an 82-column text area (+2 columns
     # it reserves on the left) and m1+g right split is 80-column for diffs
     # and other commands.
-    "LeftTabBarWidth": 250,
+    "LeftTabBarWidth": 248,
     # The enum's HIDE_TAB_CLOSE_BUTTON maps to a key iTerm2 3.7 no longer reads.
     "TabsHaveCloseButton": False,
     Key.HIDE_TAB_ACTIVITY_INDICATOR: True,

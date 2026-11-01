@@ -10,7 +10,7 @@ Why not a plugin marketplace: its skills are installed copies with versions
 that need explicit add and update steps, while a symlink to a working copy
 needs neither.
 
-Status: spec only, nothing is implemented yet.
+Status: `sm sync` and `sm pull` are done, not tested end to end in iTerm.
 
 ## Components
 
@@ -24,9 +24,9 @@ scripts and reports through the iTerm status line:
   `hammerspoon/sm.lua`.
 
 Code shared with GM (`run_in_background()`, `run_command()`, `report()`,
-the log) moves from `gm.py` into an AutoLaunch module imported by both, the
-way `split.py` and `status.py` are. iTerm also runs it as a script, so its
-`__main__` does nothing.
+the log) lives in `iterm/Scripts/AutoLaunch/workflow.py`, imported by both
+the way `split.py` and `status.py` are. iTerm also runs it as a script, so
+its `__main__` does nothing.
 
 ## Commands
 

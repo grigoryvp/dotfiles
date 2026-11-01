@@ -18,43 +18,39 @@
 # - Status: progress and outcome of the user's commands go to the window
 #   title through status.py.
 import asyncio
-import contextvars
 import json
 import os
 import re
-import shlex
-import shutil
-import time
-import traceback
 import urllib.request
 from collections.abc import Awaitable, Callable
-from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import quote
 
 import iterm2
 
-# split.py and status.py are in the same AutoLaunch dir, which Python puts on
-# sys.path.
+# split.py, status.py and workflow.py are in the same AutoLaunch dir, which
+# Python puts on sys.path.
 import status
+import workflow
 from split import split_with_bottom_pane
+from workflow import (
+    credential_args,
+    fail_command,
+    find_cli,
+    finish_command,
+    report,
+    run_cli,
+    run_command,
+    run_in_background,
+)
 
 # Started by App:startHttpServer() in hammerspoon/main.lua.
 HAMMERSPOON_URL = "http://localhost:2020"
-
-# iTerm launched from the Dock may lack Homebrew in PATH.
-HOMEBREW_BIN = "/opt/homebrew/bin"
-
-
-def find_cli(name: str) -> str | None:
-    return shutil.which(name) or shutil.which(name, path=HOMEBREW_BIN)
-
 
 # Written here, read by hammerspoon/gm.lua and wox/plugins/single-file/gm.py.
 CACHE_PATH = Path.home() / ".cache" / "grigoryvp-gm" / "projects.json"
 # Written here and by hammerspoon/gm.lua, read by wox/plugins/single-file/gm.py.
 LOG_PATH = CACHE_PATH.parent / "gm.log"
-LOG_MAX_BYTES = 1024 * 1024
 
 
 # Hosts not listed here go after them, by name.
@@ -87,22 +83,6 @@ def update_cache(host: str, fetched: list[dict]) -> None:
     tmp_path.write_text(json.dumps({"projects": projects}, indent=2))
     os.replace(tmp_path, CACHE_PATH)
     print(f"{host}: {len(fetched)} projects")
-
-
-async def run_cli(*args: str, env: dict[str, str] | None = None) -> str | None:
-    proc = await asyncio.create_subprocess_exec(
-        *args,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-        env={**os.environ, **env} if env else None,
-    )
-    stdout, stderr = await proc.communicate()
-    if proc.returncode != 0:
-        # git merge prints conflicts to stdout.
-        output = (stderr or stdout).decode().strip()
-        report(f"{Path(args[0]).name} failed: {output}")
-        return None
-    return stdout.decode()
 
 
 # Returns the project count, None on failure.
@@ -404,15 +384,6 @@ async def find_worktree(repo: Path, branch: str) -> Path | None:
     return None
 
 
-# Plain git doesn't see the CLI's credentials for https remotes, so pass the
-# CLI as the only credential helper, the way `gh repo clone` does.
-def credential_args(cli: str | None) -> list[str]:
-    if cli is None:
-        return []
-    helper = f"!{shlex.quote(cli)} auth git-credential"
-    return ["-c", "credential.helper=", "-c", f"credential.helper={helper}"]
-
-
 async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | None:
     # Also rejects names starting with "-" that git would take for options.
     if not await git_succeeds("check-ref-format", "--branch", branch):
@@ -511,85 +482,8 @@ def call_hammerspoon(command: str, **params) -> None:
     urllib.request.urlopen(HAMMERSPOON_URL, data=body, timeout=5).close()
 
 
-@dataclass
-class Command:
-    name: str
-    failed: bool = False
-
-
-# The user's command being run. Its failures go to the status line, unlike
-# those of the periodic refresh, which would show an error all the time
-# while offline.
-_command: contextvars.ContextVar[Command | None] = contextvars.ContextVar(
-    "command", default=None
-)
-
-
-# Only the first failure is shown: later ones are usually its consequences.
-def fail_command(text: str) -> None:
-    command = _command.get()
-    if command is None or command.failed:
-        return
-    command.failed = True
-    run_in_background(status.add_log("error", f"{command.name}: {text}"))
-
-
-async def finish_command(details: str = "") -> None:
-    command = _command.get()
-    if command is not None and not command.failed:
-        text = f"{command.name}: {details}" if details else command.name
-        await status.add_log("success", text)
-
-
-# Background work has no caller to return errors to, so they go to the
-# Script Console, to a log that `gm status` shows and to the status line.
-def report(message: str) -> None:
-    print(message)
-    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    if LOG_PATH.exists() and LOG_PATH.stat().st_size > LOG_MAX_BYTES:
-        os.replace(LOG_PATH, LOG_PATH.with_suffix(".log.1"))
-    # One entry per line, so readers can take the last lines.
-    entry = " | ".join(message.splitlines())
-    with LOG_PATH.open("a") as log:
-        log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {entry}\n")
-    fail_command(entry)
-
-
-# iTerm suspends an AppleScript `invoke API expression` until the called RPC
-# returns, queueing all other AppleEvents, and an RPC that calls the iTerm API
-# meanwhile never returns. So RPCs only schedule their work.
-_background: set[asyncio.Task] = set()
-
-
-def _finish_background(task: asyncio.Task) -> None:
-    _background.discard(task)
-    # Nobody awaits these tasks, so their exceptions would otherwise be lost.
-    if task.cancelled():
-        return
-    error = task.exception()
-    if error is not None:
-        traceback.print_exception(error)
-        report(f"failed: {error!r}")
-
-
-def run_in_background(coro) -> None:
-    task = asyncio.create_task(coro)
-    _background.add(task)
-    task.add_done_callback(_finish_background)
-
-
-def run_command(name: str, coro) -> None:
-    # The task and its done callback copy the current context, so the
-    # command is seen by everything it runs, unhandled exceptions included.
-    token = _command.set(Command(name))
-    try:
-        run_in_background(coro)
-    finally:
-        _command.reset(token)
-
-
 async def main(connection):
-    status.init(connection)
+    workflow.init(connection, LOG_PATH)
     app = await iterm2.async_get_app(connection)
     gh = find_cli("gh")
     glab = find_cli("glab")

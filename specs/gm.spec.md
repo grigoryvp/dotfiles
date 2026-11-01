@@ -408,14 +408,14 @@ below). Dismissing either chooser or a failure does nothing.
   command, so `gm merge` succeeds in the removal it ends with, and `gm rm`
   waiting for a confirmation shows nothing.
 - **Error reporting** (done): every failure described above as printed to
-  the Script Console goes through `report()` in the iTerm script, which
-  prints the message and appends it to `~/.cache/grigoryvp-gm/gm.log` as
-  `<date> <time> <message>`, one entry per line (multi-line stderr, or stdout
-  if stderr is empty, since git merge prints conflicts there, is joined
-  with ` | `), so readers can take the last lines. `gm status` shows the
-  last 5 entries, newest first. `run_in_background()` reports unhandled
-  exceptions of its tasks too, with the traceback in the console only.
-  Hammerspoon's own failures to call iTerm (`osascript` exit code) go to the
+  the Script Console goes through `report()` (in `workflow.py`, shared with
+  SM), which prints the message and appends it to
+  `~/.cache/grigoryvp-gm/gm.log` as `<date> <time> <message>`, one entry
+  per line (multi-line stderr, or stdout if stderr is empty, since git
+  merge prints conflicts there, is joined with ` | `), so readers can take
+  the last lines. `gm status` shows the last 5 entries, newest first.
+  `run_in_background()` reports unhandled exceptions of its tasks too, with
+  the traceback in the console only. Hammerspoon's own failures to call iTerm (`osascript` exit code) go to the
   same file via `gm:_logError()`. Not alerts: a periodic fetch fails every
   10 minutes while offline. Over 1 MB the iTerm script renames the log to
   `gm.log.1`, keeping one previous file.

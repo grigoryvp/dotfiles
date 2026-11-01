@@ -147,10 +147,9 @@ async def fetch_gitlab(glab: str, host: str) -> int | None:
     return len(fetched)
 
 
-# Parsed by hand to avoid installing a YAML parser into iTerm's Python
-# runtime. Hosts map to their settings, so a host line ends with the colon,
-# while a port may add another colon before it.
-def yaml_mapping_keys(lines: list[str]) -> list[str]:
+# YAML is parsed by hand to avoid installing a YAML parser into iTerm's
+# Python runtime. Returns the stripped lines of the outermost mapping.
+def yaml_top_lines(lines: list[str]) -> list[str]:
     entries = [
         (len(line) - len(line.lstrip()), line.strip())
         for line in lines
@@ -159,11 +158,42 @@ def yaml_mapping_keys(lines: list[str]) -> list[str]:
     if not entries:
         return []
     indent = min(i for i, _ in entries)
+    return [text for i, text in entries if i == indent]
+
+
+# Hosts map to their settings, so a host line ends with the colon, while a
+# port may add another colon before it.
+def yaml_mapping_keys(lines: list[str]) -> list[str]:
     return [
-        text[:-1].strip("'\"")
-        for i, text in entries
-        if i == indent and text.endswith(":")
+        text[:-1].strip("'\"") for text in yaml_top_lines(lines) if text.endswith(":")
     ]
+
+
+# Only one-line values.
+def yaml_value(lines: list[str], key: str) -> str | None:
+    for text in yaml_top_lines(lines):
+        name, colon, value = text.partition(":")
+        if not colon or name.strip("'\" ") != key:
+            continue
+        value = value.strip()
+        if value[:1] in ("'", '"'):
+            return value[1:].partition(value[0])[0]
+        return value.partition(" #")[0].strip() or None
+    return None
+
+
+# The nested lines of a top-level key.
+def yaml_section(lines: list[str], key: str) -> list[str]:
+    starts = [i + 1 for i, line in enumerate(lines) if line.rstrip() == f"{key}:"]
+    if not starts:
+        return []
+    section = []
+    for line in lines[starts[0] :]:
+        # The next top-level key ends the section.
+        if line[:1] not in ("", " ", "#"):
+            break
+        section.append(line)
+    return section
 
 
 def cli_config_dir(env_var: str, name: str) -> Path:
@@ -188,16 +218,7 @@ def gh_hosts() -> list[str]:
 
 def glab_hosts() -> list[str]:
     lines = read_lines(cli_config_dir("GLAB_CONFIG_DIR", "glab-cli") / "config.yml")
-    starts = [i + 1 for i, line in enumerate(lines) if line.rstrip() == "hosts:"]
-    if not starts:
-        return []
-    section = []
-    for line in lines[starts[0] :]:
-        # The next top-level key ends the section.
-        if line[:1] not in ("", " ", "#"):
-            break
-        section.append(line)
-    return yaml_mapping_keys(section)
+    return yaml_mapping_keys(yaml_section(lines, "hosts"))
 
 
 REFRESH_INTERVAL_SEC = 10 * 60
@@ -266,6 +287,16 @@ CLONES_DIR = Path.home() / "git"
 REPO_NAME = re.compile(r"[A-Za-z0-9_.][A-Za-z0-9_.-]*")
 # Branch of the first worktree of a project made by gm create.
 CREATE_BRANCH = "new"
+
+# Backstage descriptor; `.metadata.tab` also overrides the tab title.
+CATALOG_INFO = "catalog-info.yaml"
+CATALOG_INFO_TEMPLATE = """\
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: {name}
+  tab: {name}
+"""
 
 
 # The CLIs clone with the protocol and credentials from their own config.
@@ -422,6 +453,12 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
 
 # Needs "HTML titles", enabled by settings.py.
 def tab_title(repo: str, branch: str | None, worktree: Path) -> str:
+    metadata = yaml_section(read_lines(worktree / CATALOG_INFO), "metadata")
+    tab = yaml_value(metadata, "tab")
+    if tab is not None:
+        # The title is an interpolated string, where a backslash starts
+        # interpolation; repo and branch names can't contain it.
+        return html.escape(tab, quote=False).replace("\\", "\\\\")
     # A detached worktree's directory still names the branch it was made for.
     branch = branch or worktree.name.removeprefix(f"{repo}--")
     repo, branch = (html.escape(s, quote=False) for s in (repo, branch))
@@ -535,8 +572,6 @@ async def main(connection):
         await split_with_bottom_pane(
             window, tab, session, profile_customizations=profile
         )
-        # The title is an interpolated string, but repo and branch names
-        # can't contain the backslash that starts interpolation.
         await tab.async_set_title(title)
         # A tab variable rather than a session one, so splits share it.
         await tab.async_set_variable("user.worktree", str(worktree))
@@ -562,7 +597,10 @@ async def main(connection):
         # The launcher or Hammerspoon is frontmost at this point.
         await app.async_activate(ignoring_other_apps=True)
 
-    async def new_worktree(project: str, branch: str):
+    # `prepare` runs in a just created worktree before its tab opens.
+    async def new_worktree(
+        project: str, branch: str, prepare: Callable[[Path], object] | None = None
+    ):
         host, path = project.split("/", 1)
         cli = host_cli(host)
         repo = await ensure_clone(host, path, cli)
@@ -577,6 +615,8 @@ async def main(connection):
             worktree = await create_worktree(repo, branch, cli)
             if worktree is None:
                 return
+            if prepare is not None:
+                prepare(worktree)
             title = tab_title(repo.name, branch, worktree)
             await open_tab(worktree, title, install_command(worktree))
         await finish_command()
@@ -596,7 +636,12 @@ async def main(connection):
         path = "/".join(output.strip().split("/")[-2:])
         # So that gm new lists it before the periodic refresh.
         run_in_background(fetch_github(gh, "github.com"))
-        await new_worktree(f"github.com/{path}", CREATE_BRANCH)
+        catalog_info = CATALOG_INFO_TEMPLATE.format(name=name)
+        await new_worktree(
+            f"github.com/{path}",
+            CREATE_BRANCH,
+            lambda worktree: (worktree / CATALOG_INFO).write_text(catalog_info),
+        )
 
     async def archive_project(project: str):
         host, path = project.split("/", 1)

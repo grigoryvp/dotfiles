@@ -315,10 +315,12 @@ below). Dismissing either chooser or a failure does nothing.
   `Tab.async_set_title()` sets the title `<b>repo</b> <u>branch</u>`, which
   relies on "HTML titles" enabled by `settings.py`; the names are
   HTML-escaped. A detached worktree shows the branch part of its directory
-  name. The title is an interpolated string, but repo and branch names
-  can't contain `\`. Then the window and iTerm are activated with
-  `ignoring_other_apps`, since Wox or Hammerspoon is frontmost at that
-  point.
+  name. A one-line `.metadata.tab` in the worktree's `catalog-info.yaml`
+  replaces the whole title as plain text; it is parsed by hand like the CLI
+  configs (see **Fetch**). The title is an interpolated string; repo and branch names
+  can't contain `\`, and in `.metadata.tab` it is doubled. Then the window
+  and iTerm are activated with `ignoring_other_apps`, since Wox or
+  Hammerspoon is frontmost at that point.
   Splits (done): every tab GM opens, for `gm new` and `gm go` alike, gets
   the shift-cmd-d layout: a bottom pane of 10 rows. The layout lives in
   `split_with_bottom_pane()` in `iterm/Scripts/AutoLaunch/split.py`, which
@@ -353,7 +355,9 @@ below). Dismissing either chooser or a failure does nothing.
   only the repo URL, whose last two parts are `<owner>/<name>`. Then a
   GitHub fetch for the project list runs in the background, and the rest is
   `gm new` with branch `new`: clone, worktree `~/Documents/<name>--new` off
-  `origin/HEAD`, tab. A failure is reported as everywhere else.
+  `origin/HEAD`, tab. Before the tab opens, an uncommitted Backstage
+  `catalog-info.yaml` with `metadata.name` and `metadata.tab` set to the
+  name is written to the worktree. A failure is reported as everywhere else.
 - **`gm go`** (done): the chooser lists the worktrees in `~/Documents`,
   i.e. the linked worktrees of all clones in `~/git` (`git worktree list
   --porcelain` minus its first entry, the clone itself), collected

@@ -14,6 +14,12 @@ Provides fast switching between worktrees. Implemented according to
 tabs), Wox plugin `wox/plugins/single-file/gm.py` for command access and
 hammerspoon code `hammerspoon/gm.lua` for UI.
 
+## Skill Manager
+
+Links skills from git repositories in `~/skills` into the agents' skill
+directories and updates skills with `git pull`. Specified in
+`specs/sm.spec.md`, split into plugins the same way as Git Manager.
+
 ## iTerm Status Bar
 
 Provides a single "status bar" which is displayed as a window title. Used

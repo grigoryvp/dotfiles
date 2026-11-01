@@ -41,6 +41,7 @@
 /*.sqlite
 /*.sqlite-shm
 /*.sqlite-wal
-# Symlinks to ~/.claude, tracked there.
+# Symlink to ~/.claude, tracked there.
 /prompts
-/skills
+# Codex system skills.
+/skills/

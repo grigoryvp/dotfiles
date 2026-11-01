@@ -25,6 +25,4 @@
 /state/
 /stats-cache.json
 /telemetry/
-/skills/synced
-/skills/.trash/
 /daemon.*

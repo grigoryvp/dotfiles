@@ -1149,7 +1149,13 @@ configure() {
   ln -fs ~/dotfiles/.codex ~/.codex
   sudo mkdir -p /etc/codex
   sudo ln -fs ~/dotfiles/.codex/user-config.toml /etc/codex/config.toml
-  rm -f ~/.codex/prompts ~/.codex/skills
+  rm -f ~/.codex/prompts
+  # Codex keeps its system skills in ~/.codex/skills and reads user ones from
+  # ~/.agents/skills, filled by Skill Manager (specs/sm.spec.md).
+  if [ -L ~/.codex/skills ]; then
+    rm ~/.codex/skills
+  fi
+  mkdir -p ~/.agents/skills
   ln -fs ~/dotfiles/.claude/commands ~/.codex/prompts
   ln -fs ~/dotfiles/.claude/CLAUDE.md ~/.codex/AGENTS.md
   if [ -e ~/.gemini ]; then

@@ -1,1 +1,3 @@
-.system/
+# Skills in use are personal data; add exceptions for skills tracked here.
+*
+!.gitignore

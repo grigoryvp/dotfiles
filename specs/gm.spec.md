@@ -316,8 +316,8 @@ below). Dismissing either chooser or a failure does nothing.
   relies on "HTML titles" enabled by `settings.py`; the names are
   HTML-escaped. A detached worktree shows the branch part of its directory
   name. A one-line `.metadata.tab` in the worktree's `catalog-info.yaml`
-  replaces the whole title as plain text; it is parsed by hand like the CLI
-  configs (see **Fetch**). The title is an interpolated string; repo and branch names
+  replaces the repo part; it is parsed by hand like the CLI configs (see
+  **Fetch**). The title is an interpolated string; repo and branch names
   can't contain `\`, and in `.metadata.tab` it is doubled. Then the window
   and iTerm are activated with `ignoring_other_apps`, since Wox or
   Hammerspoon is frontmost at that point.

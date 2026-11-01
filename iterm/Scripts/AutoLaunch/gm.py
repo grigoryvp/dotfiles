@@ -453,16 +453,15 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
 
 # Needs "HTML titles", enabled by settings.py.
 def tab_title(repo: str, branch: str | None, worktree: Path) -> str:
-    metadata = yaml_section(read_lines(worktree / CATALOG_INFO), "metadata")
-    tab = yaml_value(metadata, "tab")
-    if tab is not None:
-        # The title is an interpolated string, where a backslash starts
-        # interpolation; repo and branch names can't contain it.
-        return html.escape(tab, quote=False).replace("\\", "\\\\")
     # A detached worktree's directory still names the branch it was made for.
     branch = branch or worktree.name.removeprefix(f"{repo}--")
-    repo, branch = (html.escape(s, quote=False) for s in (repo, branch))
-    return f"<b>{repo}</b> <u>{branch}</u>"
+    metadata = yaml_section(read_lines(worktree / CATALOG_INFO), "metadata")
+    name = yaml_value(metadata, "tab") or repo
+    name, branch = (html.escape(s, quote=False) for s in (name, branch))
+    # The title is an interpolated string, where a backslash starts
+    # interpolation; repo and branch names can't contain it.
+    name = name.replace("\\", "\\\\")
+    return f"<b>{name}</b> <u>{branch}</u>"
 
 
 # Returns why the worktree's branch isn't in the remote default one, or None.

@@ -8,6 +8,7 @@
 /tmp/
 /app-server-control/
 /app-server-daemon/
+/archived_sessions/
 /auth.json
 /cache/
 /computer-use/
@@ -25,6 +26,7 @@
 /plugins/
 /rollout-migrations/
 /session_index.jsonl
+/session_index.jsonl.lock
 /sessions/
 /shell_snapshots/
 /sqlite/

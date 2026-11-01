@@ -258,6 +258,7 @@ alias cdh="cd ${HOME}"
 alias cdd="cd ${HOME}/Documents"
 alias cdx="cd ${HOME}/.xi"
 alias cdc="cd ${HHOME}/dotfiles"
+alias cds="cd ${HHOME}/skills"
 alias cdhh="cd ${HHOME}"
 
 ##  Wox keeps settings in SQLite; sync only the rows listed here via

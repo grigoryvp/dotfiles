@@ -35,6 +35,8 @@ with first-class access to tabs and sessions.
   pushes it, then removes the worktree as `gm rm` does.
 - `gm go` (done): focuses a worktree's tab, creating it and its splits if
   missing.
+- `gm sync` (done, not tested end to end): opens the missing tabs of all
+  worktrees, as `gm go` would for each.
 - `gm archive` (done, not tested end to end): picks a project and
   archives it on its host; a public one only after a confirmation.
 - `gm refresh` (done): fetches the project list now instead of waiting
@@ -357,6 +359,11 @@ below). Dismissing either chooser or a failure does nothing.
   subtext, and filtering searches the subtext too. Selecting a row focuses
   or opens the tab as `gm new` does, but never types an install command. No
   worktrees show a single "No worktrees" row.
+- **`gm sync`** (done, not tested end to end): RPC `gm_sync()`, no UI. Every
+  worktree `gm go` lists without a tab gets one with its splits, as `gm go`
+  opens it, but the tabs are not focused one by one: iTerm is activated
+  once at the end if any tab was opened. Existing tabs are left alone. The
+  success shows the count, e.g. `gm SYNC: 3 tabs opened`.
 - **`gm rm`** (done): the chooser lists worktrees as `gm go` does. The
   picked path comes back over RPC, so it is removed only if it is a linked
   worktree of a clone in `~/git`. Unsaved work is `git status --porcelain` lines

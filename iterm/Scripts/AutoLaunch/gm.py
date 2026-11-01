@@ -699,6 +699,26 @@ async def main(connection):
     async def gm_go_done(worktree: str):
         run_command(f"gm GO {Path(worktree).name}", go_worktree(Path(worktree)))
 
+    # Opens tabs as gm go does, without focusing each one in turn.
+    async def sync_tabs():
+        opened = 0
+        for worktree in await collect_worktrees():
+            path = Path(worktree["path"])
+            if await find_tabs(path):
+                continue
+            if await create_tab(path) is None:
+                report(f"failed to open a tab for {path}")
+                continue
+            opened += 1
+        if opened:
+            await app.async_activate(ignoring_other_apps=True)
+        await finish_command(f"{opened} tabs opened")
+
+    # Called by wox/plugins/single-file/gm.py; no UI.
+    @iterm2.RPC
+    async def gm_sync():
+        run_command("gm SYNC", sync_tabs())
+
     async def merge_worktree(worktree: Path):
         found = await locate_worktree(worktree)
         if found is None:
@@ -756,6 +776,7 @@ async def main(connection):
     await gm_archive_done.async_register(connection)
     await gm_go.async_register(connection)
     await gm_go_done.async_register(connection)
+    await gm_sync.async_register(connection)
     await gm_merge.async_register(connection)
     await gm_merge_done.async_register(connection)
     await gm_rm.async_register(connection)

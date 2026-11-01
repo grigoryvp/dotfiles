@@ -15,6 +15,7 @@
 #     {"Command": "rm", "Description": "Remove a worktree and its iTerm tab"},
 #     {"Command": "merge", "Description": "Merge a worktree into the default branch and remove it"},
 #     {"Command": "go", "Description": "Switch to a worktree's iTerm tab"},
+#     {"Command": "sync", "Description": "Open iTerm tabs for all worktrees"},
 #     {"Command": "archive", "Description": "Archive a project on GitHub or GitLab"},
 #     {"Command": "refresh", "Description": "Refresh the project list"},
 #     {"Command": "status", "Description": "Show debug info"}
@@ -51,6 +52,7 @@ COMMANDS = {
     "rm": "Remove a worktree and its iTerm tab",
     "merge": "Merge a worktree into the default branch and remove it",
     "go": "Switch to a worktree's iTerm tab",
+    "sync": "Open iTerm tabs for all worktrees",
     "archive": "Archive a project on GitHub or GitLab",
     "refresh": "Refresh the project list",
     "status": "Show debug info",
@@ -139,6 +141,8 @@ class GitManager:
             results = [self.create_result(query.search.strip())]
         elif query.command == "go":
             results = [self.rpc_result("go", "Open the worktree picker")]
+        elif query.command == "sync":
+            results = [self.rpc_result("sync", "Open tabs for worktrees without one")]
         elif query.command == "rm":
             results = [self.rpc_result("rm", "Open the worktree picker")]
         elif query.command == "merge":

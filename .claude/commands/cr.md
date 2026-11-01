@@ -1,1 +1,1 @@
-Используй скилл $code-review
+Используй скилл code-review

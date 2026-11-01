@@ -1183,6 +1183,7 @@ notif
 notunes
 NPC
 npmignore
+nsis
 NSSM
 NTFS
 Nubuck

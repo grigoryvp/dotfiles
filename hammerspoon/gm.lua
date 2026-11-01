@@ -154,7 +154,7 @@ function gm:_worktreeChoices(worktrees)
   local choices = {}
   for _, worktree in ipairs(worktrees) do
     table.insert(choices, {
-      -- Same as the tab title
+      -- The worktree directory name
       text = worktree.path:match("[^/]+$"),
       subText = worktree.project .. " @ " .. (worktree.branch or "detached"),
       path = worktree.path

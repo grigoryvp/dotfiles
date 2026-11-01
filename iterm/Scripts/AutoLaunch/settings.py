@@ -14,6 +14,7 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     Key.TAP_BAR_POSTIION: 2,  # Left
     Key.HIDE_TAB_BAR_WHEN_ONLY_ONE_TAB: False,
     Key.HIDE_TAB_NUMBER: False,
+    Key.HTML_TAB_TITLES: True,
     # Absent from the enum. On a 16" MacBook Pro with the 15pt font this
     # leaves claude in a vertical split an 82-column text area (+2 columns
     # it reserves on the left).

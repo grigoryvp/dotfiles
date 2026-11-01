@@ -312,10 +312,13 @@ below). Dismissing either chooser or a failure does nothing.
   closes them all.
   Opening (done): a new tab in the current window, or a new window if there
   is none, with the profile's initial directory overridden to the worktree.
-  `Tab.async_set_title()` sets the worktree directory name as the title
-  (an interpolated string, but repo and branch names can't contain `\`),
-  then the window and iTerm are activated with `ignoring_other_apps`, since
-  Wox or Hammerspoon is frontmost at that point.
+  `Tab.async_set_title()` sets the title `<i>repo</i> <b>branch</b>`, which
+  relies on "HTML titles" enabled by `settings.py`; the names are
+  HTML-escaped. A detached worktree shows the branch part of its directory
+  name. The title is an interpolated string, but repo and branch names
+  can't contain `\`. Then the window and iTerm are activated with
+  `ignoring_other_apps`, since Wox or Hammerspoon is frontmost at that
+  point.
   Splits (done): every tab GM opens, for `gm new` and `gm go` alike, gets
   the shift-cmd-d layout: a bottom pane of 10 rows. The layout lives in
   `split_with_bottom_pane()` in `iterm/Scripts/AutoLaunch/split.py`, which
@@ -355,10 +358,11 @@ below). Dismissing either chooser or a failure does nothing.
   i.e. the linked worktrees of all clones in `~/git` (`git worktree list
   --porcelain` minus its first entry, the clone itself), collected
   concurrently; a detached worktree has no `branch`. The chooser row is the
-  directory name (same as the tab title) with `<host>/<path> @ <branch>` as
-  subtext, and filtering searches the subtext too. Selecting a row focuses
-  or opens the tab as `gm new` does, but never types an install command. No
-  worktrees show a single "No worktrees" row.
+  directory name with `<host>/<path> @ <branch>` as subtext, and filtering
+  searches the subtext too. Selecting a row focuses or opens the tab as `gm
+  new` does, but never types an install command; a path that isn't a
+  worktree of a clone in `~/git` is reported. No worktrees show a single "No
+  worktrees" row.
 - **`gm sync`** (done, not tested end to end): RPC `gm_sync()`, no UI. Every
   worktree `gm go` lists without a tab gets one with its splits, as `gm go`
   opens it, but the tabs are not focused one by one: iTerm is activated

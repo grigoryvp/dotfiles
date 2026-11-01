@@ -18,6 +18,7 @@
 # - Status: progress and outcome of the user's commands go to the window
 #   title through status.py.
 import asyncio
+import html
 import json
 import os
 import re
@@ -419,6 +420,14 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
     return worktree.resolve()
 
 
+# Needs "HTML titles", enabled by settings.py.
+def tab_title(repo: str, branch: str | None, worktree: Path) -> str:
+    # A detached worktree's directory still names the branch it was made for.
+    branch = branch or worktree.name.removeprefix(f"{repo}--")
+    repo, branch = (html.escape(s, quote=False) for s in (repo, branch))
+    return f"<i>{repo}</i> <b>{branch}</b>"
+
+
 # Returns why the worktree's branch isn't in the remote default one, or None.
 async def merge_to_default(
     clone: Path, worktree: Path, branch: str | None, cli: str | None
@@ -506,7 +515,7 @@ async def main(connection):
         return tabs
 
     # Returns the top session; the bottom one is the shift-cmd-d split.
-    async def create_tab(worktree: Path) -> iterm2.Session | None:
+    async def create_tab(worktree: Path, title: str) -> iterm2.Session | None:
         profile = iterm2.LocalWriteOnlyProfile()
         profile.set_initial_directory_mode(
             iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_CUSTOM
@@ -528,19 +537,19 @@ async def main(connection):
         )
         # The title is an interpolated string, but repo and branch names
         # can't contain the backslash that starts interpolation.
-        await tab.async_set_title(worktree.name)
+        await tab.async_set_title(title)
         # A tab variable rather than a session one, so splits share it.
         await tab.async_set_variable("user.worktree", str(worktree))
         return session
 
     # GM never types into a tab it didn't just create: something may be
     # running there.
-    async def open_tab(worktree: Path, command: str | None):
+    async def open_tab(worktree: Path, title: str, command: str | None):
         tabs = await find_tabs(worktree)
         if tabs:
             await tabs[0].async_activate()
         else:
-            session = await create_tab(worktree)
+            session = await create_tab(worktree, title)
             if session is None:
                 report(f"failed to open a tab for {worktree}")
                 return
@@ -563,12 +572,13 @@ async def main(connection):
         # without a fetch, and its dependencies are presumably installed.
         worktree = await find_worktree(repo, branch)
         if worktree is not None:
-            await open_tab(worktree, None)
+            await open_tab(worktree, tab_title(repo.name, branch, worktree), None)
         else:
             worktree = await create_worktree(repo, branch, cli)
             if worktree is None:
                 return
-            await open_tab(worktree, install_command(worktree))
+            title = tab_title(repo.name, branch, worktree)
+            await open_tab(worktree, title, install_command(worktree))
         await finish_command()
 
     async def create_project(name: str):
@@ -691,7 +701,12 @@ async def main(connection):
         run_in_background(show_worktrees("gm_go"))
 
     async def go_worktree(worktree: Path):
-        await open_tab(worktree, None)
+        found = await locate_worktree(worktree)
+        if found is None:
+            report(f"not a worktree: {worktree}")
+            return
+        clone, branch = found
+        await open_tab(worktree, tab_title(clone.name, branch, worktree), None)
         await finish_command()
 
     # Called by hammerspoon/gm.lua with the path of the picked worktree.
@@ -706,7 +721,9 @@ async def main(connection):
             path = Path(worktree["path"])
             if await find_tabs(path):
                 continue
-            if await create_tab(path) is None:
+            repo = Path(worktree["project"]).name
+            title = tab_title(repo, worktree.get("branch"), path)
+            if await create_tab(path, title) is None:
                 report(f"failed to open a tab for {path}")
                 continue
             opened += 1

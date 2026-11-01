@@ -2,6 +2,34 @@
 import iterm2
 
 BOTTOM_ROWS = 10
+RIGHT_COLUMNS = 80
+
+
+async def _split_with_fixed_pane(
+    window: iterm2.Window,
+    tab: iterm2.Tab,
+    session: iterm2.Session,
+    vertical: bool,
+    profile_customizations: iterm2.LocalWriteOnlyProfile | None = None,
+) -> None:
+    frame = await window.async_get_frame()
+    size = session.grid_size
+
+    pane = await session.async_split_pane(
+        vertical=vertical, profile_customizations=profile_customizations
+    )
+
+    if size is not None:
+        if vertical:
+            pane.preferred_size = iterm2.Size(RIGHT_COLUMNS, size.height)
+            session.preferred_size = iterm2.Size(
+                size.width - RIGHT_COLUMNS, size.height
+            )
+        else:
+            pane.preferred_size = iterm2.Size(size.width, BOTTOM_ROWS)
+            session.preferred_size = iterm2.Size(size.width, size.height - BOTTOM_ROWS)
+        await tab.async_update_layout()
+    await window.async_set_frame(frame)
 
 
 # Also used by gm.py for the tabs it opens.
@@ -11,32 +39,40 @@ async def split_with_bottom_pane(
     session: iterm2.Session,
     profile_customizations: iterm2.LocalWriteOnlyProfile | None = None,
 ) -> None:
-    frame = await window.async_get_frame()
-    size = session.grid_size
-
-    pane = await session.async_split_pane(
-        vertical=False, profile_customizations=profile_customizations
+    await _split_with_fixed_pane(
+        window,
+        tab,
+        session,
+        vertical=False,
+        profile_customizations=profile_customizations,
     )
-
-    if size is not None:
-        pane.preferred_size = iterm2.Size(size.width, BOTTOM_ROWS)
-        session.preferred_size = iterm2.Size(size.width, size.height - BOTTOM_ROWS)
-        await tab.async_update_layout()
-    await window.async_set_frame(frame)
 
 
 async def main(connection):
     app = await iterm2.async_get_app(connection)
 
+    def find_session(session_id):
+        session = app.get_session_by_id(session_id)
+        if session is None or session.tab is None or session.tab.window is None:
+            return None
+        return session
+
     # Bound to shift-cmd-d by settings.py.
     @iterm2.RPC
     async def custom_horizontal_split(session_id=iterm2.Reference("id")):
-        session = app.get_session_by_id(session_id)
-        if session is None or session.tab is None or session.tab.window is None:
-            return
-        await split_with_bottom_pane(session.tab.window, session.tab, session)
+        if session := find_session(session_id):
+            await split_with_bottom_pane(session.tab.window, session.tab, session)
+
+    # Bound to cmd-d by settings.py.
+    @iterm2.RPC
+    async def custom_vertical_split(session_id=iterm2.Reference("id")):
+        if session := find_session(session_id):
+            await _split_with_fixed_pane(
+                session.tab.window, session.tab, session, vertical=True
+            )
 
     await custom_horizontal_split.async_register(connection)
+    await custom_vertical_split.async_register(connection)
 
 
 # gm.py imports this file.

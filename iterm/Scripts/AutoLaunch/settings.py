@@ -17,8 +17,9 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     Key.HTML_TAB_TITLES: True,
     # Absent from the enum. On a 16" MacBook Pro with the 15pt font this
     # leaves claude in a vertical split an 82-column text area (+2 columns
-    # it reserves on the left).
-    "LeftTabBarWidth": 230,
+    # it reserves on the left) and m1+g right split is 80-column for diffs
+    # and other commands.
+    "LeftTabBarWidth": 250,
     # The enum's HIDE_TAB_CLOSE_BUTTON maps to a key iTerm2 3.7 no longer reads.
     "TabsHaveCloseButton": False,
     Key.HIDE_TAB_ACTIVITY_INDICATOR: True,
@@ -63,8 +64,9 @@ PROFILE_KEYS = {
     "Cursor Blink Fade Out Curve": 1,  # Ease in
 }
 
-# RPC served by split.py. iTerm's own shift-cmd-d splits 50/50.
-SPLIT_FUNCTION = "custom_horizontal_split"
+# RPCs served by split.py. iTerm's own cmd-d and shift-cmd-d split 50/50.
+HORIZONTAL_SPLIT_FUNCTION = "custom_horizontal_split"
+VERTICAL_SPLIT_FUNCTION = "custom_vertical_split"
 
 
 async def get_pref(connection, key: Key | str):
@@ -120,33 +122,43 @@ async def apply_profile(connection):
             await profile._async_simple_set(key, wanted)
 
 
-def make_split_key_binding():
-    return iterm2.KeyBinding(
+def make_split_key_bindings():
+    def binding(character, modifiers, function):
+        return iterm2.KeyBinding(
+            character=ord(character),
+            modifiers=modifiers,
+            # Keycode lets iTerm match the physical key in non-Latin layouts
+            # when "language-agnostic key bindings" is enabled.
+            keycode=iterm2.Keycode.ANSI_D,
+            action=iterm2.BindingAction.INVOKE_SCRIPT_FUNCTION,
+            param=f"{function}()",
+            version=None,
+            label=None,
+        )
+
+    return [
+        binding("d", [iterm2.Modifier.COMMAND], VERTICAL_SPLIT_FUNCTION),
         # Shift makes charactersIgnoringModifiers uppercase, so iTerm looks up "D".
-        character=ord("D"),
-        modifiers=[iterm2.Modifier.SHIFT, iterm2.Modifier.COMMAND],
-        # Keycode lets iTerm match the physical key in non-Latin layouts
-        # when "language-agnostic key bindings" is enabled.
-        keycode=iterm2.Keycode.ANSI_D,
-        action=iterm2.BindingAction.INVOKE_SCRIPT_FUNCTION,
-        param=f"{SPLIT_FUNCTION}()",
-        version=None,
-        label=None,
-    )
+        binding(
+            "D",
+            [iterm2.Modifier.SHIFT, iterm2.Modifier.COMMAND],
+            HORIZONTAL_SPLIT_FUNCTION,
+        ),
+    ]
 
 
 async def apply_key_bindings(connection):
-    """Bind shift-cmd-d in Preferences > Keys so new machines need no manual setup."""
-    wanted = make_split_key_binding()
+    """Bind cmd-d and shift-cmd-d in Preferences > Keys so new machines need no manual setup."""
+    wanted = make_split_key_bindings()
     # The helper fails to decode the "null" an unset map returns on a fresh install.
     try:
         bindings = await iterm2.async_get_global_key_bindings(connection)
     except TypeError:
         bindings = []
-    if wanted in bindings:
+    if all(b in bindings for b in wanted):
         return
-    bindings = [b for b in bindings if b.key != wanted.key]
-    bindings.append(wanted)
+    keys = {b.key for b in wanted}
+    bindings = [b for b in bindings if b.key not in keys] + wanted
     await iterm2.async_set_global_key_bindings(connection, bindings)
 
 

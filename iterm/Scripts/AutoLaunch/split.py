@@ -14,6 +14,12 @@ async def _split_with_fixed_pane(
 ) -> None:
     frame = await window.async_get_frame()
     size = session.grid_size
+    # The library seeds preferred_size from grid_size only when it first sees
+    # a session, and async_update_layout() sends it for every pane, so a pane
+    # resized since then (e.g. gm.py's bottom one) would snap back.
+    for other in tab.all_sessions:
+        if other.grid_size is not None:
+            other.preferred_size = other.grid_size
 
     pane = await session.async_split_pane(
         vertical=vertical, profile_customizations=profile_customizations

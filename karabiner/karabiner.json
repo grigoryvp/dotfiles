@@ -1836,7 +1836,7 @@
                                     {
                                         "name": "_m1",
                                         "type": "variable_if",
-                                        "value": 1
+                                        "value": 0
                                     },
                                     {
                                         "name": "_m2",
@@ -1849,12 +1849,266 @@
                                         "value": 1
                                     }
                                 ],
-                                "description": "m1-m3-2 for 1-st in-app tab (ex iTerm tab)",
+                                "description": "m3-1 => command-1",
+                                "from": { "key_code": "1" },
+                                "to": [
+                                    {
+                                        "key_code": "1",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-2 => command-2",
                                 "from": { "key_code": "2" },
-                                "to": [{
-                                  "key_code": "1",
-                                  "modifiers": ["left_command"]
-                                }],
+                                "to": [
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-3 => command-3",
+                                "from": { "key_code": "3" },
+                                "to": [
+                                    {
+                                        "key_code": "3",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-4 => command-4",
+                                "from": { "key_code": "4" },
+                                "to": [
+                                    {
+                                        "key_code": "4",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-5 => command-5",
+                                "from": { "key_code": "5" },
+                                "to": [
+                                    {
+                                        "key_code": "5",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-6 => command-6",
+                                "from": { "key_code": "6" },
+                                "to": [
+                                    {
+                                        "key_code": "6",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-7 => command-7",
+                                "from": { "key_code": "7" },
+                                "to": [
+                                    {
+                                        "key_code": "7",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-8 => command-8",
+                                "from": { "key_code": "8" },
+                                "to": [
+                                    {
+                                        "key_code": "8",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-9 => command-9",
+                                "from": { "key_code": "9" },
+                                "to": [
+                                    {
+                                        "key_code": "9",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "_m1",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m2",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    },
+                                    {
+                                        "name": "_m3",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
+                                ],
+                                "description": "m3-0 => command-0",
+                                "from": { "key_code": "0" },
+                                "to": [
+                                    {
+                                        "key_code": "0",
+                                        "modifiers": ["right_command"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -3697,38 +3951,6 @@
                                 "to": [
                                     {
                                         "key_code": "k",
-                                        "modifiers": ["right_command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "description": "control-1 => command-1 for mac-win consistency",
-                                "from": {
-                                    "key_code": "1",
-                                    "modifiers": { "mandatory": ["right_control"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "1",
-                                        "modifiers": ["right_command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "_m2",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "description": "m2-1 => command-1 for Preview app",
-                                "from": { "key_code": "1" },
-                                "to": [
-                                    {
-                                        "key_code": "1",
                                         "modifiers": ["right_command"]
                                     }
                                 ],

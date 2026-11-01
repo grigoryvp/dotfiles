@@ -312,7 +312,7 @@ below). Dismissing either chooser or a failure does nothing.
   closes them all.
   Opening (done): a new tab in the current window, or a new window if there
   is none, with the profile's initial directory overridden to the worktree.
-  `Tab.async_set_title()` sets the title `<i>repo</i> <b>branch</b>`, which
+  `Tab.async_set_title()` sets the title `<b>repo</b> <u>branch</u>`, which
   relies on "HTML titles" enabled by `settings.py`; the names are
   HTML-escaped. A detached worktree shows the branch part of its directory
   name. The title is an interpolated string, but repo and branch names

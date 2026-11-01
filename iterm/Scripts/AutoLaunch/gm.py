@@ -425,7 +425,7 @@ def tab_title(repo: str, branch: str | None, worktree: Path) -> str:
     # A detached worktree's directory still names the branch it was made for.
     branch = branch or worktree.name.removeprefix(f"{repo}--")
     repo, branch = (html.escape(s, quote=False) for s in (repo, branch))
-    return f"<i>{repo}</i> <b>{branch}</b>"
+    return f"<b>{repo}</b> <u>{branch}</u>"
 
 
 # Returns why the worktree's branch isn't in the remote default one, or None.

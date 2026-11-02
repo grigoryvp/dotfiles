@@ -409,7 +409,7 @@ below). Dismissing either chooser or a failure does nothing.
 - **Status line** (done): the user's commands write to the window title
   through `status.py` (`specs/status.spec.md`): progress before steps that
   can take long or fail on the network (clone, fetch, push, `gh repo
-  create`, `gm refresh`), the command on success and `<command>:
+  create`, `gm refresh`, worktree removal), the command on success and `<command>:
   <message>` on the first failure. Every command, including future ones,
   must write its success, so the title confirms that it ran. The command
   is written with its name in caps, e.g. `gm RM pycon25`, to stand out in

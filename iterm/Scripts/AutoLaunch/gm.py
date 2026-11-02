@@ -695,6 +695,7 @@ async def main(connection):
                     reasons=reasons,
                 )
                 return
+        await status.add_log("progress", f"removing {worktree.name}")
         args = ["--force"] if force else []
         git = ["git", "-C", str(clone), "worktree", "remove", *args, str(worktree)]
         if await run_cli(*git) is None:

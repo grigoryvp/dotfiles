@@ -156,6 +156,7 @@ autohotkey
 Automations
 autopep8
 autoreplace
+autosetupmerge
 autovacuum
 avahi
 Avalonia
@@ -406,6 +407,7 @@ deleter
 Dementophobia
 densesample
 densesamplenum
+dependson
 deque
 DERP
 descr
@@ -589,6 +591,7 @@ Freepik
 freezegun
 FRL
 frontends
+frontmatter
 frontmost
 Frostbreath
 Frosthand
@@ -1816,6 +1819,7 @@ Uhtred
 UID
 ujson
 ulonglong
+ultracode
 ultrathink
 Unaliased
 unavail
@@ -2253,8 +2257,10 @@ zx
 коллапсирует
 коммита
 коммитам
+коммитами
 коммите
 коммитится
+коммитить
 коммиты
 компактификатор
 компактификатором

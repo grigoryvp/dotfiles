@@ -1078,6 +1078,7 @@ configure() {
   mise use -g python@3.14.5
   mise use -g node@24.16.0
   mise use -g ruby@4.0.5
+  mise use -g lua@5.5.1
   # No prebuilt binaries, fails to compile from source
   _brew_install php
   mise use -g swift@6.3
@@ -1122,9 +1123,11 @@ configure() {
     echo "Not cloning knowledge base since ssh keys are not uploaded"
   fi
 
-  printf '# Machine-specific claude config\n' > ~/.env
-  printf 'export ANTHROPIC_MODEL=opus\n' > ~/.env
-  printf 'export CLAUDE_CODE_EFFORT_LEVEL=high\n' > ~/.env
+  if ! [ -e ~/.enc ]; then
+    printf '# Machine-specific claude config\n' > ~/.env
+    printf 'export ANTHROPIC_MODEL=opus\n' >> ~/.env
+    printf 'export CLAUDE_CODE_EFFORT_LEVEL=high\n' >> ~/.env
+  fi
 
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.bashrc
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc

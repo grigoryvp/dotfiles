@@ -1,6 +1,7 @@
 {
   "env": {
-    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "0"
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "0",
+    "BASH_MAX_TIMEOUT_MS": "1800000"
   },
   "permissions": {
     "allow": [

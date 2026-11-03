@@ -10,6 +10,8 @@ gm = {
   _mergeFailedChooser = nil,
   _archiveChooser = nil,
   _archiveConfirmChooser = nil,
+  -- Unfiltered rows of the choosers we filter ourselves, by chooser
+  _allChoices = {},
   -- "<host>/<path>" picked in _newChooser, waiting for a branch
   _newProject = nil
 }
@@ -81,7 +83,11 @@ end
 function gm:_projectChoices()
   local cache = hs.json.read(self.CACHE_PATH)
   if not cache then
-    return {{text = "No projects", subText = "Missing " .. self.CACHE_PATH}}
+    return {{
+      text = "No projects",
+      subText = "Missing " .. self.CACHE_PATH,
+      unfiltered = true
+    }}
   end
   local choices = {}
   for _, project in ipairs(cache.projects) do
@@ -96,6 +102,88 @@ function gm:_projectChoices()
 end
 
 
+function gm:_plainText(value)
+  if type(value) == "userdata" then
+    return value:getString()
+  end
+  return value or ""
+end
+
+
+-- 1 for a substring, 2 for a subsequence, nil for no match. compact is
+-- query without whitespace
+function gm:_matchRank(target, query, compact)
+  if target:find(query, 1, true) then
+    return 1
+  end
+  local pos = 1
+  for i = 1, #compact do
+    pos = target:find(compact:sub(i, i), pos, true)
+    if not pos then
+      return nil
+    end
+    pos = pos + 1
+  end
+  return 2
+end
+
+
+-- Substring hits go first, then subsequence ones in text only, so
+-- "yandexgo" finds "yandex-cards-go". Each tier keeps the given order,
+-- which keeps merge's active worktree on top
+function gm:_filterChoices(choices, query)
+  query = query:match("^%s*(.-)%s*$"):lower()
+  if query == "" then
+    return choices
+  end
+  local compact = query:gsub("%s+", "")
+  local tiers = {{}, {}, {}}
+  for _, choice in ipairs(choices) do
+    local text = self:_plainText(choice.text):gsub("^🔐 ", ""):lower()
+    local subText = self:_plainText(choice.subText):lower()
+    local textRank = self:_matchRank(text, query, compact)
+    local tier
+    if choice.unfiltered or textRank == 1 then
+      tier = 1
+    elseif subText:find(query, 1, true) then
+      tier = 2
+    elseif textRank == 2 then
+      tier = 3
+    end
+    if tier then
+      table.insert(tiers[tier], choice)
+    end
+  end
+  local filtered = {}
+  for _, tier in ipairs(tiers) do
+    table.move(tier, 1, #tier, #filtered + 1, filtered)
+  end
+  return filtered
+end
+
+
+-- hs.chooser filters by substring only. With queryChangedCallback set it
+-- leaves filtering to us and ignores searchSubText
+function gm:_filterOnQuery(chooser)
+  chooser:queryChangedCallback(function(query)
+    local filtered = self:_filterChoices(self._allChoices[chooser], query)
+    chooser:choices(filtered)
+    -- The best match goes first. Selecting a row in an empty table fails
+    if #filtered > 0 then
+      chooser:selectedRow(1)
+    end
+  end)
+end
+
+
+function gm:_showFiltered(chooser, choices)
+  self._allChoices[chooser] = choices
+  chooser:choices(choices)
+  chooser:query("")
+  chooser:show()
+end
+
+
 function gm:showNew()
   -- Choosers are never freed, see App:showSymbolPicker
   if not self._newChooser then
@@ -106,11 +194,10 @@ function gm:showNew()
         self:_showBranch(choice.id)
       end
     end)
+    self:_filterOnQuery(self._newChooser)
   end
   -- Re-read on each show since the iTerm script refreshes the cache
-  self._newChooser:choices(self:_projectChoices())
-  self._newChooser:query("")
-  self._newChooser:show()
+  self:_showFiltered(self._newChooser, self:_projectChoices())
 end
 
 
@@ -161,7 +248,11 @@ function gm:_worktreeChoices(worktrees)
     })
   end
   if #choices == 0 then
-    choices = {{text = "No worktrees", subText = "Create one with gm new"}}
+    choices = {{
+      text = "No worktrees",
+      subText = "Create one with gm new",
+      unfiltered = true
+    }}
   end
   return choices
 end
@@ -176,11 +267,9 @@ function gm:showGo(worktrees)
         )
       end
     end)
-    self._goChooser:searchSubText(true)
+    self:_filterOnQuery(self._goChooser)
   end
-  self._goChooser:choices(self:_worktreeChoices(worktrees))
-  self._goChooser:query("")
-  self._goChooser:show()
+  self:_showFiltered(self._goChooser, self:_worktreeChoices(worktrees))
 end
 
 
@@ -193,12 +282,10 @@ function gm:showRm(worktrees)
         )
       end
     end)
-    self._rmChooser:searchSubText(true)
+    self:_filterOnQuery(self._rmChooser)
     self._rmChooser:placeholderText("Worktree to remove")
   end
-  self._rmChooser:choices(self:_worktreeChoices(worktrees))
-  self._rmChooser:query("")
-  self._rmChooser:show()
+  self:_showFiltered(self._rmChooser, self:_worktreeChoices(worktrees))
 end
 
 
@@ -240,7 +327,7 @@ function gm:showMerge(worktrees, active)
         )
       end
     end)
-    self._mergeChooser:searchSubText(true)
+    self:_filterOnQuery(self._mergeChooser)
     self._mergeChooser:placeholderText("Worktree to merge and remove")
   end
   local choices = self:_worktreeChoices(worktrees)
@@ -251,9 +338,7 @@ function gm:showMerge(worktrees, active)
       break
     end
   end
-  self._mergeChooser:choices(choices)
-  self._mergeChooser:query("")
-  self._mergeChooser:show()
+  self:_showFiltered(self._mergeChooser, choices)
 end
 
 
@@ -288,10 +373,9 @@ function gm:showArchive()
       end
     end)
     self._archiveChooser:placeholderText("Project to archive")
+    self:_filterOnQuery(self._archiveChooser)
   end
-  self._archiveChooser:choices(self:_projectChoices())
-  self._archiveChooser:query("")
-  self._archiveChooser:show()
+  self:_showFiltered(self._archiveChooser, self:_projectChoices())
 end
 
 

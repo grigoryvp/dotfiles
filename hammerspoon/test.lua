@@ -368,10 +368,18 @@ function Hs:new()
     end,
     isCharged = function()
       return true
-    end
+    end,
+    watcher = {
+      new = function(handler)
+        return {start = function() end}
+      end,
+    },
   }
   this.styledtext = {
     new = function(text, props) end
+  }
+  this.fs = {
+    attributes = function(path) end
   }
   this.settings = {
     get = function(name) end,
@@ -419,6 +427,7 @@ require "menuitem"
 require "helpers"
 require "netstat"
 require "elgato"
+require "gm"
 
 app = App:new()
 assert(
@@ -439,8 +448,9 @@ app:restartInetPingInt()
 app:restartRouterPingInt()
 app:netGraphFromIcmpHistory(history)
 app:cpuGraphFromLoadHistory({1, 2, 3})
+app:startBatteryWatcher()
 app:onHeartbeat()
-app:startTimer()
+app:startTimer(5 * 60)
 hs.task._mock(1, "")
 netstat:get(function(res)
   assert(res == nil)
@@ -456,3 +466,24 @@ hs.task._mock(0,
 netstat:get(function(res)
   assert(res.gateway == "192.168.0.1")
 end)
+
+projects = {
+  {text = "yandex-go"},
+  {text = "🔐 yandex-cards-go", subText = "gitlab.com"},
+  {text = "other", subText = "yandexgo.example"},
+  {text = "unrelated"}
+}
+found = gm:_filterChoices(projects, " YandexGo ")
+assert(#found == 3)
+assert(found[1].text == "other")
+assert(found[2].text == "yandex-go")
+assert(found[3].text == "🔐 yandex-cards-go")
+found = gm:_filterChoices(projects, "yandex go")
+assert(#found == 2 and found[1].text == "yandex-go")
+assert(#gm:_filterChoices(projects, "") == 4)
+assert(#gm:_filterChoices(projects, "zzz") == 0)
+assert(gm:_filterChoices(projects, "cards")[1].text == "🔐 yandex-cards-go")
+found = gm:_filterChoices({{text = "No worktrees", unfiltered = true}}, "x")
+assert(#found == 1)
+found = gm:_filterChoices({{text = "b-go"}, {text = "a-go"}}, "go")
+assert(found[1].text == "b-go" and found[2].text == "a-go")

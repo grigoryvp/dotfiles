@@ -127,8 +127,8 @@ iTerm script: RPC gm_archive_done(project) -> archive, refetch the host
 
 Behavior today: the chooser lists projects from the cache in its order (path
 as text, prefixed with 🔐 for private projects, host as subtext colored per
-host, since the same path can exist on several hosts, Hammerspoon's default
-filtering); selecting one opens
+host, since the same path can exist on several hosts, filtered as described
+under **Filtering**; "No projects" shows for any query); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
 whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
 that row calls `gm_new_done()`, which clones the project if needed and
@@ -165,7 +165,17 @@ below). Dismissing either chooser or a failure does nothing.
   selection and `nil` on dismissal (twice on Esc), so `nil` is ignored.
   `queryChangedCallback` fires on typing, pasting and `show()`, but not on
   `query()`, so the branch chooser resets its rows explicitly before
-  `show()`.
+  `show()`. With this callback set, the chooser doesn't filter at all and
+  ignores `searchSubText`; the new, go, rm, merge and archive choosers use it
+  for **Filtering**, keeping their full rows in `gm._allChoices`.
+- **Filtering**: the query is trimmed and
+  case-insensitive; an empty one shows all rows in their order. Matches come
+  in tiers, each keeping the row order: a substring of the text (without the
+  🔐 prefix), a substring of the subtext, then a subsequence of the text
+  (query without whitespace, so "yandexgo" and "yandex go" find
+  "yandex-cards-go"). Subsequences aren't searched in the subtext, which is
+  long enough to match almost anything. The first row is selected; rows
+  marked `unfiltered` ("No projects", "No worktrees") show for any query.
 - **`hs.chooser:show()` right after `select()` in the same run loop turn**
   crashed Hammerspoon once in a test (AppKit layout exception in
   `-[HSChooser resizeWindow]`). Real use shows and selects from separate
@@ -362,8 +372,8 @@ below). Dismissing either chooser or a failure does nothing.
   i.e. the linked worktrees of all clones in `~/git` (`git worktree list
   --porcelain` minus its first entry, the clone itself), collected
   concurrently; a detached worktree has no `branch`. The chooser row is the
-  directory name with `<host>/<path> @ <branch>` as subtext, and filtering
-  searches the subtext too. Selecting a row focuses or opens the tab as `gm
+  directory name with `<host>/<path> @ <branch>` as subtext, filtered as
+  described under **Filtering**. Selecting a row focuses or opens the tab as `gm
   new` does, but never types an install command; a path that isn't a
   worktree of a clone in `~/git` is reported. No worktrees show a single "No
   worktrees" row.
@@ -387,7 +397,7 @@ below). Dismissing either chooser or a failure does nothing.
   asks if something runs there.
 - **`gm merge`** (done): the chooser lists worktrees as `gm go` does, with
   the active tab's worktree moved to the first row, which the chooser
-  selects. The picked worktree is refused if it is detached or has
+  selects; a query keeps it first within its filtering tier. The picked worktree is refused if it is detached or has
   uncommitted changes (counted as in `gm rm`; unpushed commits are what gets
   merged). Then, in the clone, `git fetch` with the CLI's credentials as in
   **Worktree**. If the branch is already in `origin/<default>` (`git

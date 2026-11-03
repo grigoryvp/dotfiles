@@ -1018,6 +1018,7 @@ mant_dig
 Manyshot
 Maraketh
 marginhandwrite
+masscan
 matplotlib
 Matryoshka
 Matsya
@@ -1247,6 +1248,7 @@ overcap
 overlevel
 oversustain
 oxyde
+paas
 packrat
 pacman
 pagebreak
@@ -1295,6 +1297,7 @@ Pipfile
 pipx
 pixelmator
 pkey
+pkpass
 PlatformAoAcOverride
 pluggy
 plutil
@@ -2036,6 +2039,7 @@ zeroconf
 zgo.at
 ZJIT
 zk
+zmap
 Zod
 zoneinfo
 Zotac
@@ -2317,6 +2321,7 @@ zx
 мемов
 метакласс
 метакласса
+метаклассом
 метаклассы
 метапрограммирование
 метапрограммированием
@@ -2552,6 +2557,7 @@ zx
 симулякров
 симулякры
 синаптическая
+синглтонами
 синглтоны
 скам
 скилл
@@ -2665,6 +2671,7 @@ zx
 Хидо
 Хоара
 Хопкинса
+хостеров
 хостить
 хэндлу
 хэшей

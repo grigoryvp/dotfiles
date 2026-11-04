@@ -388,7 +388,12 @@ below). Dismissing either chooser or a failure does nothing.
   (uncommitted and untracked; ignored files like `node_modules` don't count)
   and `git rev-list --count HEAD --not --remotes` (commits on no
   remote-tracking branch, as of the last fetch, so a new branch without own
-  commits is clean). Without unsaved work the worktree is removed at once;
+  commits is clean). Unpushed commits don't count if `HEAD` is among the
+  commits of a merged pull request from the branch (`gh pr list --head
+  <branch> --state merged`, GitLab's `merge_requests?state=merged&
+  source_branch=<branch>` and their `commits`): squash and rebase merges
+  keep them out of the default branch, and the remote branch is often
+  deleted after the merge. Without unsaved work the worktree is removed at once;
   with it, a confirmation chooser opens with "Keep" as the first row, so a
   reflexive Enter removes nothing, and "Remove anyway" runs `git worktree
   remove --force`. The local branch stays, so unpushed commits survive and a

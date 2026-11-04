@@ -392,20 +392,89 @@ async def count_uncommitted(worktree: Path) -> int | None:
     return None if output is None else len(output.splitlines())
 
 
+# Commits of merged pull requests from the branch, None on failure.
+async def github_merged_commits(
+    gh: str, host: str, path: str, branch: str
+) -> set[str] | None:
+    output = await run_cli(
+        gh,
+        "pr",
+        "list",
+        "--repo",
+        f"{host}/{path}",
+        "--head",
+        branch,
+        "--state",
+        "merged",
+        "--json",
+        "commits",
+        "--jq",
+        ".[].commits[].oid",
+    )
+    return None if output is None else set(output.split())
+
+
+async def gitlab_merged_commits(
+    glab: str, host: str, path: str, branch: str
+) -> set[str] | None:
+    project = f"projects/{quote(path, safe='')}"
+    output = await run_cli(
+        glab,
+        "api",
+        "--hostname",
+        host,
+        f"{project}/merge_requests?state=merged"
+        f"&source_branch={quote(branch, safe='')}&per_page=100",
+    )
+    if output is None:
+        return None
+    commits: set[str] = set()
+    for request in json.loads(output):
+        output = await run_cli(
+            glab,
+            "api",
+            "--hostname",
+            host,
+            f"{project}/merge_requests/{request['iid']}/commits?per_page=100",
+            "--paginate",
+            "--output",
+            "ndjson",
+        )
+        if output is None:
+            return None
+        commits.update(json.loads(line)["id"] for line in output.splitlines())
+    return commits
+
+
 # A description of what removal would lose, or None if nothing.
-async def unsaved_work(worktree: Path) -> str | None:
+async def unsaved_work(
+    clone: Path, worktree: Path, branch: str | None, cli: str | None
+) -> str | None:
+    git = ["git", "-C", str(worktree)]
     changes = await count_uncommitted(worktree)
     # Commits that no remote-tracking branch has, as of the last fetch.
-    unpushed = await run_cli(
-        "git", "-C", str(worktree), "rev-list", "--count", "HEAD", "--not", "--remotes"
-    )
-    if changes is None or unpushed is None:
+    count = await run_cli(*git, "rev-list", "--count", "HEAD", "--not", "--remotes")
+    head = await run_cli(*git, "rev-parse", "HEAD")
+    if changes is None or count is None or head is None:
         return "unknown state, git failed"
+    unpushed = int(count)
+    # Squash and rebase merges keep the branch's commits out of the default
+    # branch, and the remote branch is often deleted after the merge, so
+    # only the merge request knows them.
+    if unpushed and branch is not None and cli is not None:
+        host, *path = clone.relative_to(CLONES_DIR).parts
+        merged_commits = (
+            github_merged_commits if host in gh_hosts() else gitlab_merged_commits
+        )
+        await status.add_log("progress", f"checking merged requests of {branch}")
+        merged = await merged_commits(cli, host, "/".join(path), branch)
+        if merged is not None and head.strip() in merged:
+            unpushed = 0
     reasons = []
     if changes:
         reasons.append(f"{changes} uncommitted changes")
-    if int(unpushed):
-        reasons.append(f"{int(unpushed)} unpushed commits")
+    if unpushed:
+        reasons.append(f"{unpushed} unpushed commits")
     return ", ".join(reasons) or None
 
 
@@ -684,9 +753,10 @@ async def main(connection):
         if found is None:
             report(f"not a removable worktree: {worktree}")
             return
-        clone, _ = found
+        clone, branch = found
         if not force:
-            reasons = await unsaved_work(worktree)
+            host = clone.relative_to(CLONES_DIR).parts[0]
+            reasons = await unsaved_work(clone, worktree, branch, host_cli(host))
             if reasons is not None:
                 await asyncio.to_thread(
                     call_hammerspoon,

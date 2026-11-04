@@ -464,6 +464,10 @@ function App:startHttpServer()
       self:_paste(json.text)
       return "", 200, {}
 
+    elseif json.command == "paste_date_tag" then
+      self:_paste(os.date("#%m%d"))
+      return "", 200, {}
+
     elseif json.command == "raw_paste" then
       self:_paste(hs.pasteboard.readString())
       return "", 200, {}

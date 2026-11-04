@@ -74,5 +74,10 @@
   "terminalProgressBarEnabled": false,
   "messageIdleNotifThresholdMs": 5000,
   "diffSidebarOpen": false,
-  "showStatusInTerminalTab": false
+  "showStatusInTerminalTab": false,
+  "voiceEnabled": true,
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  }
 }

@@ -319,7 +319,12 @@ below). Dismissing either chooser or a failure does nothing.
   and users rewrite titles, and titles of different projects can collide. A
   tab variable rather than a session one, so splits share it. If several
   tabs match, the first one is reused and the rest are left alone; `gm rm`
-  closes them all.
+  closes them all. iTerm restores tabs after a restart without user
+  variables, so if no tab matches, `gm go` and `gm rm` fall back to the
+  first tab without `user.worktree` whose title contains the branch markup
+  `<u>branch</u>` and one of whose sessions has `path` equal to the
+  worktree. `gm rm` looks for tabs before removal, while shells still
+  report the directory.
   Opening (done): a new tab in the current window, or a new window if there
   is none, with the profile's initial directory overridden to the worktree.
   `Tab.async_set_title()` sets the title `<b>repo</b> <u>branch</u>`, which

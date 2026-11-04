@@ -520,17 +520,20 @@ async def create_worktree(repo: Path, branch: str, cli: str | None) -> Path | No
     return worktree.resolve()
 
 
-# Needs "HTML titles", enabled by settings.py.
-def tab_title(repo: str, branch: str | None, worktree: Path) -> str:
+def title_branch(repo: str, branch: str | None, worktree: Path) -> str:
     # A detached worktree's directory still names the branch it was made for.
     branch = branch or worktree.name.removeprefix(f"{repo}--")
+    return f"<u>{html.escape(branch, quote=False)}</u>"
+
+
+# Needs "HTML titles", enabled by settings.py.
+def tab_title(repo: str, branch: str | None, worktree: Path) -> str:
     metadata = yaml_section(read_lines(worktree / CATALOG_INFO), "metadata")
-    name = yaml_value(metadata, "tab") or repo
-    name, branch = (html.escape(s, quote=False) for s in (name, branch))
+    name = html.escape(yaml_value(metadata, "tab") or repo, quote=False)
     # The title is an interpolated string, where a backslash starts
     # interpolation; repo and branch names can't contain it.
     name = name.replace("\\", "\\\\")
-    return f"<b>{name}</b> <u>{branch}</u>"
+    return f"<b>{name}</b> {title_branch(repo, branch, worktree)}"
 
 
 # Returns why the worktree's branch isn't in the remote default one, or None.
@@ -618,6 +621,24 @@ async def main(connection):
                 if await tab.async_get_variable("user.worktree") == str(worktree):
                     tabs.append(tab)
         return tabs
+
+    # iTerm restores tabs after a restart without `user.worktree`, but with
+    # their title and directory.
+    async def find_restored_tab(
+        worktree: Path, repo: str, branch: str | None
+    ) -> iterm2.Tab | None:
+        markup = title_branch(repo, branch, worktree)
+        for window in app.windows:
+            for tab in window.tabs:
+                if await tab.async_get_variable("user.worktree") is not None:
+                    continue
+                title = await tab.async_get_variable("titleOverride") or ""
+                if markup not in title:
+                    continue
+                for session in tab.sessions:
+                    if await session.async_get_variable("path") == str(worktree):
+                        return tab
+        return None
 
     # Returns the top session; the bottom one is the shift-cmd-d split.
     async def create_tab(worktree: Path, title: str) -> iterm2.Session | None:
@@ -766,11 +787,16 @@ async def main(connection):
                 )
                 return
         await status.add_log("progress", f"removing {worktree.name}")
+        # Before removal, while shells still report the directory as theirs.
+        tabs = await find_tabs(worktree)
+        if not tabs:
+            restored = await find_restored_tab(worktree, clone.name, branch)
+            tabs = [restored] if restored else []
         args = ["--force"] if force else []
         git = ["git", "-C", str(clone), "worktree", "remove", *args, str(worktree)]
         if await run_cli(*git) is None:
             return
-        for tab in await find_tabs(worktree):
+        for tab in tabs:
             # Without force iTerm still asks if something runs there.
             await tab.async_close()
         await finish_command()
@@ -821,7 +847,14 @@ async def main(connection):
             report(f"not a worktree: {worktree}")
             return
         clone, branch = found
-        await open_tab(worktree, tab_title(clone.name, branch, worktree), None)
+        restored = None
+        if not await find_tabs(worktree):
+            restored = await find_restored_tab(worktree, clone.name, branch)
+        if restored is not None:
+            await restored.async_activate()
+            await app.async_activate(ignoring_other_apps=True)
+        else:
+            await open_tab(worktree, tab_title(clone.name, branch, worktree), None)
         await finish_command()
 
     # Called by hammerspoon/gm.lua with the path of the picked worktree.

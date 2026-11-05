@@ -1522,6 +1522,7 @@ function App:onHeartbeat()
   -- same space
   self.menuItem:setSuffix(("%-3s"):format(batteryText))
   self.menuItem:update()
+  usage:place()
 end
 
 

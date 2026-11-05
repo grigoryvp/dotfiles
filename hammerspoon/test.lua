@@ -454,6 +454,7 @@ require "helpers"
 require "netstat"
 require "elgato"
 require "gm"
+require "usage"
 
 app = App:new()
 assert(

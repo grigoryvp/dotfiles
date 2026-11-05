@@ -65,7 +65,8 @@ that is missing or of another type means no value.
 - **Gaps**: 8 pt between logos and bars, and to the icons of the neighbor
   items. macOS pads an item icon by 8 pt on each side, so the item is a
   transparent placeholder narrower by the padding, and a canvas over it
-  draws the logos and bars, following the item every second.
+  draws the logos and bars, following the item on each menu update of
+  `main.lua`, every second.
 - **Reset**: a window past its reset time shows 0 until the next poll.
 - **Stale**: values older than 3 poll intervals are gray and the logo is
   dimmed. No value yet: no bar.

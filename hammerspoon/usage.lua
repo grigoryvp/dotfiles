@@ -14,7 +14,6 @@ usage = {
   _renderKey = nil,
   _width = nil,
   _renderTimer = nil,
-  _placeTimer = nil,
   _wakeWatcher = nil,
   _lastRefresh = 0,
 }
@@ -489,14 +488,16 @@ function usage:_render()
     })
     self._item:setIcon(placeholder:imageFromCanvas(), false)
     placeholder:delete()
-    self:_place()
+    self:place()
   end
 end
 
 
 -- Keeps the canvas over the item, which moves as other items in the menu
--- bar appear and go
-function usage:_place()
+-- bar appear and go. Called by the menu update of main.lua every second:
+-- a timer of its own costs more CPU.
+function usage:place()
+  if not self._width then return end
   local frame = menuitem.itemFrame(self._item)
   if not frame or frame.w == 0 then
     self._canvas:hide()
@@ -658,7 +659,6 @@ function usage:start(srcDir)
   self._item:setMenu(function() return self:_menu() end)
   self:_render()
   self._renderTimer = hs.timer.doEvery(60, function() self:_render() end)
-  self._placeTimer = hs.timer.doEvery(1, function() self:_place() end)
   self._wakeWatcher = hs.caffeinate.watcher.new(function(event)
     local events = hs.caffeinate.watcher
     if (event == events.systemDidWake or event == events.screensDidUnlock)

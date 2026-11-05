@@ -12,6 +12,13 @@ menubarbg = {
   _timer = nil,
 }
 
+-- While a window of these apps is close to the menu bar, macOS draws an
+-- opaque menu bar background over the strip, black with a black wallpaper.
+-- Windows of other apps may touch the menu bar. 30 pt is the breakpoint
+-- found by trying: with a smaller gap the menu bar turns black.
+local gapApps = {ChatGPT = true, Claude = true}
+local gap = 30
+
 
 function menubarbg:_redraw()
   for _, canvas in ipairs(self._canvases) do
@@ -26,9 +33,11 @@ function menubarbg:_redraw()
     if height > 0 then
       local frame = {x = full.x, y = full.y, w = full.w, h = height}
       local canvas = hs.canvas.new(frame)
-      -- The "desktop" level is below the wallpaper. Regular windows can't
-      -- overlap the menu bar, so the strip covers nothing.
-      canvas:level(hs.canvas.windowLevels.desktopIcon + 1)
+      -- The "desktop" level is below the wallpaper. One above "desktopIcon"
+      -- is a Window Server window under the menu bar, once seen ordered
+      -- over the strip. Regular windows can't overlap the menu bar, so the
+      -- strip covers nothing.
+      canvas:level(hs.canvas.windowLevels.desktopIcon + 2)
       -- Without "canJoinAllSpaces" the strip stays on the first space;
       -- fullscreen spaces are left out since those hide the menu bar.
       canvas:behavior({"canJoinAllSpaces", "stationary"})
@@ -55,6 +64,27 @@ function menubarbg:_restoreFrames()
       canvas:topLeft({x = want.x, y = want.y})
     end
   end
+end
+
+
+-- The frame with its top moved down to the gap, keeping the bottom in place.
+-- Applied by our window hotkeys only: the apps still place their windows
+-- under the menu bar on launch.
+function menubarbg:frameWithGap(wnd, frame)
+  if not gapApps[wnd:application():name()] then return frame end
+  local topLeft = hs.geometry.point(frame.x, frame.y)
+  for _, screen in ipairs(hs.screen.allScreens()) do
+    local full = screen:fullFrame()
+    local menuBottom = screen:frame().y
+    if topLeft:inside(full) and menuBottom > full.y then
+      local minY = menuBottom + gap
+      if frame.y < minY then
+        local h = frame.y + frame.h - minY
+        return {x = frame.x, y = minY, w = frame.w, h = h}
+      end
+    end
+  end
+  return frame
 end
 
 

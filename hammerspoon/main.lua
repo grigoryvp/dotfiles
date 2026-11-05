@@ -610,6 +610,7 @@ end
 
 function App:_setWndFrame(wnd, frame)
   if not wnd then return end
+  frame = menubarbg:frameWithGap(wnd, frame)
 
   local app = hs.axuielement.applicationElement(wnd:application())
   local wasEnhanced = app.AXEnhancedUserInterface

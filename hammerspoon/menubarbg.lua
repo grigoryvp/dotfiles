@@ -4,7 +4,8 @@
 -- macOS picks the menu bar look from the wallpaper alone, so over a dark
 -- one it dims the strip for its white text: white shows as light gray.
 menubarbg = {
-  _color = {red = 1.0, green = 1.0, blue = 1.0},
+  -- Measured to show as #152535 after macOS shading, like VSCode panels
+  _color = {hex = "#101C28"},
   _canvases = {},
   _frames = {},
   _screenWatcher = nil,

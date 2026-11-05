@@ -20,6 +20,10 @@ function HsMenubar:setMenu(submenu)
 end
 
 
+function HsMenubar:frame()
+end
+
+
 function HsMenubar:setTitle(title)
 end
 
@@ -245,6 +249,10 @@ end
 
 
 function HsCanvas:imageFromCanvas()
+end
+
+
+function HsCanvas:delete()
 end
 
 

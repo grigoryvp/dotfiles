@@ -1504,8 +1504,7 @@ function App:onHeartbeat()
 
   -- The ping graphs are next to the notch
   notch:setGraphs(routerGraph, inetGraph)
-  self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
-  self.menuItem:addSpacer(4)
+  self.menuItem:setGraph(cpuGraph, self.maxCpuLoadHistory)
   if self.isOnPower then
     self.menuItem:addText("🔌")
   elseif battery <= 20 then

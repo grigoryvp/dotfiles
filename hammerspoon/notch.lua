@@ -169,9 +169,10 @@ function notch:_createEars()
         w = rightWidth + underNotch,
         h = area.height,
       }, false),
-      -- See setGraph(): the background and the text are drawn already
-      leftDrawn = {count = 2, height = area.height},
-      rightDrawn = {count = 2, height = area.height},
+      height = area.height,
+      -- See menuitem.updateGraph(): the background and the text go first
+      leftDrawn = {base = 2, count = 2},
+      rightDrawn = {base = 2, count = 2},
     })
   end
 end
@@ -279,49 +280,19 @@ function notch:_render()
 end
 
 
--- Changes the graph elements in place, and only those that changed:
--- recreating them every second took a fifth of our CPU time. "drawn" keeps
--- what each element shows, by index.
-local function setGraph(canvas, drawn, graphData, x, graphLen)
-  local y = (drawn.height - graphHeight) / 2
-  local elements = menuitem.graphElements(
-    graphData, graphLen, x, y, graphHeight)
-  for i, element in ipairs(elements) do
-    local index = 2 + i
-    local f = element.frame
-    local color = element.fillColor or element.strokeColor
-    local key = string.format("%g %g %g %g %s %s %s %s",
-      f.x, f.y, f.w, f.h, color.red, color.green, color.blue, color.alpha)
-    if index > drawn.count then
-      canvas:appendElements(element)
-      drawn.count = index
-    elseif drawn[index] ~= key then
-      canvas[index].frame = f
-      canvas[index].fillColor = element.fillColor
-    end
-    drawn[index] = key
-  end
-  -- The history is shorter right after a start
-  while drawn.count > 2 + #elements do
-    canvas[drawn.count] = nil
-    drawn[drawn.count] = nil
-    drawn.count = drawn.count - 1
-  end
-end
-
-
 -- Called on every heartbeat with menuitem graphs
 function notch:setGraphs(routerGraph, inetGraph)
   local _, leftGraphX = self:_layout(true)
   local _, rightGraphX = self:_layout(false)
   for _, pair in ipairs(self._ears) do
+    local y = (pair.height - graphHeight) / 2
     if not self._narrow.left then
-      setGraph(pair.left, pair.leftDrawn, routerGraph, leftGraphX,
-        self._graphLen)
+      menuitem.updateGraph(pair.left, pair.leftDrawn, routerGraph,
+        self._graphLen, leftGraphX, y, graphHeight)
     end
     if not self._narrow.right then
-      setGraph(pair.right, pair.rightDrawn, inetGraph, rightGraphX,
-        self._graphLen)
+      menuitem.updateGraph(pair.right, pair.rightDrawn, inetGraph,
+        self._graphLen, rightGraphX, y, graphHeight)
     end
   end
 end

@@ -53,17 +53,61 @@ function menuitem.graphElements(graph_data, max_len, x, y, height)
 end
 
 
+-- Changes the graph elements of the canvas in place, and only those that
+-- changed: recreating them every second took a fifth of our CPU time.
+-- "drawn" keeps what each element shows by index, the number of elements
+-- in "count", and in "base" the number of the other elements before the
+-- graph.
+function menuitem.updateGraph(canvas, drawn, graph_data, max_len, x, y,
+                              height)
+  local elements = menuitem.graphElements(graph_data, max_len, x, y, height)
+  for i, element in ipairs(elements) do
+    local index = drawn.base + i
+    local f = element.frame
+    local color = element.fillColor or element.strokeColor
+    local key = string.format("%g %g %g %g %s %s %s %s",
+      f.x, f.y, f.w, f.h, color.red, color.green, color.blue, color.alpha)
+    if index > drawn.count then
+      canvas:appendElements(element)
+      drawn.count = index
+    elseif drawn[index] ~= key then
+      canvas[index].frame = f
+      canvas[index].fillColor = element.fillColor
+    end
+    drawn[index] = key
+  end
+  -- The history is shorter right after a start
+  while drawn.count > drawn.base + #elements do
+    canvas[drawn.count] = nil
+    drawn[drawn.count] = nil
+    drawn.count = drawn.count - 1
+  end
+end
+
+
 function menuitem:new()
   local inst = {
     _widgets = {},
     _submenu = {},
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
     _item = hs.menubar.new(),
-    -- Created after "_item" to be placed on its left
+    -- Created after "_item" to be placed on its left. Its icon is a
+    -- transparent placeholder: the graph is drawn over it by
+    -- "_graphCanvas", whose bars change in place, while a new icon every
+    -- second took half of our CPU time.
+    _graphItem = hs.menubar.new(),
+    _graph = nil,
+    _graphCanvas = nil,
+    -- See menuitem.updateGraph()
+    _graphDrawn = {base = 0, count = 0},
+    -- Created after "_graphItem" to be placed on its left
     _prefixItem = hs.menubar.new(),
     _prefix = nil,
     _shownPrefix = nil,
     _suffix = nil,
+    _shownSuffix = nil,
+    -- What the icon shows, so it is redrawn only on a change
+    _iconKey = nil,
     _cache = {
       text = {
         objects = {},
@@ -82,6 +126,7 @@ end
 
 function menuitem:_setMenu()
   self._item:setMenu(self._submenu)
+  self._graphItem:setMenu(self._submenu)
   self._prefixItem:setMenu(self._submenu)
 end
 
@@ -90,13 +135,44 @@ function menuitem:clear()
   self._widgets = {}
   self._prefix = nil
   self._suffix = nil
-  while #self._canvas > 0 do
-    self._canvas[#self._canvas] = nil
+end
+
+
+-- Widgets drawn the same way give the same key; graphs and indicators
+-- change too often to compare
+function menuitem:_widgetsKey()
+  local parts = {}
+  for _, widget in ipairs(self._widgets) do
+    if widget.type == "graph" or widget.type == "indicator" then
+      return nil
+    end
+    table.insert(parts, widget.type .. " " .. (widget.text or "") .. " "
+      .. widget.width)
   end
+  return table.concat(parts, "\n")
 end
 
 
 function menuitem:update()
+  local key = self:_widgetsKey()
+  if not key or key ~= self._iconKey then
+    self:_updateIcon()
+    self._iconKey = key
+  end
+  if self._suffix ~= self._shownSuffix then
+    local title = hs.styledtext.new(self._suffix or "", {font = titleFont})
+    self._item:setTitle(title)
+    self._shownSuffix = self._suffix
+  end
+  self:_updatePrefix()
+  self:_updateGraph()
+end
+
+
+function menuitem:_updateIcon()
+  while #self._canvas > 0 do
+    self._canvas[#self._canvas] = nil
+  end
   local curOffset = 0
   local totalWidth = 0
   for _, widget in ipairs(self._widgets) do
@@ -174,8 +250,38 @@ function menuitem:update()
   self._canvas:size({w = totalWidth, h = menuHeight})
   local isMonocolorTemplate = false
   self._item:setIcon(self._canvas:imageFromCanvas(), isMonocolorTemplate)
-  self._item:setTitle(hs.styledtext.new(self._suffix or "", {font = titleFont}))
-  self:_updatePrefix()
+end
+
+
+-- Keeps the graph over its placeholder, which moves as other items in the
+-- menu bar appear and go
+function menuitem:_updateGraph()
+  if not self._graph then return end
+  local frame = self._graphItem:frame()
+  if not frame or frame.w == 0 then return end
+  local width = self._graph.max_len * 2 + 2
+  local x = frame.x + (frame.w - width) / 2
+  local y = frame.y + (frame.h - menuHeight) / 2
+  if not self._graphCanvas then
+    self._graphCanvas = hs.canvas.new({
+      x = x,
+      y = y,
+      w = width,
+      h = menuHeight,
+    })
+    -- macOS moves a window of a lower level down out of the menu bar
+    self._graphCanvas:level(hs.canvas.windowLevels.mainMenu + 1)
+    self._graphCanvas:behavior({"canJoinAllSpaces", "stationary"})
+    -- Without a mouse callback clicks go through to the item
+    self._graphCanvas:show()
+  else
+    local cur = self._graphCanvas:frame()
+    if cur.x ~= x or cur.y ~= y then
+      self._graphCanvas:topLeft({x = x, y = y})
+    end
+  end
+  menuitem.updateGraph(self._graphCanvas, self._graphDrawn,
+    self._graph.data, self._graph.max_len, 0, 0, menuHeight)
 end
 
 
@@ -246,6 +352,22 @@ function menuitem:addTextWithWidth(text, width)
     object = styledText,
     width = width
   })
+end
+
+
+-- The graph in its own item, left of the widgets, see "_graphItem"
+function menuitem:setGraph(graph_data, max_len)
+  if not self._graph or self._graph.max_len ~= max_len then
+    local placeholder = hs.canvas.new({
+      x = 0,
+      y = 0,
+      w = max_len * 2 + 2,
+      h = menuHeight,
+    })
+    self._graphItem:setIcon(placeholder:imageFromCanvas(), false)
+    placeholder:delete()
+  end
+  self._graph = {data = graph_data, max_len = max_len}
 end
 
 

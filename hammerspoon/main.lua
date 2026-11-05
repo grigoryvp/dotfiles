@@ -1479,16 +1479,8 @@ function App:onHeartbeat()
     self.menuItem:setPrefix(table.concat(prefix, " "))
   end
 
-  self.menuItem:addText("🛜")
-  self.menuItem:addSpacer(4)
-  self.menuItem:addGraph(routerGraph, self.maxIcmpHistory)
-  self.menuItem:addSpacer(4)
-  self.menuItem:addText("🌐")
-  self.menuItem:addSpacer(4)
-  self.menuItem:addGraph(inetGraph, self.maxIcmpHistory)
-  self.menuItem:addSpacer(4)
-  self.menuItem:addText("💎")
-  self.menuItem:addSpacer(4)
+  -- The ping graphs are next to the notch
+  notch:setGraphs(routerGraph, inetGraph)
   self.menuItem:addGraph(cpuGraph, self.maxCpuLoadHistory)
   self.menuItem:addSpacer(4)
   if self.isOnPower then

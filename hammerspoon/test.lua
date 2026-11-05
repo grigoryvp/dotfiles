@@ -441,6 +441,7 @@ curDirToModuleSearchPath()
 hs = Hs:new()
 require "main"
 require "menuitem"
+require "notch"
 require "helpers"
 require "netstat"
 require "elgato"

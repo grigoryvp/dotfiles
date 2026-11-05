@@ -14,6 +14,45 @@ local maxCacheSize = 100
 local titleFont = {name = "Courier", size = fontHeight}
 
 
+-- Elements of a ping or load graph with its top left corner at x, y, and
+-- its width. The notch ears draw graphs too.
+function menuitem.graphElements(graph_data, max_len, x, y, height)
+  local width = max_len * 2 + 2
+  local elements = {
+    {
+      type = "rectangle",
+      frame = {x = x, y = y, w = width, h = height},
+      fillColor = {red = 0, green = 0, blue = 0},
+      action = "fill"
+    },
+    {
+      type = "rectangle",
+      frame = {x = x, y = y, w = width, h = height},
+      strokeColor = {red = 0.5, green = 0.5, blue = 0.5},
+      action = "stroke"
+    },
+  }
+  for i = 1, #graph_data do
+    local item = graph_data[i]
+    local barHeight = item.val * (height - 2)
+    if barHeight < 2 then barHeight = 2 end
+    if barHeight > height - 2 then barHeight = height - 2 end
+    table.insert(elements, {
+      type = "rectangle",
+      frame = {
+        x = x + 1 + (i - 1) * 2,
+        y = y + height - 1 - barHeight,
+        w = 2,
+        h = barHeight
+      },
+      fillColor = item.color,
+      action = "fill"
+    })
+  end
+  return elements, width
+end
+
+
 function menuitem:new()
   local inst = {
     _widgets = {},
@@ -81,45 +120,10 @@ function menuitem:update()
       totalWidth = totalWidth + widget.width
 
     elseif widget.type == "graph" then
-      local width = widget.max_len * 2 + 2
-      self._canvas:insertElement({
-        type = "rectangle",
-        frame = {
-          x = curOffset,
-          y = 0,
-          w = width,
-          h = menuHeight
-        },
-        fillColor = {red = 0, green = 0, blue = 0},
-        action = "fill"
-      })
-      self._canvas:insertElement({
-        type = "rectangle",
-        frame = {
-          x = curOffset,
-          y = 0,
-          w = width,
-          h = menuHeight
-        },
-        strokeColor = {red = 0.5, green = 0.5, blue = 0.5},
-        action = "stroke"
-      })
-      for i = 1, #widget.graph_data do
-        local item = widget.graph_data[i]
-        local height = item.val * (menuHeight - 2)
-        if height < 2 then height = 2 end
-        if height > menuHeight - 2 then height = menuHeight - 2 end
-        self._canvas:insertElement({
-          type = "rectangle",
-          frame = {
-            x = curOffset + 1 + (i - 1) * 2,
-            y = menuHeight - 1 - height,
-            w = 2,
-            h = height
-          },
-          fillColor = item.color,
-          action = "fill"
-        })
+      local elements, width = menuitem.graphElements(
+        widget.graph_data, widget.max_len, curOffset, 0, menuHeight)
+      for _, element in ipairs(elements) do
+        self._canvas:insertElement(element)
       end
       curOffset = curOffset + width
       totalWidth = totalWidth + width

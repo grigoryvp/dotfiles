@@ -26,9 +26,9 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "notch"
 
   menubarbg:start()
-  notch:start()
 
   app = App:new()
+  notch:start(app.maxIcmpHistory)
   app:setSrcDir(srcDir)
   app:registerMouse()
   app:loadSettings()

@@ -55,6 +55,9 @@ function App:new()
   -- Can't get if not connected to the network.
   inst.ipv4IfaceName = nil
   inst.lastIp = nil
+  -- Set by the network watcher, see onHeartbeat()
+  inst.ipCheckNeeded = true
+  inst.networkWatcher = nil
   inst.inetIp = "1.1.1.1"
   inst.routerIp = nil
   inst.pingRouterInt = false
@@ -1095,6 +1098,18 @@ function App:getKarabinerState()
 end
 
 
+-- Reading an attribute as a field, "item.AXStatusLabel", also fetches the
+-- list of all attribute names: several times slower
+local function dockBadge(item)
+  return item and item:attributeValue("AXStatusLabel")
+end
+
+
+local function dockRunning(item)
+  return item and item:attributeValue("AXIsApplicationRunning")
+end
+
+
 function App:onHeartbeat()
 
   self.heartbeatCounter = self.heartbeatCounter + 1
@@ -1203,42 +1218,49 @@ function App:onHeartbeat()
     -- Do not check too often, CPU expensive
     if isBigTimeout and self.dockItems then
       for _, item in ipairs(self.dockItems) do
-        if item.AXTitle == "Telegram" then
+        -- Read once: see dockBadge()
+        local title = item:attributeValue("AXTitle")
+        if title == "Telegram" then
           self.tgDock = item
         end
-        if item.AXTitle == "Mimestream" then
+        if title == "Mimestream" then
           self.mimeDock = item
         end
-        if item.AXTitle == "Mail" then
+        if title == "Mail" then
           self.mailDock = item
         end
-        if item.AXTitle == "HEY" then
+        if title == "HEY" then
           self.heyDock = item
         end
-        if item.AXTitle == "Slack" then
+        if title == "Slack" then
           self.slackDock = item
         end
-        if item.AXTitle == "Discord" then
+        if title == "Discord" then
           self.discordDock = item
         end
-        if item.AXTitle == "WhatsApp" then
+        if title == "WhatsApp" then
           self.waDock = item
         end
-        if item.AXTitle == "Yandex Telemost" then
+        if title == "Yandex Telemost" then
           self.telemostDock = item
         end
-        if item.AXTitle == "Notion" then
+        if title == "Notion" then
           self.notionDock = item
         end
-        if item.AXTitle == "Linear" then
+        if title == "Linear" then
           self.linearDock = item
         end
-        if item.AXTitle == "iTerm" then
+        if title == "iTerm" then
           self.itermDock = item
         end
       end
     end
   end
+
+  -- Reading the interface every second takes 7% of our CPU time, so it is
+  -- read on network changes, and on the big timeout in case one is missed
+  local ipCheckNeeded = self.ipCheckNeeded or isBigTimeout
+  self.ipCheckNeeded = false
 
   if not self.ipv4IfaceName then
     local ipv4, _ = hs.network.primaryInterfaces()
@@ -1247,7 +1269,9 @@ function App:onHeartbeat()
     end
   end
 
-  if self.ipv4IfaceName then
+  if not ipCheckNeeded then
+    -- Keeps the last IP
+  elseif self.ipv4IfaceName then
     local details = hs.network.interfaceDetails(self.ipv4IfaceName)
     if details then
       local ipv4IfaceDetails = details.IPv4
@@ -1296,101 +1320,100 @@ function App:onHeartbeat()
   local notifications = {}
 
   if self.indicateNewMsg then
-    if self.tgDock and self.tgDock.AXStatusLabel then
+    if dockBadge(self.tgDock) then
       table.insert(notifications, "T")
     end
   end
   if self.indicateMissedMsgApps then
-    if not self.tgDock or not self.tgDock.AXIsApplicationRunning then
+    if not dockRunning(self.tgDock) then
       table.insert(notifications, "T͓")
     end
   end
 
   if self.indicateNewMsg then
-    if self.mimeDock and self.mimeDock.AXStatusLabel then
+    if dockBadge(self.mimeDock) then
       table.insert(notifications, "E")
     end
   end
   if self.indicateMissedMsgApps then
-    if not self.mimeDock or not self.mimeDock.AXIsApplicationRunning then
+    if not dockRunning(self.mimeDock) then
       table.insert(notifications, "E͓")
     end
   end
 
   if self.indicateNewMsg then
-    if self.mailDock and self.mailDock.AXStatusLabel then
+    if dockBadge(self.mailDock) then
       table.insert(notifications, "e")
     end
   end
   if self.indicateMissedMsgApps then
-    if not self.mailDock or not self.mailDock.AXIsApplicationRunning then
+    if not dockRunning(self.mailDock) then
       table.insert(notifications, "e͓")
     end
   end
 
   if self.indicateNewMsg then
-    if self.waDock and self.waDock.AXStatusLabel then
+    if dockBadge(self.waDock) then
       table.insert(notifications, "W")
     end
   end
   if self.indicateMissedMsgApps then
-    if not self.waDock or not self.waDock.AXIsApplicationRunning then
+    if not dockRunning(self.waDock) then
       table.insert(notifications, "W͓")
     end
   end
 
   if self.indicateNewMsg then
-    if self.telemostDock and self.telemostDock.AXStatusLabel then
+    if dockBadge(self.telemostDock) then
       table.insert(notifications, "y")
     end
   end
   if self.indicateMissedMsgApps then
-    if not self.telemostDock
-       or not self.telemostDock.AXIsApplicationRunning then
+    if not dockRunning(self.telemostDock) then
       table.insert(notifications, "y͓")
     end
   end
 
   if self.indicateNewMsg then
-    if self.slackDock and self.slackDock.AXStatusLabel then
+    if dockBadge(self.slackDock) then
       table.insert(notifications, "S")
     end
   end
   if self.indicateMissedMsgApps then
-    if not self.slackDock or not self.slackDock.AXIsApplicationRunning then
+    if not dockRunning(self.slackDock) then
       table.insert(notifications, "S͓")
     end
   end
 
   if self.indicateNewMsg then
-    if self.heyDock and self.heyDock.AXStatusLabel then
+    if dockBadge(self.heyDock) then
       table.insert(notifications, "H")
     end
   end
 
   if self.indicateNewMsg then
-    if self.discordDock and self.discordDock.AXStatusLabel then
+    if dockBadge(self.discordDock) then
       -- "•" indicates channel messages, counter indicates privates and mentions
-      if self.discordDock.AXStatusLabel ~= "•" then
+      if dockBadge(self.discordDock) ~= "•" then
         table.insert(notifications, "D")
       end
     end
   end
 
   if self.indicateNewMsg then
-    if self.notionDock and self.notionDock.AXStatusLabel then
+    if dockBadge(self.notionDock) then
       table.insert(notifications, "N")
     end
   end
 
   if self.indicateNewMsg then
-    if self.linearDock and self.linearDock.AXStatusLabel then
+    if dockBadge(self.linearDock) then
       table.insert(notifications, "L")
     end
   end
 
   if self.indicateNewMsg then
-    if self.itermDock and self.itermDock.AXStatusLabel then
+    if dockBadge(self.itermDock) then
       table.insert(notifications, "t")
     end
   end
@@ -1504,6 +1527,19 @@ end
 
 
 -- Reading the battery percentage takes ~8 ms, too much for every heartbeat
+function App:startNetworkWatcher()
+  self.networkWatcher = hs.network.configuration.open()
+  self.networkWatcher:monitorKeys({
+    "State:/Network/Global/IPv4",
+    "State:/Network/Interface/[^/]+/IPv4",
+  }, true)
+  self.networkWatcher:setCallback(function()
+    self.ipCheckNeeded = true
+  end)
+  self.networkWatcher:start()
+end
+
+
 function App:startBatteryWatcher()
   self:_readBattery()
   self.batteryWatcher = hs.battery.watcher.new(function()

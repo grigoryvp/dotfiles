@@ -756,7 +756,7 @@ _configure_input_sources() {
   # notification, so Karabiner keeps the list it read at startup and
   # "select_input_source" silently matches nothing. Restarting it makes
   # the new layouts selectable.
-  karabiner_agent=org.pqrs.service.agent.Karabiner-Console-User-Server
+  karabiner_agent=org.pqrs.service.agent.karabiner_console_user_server
   launchctl kickstart -k "gui/$(id -u)/$karabiner_agent" 2>/dev/null || true
 }
 

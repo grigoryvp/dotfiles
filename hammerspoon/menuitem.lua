@@ -253,11 +253,33 @@ function menuitem:_updateIcon()
 end
 
 
+-- hs.menubar:frame() flips "y" by the height of the item's screen and not
+-- of the primary one, so on a screen of another height the item is off by
+-- the difference. The screen is the one whose top it is then. Its height
+-- stays that of the primary menu bar, which is taller with a notch.
+local function itemFrame(item)
+  local frame = item:frame()
+  if not frame then return nil end
+  local primaryHeight = hs.screen.primaryScreen():fullFrame().h
+  for _, screen in ipairs(hs.screen.allScreens()) do
+    local s = screen:fullFrame()
+    local y = frame.y + primaryHeight - s.h
+    if math.abs(y - s.y) <= 2 and frame.x >= s.x and frame.x < s.x + s.w then
+      local menuBarHeight = screen:frame().y - s.y
+      -- Zero with an auto hidden menu bar
+      if menuBarHeight <= 0 then menuBarHeight = frame.h end
+      return {x = frame.x, y = s.y, w = frame.w, h = menuBarHeight}
+    end
+  end
+  return frame
+end
+
+
 -- Keeps the graph over its placeholder, which moves as other items in the
 -- menu bar appear and go
 function menuitem:_updateGraph()
   if not self._graph then return end
-  local frame = self._graphItem:frame()
+  local frame = itemFrame(self._graphItem)
   if not frame or frame.w == 0 then return end
   local width = self._graph.max_len * 2 + 2
   local x = frame.x + (frame.w - width) / 2

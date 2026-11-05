@@ -231,6 +231,7 @@ Bronzeworks
 bson
 bssid
 BTF
+btm
 btog
 btop
 BTSP
@@ -1677,6 +1678,7 @@ Svalinn
 SWE-Bench
 Swiftblade
 swiftenv
+swiftgifts
 Swiftstalker
 swm
 SWP_
@@ -2067,6 +2069,7 @@ zx
 апдейтами
 аппроксиматоры
 ассеты
+АТБ
 атомарности
 Атомарность
 АФК

@@ -149,6 +149,7 @@ antigravity-cli
 steam
 ollama
 yandextelemost
+libreoffice
 gh
 glab
 yq

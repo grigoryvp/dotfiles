@@ -484,6 +484,10 @@ mcd() {
   cd "$1"
 }
 
+pptx-to-pdf() {
+  soffice --headless --convert-to pdf --outdir "$(dirname "$1")" "$1"
+}
+
 ##  For tools installed via "go get" to be on path
 if which go > /dev/null; then
   start_path_with $(go env GOPATH)/bin

@@ -16,7 +16,12 @@ menubarbg = {
 -- opaque menu bar background over the strip, black with a black wallpaper.
 -- Windows of other apps may touch the menu bar. 30 pt is the breakpoint
 -- found by trying: with a smaller gap the menu bar turns black.
-local gapApps = {ChatGPT = true, Claude = true}
+local gapApps = {
+  ChatGPT = true,
+  Claude = true,
+  Mimestream = true,
+  ["Karabiner-EventViewer"] = true,
+}
 local gap = 30
 
 

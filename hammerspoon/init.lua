@@ -22,11 +22,8 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "menuitem"
   require "gm"
   require "main"
-  require "menubarbg"
   require "notch"
   require "usage"
-
-  menubarbg:start()
 
   -- The subscriptions go between the battery and the CPU graph
   app = App:new(function() usage:createItem() end)

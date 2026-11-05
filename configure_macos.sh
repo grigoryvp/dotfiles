@@ -339,6 +339,36 @@ _install_qbittorrent() {
   fi
 }
 
+_install_menubartint() {
+  if [ -e "/Applications/Menu Bar Tint.app" ]; then
+    echo "Menu Bar Tint already installed"
+    return 0
+  fi
+  dmg="menubartint.dmg"
+  # Redirects to the latest versioned .dmg
+  url="https://manytricks.com/download/menubartint/"
+  echo "Downloading Menu Bar Tint..."
+  if ! curl -fLSs -o "./$dmg" "$url"; then
+    echo "❌ Failed to download '$url', aborting" >&2
+    exit 1
+  fi
+  vol=$(hdiutil attach "./$dmg" -nobrowse | grep -o '/Volumes/.*' | tail -1)
+  if [ -z "$vol" ]; then
+    echo "❌ Failed to mount './$dmg', aborting" >&2
+    rm "./$dmg"
+    exit 1
+  fi
+  echo "Installing Menu Bar Tint..."
+  cp -R "$vol/Menu Bar Tint.app" /Applications/
+  ret=$?
+  hdiutil detach "$vol" 1>/dev/null
+  rm "./$dmg"
+  if [ $ret -ne 0 ]; then
+    echo "❌ Failed to copy Menu Bar Tint.app into /Applications, aborting" >&2
+    exit 1
+  fi
+}
+
 _login_items() {
   target='tell application "System Events"'
   osascript -e "$target to get the name of every login item" 2>/dev/null
@@ -496,6 +526,80 @@ _configure_keepassxc() {
     exit 1
   fi
   echo "KeePassXC configured"
+}
+
+# SIGTERM skips the app's quit path, so nothing is written back on exit, and
+# unlike a "quit" event it needs no Automation consent
+_menubartint_quit() {
+  if ! pgrep -x "Menu Bar Tint" >/dev/null; then
+    return 0
+  fi
+  pkill -x "Menu Bar Tint"
+  i=0
+  while pgrep -x "Menu Bar Tint" >/dev/null; do
+    if [ $i -ge 100 ]; then
+      echo "❌ Menu Bar Tint did not quit, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+}
+
+# NSKeyedArchiver data of a calibrated RGB NSColor, as hex for "defaults write
+# -data". NSColor keeps the components as a NUL terminated "r g b" string.
+_nscolor_hex() {
+  rgb=$(printf '%s\000' "$1" | base64)
+  plutil -convert binary1 -o - - <<EOF | od -An -v -tx1 | tr -d ' \n'
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0"><dict>
+  <key>\$archiver</key><string>NSKeyedArchiver</string>
+  <key>\$version</key><integer>100000</integer>
+  <key>\$top</key>
+  <dict><key>root</key><dict><key>CF\$UID</key><integer>1</integer></dict></dict>
+  <key>\$objects</key>
+  <array>
+    <string>\$null</string>
+    <dict>
+      <key>\$class</key><dict><key>CF\$UID</key><integer>2</integer></dict>
+      <key>NSColorSpace</key><integer>1</integer>
+      <key>NSRGB</key><data>$rgb</data>
+    </dict>
+    <dict>
+      <key>\$classname</key><string>NSColor</string>
+      <key>\$classes</key>
+      <array><string>NSColor</string><string>NSObject</string></array>
+    </dict>
+  </array>
+</dict></plist>
+EOF
+}
+
+# Tints only a transparent menu bar: "Show menu bar background", "Reduce
+# transparency" and "Increase contrast" must stay off
+_configure_menubartint() {
+  domain=com.manytricks.MenuBarTint
+  # A running app reads the colors only on a wallpaper change
+  _menubartint_quit
+  # #101C28: macOS lightens the tint to show as #152535, like VSCode panels
+  color=$(_nscolor_hex "0.06274509804 0.1098039216 0.1568627451")
+  # Gradient stops: the same color in all three gives a solid bar
+  for stop in Top Center Bottom; do
+    defaults write $domain "Color: $stop" -data "$color"
+    # A color picked in the app is also saved for the current wallpaper and
+    # wins over the plain key
+    defaults delete $domain "Color: $stop: By Desktop Image" 2>/dev/null \
+      || true
+  done
+  # 0 hides the tint
+  defaults write $domain Opacity -float 1
+  defaults write $domain "Opacity: Hovering" -float 1
+  # Otherwise the first launch opens the settings window
+  defaults write $domain "Shown Settings" -bool true
+  _add_login_item "Menu Bar Tint" "/Applications/Menu Bar Tint.app"
+  # "open" on a running app shows its settings, so only after the quit above
+  open -a "Menu Bar Tint"
+  echo "Menu Bar Tint configured"
 }
 
 # Input method name lookup for debug purpose
@@ -1064,6 +1168,9 @@ configure() {
   open -a Flameshot
 
   _install_qbittorrent
+
+  _install_menubartint
+  _configure_menubartint
 
   # Keeps the play/pause key from launching Apple Music
   _add_login_item noTunes /Applications/noTunes.app

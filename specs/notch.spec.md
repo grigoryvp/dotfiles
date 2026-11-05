@@ -6,9 +6,10 @@ Wox (e.g. `gm merge`) shows its progress and result there, and a click
 opens the iTerm Script Console with the full log.
 
 Why: with the Minimal iTerm theme the window has no title bar, so the
-status line in the window title is not visible anymore. The menu bar strip
-(`hammerspoon/menubarbg.lua`) made the black notch visible, so drawing at
-its sides looks like part of the notch, like Boring Notch does.
+status line in the window title is not visible anymore. The menu bar tint
+(Menu Bar Tint, set up by `configure_macos.sh`) makes the black notch
+visible, so drawing at its sides looks like part of the notch, like Boring
+Notch does.
 
 Status: done.
 
@@ -63,7 +64,7 @@ next one.
 - **Screens**: only a screen with a notch, i.e. with non-empty auxiliary
   areas. No ears on external displays.
 - **Level**: `mainMenu + 1`, above the menu bar, so the ears cover its
-  strip. macOS moves a window one level below the menu bar (`mainMenu - 1`)
+  tint. macOS moves a window one level below the menu bar (`mainMenu - 1`)
   down out of the menu bar area, but leaves this one in place. Not shown in
   fullscreen spaces: the ears don't have the fullscreen auxiliary behavior.
 - **Shape**: the black rectangle sticks out of the canvas at the top and

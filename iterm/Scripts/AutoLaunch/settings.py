@@ -38,7 +38,7 @@ GLOBAL_PREFS: dict[Key | str, object] = {
 COLOR_PRESET = "Solarized Dark"
 # The Minimal theme paints the tab bar with the background shifted by
 # "minimalTabStyleBackgroundColorDifference", up for a background darker than
-# the shift: #001020 + 21 gives #152535 of the menu bar strip.
+# the shift: #001020 + 21 gives #152535 of the menu bar tint.
 BACKGROUND = iterm2.Color(0, 16, 32)
 # Also the tab title color in the Minimal theme. Light orange, the complement
 # of the blue background.

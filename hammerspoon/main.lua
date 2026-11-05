@@ -1,9 +1,10 @@
 App = {}
-function App:new()
+-- See menuitem:new() for "createBetween"
+function App:new(createBetween)
   local inst = setmetatable({
   }, {__index = self})
   inst.srcDir = nil
-  inst.menuItem = menuitem:new()
+  inst.menuItem = menuitem:new(createBetween)
   inst.MENU_LIGHTS_ON = 2
   inst.MENU_LIGHTS_OFF = 3
   inst.MENU_LOAD_PASS = 4

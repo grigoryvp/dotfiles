@@ -601,14 +601,19 @@ function usage:refresh()
 end
 
 
+-- Separate from usage:start(), so menuitem.lua creates the item where it
+-- is placed
+function usage:createItem()
+  self._item = hs.menubar.new()
+end
+
+
 function usage:start(srcDir)
   for _, provider in ipairs(providers) do
     self._logos[provider.name] = hs.image.imageFromPath(
       srcDir .. provider.logo.file)
   end
   self._canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight})
-  -- Created after the items of menuitem.lua to be placed on their left
-  self._item = hs.menubar.new()
   self._item:setMenu(function() return self:_menu() end)
   self:_render()
   self._renderTimer = hs.timer.doEvery(60, function() self:_render() end)

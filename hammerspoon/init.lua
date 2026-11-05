@@ -28,7 +28,8 @@ function onReadlinkExit(exitCode, stdOut, _)
 
   menubarbg:start()
 
-  app = App:new()
+  -- The subscriptions go between the battery and the CPU graph
+  app = App:new(function() usage:createItem() end)
   notch:start(app.maxIcmpHistory)
   app:setSrcDir(srcDir)
   usage:start(srcDir)

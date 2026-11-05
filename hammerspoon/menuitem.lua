@@ -85,12 +85,16 @@ function menuitem.updateGraph(canvas, drawn, graph_data, max_len, x, y,
 end
 
 
-function menuitem:new()
+-- "createBetween" creates the items of other modules to place between
+-- the battery and the CPU graph
+function menuitem:new(createBetween)
+  local battery = hs.menubar.new()
+  if createBetween then createBetween() end
   local inst = {
     _widgets = {},
     _submenu = {},
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
-    _item = hs.menubar.new(),
+    _item = battery,
     -- Created after "_item" to be placed on its left. Its icon is a
     -- transparent placeholder: the graph is drawn over it by
     -- "_graphCanvas", whose bars change in place, while a new icon every

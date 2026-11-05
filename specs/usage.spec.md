@@ -14,9 +14,9 @@ Status: done.
 ## Components
 
 - **Hammerspoon module** (`hammerspoon/usage.lua`): polls the providers,
-  draws the item, builds the menu. Started from `init.lua` after `App:new()`,
-  so the item is created after those of `menuitem.lua` and placed on their
-  left.
+  draws the item, builds the menu. Its item is created by `menuitem:new()`
+  between the battery and the CPU graph items, so it is placed between
+  them: a menu bar item is placed left of those created before it.
 - **Logos** (`hammerspoon/usage-*.svg`): white, loaded by `hs.image`. The
   Claude one is the Claude Code pixel-art mascot, 12x8 pixels drawn at
   1.5 pt per pixel to stay sharp on Retina. OpenAI and Gemini are from

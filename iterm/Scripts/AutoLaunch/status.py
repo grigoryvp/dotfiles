@@ -5,8 +5,10 @@
 # Imported by other AutoLaunch scripts (gm.py), it provides add_log(), which
 # calls that RPC, so the titles have a single owner across processes.
 import asyncio
+import json
 import sys
 import time
+import urllib.request
 
 import iterm2
 
@@ -17,6 +19,9 @@ PROGRESS_TICK_SEC = 60
 RESULT_EXPIRY_SEC = 10 * 60
 # A missing status must not stall the caller's workflow.
 INVOKE_TIMEOUT_SEC = 2
+# Hammerspoon draws the status next to the notch, see specs/notch.spec.md.
+HAMMERSPOON_URL = "http://localhost:2020"
+HAMMERSPOON_TIMEOUT_SEC = 1
 
 _connection: iterm2.Connection | None = None
 
@@ -45,16 +50,27 @@ async def add_log(kind: str, text: str) -> None:
 # Shown without entries.
 IDLE_TITLE = f"iTerm2 status plugin on Python {sys.version}"
 
-# Keeps the render loop from being garbage collected.
+# Keep the loops from being garbage collected.
 _render_task: asyncio.Task | None = None
+_notch_task: asyncio.Task | None = None
+
+
+def post_to_notch(kind: str, text: str) -> None:
+    body = json.dumps({"command": "notch_status", "kind": kind, "text": text})
+    request = urllib.request.Request(HAMMERSPOON_URL, data=body.encode())
+    try:
+        urllib.request.urlopen(request, timeout=HAMMERSPOON_TIMEOUT_SEC).close()
+    except OSError as error:
+        print(f"failed to post the status to the notch: {error!r}")
 
 
 async def main(connection):
-    global _render_task
+    global _render_task, _notch_task
     app = await iterm2.async_get_app(connection)
     # (kind, text, monotonic time) of the latest entry.
     entry: tuple[str, str, float] | None = None
     changed = asyncio.Event()
+    notch_changed = asyncio.Event()
 
     # The title and the seconds until it changes, None if it doesn't.
     def title() -> tuple[str, float | None]:
@@ -99,7 +115,20 @@ async def main(connection):
             except TimeoutError:
                 pass
 
-    # Only updates the state: the render loop calls the iTerm API.
+    # A loop of its own, so a slow or missing Hammerspoon doesn't hold the
+    # titles back, while the posts keep the order of the entries. Hammerspoon
+    # ticks and expires the entry by itself, so only new entries are posted.
+    async def notify_notch():
+        posted = None
+        while True:
+            await notch_changed.wait()
+            notch_changed.clear()
+            if entry is not None and entry is not posted:
+                posted = entry
+                kind, text, _ = entry
+                await asyncio.to_thread(post_to_notch, kind, text)
+
+    # Only updates the state: the loops call the iTerm API and Hammerspoon.
     @iterm2.RPC
     async def status_add(kind: str, text: str):
         nonlocal entry
@@ -107,9 +136,11 @@ async def main(connection):
             raise ValueError(f"unknown kind: {kind}")
         entry = (kind, text, time.monotonic())
         changed.set()
+        notch_changed.set()
 
     await status_add.async_register(connection)
     _render_task = asyncio.create_task(render())
+    _notch_task = asyncio.create_task(notify_notch())
 
 
 # gm.py imports this file.

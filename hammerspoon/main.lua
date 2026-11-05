@@ -593,6 +593,12 @@ function App:startHttpServer()
       gm:showMergeFailed(json.worktree, json.reason)
       return "", 200, {}
 
+    elseif json.command == "notch_status" then
+      if not notch:setStatus(json.kind) then
+        return "notch_status with unknown kind", 400, {}
+      end
+      return "", 200, {}
+
     elseif json.command == "gm_rm_confirm" then
       if type(json.worktree) ~= "string" or type(json.reasons) ~= "string" then
         return "gm_rm_confirm without worktree or reasons", 400, {}

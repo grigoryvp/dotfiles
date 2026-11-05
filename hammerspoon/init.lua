@@ -23,8 +23,10 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "gm"
   require "main"
   require "menubarbg"
+  require "notch"
 
   menubarbg:start()
+  notch:start()
 
   app = App:new()
   app:setSrcDir(srcDir)

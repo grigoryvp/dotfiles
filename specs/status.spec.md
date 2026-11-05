@@ -78,6 +78,11 @@ status must not break the workflow.
   and tab statuses keep working. The title is an interpolated string, so `\` in the
   text is escaped as `\\`.
 
+## Notch
+
+Every new entry is also posted to Hammerspoon, which shows it next to the
+notch: see `specs/notch.spec.md`.
+
 ## Users
 
 - **GM**: see **Status line** in `specs/gm.spec.md`.

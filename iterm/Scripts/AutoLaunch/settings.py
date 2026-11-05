@@ -9,7 +9,7 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     Key.ONLY_WHEN_MORE_TABS: False,
     # General/Selection "Clicking on a command selects it"; absent from the enum.
     "ClickToSelectCommand": False,
-    Key.THEME: 1,  # Dark
+    Key.THEME: 5,  # Minimal
     Key.HIDE_SCROLLBAR: True,
     Key.TAP_BAR_POSTIION: 2,  # Left
     Key.HIDE_TAB_BAR_WHEN_ONLY_ONE_TAB: False,
@@ -30,10 +30,22 @@ GLOBAL_PREFS: dict[Key | str, object] = {
     # Advanced setting, absent from the enum. macOS can leave secure input
     # stuck on loginwindow until logout, keeping the icon in every session.
     "ShowSecureKeyboardEntryIndicator": False,
+    # Advanced setting, absent from the enum; the key is the capitalized
+    # setting name. See BACKGROUND.
+    "MinimalTabStyleBackgroundColorDifference": 21 / 255,
 }
 
 COLOR_PRESET = "Solarized Dark"
-BACKGROUND = iterm2.Color(0, 0, 0)
+# The Minimal theme paints the tab bar with the background shifted by
+# "minimalTabStyleBackgroundColorDifference", up for a background darker than
+# the shift: #001020 + 21 gives #152535 of the menu bar strip.
+BACKGROUND = iterm2.Color(0, 16, 32)
+# Also the tab title color in the Minimal theme. Light orange, the complement
+# of the blue background.
+FOREGROUND = iterm2.Color(0xE6, 0xAC, 0x73)
+# Default color text in bold, like markdown bold in Claude Code. FOREGROUND
+# with HSL lightness raised to 85%, as Solarized makes bold lighter.
+BOLD = iterm2.Color(0xF3, 0xD9, 0xBE)
 # PostScript name of "JetBrainsMono Nerd Font Mono", as iTerm2 stores it.
 FONT = "JetBrainsMonoNFM-Regular 15"
 INITIAL_DIRECTORY = iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_RECYCLE
@@ -98,10 +110,14 @@ async def apply_colors(connection, profile):
         return
     wanted = {c.key: c for c in preset.values}
     wanted["Background Color"] = BACKGROUND
+    wanted["Foreground Color"] = FOREGROUND
+    wanted["Bold Color"] = BOLD
     if all(same_color(profile.get_color_with_key(k), c) for k, c in wanted.items()):
         return
     await profile.async_set_color_preset(preset)
     await profile.async_set_background_color(BACKGROUND)
+    await profile.async_set_foreground_color(FOREGROUND)
+    await profile.async_set_bold_color(BOLD)
 
 
 async def apply_profile(connection):

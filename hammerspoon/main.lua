@@ -1506,11 +1506,16 @@ function App:onHeartbeat()
   -- The ping graphs are next to the notch
   notch:setGraphs(routerGraph, inetGraph)
   self.menuItem:setGraph(cpuGraph, self.maxCpuLoadHistory)
+  -- Negative spacers cut the transparent left margin of the emoji, so
+  -- the gap to the item on the left is the same as between other items
   if self.isOnPower then
+    self.menuItem:addSpacer(-1)
     self.menuItem:addText("🔌")
   elseif battery <= 20 then
+    self.menuItem:addSpacer(-3)
     self.menuItem:addText("🪫")
   else
+    self.menuItem:addSpacer(-3)
     self.menuItem:addText("🔋")
   end
   -- Padded to 3 characters of the fixed width font so "1" and "100" take

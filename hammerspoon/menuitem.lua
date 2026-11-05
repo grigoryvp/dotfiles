@@ -261,7 +261,7 @@ end
 -- of the primary one, so on a screen of another height the item is off by
 -- the difference. The screen is the one whose top it is then. Its height
 -- stays that of the primary menu bar, which is taller with a notch.
-local function itemFrame(item)
+function menuitem.itemFrame(item)
   local frame = item:frame()
   if not frame then return nil end
   local primaryHeight = hs.screen.primaryScreen():fullFrame().h
@@ -283,7 +283,7 @@ end
 -- menu bar appear and go
 function menuitem:_updateGraph()
   if not self._graph then return end
-  local frame = itemFrame(self._graphItem)
+  local frame = menuitem.itemFrame(self._graphItem)
   if not frame or frame.w == 0 then return end
   local width = self._graph.max_len * 2 + 2
   local x = frame.x + (frame.w - width) / 2

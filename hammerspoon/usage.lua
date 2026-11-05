@@ -12,7 +12,9 @@ usage = {
   _timers = {},
   _inflight = {},
   _renderKey = nil,
+  _width = nil,
   _renderTimer = nil,
+  _placeTimer = nil,
   _wakeWatcher = nil,
   _lastRefresh = 0,
 }
@@ -20,8 +22,11 @@ usage = {
 -- Same as the CPU graph of menuitem.lua
 local menuHeight = 24
 local barWidth = 4
-local logoGap = 3
-local providerGap = 8
+-- Between logos and bars, and to the icons of the neighbor items
+local gap = 8
+-- macOS pads an item icon on each side, the neighbor icons are then twice
+-- as far
+local itemPadding = 8
 -- Values older than this many poll intervals are drawn gray
 local staleIntervals = 3
 local maxBackoffSec = 60 * 60
@@ -396,7 +401,7 @@ function usage:_elements(now)
   local elements = {}
   local x = 0
   for i, provider in ipairs(providers) do
-    if i > 1 then x = x + providerGap end
+    if i > 1 then x = x + gap end
     local bars, stale = self:_bars(provider, now)
     local logo = provider.logo
     if self._logos[provider.name] then
@@ -409,7 +414,7 @@ function usage:_elements(now)
         imageScaling = "scaleProportionally",
       })
     end
-    x = x + logo.w + logoGap
+    x = x + logo.w + gap
     local frame = {x = x, y = 0, w = barWidth * 2 + 3, h = menuHeight}
     table.insert(elements, {
       type = "rectangle",
@@ -472,8 +477,40 @@ function usage:_render()
   self._renderKey = key
   local elements, width = self:_elements(now)
   self._canvas:replaceElements(elements)
-  self._canvas:size({w = width, h = menuHeight})
-  self._item:setIcon(self._canvas:imageFromCanvas(), false)
+  if width ~= self._width then
+    self._width = width
+    -- Narrower than the drawing by the item padding, so the canvas covers
+    -- it and the neighbors are only their own padding away
+    local placeholder = hs.canvas.new({
+      x = 0,
+      y = 0,
+      w = width - itemPadding * 2,
+      h = menuHeight,
+    })
+    self._item:setIcon(placeholder:imageFromCanvas(), false)
+    placeholder:delete()
+    self:_place()
+  end
+end
+
+
+-- Keeps the canvas over the item, which moves as other items in the menu
+-- bar appear and go
+function usage:_place()
+  local frame = menuitem.itemFrame(self._item)
+  if not frame or frame.w == 0 then
+    self._canvas:hide()
+    return
+  end
+  local x = frame.x + (frame.w - self._width) / 2
+  local y = frame.y + (frame.h - menuHeight) / 2
+  local cur = self._canvas:frame()
+  if cur.x ~= x or cur.y ~= y or cur.w ~= self._width then
+    self._canvas:frame({x = x, y = y, w = self._width, h = menuHeight})
+  end
+  if not self._canvas:isShowing() then
+    self._canvas:show()
+  end
 end
 
 
@@ -613,10 +650,15 @@ function usage:start(srcDir)
     self._logos[provider.name] = hs.image.imageFromPath(
       srcDir .. provider.logo.file)
   end
+  -- Drawn over the item like the CPU graph of menuitem.lua, since an item
+  -- icon can't cover its padding
   self._canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight})
+  self._canvas:level(hs.canvas.windowLevels.mainMenu + 1)
+  self._canvas:behavior({"canJoinAllSpaces", "stationary"})
   self._item:setMenu(function() return self:_menu() end)
   self:_render()
   self._renderTimer = hs.timer.doEvery(60, function() self:_render() end)
+  self._placeTimer = hs.timer.doEvery(1, function() self:_place() end)
   self._wakeWatcher = hs.caffeinate.watcher.new(function(event)
     local events = hs.caffeinate.watcher
     if (event == events.systemDidWake or event == events.screensDidUnlock)

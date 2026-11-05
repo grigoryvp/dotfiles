@@ -1591,6 +1591,7 @@ SO-DIMM
 SOCK_DGRAM
 Socketable
 SODIMM
+soffice
 Softlink
 Solana
 Someclass

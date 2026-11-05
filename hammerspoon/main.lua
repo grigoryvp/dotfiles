@@ -1390,14 +1390,14 @@ function App:onHeartbeat()
 
   self.menuItem:clear()
 
+  local prefix = {}
   if #notifications > 0 then
     -- Flash notification icons
     if self.heartbeatCounter % 10 == 0 then
-      self.menuItem:addText(table.concat(notifications, " "))
+      table.insert(prefix, table.concat(notifications, " "))
     else
-      self.menuItem:addText((" "):rep(#notifications * 2 - 1))
+      table.insert(prefix, (" "):rep(#notifications * 2 - 1))
     end
-    self.menuItem:addSpacer(8)
   end
 
   local battery = self.battery
@@ -1466,8 +1466,10 @@ function App:onHeartbeat()
 
   if self.timerEndTime and self.timerEndTime > curTime then
     local diff = self.timerEndTime - curTime
-    self.menuItem:addText(math.floor(diff))
-    self.menuItem:addSpacer(4)
+    table.insert(prefix, tostring(math.floor(diff)))
+  end
+  if #prefix > 0 then
+    self.menuItem:setPrefix(table.concat(prefix, " "))
   end
 
   self.menuItem:addText("🛜")
@@ -1489,9 +1491,9 @@ function App:onHeartbeat()
   else
     self.menuItem:addText("🔋")
   end
-  self.menuItem:addSpacer(4)
-  -- Fixed width font size for 3 characters so "1" and "100" take same space
-  self.menuItem:addTextWithWidth(batteryText, 3 * 8)
+  -- Padded to 3 characters of the fixed width font so "1" and "100" take
+  -- same space
+  self.menuItem:setSuffix(("%-3s"):format(batteryText))
   self.menuItem:update()
 end
 

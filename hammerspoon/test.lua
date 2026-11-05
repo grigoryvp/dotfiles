@@ -20,6 +20,22 @@ function HsMenubar:setMenu(submenu)
 end
 
 
+function HsMenubar:setTitle(title)
+end
+
+
+function HsMenubar:imagePosition(position)
+end
+
+
+function HsMenubar:removeFromMenuBar()
+end
+
+
+function HsMenubar:returnToMenuBar()
+end
+
+
 HsEchoRequest = {}
 function HsEchoRequest:new(addr)
   return setmetatable({
@@ -282,6 +298,7 @@ function Hs:new()
     new = function()
       return HsMenubar:new()
     end,
+    imagePositions = {imageLeft = 2},
   }
   this.host = {
     cpuUsageTicks = function()

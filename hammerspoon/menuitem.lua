@@ -9,6 +9,9 @@ local fontHeight = 13
 local fontTopOffset = 3
 --- Maximum number of text objects cached
 local maxCacheSize = 100
+-- Same font as the drawn text. Without a color macOS picks the one it uses
+-- for the menu bar, which follows the wallpaper and not the system theme.
+local titleFont = {name = "Courier", size = fontHeight}
 
 
 function menuitem:new()
@@ -17,6 +20,11 @@ function menuitem:new()
     _submenu = {},
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
     _item = hs.menubar.new(),
+    -- Created after "_item" to be placed on its left
+    _prefixItem = hs.menubar.new(),
+    _prefix = nil,
+    _shownPrefix = nil,
+    _suffix = nil,
     _cache = {
       text = {
         objects = {},
@@ -25,12 +33,24 @@ function menuitem:new()
     }
   }
   self.__index = self
+  -- An item with an empty title still takes space. Hidden and shown back,
+  -- the item keeps its place.
+  inst._prefixItem:removeFromMenuBar()
+  inst._item:imagePosition(hs.menubar.imagePositions.imageLeft)
   return setmetatable(inst, self)
+end
+
+
+function menuitem:_setMenu()
+  self._item:setMenu(self._submenu)
+  self._prefixItem:setMenu(self._submenu)
 end
 
 
 function menuitem:clear()
   self._widgets = {}
+  self._prefix = nil
+  self._suffix = nil
   while #self._canvas > 0 do
     self._canvas[#self._canvas] = nil
   end
@@ -43,32 +63,10 @@ function menuitem:update()
   for _, widget in ipairs(self._widgets) do
 
     if widget.type == "spacer" then
-      self._canvas:insertElement({
-        type = "rectangle",
-        frame = {
-          x = curOffset,
-          y = 0,
-          w = widget.width,
-          h = menuHeight
-        },
-        fillColor = {red = 0, green = 0, blue = 0},
-        action = "fill"
-      })
       curOffset = curOffset + widget.width
       totalWidth = totalWidth + widget.width
 
     elseif widget.type == "text" then
-      self._canvas:insertElement({
-        type = "rectangle",
-        frame = {
-          x = curOffset,
-          y = 0,
-          w = widget.width,
-          h = menuHeight
-        },
-        fillColor = {red = 0, green = 0, blue = 0},
-        action = "fill"
-      })
       self._canvas:insertElement({
         type = "text",
         frame = {
@@ -172,6 +170,38 @@ function menuitem:update()
   self._canvas:size({w = totalWidth, h = menuHeight})
   local isMonocolorTemplate = false
   self._item:setIcon(self._canvas:imageFromCanvas(), isMonocolorTemplate)
+  self._item:setTitle(hs.styledtext.new(self._suffix or "", {font = titleFont}))
+  self:_updatePrefix()
+end
+
+
+function menuitem:_updatePrefix()
+  if self._prefix == self._shownPrefix then
+    return
+  end
+  if not self._prefix then
+    self._prefixItem:removeFromMenuBar()
+  else
+    if not self._shownPrefix then
+      self._prefixItem:returnToMenuBar()
+    end
+    local title = hs.styledtext.new(self._prefix, {font = titleFont})
+    self._prefixItem:setTitle(title)
+  end
+  self._shownPrefix = self._prefix
+end
+
+
+-- Text is drawn by macOS in its menu bar text color, unlike widgets that are
+-- drawn into an image. Prefix is shown as a separate item on the left, since
+-- an item has a single title.
+function menuitem:setPrefix(text)
+  self._prefix = text
+end
+
+
+function menuitem:setSuffix(text)
+  self._suffix = text
 end
 
 
@@ -237,7 +267,7 @@ end
 
 function menuitem:addSubmenuItem(title, fn, id)
   table.insert(self._submenu, {title = title, fn = fn, id = id})
-  self._item:setMenu(self._submenu)
+  self:_setMenu()
 end
 
 
@@ -248,7 +278,7 @@ function menuitem:setSubmenuItemTitle(id, title)
       break
     end
   end
-  self._item:setMenu(self._submenu)
+  self:_setMenu()
 end
 
 
@@ -259,13 +289,13 @@ function menuitem:setSubmenuItemEnabled(id, isEnabled)
       break
     end
   end
-  self._item:setMenu(self._submenu)
+  self:_setMenu()
 end
 
 
 function menuitem:addSubmenuSeparator()
   table.insert(self._submenu, {title = "-"})
-  self._item:setMenu(self._submenu)
+  self:_setMenu()
 end
 
 
@@ -275,9 +305,9 @@ function menuitem:addSubmenuCheckbox(title, checked, handler)
     checked=checked,
     fn = function(modifiers, item)
       item.checked = not item.checked
-      self._item:setMenu(self._submenu)
+      self:_setMenu()
       handler(item.checked)
     end,
   })
-  self._item:setMenu(self._submenu)
+  self:_setMenu()
 end

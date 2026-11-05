@@ -22,6 +22,9 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "menuitem"
   require "gm"
   require "main"
+  require "menubarbg"
+
+  menubarbg:start()
 
   app = App:new()
   app:setSrcDir(srcDir)

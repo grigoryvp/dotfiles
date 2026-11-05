@@ -24,12 +24,14 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "main"
   require "menubarbg"
   require "notch"
+  require "usage"
 
   menubarbg:start()
 
   app = App:new()
   notch:start(app.maxIcmpHistory)
   app:setSrcDir(srcDir)
+  usage:start(srcDir)
   app:registerMouse()
   app:loadSettings()
   app:loadSymbols()

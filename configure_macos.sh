@@ -145,7 +145,7 @@ mise
 fzf
 claude-code
 codex
-antigravity
+antigravity-cli
 steam
 ollama
 yandextelemost

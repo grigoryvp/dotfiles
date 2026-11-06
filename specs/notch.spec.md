@@ -66,8 +66,9 @@ next one.
   areas. No ears on external displays.
 - **Level**: `mainMenu + 1`, above the menu bar, so the ears cover its
   tint. macOS moves a window one level below the menu bar (`mainMenu - 1`)
-  down out of the menu bar area, but leaves this one in place. Not shown in
-  fullscreen spaces: the ears don't have the fullscreen auxiliary behavior.
+  down out of the menu bar area, but leaves this one in place. At this level
+  macOS shows the ears in fullscreen spaces too, so they are hidden there,
+  checked every second with the graphs.
 - **Shape**: the black rectangle sticks out of the canvas at the top and
   10 pt under the notch, so only its outer bottom corner is rounded (8 pt,
   as the notch's) and the ear merges with the notch.

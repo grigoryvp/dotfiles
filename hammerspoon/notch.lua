@@ -109,7 +109,6 @@ function notch:_newEar(frame, isLeft)
   local canvas = hs.canvas.new(frame)
   -- macOS moves a window of a lower level down out of the menu bar
   canvas:level(hs.canvas.windowLevels.mainMenu + 1)
-  -- Fullscreen spaces are left out: those hide the menu bar
   canvas:behavior({"canJoinAllSpaces", "stationary"})
   -- Sticks out of the canvas at the top and on the notch side, so only the
   -- outer bottom corner is rounded
@@ -137,7 +136,7 @@ function notch:_newEar(frame, isLeft)
       self:openConsole()
     end
   end)
-  canvas:show()
+  menuitem.showUnlessFullscreen(canvas)
   return canvas
 end
 
@@ -285,6 +284,8 @@ function notch:setGraphs(routerGraph, inetGraph)
   local _, leftGraphX = self:_layout(true)
   local _, rightGraphX = self:_layout(false)
   for _, pair in ipairs(self._ears) do
+    menuitem.showUnlessFullscreen(pair.left)
+    menuitem.showUnlessFullscreen(pair.right)
     local y = (pair.height - graphHeight) / 2
     if not self._narrow.left then
       menuitem.updateGraph(pair.left, pair.leftDrawn, routerGraph,

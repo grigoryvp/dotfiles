@@ -85,6 +85,30 @@ function menuitem.updateGraph(canvas, drawn, graph_data, max_len, x, y,
 end
 
 
+-- Our canvases join fullscreen spaces too, despite no fullscreen auxiliary
+-- behavior, and there stay over a fullscreen video. Checked every second
+-- with the menu update.
+function menuitem.onFullscreenSpace(frame)
+  local center = hs.geometry.rect(frame).center
+  for _, screen in ipairs(hs.screen.allScreens()) do
+    if center:inside(screen:fullFrame()) then
+      local space = hs.spaces.activeSpaceOnScreen(screen)
+      return space ~= nil and hs.spaces.spaceType(space) == "fullscreen"
+    end
+  end
+  return false
+end
+
+
+-- Hidden on a fullscreen space, see menuitem.onFullscreenSpace()
+function menuitem.showUnlessFullscreen(canvas)
+  local shown = not menuitem.onFullscreenSpace(canvas:frame())
+  if shown ~= canvas:isShowing() then
+    if shown then canvas:show() else canvas:hide() end
+  end
+end
+
+
 -- An item whose icon is a transparent placeholder: the graph is drawn over
 -- it by a canvas whose bars change in place, while a new icon every second
 -- took half of our CPU time.
@@ -123,7 +147,6 @@ function GraphItem:set(graph_data, max_len)
     self._item:returnToMenuBar()
     -- The item is created anew with a default name
     self._item:autosaveName(self._name)
-    if self._canvas then self._canvas:show() end
   end
   if not self._graph or self._graph.max_len ~= max_len then
     local placeholder = hs.canvas.new({
@@ -154,13 +177,13 @@ function GraphItem:update()
     self._canvas:level(hs.canvas.windowLevels.mainMenu + 1)
     self._canvas:behavior({"canJoinAllSpaces", "stationary"})
     -- Without a mouse callback clicks go through to the item
-    self._canvas:show()
   else
     local cur = self._canvas:frame()
     if cur.x ~= x or cur.y ~= y then
       self._canvas:topLeft({x = x, y = y})
     end
   end
+  menuitem.showUnlessFullscreen(self._canvas)
   menuitem.updateGraph(self._canvas, self._drawn, self._graph.data,
     self._graph.max_len, 0, 0, menuHeight)
 end

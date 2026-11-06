@@ -509,9 +509,7 @@ function usage:place()
   if cur.x ~= x or cur.y ~= y or cur.w ~= self._width then
     self._canvas:frame({x = x, y = y, w = self._width, h = menuHeight})
   end
-  if not self._canvas:isShowing() then
-    self._canvas:show()
-  end
+  menuitem.showUnlessFullscreen(self._canvas)
 end
 
 

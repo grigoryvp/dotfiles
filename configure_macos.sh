@@ -1260,6 +1260,13 @@ configure() {
     rm -rf ~/.codex
   fi
   ln -fs ~/dotfiles/.codex ~/.codex
+  # Codex refuses to run tools with a symlinked home as a writable root unless
+  # opted out by a top-level key in "$CODEX_HOME/config.toml"
+  cfg=~/.codex/config.toml
+  if ! grep -q '^allow_symlinked_codex_home' "$cfg" 2>/dev/null; then
+    { echo 'allow_symlinked_codex_home = true'; cat "$cfg" 2>/dev/null; } \
+      > "$cfg.new" && chmod 600 "$cfg.new" && mv "$cfg.new" "$cfg"
+  fi
   sudo mkdir -p /etc/codex
   sudo ln -fs ~/dotfiles/.codex/user-config.toml /etc/codex/config.toml
   rm -f ~/.codex/prompts

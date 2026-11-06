@@ -153,6 +153,7 @@ libreoffice
 gh
 glab
 yq
+glow
 EOF
   _brew_install "$@"
 }

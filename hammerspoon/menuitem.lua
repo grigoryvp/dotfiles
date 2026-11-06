@@ -92,9 +92,12 @@ local GraphItem = {}
 GraphItem.__index = GraphItem
 
 
-function GraphItem.new()
+-- macOS keeps the places of the items by their autosave names, and the
+-- default names are by the count of the items, so a name is given
+function GraphItem.new(name)
   local inst = setmetatable({
-    _item = hs.menubar.new(),
+    _item = hs.menubar.new(true, name),
+    _name = name,
     _graph = nil,
     _canvas = nil,
     -- See menuitem.updateGraph()
@@ -118,6 +121,8 @@ function GraphItem:set(graph_data, max_len)
   end
   if not self._graph then
     self._item:returnToMenuBar()
+    -- The item is created anew with a default name
+    self._item:autosaveName(self._name)
     if self._canvas then self._canvas:show() end
   end
   if not self._graph or self._graph.max_len ~= max_len then
@@ -167,9 +172,11 @@ local TextItem = {}
 TextItem.__index = TextItem
 
 
-function TextItem.new()
+-- See GraphItem.new() for the name
+function TextItem.new(name)
   local inst = setmetatable({
-    _item = hs.menubar.new(),
+    _item = hs.menubar.new(true, name),
+    _name = name,
     _shown = nil,
   }, TextItem)
   -- An item with an empty title still takes space. Hidden and shown back,
@@ -187,6 +194,8 @@ function TextItem:show(text)
   else
     if not self._shown then
       self._item:returnToMenuBar()
+      -- See GraphItem:set()
+      self._item:autosaveName(self._name)
     end
     self._item:setTitle(hs.styledtext.new(text, {font = titleFont}))
   end
@@ -197,7 +206,8 @@ end
 -- "createBetween" creates the items of other modules to place between
 -- the battery and the CPU graph
 function menuitem:new(createBetween)
-  local battery = hs.menubar.new()
+  -- See GraphItem.new() for the name
+  local battery = hs.menubar.new(true, "battery")
   if createBetween then createBetween() end
   local inst = {
     _widgets = {},
@@ -205,13 +215,13 @@ function menuitem:new(createBetween)
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
     _item = battery,
     -- Each item is created after the previous one to be placed on its left
-    _cpuItem = GraphItem.new(),
+    _cpuItem = GraphItem.new("cpu"),
     -- Without a notch, see setNetGraphs()
-    _inetItem = GraphItem.new(),
-    _routerItem = GraphItem.new(),
-    _statusItem = TextItem.new(),
+    _inetItem = GraphItem.new("inet"),
+    _routerItem = GraphItem.new("router"),
+    _statusItem = TextItem.new("status"),
     _status = nil,
-    _prefixItem = TextItem.new(),
+    _prefixItem = TextItem.new("prefix"),
     _prefix = nil,
     _suffix = nil,
     _shownSuffix = nil,

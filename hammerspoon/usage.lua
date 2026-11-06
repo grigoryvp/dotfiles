@@ -642,7 +642,8 @@ end
 -- Separate from usage:start(), so menuitem.lua creates the item where it
 -- is placed
 function usage:createItem()
-  self._item = hs.menubar.new()
+  -- See GraphItem.new() of menuitem.lua for the name
+  self._item = hs.menubar.new(true, "usage")
 end
 
 

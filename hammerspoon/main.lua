@@ -1502,6 +1502,10 @@ function App:onHeartbeat()
     self.menuItem:setPrefix(table.concat(prefix, " "))
   end
 
+  -- Shown first: an item shown for the first time goes to the left of
+  -- the others
+  self.menuItem:setGraph(cpuGraph, self.maxCpuLoadHistory)
+
   if notch:hasNotch() then
     -- The ping graphs and the status are next to the notch
     notch:setGraphs(routerGraph, inetGraph)
@@ -1516,7 +1520,6 @@ function App:onHeartbeat()
       self.menuItem:setStatus(icon)
     end
   end
-  self.menuItem:setGraph(cpuGraph, self.maxCpuLoadHistory)
   -- Negative spacers cut the transparent left margin of the emoji, so
   -- the gap to the item on the left is the same as between other items
   if self.isOnPower then

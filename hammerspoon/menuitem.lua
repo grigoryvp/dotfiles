@@ -93,13 +93,16 @@ GraphItem.__index = GraphItem
 
 
 function GraphItem.new()
-  return setmetatable({
+  local inst = setmetatable({
     _item = hs.menubar.new(),
     _graph = nil,
     _canvas = nil,
     -- See menuitem.updateGraph()
     _drawn = {base = 0, count = 0},
   }, GraphItem)
+  -- Hidden until the first graph: an empty item still takes space
+  inst._item:removeFromMenuBar()
+  return inst
 end
 
 

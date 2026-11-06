@@ -344,6 +344,7 @@ corebrightnessd
 coreutils
 Cortana
 cowork
+cpupower
 cpython
 craftable
 Craiceann
@@ -1229,6 +1230,7 @@ oneside
 ontico
 Onui
 OOP
+opam
 openclaw
 opencode
 opensearch

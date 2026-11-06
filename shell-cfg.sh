@@ -25,13 +25,13 @@ start_path_with() {
   unset NEW_PATH
 }
 
-##  bash/zsh portable way to encode "Escape" character.
+# bash/zsh portable way to encode "Escape" character.
 PS_ESC=$(printf '\033')
-##  Don't show git in PS by default, it conflicts with the "g" alias.
+# Don't show git in PS by default, it conflicts with the "g" alias.
 PS_GIT_ON=
 
 if [ -n "$ZSH_VERSION" ]; then
-  ##  Colors should be escaped for correct length calculation.
+  # Colors should be escaped for correct length calculation.
   PS_K="%{${PS_ESC}[30;47m%}"
   PS_W="%{${PS_ESC}[37;49m%}"
   PS_R="%{${PS_ESC}[31;49m%}"
@@ -43,14 +43,14 @@ if [ -n "$ZSH_VERSION" ]; then
   PS_N="%{${PS_ESC}[0m%}"
   PS_WORKDIR="%~"
   PS_DOLLAR="$"
-  ##  Substring re-interpolation.
+  # Substring re-interpolation.
   setopt promptsubst
-  ##  Do not display "no matches found" error for blobs
+  # Do not display "no matches found" error for blobs
   setopt +o nomatch
-  ##  Always complete files, even if app-specific completion don't says so
+  # Always complete files, even if app-specific completion don't says so
   zstyle ':completion:*' completer _complete _ignored _files
 elif [ -n "$BASH_VERSION" ]; then
-  ##  Colors should be escaped for correct length calculation.
+  # Colors should be escaped for correct length calculation.
   PS_K="\\[${PS_ESC}[30;47m\\]"
   PS_W="\\[${PS_ESC}[37;49m\\]"
   PS_R="\\[${PS_ESC}[31;49m\\]"
@@ -66,85 +66,85 @@ else
   echo "Unsupported shell"
 fi
 
-##  Load global env variables, if any
+# Load global env variables, if any
 if [ -f ~/.env ]; then
   set -a
   source ~/.env
   set +a
 fi
 
-##  Disable terminal/ssh freeze with C-S:
+# Disable terminal/ssh freeze with C-S:
 stty -ixon
-##  Don't create |.pyc| files while executing python code from console.
+# Don't create |.pyc| files while executing python code from console.
 export PYTHONDONTWRITEBYTECODE=1
-##  Dont' collect Next.js telemetry data
+# Dont' collect Next.js telemetry data
 export NEXT_TELEMETRY_DISABLED=1
 
-##  Rust 'install' places binaries here
+# Rust 'install' places binaries here
 start_path_with ~/.cargo/bin
-##  pipx installs binaries here
+# pipx installs binaries here
 start_path_with ~/.local/bin
-##  For custom nodejs build (ubuntu have old one in repository)
+# For custom nodejs build (ubuntu have old one in repository)
 start_path_with ~/.local/nodejs/bin
-##  git can clone from repos without certificates.
+# git can clone from repos without certificates.
 export GIT_SSL_NO_VERIFY=true
-##  256-colors in terminal for apps that knows how to use it.
+# 256-colors in terminal for apps that knows how to use it.
 export TERM=xterm-256color
-##  Used by apps to launch text editor.
+# Used by apps to launch text editor.
 export EDITOR=vim
-##  Required for VIM, otherwise it will start creating dirs names '$TMP'.
+# Required for VIM, otherwise it will start creating dirs names '$TMP'.
 if [ -z $TMP ]; then
   export TMP=~/tmp
 fi
 if [ -z $TEMP ]; then
   export TEMP=~/tmp
 fi
-##  gnome-ssh-askpass don't work.
+# gnome-ssh-askpass don't work.
 unset SSH_ASKPASS
-##  make less display ASCII colors, quit if one screen and don't clear
-##  screen after it quits.
+# make less display ASCII colors, quit if one screen and don't clear
+# screen after it quits.
 export LESS="-R -F -X"
-##  Don't display lein root warning while using in docker
+# Don't display lein root warning while using in docker
 export LEIN_ROOT=true
 
-##  For docker containers where they are not set
+# For docker containers where they are not set
 export LANG="en_US.UTF-8"
 export LANGUAGE="en_US:en"
 export LC_ALL="en_US.UTF-8"
 
-##  Switchable truecolor for VIM, on by default
+# Switchable truecolor for VIM, on by default
 export TRUECOLOR="1"
 
-##  Always install dependencies in .venv for poetry.
+# Always install dependencies in .venv for poetry.
 export POETRY_VIRTUALENVS_IN_PROJECT="1"
-##  Always install dependencies in .venv for pipenv.
+# Always install dependencies in .venv for pipenv.
 export PIPENV_VENV_IN_PROJECT="1"
-##  Do not lock dependencies (very slow).
+# Do not lock dependencies (very slow).
 export PIPENV_SKIP_LOCK="1"
 
-##  Caprover default branch
+# Caprover default branch
 export CAPROVER_DEFAULT_BRANCH=main
 
-##  macOS?
+# macOS?
 if [ "$(uname)" = "Darwin" ]; then
-  ##  Add color to |ls| output
+  # Add color to |ls| output
   export CLICOLOR=1
-  ##  Better 'ls' output colors.
+  # Better 'ls' output colors.
   export LSCOLORS=Exfxcxdxbxegedabagacad
-  ##  For django 'syncdb' command to work.
+  # For django 'syncdb' command to work.
   export LC_ALL=en_US.UTF-8
 
-  ##  custom svn
+  # custom svn
   start_path_with /opt/subversion/bin
 
-  ##  MacOS Apple Silicon homebrew installed?
+  # MacOS Apple Silicon homebrew installed?
   if [ -e /opt/homebrew/bin/brew ]; then
     eval $(/opt/homebrew/bin/brew shellenv)
     start_path_with "/opt/homebrew/bin"
     start_path_with "/opt/homebrew/sbin"
   fi
 
-  ##  custom mongo installed?
+  # custom mongo installed?
   MONGOAPP=~/Applications/MongoDB.app
   MONGOBINDIR=$MONGOAPP/Contents/Resources/Vendor/mongodb
   if [ -e $MONGOBINDIR/mongo ]; then
@@ -153,11 +153,11 @@ if [ "$(uname)" = "Darwin" ]; then
     alias mongorestore=$MONGOBINDIR/mongorestore
   fi
 
-  ##  Will write to stderr if Java is not installed
+  # Will write to stderr if Java is not installed
   export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
-  ##  brew install android-commandlinetools
+  # brew install android-commandlinetools
   export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
-  ##  Installed here by 'brew install michaeldfallen/formula/git-radar'
+  # Installed here by 'brew install michaeldfallen/formula/git-radar'
   if [ "$SHELL" = "/bin/zsh" ]; then
     export RADAR_CMD='$(git-radar --zsh --fetch)'
   else
@@ -204,22 +204,22 @@ if [ "$(uname)" = "Darwin" ]; then
   }
 
 else
-  ##  Remap caps lock to backspace.
+  # Remap caps lock to backspace.
   # gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace']"
 
-  ##FIXME: Seems not persisting on Ubuntu, need to check why.
+  # FIXME: Seems not persisting on Ubuntu, need to check why.
   # setterm -background black -foreground white
 
-  ##  GTK_IM_MODULE is set to 'xim' in ubuntu, lots of GTK errors in chrome.
-  ##  Disable disk cache so multiple chrome instances will not kill HDD.
+  # GTK_IM_MODULE is set to 'xim' in ubuntu, lots of GTK errors in chrome.
+  # Disable disk cache so multiple chrome instances will not kill HDD.
   CHROME_BIN=/opt/google/chrome/chrome
   alias chrome='GTK_IM_MODULE="" $CHROME_BIN --disk-cache-size=10000000'
 
-  ##  android studio
+  # android studio
   start_path_with ~/.local/android-studio/bin
 
   if [ -e /usr/java/latest ]; then
-    ##  Official SDK symlinks this to lates install.
+    # Official SDK symlinks this to lates install.
     export JAVA_HOME=/usr/java/latest
   fi
 
@@ -230,13 +230,16 @@ if [ -e ~/.rvm/scripts/rvm ]; then
   source ~/.rvm/scripts/rvm
 fi
 
-##  git aliases
+# View markdown from clipboard
+alias vmd='pbpaste | glow -p -'
+
+# git aliases
 alias g=git
 
-##  kubernetes aliases
+# kubernetes aliases
 alias k=kubectl
 
-##  svn aliases
+# svn aliases
 alias svl='svn log'
 alias svs='svn stat'
 alias svc='svn commit -m'
@@ -244,16 +247,16 @@ svd() {
   svn diff --diff-cmd colordiff $@ | less -R
 }
 
-##  "HOST HOME" for Windows "home" on WSL
+# "HOST HOME" for Windows "home" on WSL
 if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
   HHOME=$(wslpath $(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null))
-  ##  Remove '\r' from the end of the 'cmd.exe' output
+  # Remove '\r' from the end of the 'cmd.exe' output
   export HHOME=$(echo $HHOME | tr -d '\r')
 else
   export HHOME=~
 fi
 
-##  cd aliases for wsl-mac-nix consistency
+# cd aliases for wsl-mac-nix consistency
 alias cdh="cd ${HOME}"
 alias cdd="cd ${HOME}/Documents"
 alias cdx="cd ${HOME}/.xi"
@@ -261,9 +264,9 @@ alias cdc="cd ${HHOME}/dotfiles"
 alias cds="cd ${HHOME}/skills"
 alias cdhh="cd ${HHOME}"
 
-##  Wox keeps settings in SQLite; sync only the rows listed here via
-##  wox-settings.sql. WOX_CFG_KEYS holds "plugin_id:key" pairs from the
-##  plugin_settings table, WOX_CFG_WOX_KEYS holds keys of the wox_settings table.
+# Wox keeps settings in SQLite; sync only the rows listed here via
+# wox-settings.sql. WOX_CFG_KEYS holds "plugin_id:key" pairs from the
+# plugin_settings table, WOX_CFG_WOX_KEYS holds keys of the wox_settings table.
 WOX_CFG_KEYS="979d6363-025a-4f51-88d3-0b04e9dc56bf:Disabled 5f815d98-27f5-488d-a756-c317ea39935b:Disabled a48dc5f0-dab9-4112-b883-b68129d6782b:Disabled 95d041d3-be7e-4b20-8517-88dda2db280b:Disabled 1af58721-6c97-4901-b291-620daf08d9c9:Disabled 8f68a760-86a0-46a9-b331-58dcaf091daa:Disabled 78fc701b-a87e-4d5f-a7f2-13cbad9f7d1d:Disabled b8f3d4e5-6c7a-4b9c-8d1e-2f3a4b5c6d7e:Disabled 6cde8bec-3f19-44f6-8a8b-d3ba3712d04e:Disabled a3f7b8c2-d1e4-4f6a-9b0c-7e2d1a5f8b3e:Disabled"
 WOX_CFG_WOX_KEYS="OnboardingFinished EnableAnonymousUsageStats ShowTray
   EnableAutostart@windows EnableAutostart@darwin"
@@ -288,13 +291,13 @@ wox-cfg-import() {
   sqlite3 "$WOX_CFG_DB" < "$WOX_CFG_SQL" && echo "Restart Wox to apply."
 }
 
-##  Python virtual environment; built-in 'venv' instals old bundled 'pip'.
+# Python virtual environment; built-in 'venv' instals old bundled 'pip'.
 alias vec="python3 -m virtualenv .venv"
 alias vea=". .venv/bin/activate"
 alias ved="deactivate"
 alias ver="rm -rf .venv"
 
-##  Rails virtual environment
+# Rails virtual environment
 alias buc="bundle init"
 alias bui="bundle install"
 alias bua="bundle add"
@@ -341,7 +344,7 @@ buss() {
   fi
 }
 
-##  docker aliases
+# docker aliases
 dmg() {
   if [ -z "$1" ]; then
     docker-machine env -u >~/tmp/docker-machine-env
@@ -365,7 +368,7 @@ alias tox='tox -q'
 # For windows consistensy
 alias rmf='rm -rf'
 
-##  Single source of truth for globs hidden by 'll', shared with lsd.
+# Single source of truth for globs hidden by 'll', shared with lsd.
 LS_IGNORE_CFG="${HOME}/dotfiles/lsd.config.yaml"
 my_list() {
   if [ -e /opt/homebrew/bin/lsd ]; then
@@ -379,11 +382,11 @@ my_list() {
       "$@"
   else
     IGNORED_COUNT=0
-    ##  OSX does not support advanced keys
+    # OSX does not support advanced keys
     if [ "$(uname)" != "Darwin" ]; then
       ALL_COUNT=$(ls -A "$@" | wc -l)
-      ##  Prepend "-I <glob>" to the args; a here-doc keeps the loop in the
-      ##  current shell, so 'set' changes our positional parameters.
+      # Prepend "-I <glob>" to the args; a here-doc keeps the loop in the
+      # current shell, so 'set' changes our positional parameters.
       while IFS= read -r CUR; do
         set -- -I "$CUR" "$@"
       done <<EOF
@@ -393,15 +396,15 @@ EOF
       LS_ARG_COLOR="--color"
       LS_ARG_GROUP="--group-directories-first"
     fi
-    ##  Due to LESS options this will pass-through on one screen.
-    ##  -l: One column by default, as in powershell.
-    #3  -h: Human-readable sizes.
-    ##  -A: Show all files except special '.' and '..'.
-    ##  -F: Append indicators.
-    ##  --color: Color output for linux (CLICOLOR for OSX).
-    ##  --group-directories-first: Show dirs first.
-    ##  "$@": "-I <glob>" pairs followed by user args, quoted so
-    ##  "ll Visual\ Studio\ 2015" will work.
+    # Due to LESS options this will pass-through on one screen.
+    # -l: One column by default, as in powershell.
+    # -h: Human-readable sizes.
+    # -A: Show all files except special '.' and '..'.
+    # -F: Append indicators.
+    # --color: Color output for linux (CLICOLOR for OSX).
+    # --group-directories-first: Show dirs first.
+    # "$@": "-I <glob>" pairs followed by user args, quoted so
+    # "ll Visual\ Studio\ 2015" will work.
     ls \
       -l \
       -h \
@@ -458,7 +461,7 @@ freqdown() {
   sudo cpupower frequency-set --min 2.4Ghz --max 2.4ghz
 }
 
-##  Simple HTTP erver in current dir.
+# Simple HTTP server in current dir.
 srv() {
   if [ _"$1" != _"" ] && [ _"$1" != _"-s" ]; then
     if echo $@ | grep -- -s > /dev/null; then
@@ -488,22 +491,22 @@ pptx-to-pdf() {
   soffice --headless --convert-to pdf --outdir "$(dirname "$1")" "$1"
 }
 
-##  For tools installed via "go get" to be on path
+# For tools installed via "go get" to be on path
 if which go > /dev/null; then
   start_path_with $(go env GOPATH)/bin
 fi
 
-##  Load opam, if installed
+# Load opam, if installed
 if [ -d $HOME/.opam ]; then
   eval "$(opam env)"
 fi
 
-##  Activate mise, if installed
+# Activate mise, if installed
 if which mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
 
-##  Activate fzf, if installed
+# Activate fzf, if installed
 if which fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
   bindkey -r '^T'

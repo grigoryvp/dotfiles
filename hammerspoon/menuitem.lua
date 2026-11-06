@@ -85,6 +85,112 @@ function menuitem.updateGraph(canvas, drawn, graph_data, max_len, x, y,
 end
 
 
+-- An item whose icon is a transparent placeholder: the graph is drawn over
+-- it by a canvas whose bars change in place, while a new icon every second
+-- took half of our CPU time.
+local GraphItem = {}
+GraphItem.__index = GraphItem
+
+
+function GraphItem.new()
+  return setmetatable({
+    _item = hs.menubar.new(),
+    _graph = nil,
+    _canvas = nil,
+    -- See menuitem.updateGraph()
+    _drawn = {base = 0, count = 0},
+  }, GraphItem)
+end
+
+
+-- nil hides the item. Hidden and shown back, an item keeps its place.
+function GraphItem:set(graph_data, max_len)
+  if not graph_data then
+    if self._graph then
+      self._item:removeFromMenuBar()
+      if self._canvas then self._canvas:hide() end
+      self._graph = nil
+    end
+    return
+  end
+  if not self._graph then
+    self._item:returnToMenuBar()
+    if self._canvas then self._canvas:show() end
+  end
+  if not self._graph or self._graph.max_len ~= max_len then
+    local placeholder = hs.canvas.new({
+      x = 0,
+      y = 0,
+      w = max_len * 2 + 2,
+      h = menuHeight,
+    })
+    self._item:setIcon(placeholder:imageFromCanvas(), false)
+    placeholder:delete()
+  end
+  self._graph = {data = graph_data, max_len = max_len}
+end
+
+
+-- Keeps the graph over its placeholder, which moves as other items in the
+-- menu bar appear and go
+function GraphItem:update()
+  if not self._graph then return end
+  local frame = menuitem.itemFrame(self._item)
+  if not frame or frame.w == 0 then return end
+  local width = self._graph.max_len * 2 + 2
+  local x = frame.x + (frame.w - width) / 2
+  local y = frame.y + (frame.h - menuHeight) / 2
+  if not self._canvas then
+    self._canvas = hs.canvas.new({x = x, y = y, w = width, h = menuHeight})
+    -- macOS moves a window of a lower level down out of the menu bar
+    self._canvas:level(hs.canvas.windowLevels.mainMenu + 1)
+    self._canvas:behavior({"canJoinAllSpaces", "stationary"})
+    -- Without a mouse callback clicks go through to the item
+    self._canvas:show()
+  else
+    local cur = self._canvas:frame()
+    if cur.x ~= x or cur.y ~= y then
+      self._canvas:topLeft({x = x, y = y})
+    end
+  end
+  menuitem.updateGraph(self._canvas, self._drawn, self._graph.data,
+    self._graph.max_len, 0, 0, menuHeight)
+end
+
+
+-- Text is drawn by macOS in its menu bar text color, unlike widgets that
+-- are drawn into an image
+local TextItem = {}
+TextItem.__index = TextItem
+
+
+function TextItem.new()
+  local inst = setmetatable({
+    _item = hs.menubar.new(),
+    _shown = nil,
+  }, TextItem)
+  -- An item with an empty title still takes space. Hidden and shown back,
+  -- the item keeps its place.
+  inst._item:removeFromMenuBar()
+  return inst
+end
+
+
+-- nil hides the item
+function TextItem:show(text)
+  if text == self._shown then return end
+  if not text then
+    self._item:removeFromMenuBar()
+  else
+    if not self._shown then
+      self._item:returnToMenuBar()
+    end
+    self._item:setTitle(hs.styledtext.new(text, {font = titleFont}))
+  end
+  self._shown = text
+end
+
+
 -- "createBetween" creates the items of other modules to place between
 -- the battery and the CPU graph
 function menuitem:new(createBetween)
@@ -95,19 +201,15 @@ function menuitem:new(createBetween)
     _submenu = {},
     _canvas = hs.canvas.new({x = 0, y = 0, w = 1, h = menuHeight}),
     _item = battery,
-    -- Created after "_item" to be placed on its left. Its icon is a
-    -- transparent placeholder: the graph is drawn over it by
-    -- "_graphCanvas", whose bars change in place, while a new icon every
-    -- second took half of our CPU time.
-    _graphItem = hs.menubar.new(),
-    _graph = nil,
-    _graphCanvas = nil,
-    -- See menuitem.updateGraph()
-    _graphDrawn = {base = 0, count = 0},
-    -- Created after "_graphItem" to be placed on its left
-    _prefixItem = hs.menubar.new(),
+    -- Each item is created after the previous one to be placed on its left
+    _cpuItem = GraphItem.new(),
+    -- Without a notch, see setNetGraphs()
+    _inetItem = GraphItem.new(),
+    _routerItem = GraphItem.new(),
+    _statusItem = TextItem.new(),
+    _status = nil,
+    _prefixItem = TextItem.new(),
     _prefix = nil,
-    _shownPrefix = nil,
     _suffix = nil,
     _shownSuffix = nil,
     -- What the icon shows, so it is redrawn only on a change
@@ -120,9 +222,6 @@ function menuitem:new(createBetween)
     }
   }
   self.__index = self
-  -- An item with an empty title still takes space. Hidden and shown back,
-  -- the item keeps its place.
-  inst._prefixItem:removeFromMenuBar()
   inst._item:imagePosition(hs.menubar.imagePositions.imageLeft)
   return setmetatable(inst, self)
 end
@@ -130,8 +229,10 @@ end
 
 function menuitem:_setMenu()
   self._item:setMenu(self._submenu)
-  self._graphItem:setMenu(self._submenu)
-  self._prefixItem:setMenu(self._submenu)
+  self._cpuItem._item:setMenu(self._submenu)
+  self._inetItem._item:setMenu(self._submenu)
+  self._routerItem._item:setMenu(self._submenu)
+  self._prefixItem._item:setMenu(self._submenu)
 end
 
 
@@ -168,8 +269,11 @@ function menuitem:update()
     self._item:setTitle(title)
     self._shownSuffix = self._suffix
   end
-  self:_updatePrefix()
-  self:_updateGraph()
+  self._prefixItem:show(self._prefix)
+  self._statusItem:show(self._status)
+  self._cpuItem:update()
+  self._inetItem:update()
+  self._routerItem:update()
 end
 
 
@@ -279,58 +383,8 @@ function menuitem.itemFrame(item)
 end
 
 
--- Keeps the graph over its placeholder, which moves as other items in the
--- menu bar appear and go
-function menuitem:_updateGraph()
-  if not self._graph then return end
-  local frame = menuitem.itemFrame(self._graphItem)
-  if not frame or frame.w == 0 then return end
-  local width = self._graph.max_len * 2 + 2
-  local x = frame.x + (frame.w - width) / 2
-  local y = frame.y + (frame.h - menuHeight) / 2
-  if not self._graphCanvas then
-    self._graphCanvas = hs.canvas.new({
-      x = x,
-      y = y,
-      w = width,
-      h = menuHeight,
-    })
-    -- macOS moves a window of a lower level down out of the menu bar
-    self._graphCanvas:level(hs.canvas.windowLevels.mainMenu + 1)
-    self._graphCanvas:behavior({"canJoinAllSpaces", "stationary"})
-    -- Without a mouse callback clicks go through to the item
-    self._graphCanvas:show()
-  else
-    local cur = self._graphCanvas:frame()
-    if cur.x ~= x or cur.y ~= y then
-      self._graphCanvas:topLeft({x = x, y = y})
-    end
-  end
-  menuitem.updateGraph(self._graphCanvas, self._graphDrawn,
-    self._graph.data, self._graph.max_len, 0, 0, menuHeight)
-end
-
-
-function menuitem:_updatePrefix()
-  if self._prefix == self._shownPrefix then
-    return
-  end
-  if not self._prefix then
-    self._prefixItem:removeFromMenuBar()
-  else
-    if not self._shownPrefix then
-      self._prefixItem:returnToMenuBar()
-    end
-    local title = hs.styledtext.new(self._prefix, {font = titleFont})
-    self._prefixItem:setTitle(title)
-  end
-  self._shownPrefix = self._prefix
-end
-
-
--- Text is drawn by macOS in its menu bar text color, unlike widgets that are
--- drawn into an image. Prefix is shown as a separate item on the left, since
--- an item has a single title.
+-- Prefix is shown as a separate item on the left, since an item has a single
+-- title
 function menuitem:setPrefix(text)
   self._prefix = text
 end
@@ -381,19 +435,29 @@ function menuitem:addTextWithWidth(text, width)
 end
 
 
--- The graph in its own item, left of the widgets, see "_graphItem"
+-- The graph in its own item, left of the widgets
 function menuitem:setGraph(graph_data, max_len)
-  if not self._graph or self._graph.max_len ~= max_len then
-    local placeholder = hs.canvas.new({
-      x = 0,
-      y = 0,
-      w = max_len * 2 + 2,
-      h = menuHeight,
-    })
-    self._graphItem:setIcon(placeholder:imageFromCanvas(), false)
-    placeholder:delete()
-  end
-  self._graph = {data = graph_data, max_len = max_len}
+  self._cpuItem:set(graph_data, max_len)
+end
+
+
+-- The ping graphs left of the CPU graph, for a screen without the notch
+-- ears; nil hides them
+function menuitem:setNetGraphs(router_data, inet_data, max_len)
+  self._inetItem:set(inet_data, max_len)
+  self._routerItem:set(router_data, max_len)
+end
+
+
+-- The iTerm status line state left of the ping graphs, see setNetGraphs();
+-- nil hides it
+function menuitem:setStatus(text)
+  self._status = text
+end
+
+
+function menuitem:setStatusClickCallback(fn)
+  self._statusItem._item:setClickCallback(fn)
 end
 
 

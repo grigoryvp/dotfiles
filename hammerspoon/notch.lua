@@ -84,7 +84,7 @@ function notch:_findNotches()
 end
 
 
-function notch:_openConsole()
+function notch:openConsole()
   local iterm = hs.application.get("iTerm2")
   if not iterm then return end
   iterm:activate()
@@ -134,7 +134,7 @@ function notch:_newEar(frame, isLeft)
   canvas:canvasMouseEvents(true)
   canvas:mouseCallback(function(_, message)
     if message == "mouseDown" then
-      self:_openConsole()
+      self:openConsole()
     end
   end)
   canvas:show()
@@ -295,6 +295,20 @@ function notch:setGraphs(routerGraph, inetGraph)
         self._graphLen, rightGraphX, y, graphHeight)
     end
   end
+end
+
+
+-- Without one the graphs and the status go to the menu bar
+function notch:hasNotch()
+  return #self._notches > 0
+end
+
+
+-- The status icon and its time, both nil while idle; the time is "" for
+-- results
+function notch:statusTexts()
+  local icon, time = self:_texts()
+  return icon, time
 end
 
 

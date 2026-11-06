@@ -28,6 +28,7 @@ function onReadlinkExit(exitCode, stdOut, _)
   -- The subscriptions go between the battery and the CPU graph
   app = App:new(function() usage:createItem() end)
   notch:start(app.maxIcmpHistory)
+  app.menuItem:setStatusClickCallback(function() notch:openConsole() end)
   app:setSrcDir(srcDir)
   usage:start(srcDir)
   app:registerMouse()

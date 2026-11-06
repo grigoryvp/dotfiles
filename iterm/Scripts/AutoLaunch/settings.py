@@ -50,6 +50,9 @@ BOLD = iterm2.Color(0xF3, 0xD9, 0xBE)
 FONT = "JetBrainsMonoNFM-Regular 15"
 INITIAL_DIRECTORY = iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_RECYCLE
 PROFILE_FLAGS = {
+    # On by default in new profiles; then iTerm2 reads the "(Dark)" and
+    # "(Light)" color keys and ignores the ones apply_colors() writes.
+    "use_separate_colors_for_light_and_dark_mode": False,
     # High CPU load
     "blinking_cursor": False,
     "cursor_shadow": True,

@@ -23,7 +23,8 @@ Status: done.
 - **Hammerspoon app** (`hammerspoon/main.lua`): passes the ping graphs to
   the ears on every heartbeat (0.2 s), as it draws its menu bar item; they
   are drawn by `menuitem.graphElements()`, shared with that item. The item
-  keeps only the CPU graph and the battery.
+  keeps only the CPU graph and the battery, unless there is no notch: see
+  Without the notch.
 
 ## Call chain
 
@@ -116,6 +117,24 @@ are on the right.
   ticking every second during the first minute only, to save battery.
 - **Status text**: not shown, there is no room. It is in the window title and in
   the Script Console. Menlo 12, white, centered; emoji as in the title.
+
+## Without the notch
+
+When no screen has a notch, e.g. a MacBook without one, or the geometry
+can't be read, there are no ears, and their content goes into the menu bar
+on the left of the CPU graph, from right to left: the ping graph to the
+internet, the one to the router, the kind icon and the elapsed time, then
+the message notifications and the timer, as before.
+
+- **Items**: each graph is a separate menu bar item drawn like the CPU
+  graph; the icon and the time are one item with the title `12 ⌛`, or just
+  the icon for results. Without a status the item is hidden.
+- **Same rules**: the icon, the time, ticking and expiry are those of the
+  ears.
+- **Click**: on the status item opens the Script Console, as on the ears;
+  the graph items open the menu, as the CPU graph does.
+- **Switch**: checked on every heartbeat, so connecting or disconnecting a
+  screen with a notch moves the content between the ears and the menu bar.
 
 ## Click
 

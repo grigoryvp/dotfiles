@@ -85,15 +85,39 @@ function menuitem.updateGraph(canvas, drawn, graph_data, max_len, x, y,
 end
 
 
+-- The hs.spaces calls take ~0.4 ms per canvas, so their results are shared
+-- by the canvases of one menu update, and a space keeps its type
+local spacesTtlNs = 0.5 * 1e9
+local spacesTime = nil
+local spaceTypes = {}
+-- By screen UUID
+local fullscreenScreens = {}
+
+
+local function updateFullscreenScreens()
+  local now = hs.timer.absoluteTime()
+  if spacesTime and now - spacesTime < spacesTtlNs then return end
+  spacesTime = now
+  -- Only the active spaces are kept, so closed ones don't pile up
+  local types = {}
+  fullscreenScreens = {}
+  for uuid, space in pairs(hs.spaces.activeSpaces() or {}) do
+    types[space] = spaceTypes[space] or hs.spaces.spaceType(space)
+    fullscreenScreens[uuid] = types[space] == "fullscreen"
+  end
+  spaceTypes = types
+end
+
+
 -- Our canvases join fullscreen spaces too, despite no fullscreen auxiliary
 -- behavior, and there stay over a fullscreen video. Checked every second
 -- with the menu update.
 function menuitem.onFullscreenSpace(frame)
+  updateFullscreenScreens()
   local center = hs.geometry.rect(frame).center
   for _, screen in ipairs(hs.screen.allScreens()) do
     if center:inside(screen:fullFrame()) then
-      local space = hs.spaces.activeSpaceOnScreen(screen)
-      return space ~= nil and hs.spaces.spaceType(space) == "fullscreen"
+      return fullscreenScreens[screen:getUUID()] == true
     end
   end
   return false

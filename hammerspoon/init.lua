@@ -25,7 +25,7 @@ function onReadlinkExit(exitCode, stdOut, _)
   require "notch"
   require "usage"
 
-  -- The subscriptions go between the battery and the CPU graph
+  -- The subscriptions go right of the battery
   app = App:new(function() usage:createItem() end)
   notch:start(app.maxIcmpHistory)
   app.menuItem:setStatusClickCallback(function() notch:openConsole() end)

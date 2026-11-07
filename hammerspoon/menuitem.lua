@@ -250,12 +250,12 @@ function TextItem:show(text)
 end
 
 
--- "createBetween" creates the items of other modules to place between
--- the battery and the CPU graph
-function menuitem:new(createBetween)
+-- "createRight" creates the items of other modules to place right of
+-- the battery
+function menuitem:new(createRight)
+  if createRight then createRight() end
   -- See GraphItem.new() for the name
   local battery = hs.menubar.new(true, "battery")
-  if createBetween then createBetween() end
   local inst = {
     _widgets = {},
     _submenu = {},

@@ -13,8 +13,8 @@
 #   checking for unpushed work.
 # - New projects: creates private GitHub repos and their first worktree.
 # - Archive: archives projects on GitHub and GitLab.
-# - Tabs: opens a named tab per worktree, runs the stack's dependency
-#   install there, and closes it when the worktree is removed.
+# - Tabs: opens a named tab per worktree, types `claude` and the stack's
+#   dependency install there, and closes it when the worktree is removed.
 # - Status: progress and outcome of the user's commands go to the window
 #   title through status.py.
 import asyncio
@@ -33,7 +33,7 @@ import iterm2
 # Python puts on sys.path.
 import status
 import workflow
-from split import split_with_bottom_pane
+from split import split_with_bottom_pane, split_with_right_pane
 from workflow import (
     credential_args,
     fail_command,
@@ -640,8 +640,11 @@ async def main(connection):
                         return tab
         return None
 
-    # Returns the top session; the bottom one is the shift-cmd-d split.
-    async def create_tab(worktree: Path, title: str) -> iterm2.Session | None:
+    # Returns the top left session and the top right one; the splits are
+    # shift-cmd-d and then cmd-d of the top session.
+    async def create_tab(
+        worktree: Path, title: str
+    ) -> tuple[iterm2.Session, iterm2.Session] | None:
         profile = iterm2.LocalWriteOnlyProfile()
         profile.set_initial_directory_mode(
             iterm2.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_CUSTOM
@@ -661,10 +664,13 @@ async def main(connection):
         await split_with_bottom_pane(
             window, tab, session, profile_customizations=profile
         )
+        right = await split_with_right_pane(
+            window, tab, session, profile_customizations=profile
+        )
         await tab.async_set_title(title)
         # A tab variable rather than a session one, so splits share it.
         await tab.async_set_variable("user.worktree", str(worktree))
-        return session
+        return session, right
 
     # GM never types into a tab it didn't just create: something may be
     # running there.
@@ -673,16 +679,20 @@ async def main(connection):
         if tabs:
             await tabs[0].async_activate()
         else:
-            session = await create_tab(worktree, title)
-            if session is None:
+            sessions = await create_tab(worktree, title)
+            if sessions is None:
                 report(f"failed to open a tab for {worktree}")
                 return
+            top, right = sessions
+            # The shell reads it once started; no newline, so the user
+            # reviews it and presses Enter.
+            await top.async_send_text("claude")
+            focused = top
             if command is not None:
-                # The shell reads it once started; no newline, so the user
-                # reviews it and presses Enter.
-                await session.async_send_text(command)
-            # Selects the tab too; focus goes where the command is.
-            await session.async_activate()
+                await right.async_send_text(command)
+                focused = right
+            # Selects the tab too; focus goes where the command to run first is.
+            await focused.async_activate()
         # The launcher or Hammerspoon is frontmost at this point.
         await app.async_activate(ignoring_other_apps=True)
 

@@ -11,7 +11,7 @@ async def _split_with_fixed_pane(
     session: iterm2.Session,
     vertical: bool,
     profile_customizations: iterm2.LocalWriteOnlyProfile | None = None,
-) -> None:
+) -> iterm2.Session:
     frame = await window.async_get_frame()
 
     # Refreshes the app state, so grid sizes below are post-split.
@@ -42,20 +42,36 @@ async def _split_with_fixed_pane(
             )
         await tab.async_update_layout()
     await window.async_set_frame(frame)
+    return pane
 
 
-# Also used by gm.py for the tabs it opens.
+# These two are also used by gm.py for the tabs it opens.
 async def split_with_bottom_pane(
     window: iterm2.Window,
     tab: iterm2.Tab,
     session: iterm2.Session,
     profile_customizations: iterm2.LocalWriteOnlyProfile | None = None,
-) -> None:
-    await _split_with_fixed_pane(
+) -> iterm2.Session:
+    return await _split_with_fixed_pane(
         window,
         tab,
         session,
         vertical=False,
+        profile_customizations=profile_customizations,
+    )
+
+
+async def split_with_right_pane(
+    window: iterm2.Window,
+    tab: iterm2.Tab,
+    session: iterm2.Session,
+    profile_customizations: iterm2.LocalWriteOnlyProfile | None = None,
+) -> iterm2.Session:
+    return await _split_with_fixed_pane(
+        window,
+        tab,
+        session,
+        vertical=True,
         profile_customizations=profile_customizations,
     )
 
@@ -79,9 +95,7 @@ async def main(connection):
     @iterm2.RPC
     async def custom_vertical_split(session_id=iterm2.Reference("id")):
         if session := find_session(session_id):
-            await _split_with_fixed_pane(
-                session.tab.window, session.tab, session, vertical=True
-            )
+            await split_with_right_pane(session.tab.window, session.tab, session)
 
     await custom_horizontal_split.async_register(connection)
     await custom_vertical_split.async_register(connection)

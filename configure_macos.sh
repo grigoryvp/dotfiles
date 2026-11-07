@@ -445,6 +445,50 @@ _configure_flameshot() {
   _add_login_item Flameshot /Applications/Flameshot.app
 }
 
+_vlc_quit() {
+  if ! pgrep -x VLC >/dev/null; then
+    return 0
+  fi
+  osascript \
+    -e 'ignoring application responses' \
+    -e 'tell application "VLC" to quit' \
+    -e 'end ignoring'
+  i=0
+  while pgrep -x VLC >/dev/null; do
+    if [ $i -ge 100 ]; then
+      echo "❌ VLC did not quit, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+}
+
+# VLC writes out every option, the defaults commented out, so the line is
+# replaced in place. It ignores the "[module]" sections on load, so a key
+# appended to a missing or partial file is read as well.
+_vlcrc_set() {
+  rc="$HOME/Library/Preferences/org.videolan.vlc/vlcrc"
+  touch "$rc"
+  awk -v key="$1" -v value="$2" '
+    $0 ~ "^#?" key "=" { print key "=" value; done = 1; next }
+    { print }
+    END { if (!done) print key "=" value }
+  ' "$rc" > "$rc.new" && mv "$rc.new" "$rc"
+}
+
+_configure_vlc() {
+  # A running VLC writes its settings back on exit, overwriting ours
+  _vlc_quit
+  mkdir -p "$HOME/Library/Preferences/org.videolan.vlc"
+  # A native fullscreen gets its own space, which Hammerspoon indicators
+  # detect to hide themselves
+  _vlcrc_set macosx-nativefullscreenmode 1
+  # "Continue playback: Always"
+  _vlcrc_set macosx-continue-playback 1
+  echo "VLC configured"
+}
+
 _telemost_quit() {
   if ! pgrep -x Yandex.Telemost >/dev/null; then
     return 0
@@ -1367,6 +1411,7 @@ configure() {
   open -a Wox
 
   _configure_telemost
+  _configure_vlc
 
   # Close any preferences so settings are not overwritten.
   osascript -e 'tell application "System Preferences" to quit'

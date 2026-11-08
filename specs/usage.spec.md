@@ -70,8 +70,15 @@ that is missing or of another type means no value.
 - **Reset**: a window past its reset time shows 0 until the next poll.
 - **Stale**: values older than 3 poll intervals are gray and the logo is
   dimmed. No value yet: no bar.
-- **Redraw**: only when the percents, colors or staleness change, checked
-  on each poll and every minute.
+- **Claude at work**: the Claude logo takes the terminal text color
+  (`FOREGROUND` of `iterm/Scripts/AutoLaunch/settings.py`) while any
+  session has the status `busy` in `~/.claude/sessions/<pid>.json`. A
+  session waiting for a permission prompt does not count. The files are
+  watched with `hs.pathwatcher` and read again every minute; a file whose
+  process is gone is ignored.
+- **Redraw**: only when the percents, colors, staleness or the state of
+  the agent change, checked on each poll, each change in the session files
+  and every minute.
 - **Menu**: built on click. For each provider: its windows with reset
   time, the age of the values and the last error; the provider title opens
   its usage page. `Refresh now` polls all of them.

@@ -15,6 +15,9 @@ usage = {
   _width = nil,
   _renderTimer = nil,
   _wakeWatcher = nil,
+  -- Providers with an agent working now, by name
+  _busy = {},
+  _sessionsWatcher = nil,
   _lastRefresh = 0,
 }
 
@@ -33,6 +36,9 @@ local taskTimeoutSec = 20
 local wakeDebounceSec = 60
 local codexTailBytes = 64 * 1024
 local grayColor = {hex = "#808080"}
+-- FOREGROUND of iterm/Scripts/AutoLaunch/settings.py
+local busyColor = {hex = "#E6AC73"}
+local claudeSessionsDir = os.getenv("HOME") .. "/.claude/sessions"
 
 local function decode(text)
   if type(text) ~= "string" or text == "" then return nil end
@@ -179,6 +185,21 @@ local function fetchClaude(done)
     hs.http.asyncGet("https://api.anthropic.com/api/oauth/usage", headers,
       onHttp(done, function(data) done(parseClaude(data)) end))
   end)
+end
+
+
+-- Claude Code keeps a status file for each running session, named by its PID
+local function busyClaudePids()
+  local pids = {}
+  if hs.fs.attributes(claudeSessionsDir, "mode") ~= "directory" then
+    return pids
+  end
+  for file in hs.fs.dir(claudeSessionsDir) do
+    local pid = file:match("^(%d+)%.json$")
+    local data = pid and readJson(claudeSessionsDir .. "/" .. file)
+    if data and data.status == "busy" then table.insert(pids, pid) end
+  end
+  return pids
 end
 
 
@@ -404,14 +425,25 @@ function usage:_elements(now)
     local bars, stale = self:_bars(provider, now)
     local logo = provider.logo
     if self._logos[provider.name] then
+      local logoFrame = {x = x, y = (menuHeight - logo.h) / 2, w = logo.w,
+        h = logo.h}
       table.insert(elements, {
         type = "image",
         image = self._logos[provider.name],
-        frame = {x = x, y = (menuHeight - logo.h) / 2, w = logo.w,
-          h = logo.h},
+        frame = logoFrame,
         imageAlpha = stale and 0.4 or 1,
         imageScaling = "scaleProportionally",
       })
+      if self._busy[provider.name] then
+        -- Colors only the pixels of the logo, keeping their alpha
+        table.insert(elements, {
+          type = "rectangle",
+          frame = logoFrame,
+          fillColor = busyColor,
+          compositeRule = "sourceAtop",
+          action = "fill",
+        })
+      end
     end
     x = x + logo.w + gap
     local frame = {x = x, y = 0, w = barWidth * 2 + 3, h = menuHeight}
@@ -470,6 +502,7 @@ function usage:_render()
       table.insert(parts, bar and bar.percent .. bar.color.hex or "-")
     end
     table.insert(parts, tostring(stale))
+    table.insert(parts, tostring(self._busy[provider.name]))
   end
   local key = table.concat(parts, " ")
   if key == self._renderKey then return end
@@ -637,6 +670,21 @@ function usage:refresh()
 end
 
 
+-- The file of a crashed session stays "busy", so the process is checked too
+function usage:_checkClaudeBusy()
+  local pids = busyClaudePids()
+  if #pids == 0 then
+    self._busy.claude = false
+    return self:_render()
+  end
+  local args = {"-p", table.concat(pids, ","), "-o", "pid="}
+  run("/bin/ps", args, function(code)
+    self._busy.claude = code == 0
+    self:_render()
+  end)
+end
+
+
 -- Separate from usage:start(), so menuitem.lua creates the item where it
 -- is placed
 function usage:createItem()
@@ -657,7 +705,17 @@ function usage:start(srcDir)
   self._canvas:behavior({"canJoinAllSpaces", "stationary"})
   self._item:setMenu(function() return self:_menu() end)
   self:_render()
-  self._renderTimer = hs.timer.doEvery(60, function() self:_render() end)
+  self._renderTimer = hs.timer.doEvery(60, function()
+    self:_checkClaudeBusy()
+  end)
+  -- The real path, since ~/.claude is a symlink to the dotfiles
+  local sessionsDir = hs.fs.pathToAbsolute(claudeSessionsDir)
+  if sessionsDir then
+    self._sessionsWatcher = hs.pathwatcher.new(sessionsDir, function()
+      self:_checkClaudeBusy()
+    end)
+    self._sessionsWatcher:start()
+  end
   self._wakeWatcher = hs.caffeinate.watcher.new(function(event)
     local events = hs.caffeinate.watcher
     if (event == events.systemDidWake or event == events.screensDidUnlock)
@@ -666,5 +724,6 @@ function usage:start(srcDir)
     end
   end)
   self._wakeWatcher:start()
+  self:_checkClaudeBusy()
   self:refresh()
 end

@@ -1782,6 +1782,7 @@ Trackpad
 Trampletoe
 Transavia
 Transcension
+transpiling
 Trapsetter
 Trarthan
 Trarthus
@@ -1964,6 +1965,7 @@ wf
 Wh
 Whakano
 Wi-Fi
+Wickerman
 Widowsilk
 wim
 wimlib

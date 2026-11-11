@@ -120,6 +120,7 @@ Arcanist
 Archdemon
 Archlinux
 Archmage
+Archnemesis
 argmap
 argparse
 Armin
@@ -179,6 +180,7 @@ Barthol
 barya
 baselineskip
 Basemetal
+BCM
 beastcraft
 Beastcrafting
 beautifulsoup
@@ -445,6 +447,7 @@ DLSS
 DMARC
 dmg
 DML
+dnf
 dockercompose
 dockerfiles
 dockerhub
@@ -944,6 +947,7 @@ libinput
 libmagic
 libncursesw
 libopus
+libpq
 libreadline
 libsodium
 libsqlite
@@ -2174,6 +2178,7 @@ zx
 дандер-методов
 дандер-методы
 дандер-функций
+датаклассах
 датасетах
 датацентрами
 датацентрах
@@ -2501,6 +2506,7 @@ zx
 промпту
 промпты
 пропатченной
+просканирует
 просмотрщик
 Псевдогаллюцинации
 Пу

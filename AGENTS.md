@@ -22,6 +22,6 @@ directories and updates skills with `git pull`. Specified in
 
 ## iTerm Status Bar
 
-Provides a single "status bar" which is displayed as a window title. Used
+Provides a single "status bar" which is displayed via hammerspoon icons. Used
 by other iTerm-based projects to write logs to. Implemented according to
 `specs/status.spec.md` as `iterm/Scripts/AutoLaunch/status.py` plugin.

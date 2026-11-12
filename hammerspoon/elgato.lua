@@ -5,6 +5,14 @@ elgato = {
 }
 
 
+-- Only room lights named like "... Front Left" or "... Rear Right".
+function elgato:_isControlled(name)
+  local pos, side = name:match("(%a+) (%a+)$")
+  return (pos == "Front" or pos == "Rear")
+    and (side == "Left" or side == "Right")
+end
+
+
 function elgato:update()
   local browser = hs.bonjour.new()
   local SERVICE_TYPE = "_elg._tcp."
@@ -24,6 +32,9 @@ function elgato:update()
     end
 
     local name = serviceObject:name()
+    if not self:_isControlled(name) then
+      return
+    end
     if isAdvertised == false then
       self._lights[name] = nil
       return

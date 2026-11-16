@@ -394,6 +394,7 @@ dcmake
 DCR
 DDD
 DDL
+Debezium
 debuff
 debuffs
 debugpy

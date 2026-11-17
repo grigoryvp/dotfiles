@@ -212,6 +212,7 @@ Blightheart
 blobstorage
 blockable
 Bloodletter
+BMS
 bonechill
 bookclub
 bootable
@@ -1458,6 +1459,7 @@ rjsf
 rkt
 RL
 RLHF
+rlottie
 rmi
 rmtree
 RO
@@ -1745,6 +1747,7 @@ TF-IDF
 TFS
 tft
 TG
+tgs
 Thiel
 Thinkpad
 thispagestyle
@@ -1765,6 +1768,7 @@ tizen
 Tk
 tkinter
 TLI
+tlottie
 TMDS
 toc
 Tolman
@@ -2732,4 +2736,5 @@ zx
 Эмбеддинг
 эмбеддинги
 эмбеддингов
+этушки
 юнит

@@ -1734,7 +1734,7 @@ addRemap(["1", "appname", "Path of Exile"], ["m2"], ["send", "-\w-|Runn|rint"])
 
 ;;  m2-2 for game text
 addRemap(["2", "appname", "Path of Exile 2"], ["m2"], ["send", "`"{!}(resistances|cursed|ailment application|break armour|recovery|chilled ground)`""])
-addRemap(["2", "appname", "Path of Exile"], ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|monster damage|monster elemental|goatmen)|((80|100)% deli)|memories`""])
+addRemap(["2", "appname", "Path of Exile"], ["m2"], ["send", "`"{!}(non-curse|all maximum|cannot regenerate|less recovery|monster damage|monster elemental|goatmen|reduced flask)|((80|100)% deli)|memories`""])
 
 ;;  m2-3 for game text
 ;; FIXME: not working with 'shift'

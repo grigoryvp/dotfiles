@@ -2520,7 +2520,15 @@ function App:_createSymbolPicker()
     for _, hotkey in ipairs(self.symbolPickerHotkeys) do
       hotkey:disable()
     end
-    focusLastFocused()
+    -- hs.window.filter sometimes loses track of an app's windows, so its
+    -- focus history can't be trusted to know where the picker was opened
+    local window = self.symbolPickerOldWindow
+    self.symbolPickerOldWindow = nil
+    if window then
+      window:focus()
+    else
+      focusLastFocused()
+    end
 
     if not choice then
       return
@@ -2552,6 +2560,9 @@ function App:showSymbolPicker()
     self:_createSymbolPicker()
   end
 
+  if not self.symbolPicker:isVisible() then
+    self.symbolPickerOldWindow = hs.window.focusedWindow()
+  end
   self.symbolPickerOldLayout = hs.keycodes.currentLayout()
   hs.keycodes.setLayout("ABC")
 

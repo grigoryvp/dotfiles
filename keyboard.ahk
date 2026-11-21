@@ -60,6 +60,8 @@ appSettings := Map(
   ; PoE remaps
   "s-poe", false
 )
+appIsGameAlt := false
+MOUSE_BUTTONS := ["lbutton", "rbutton", "mbutton", "xbutton1", "xbutton2"]
 MAX_DEBUG_LOG := 50
 KEY_NAMES := Map(
   "vkc0", "~",
@@ -1071,6 +1073,16 @@ onKey(key, dir) {
         appLastKeyup := [command, Map()]
       }
       Send(command)
+      ; "always" remaps like meta still need their key up, otherwise
+      ; shift-esc leaves m2 stuck.
+      if (appRemap.Has(key)) {
+        for _, config in appRemap[key] {
+          to := config["to"]
+          if (includes(config["from_mods"], "always") and Type(to) == "Array") {
+            onKeyCommand(to.Clone(), dir)
+          }
+        }
+      }
       return remapInfo
     }
   }
@@ -1213,7 +1225,7 @@ onKeydown(key) {
     ; work after entering some text due to lingering keys reported as
     ; still pressed down.
     alone := true
-    if (appKeysPressed.Count > 0) {
+    if (appKeysPressed.Count > 0 or isMouseButtonHeld()) {
       if (key != "rctrl" and key != "lctrl") {
         alone := false
       }
@@ -1275,6 +1287,44 @@ onKeyup(key) {
 
   if (appKeysPressed.Has(key)) {
     appKeysPressed.Delete(key)
+  }
+}
+
+;;  Ctrl-alt-click support for games: esc (lalt) pressed while tab (lctrl)
+;;  is held also holds a logical alt.
+onEscKeydown() {
+  global appIsGameAlt
+  if (not appIsGameAlt and GetKeyState("lctrl", "P")) {
+    appIsGameAlt := true
+    Send("{blind}{lalt down}")
+  }
+  onKeydown("esc")
+}
+
+onEscKeyup() {
+  global appIsGameAlt
+  onKeyup("esc")
+  if (appIsGameAlt) {
+    appIsGameAlt := false
+    ; Mask key prevents a lone alt release from activating the window menu.
+    Send("{blind}{vkE8}{lalt up}")
+  }
+}
+
+;;  Mouse buttons and wheel are not routed via onKeydown(), but still
+;;  count as "other keys" for "alone" detection.
+isMouseButtonHeld() {
+  for _, button in MOUSE_BUTTONS {
+    if (GetKeyState(button, "P")) {
+      return true
+    }
+  }
+  return false
+}
+
+onMouseInput() {
+  for _, keyInfo in appKeysPressed {
+    keyInfo["alone"] := false
   }
 }
 
@@ -1410,8 +1460,8 @@ onRepeatedClick() {
 *~$rshift::onKeydown("rshift") ; Don't suppress native "shift" function
 *~$rshift up::onKeyup("rshift") ; Don't suppress native "shift" function
 
-*$esc::onKeydown("esc") ; (lalt)
-*$esc up::onKeyup("esc") ; (lalt)
+*$esc::onEscKeydown() ; (lalt)
+*$esc up::onEscKeyup() ; (lalt)
 *$space::onKeydown("space")
 *$space up::onKeyup("space")
 *$enter::onKeydown("enter") ; (ralt)
@@ -1425,6 +1475,15 @@ onRepeatedClick() {
 *$right::onKeydown("right")
 *$right up::onKeyup("right")
 
+~*lbutton::onMouseInput()
+~*rbutton::onMouseInput()
+~*mbutton::onMouseInput()
+~*xbutton1::onMouseInput()
+~*xbutton2::onMouseInput()
+;;  Exact-modifier wheel hotkeys below take precedence over these.
+~*WheelUp::onMouseInput()
+~*WheelDown::onMouseInput()
+
 ^$WheelDown::onRepeatedClick()
 +$WheelDown::onRepeatedClick()
 ^+$WheelDown::onRepeatedClick()
@@ -1437,6 +1496,9 @@ onRepeatedClick() {
 addRemap("vked", [], ["meta", "m1"])
 
 addRemap("esc", ["always"], ["meta", "m2"])
+;;  Tab (lctrl) + esc (lalt) is a logical alt (see onEscKeydown), so it
+;;  takes precedence over esc remaps below.
+addRemap("esc", ["lctrl"], ["nothing"])
 ;;  Single esc (lalt) press => esc
 ;;  TODO: hold "esc", press "4", release "esc" - triggers "esc"
 addRemap("esc", ["alone"], "esc")
@@ -1487,6 +1549,7 @@ addRemap("p", ["m1"], "backspace")
 addRemap("p", ["m2"], ["send", "{+}31681345854"])
 
 ;;  'm1-semicolon' for left mouse button.
+addRemap(["vkba", "norepeat"], ["m1", "m2", "ctrl"], "lbutton", ["ctrl", "alt"])
 addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
 addRemap(["vkba", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
 addRemap(["vkba", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])

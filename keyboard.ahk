@@ -1302,15 +1302,16 @@ onKeyup(key) {
   }
 }
 
-;;  Ctrl-alt-click support for games: esc (lalt) pressed while tab (lctrl)
-;;  is held is a logical alt and bypasses remaps, so no m2 and no esc.
-;;  Otherwise m2 remaps shadow ctrl-alt-key combinations.
+;;  Ctrl-alt-click support for games: esc (lalt) and tab (lctrl) held
+;;  together in any order are a logical alt and ctrl. Esc then bypasses
+;;  remaps, so no m2 and no esc: otherwise m2 remaps shadow ctrl-alt-key
+;;  combinations.
 onEscKeydown() {
   global appIsGameAlt
   if (appIsGameAlt) {
     return
   }
-  ; Tab pressed while esc is already held must not switch modes mid-press.
+  ; Autorepeat of esc held without switching (see onLctrlKeydown).
   if (not appKeysPressed.Has("esc") and GetKeyState("lctrl", "P")) {
     appIsGameAlt := true
     ; Esc is not in appKeysPressed, so tab "alone" is reset here.
@@ -1330,6 +1331,32 @@ onEscKeyup() {
     return
   }
   onKeyup("esc")
+}
+
+onLctrlKeydown() {
+  global appIsGameAlt
+  isFirstPress := not appKeysPressed.Has("lctrl")
+  ; Esc entry can be already removed by onFastTimer(), m2 is reliable.
+  isEscHeld := appMeta.Has("m2") and appMeta["m2"]
+  ; Shift-esc holds esc down, keep it as is.
+  isEscRemapped := false
+  if (appKeysPressed.Has("esc") and appKeysPressed["esc"]["remap_to"]) {
+    isEscRemapped := true
+  }
+  if (isFirstPress and isEscHeld and not isEscRemapped and not appIsGameAlt) {
+    appIsGameAlt := true
+    appMeta["m2"] := false
+    ; Esc release is now handled by onEscKeyup() only.
+    if (appKeysPressed.Has("esc")) {
+      appKeysPressed.Delete("esc")
+    }
+    Send("{blind}{lalt down}")
+    onKeydown("lctrl")
+    ; Esc is not in appKeysPressed anymore, so tab "alone" is reset here.
+    appKeysPressed["lctrl"]["alone"] := false
+    return
+  }
+  onKeydown("lctrl")
 }
 
 ;;  Mouse buttons and wheel are not routed via onKeydown(), but still
@@ -1400,7 +1427,7 @@ onRepeatedClick() {
 *$vk8::onKeydown("backspace")
 *$vk8 up::onKeyup("backspace")
 
-*~$lctrl::onKeydown("lctrl") ; Don't suppress native "ctrl" function
+*~$lctrl::onLctrlKeydown() ; Don't suppress native "ctrl" function
 *~$lctrl up::onKeyup("lctrl") ; Don't suppress native "ctrl" function
 *$q::onKeydown("q")
 *$q up::onKeyup("q")
@@ -1567,7 +1594,6 @@ addRemap("p", ["m2"], ["send", "{+}31681345854"])
 
 ;;  'm1-semicolon' for left mouse button.
 addRemap(["vkba", "norepeat"], ["m1", "gamealt"], "lbutton", ["ctrl", "alt"])
-addRemap(["vkba", "norepeat"], ["m1", "m2", "ctrl"], "lbutton", ["ctrl", "alt"])
 addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
 addRemap(["vkba", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])
 addRemap(["vkba", "norepeat"], ["m1", "shift"], "lbutton", ["shift"])

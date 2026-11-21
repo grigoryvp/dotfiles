@@ -387,7 +387,7 @@ addRemap(from, fromMods, to, toMods := []) {
 
 ;;  Receives the list of modifiers like ["m1", "shift"] and evaluates to
 ;;  true if the corresponding keys are pressed
-modsPressedForKey(mods, key) {
+modsPressedForKey(mods, key, dir) {
   for i, modName in mods {
     ; used first to unset meta if it was set during initial keydown
     if (modName == "always") {
@@ -401,7 +401,17 @@ modsPressedForKey(mods, key) {
         return false
       }
     }
+    else if (modName == "gamealt") {
+      if (not appIsGameAlt) {
+        return false
+      }
+    }
     else if (modName == "alone") {
+      ; Key held without autorepeat is removed by onFastTimer() as "stuck",
+      ; and its "alone" state is lost with it.
+      if (dir == "up" and not appKeysPressed.Has(key)) {
+        return false
+      }
       for curKey, keyInfo in appKeysPressed {
         if (curKey != key) {
           return false
@@ -413,7 +423,9 @@ modsPressedForKey(mods, key) {
     }
     ; Setting name?
     else if (SubStr(modName, 1, StrLen("s-")) == "s-") {
-      return appSettings[modName]
+      if (not appSettings[modName]) {
+        return false
+      }
     }
     ; left and right controls are dual-mode from tab and enter, so treat
     ; them specially
@@ -1109,7 +1121,7 @@ onKey(key, dir) {
           continue
         }
       }
-      modsPressed := modsPressedForKey(fromMods, key)
+      modsPressed := modsPressedForKey(fromMods, key, dir)
       if (modsPressed) {
         to := config["to"]
         if (Type(to) == "String") {
@@ -1291,24 +1303,33 @@ onKeyup(key) {
 }
 
 ;;  Ctrl-alt-click support for games: esc (lalt) pressed while tab (lctrl)
-;;  is held also holds a logical alt.
+;;  is held is a logical alt and bypasses remaps, so no m2 and no esc.
+;;  Otherwise m2 remaps shadow ctrl-alt-key combinations.
 onEscKeydown() {
   global appIsGameAlt
-  if (not appIsGameAlt and GetKeyState("lctrl", "P")) {
+  if (appIsGameAlt) {
+    return
+  }
+  ; Tab pressed while esc is already held must not switch modes mid-press.
+  if (not appKeysPressed.Has("esc") and GetKeyState("lctrl", "P")) {
     appIsGameAlt := true
+    ; Esc is not in appKeysPressed, so tab "alone" is reset here.
+    markPressedNotAlone()
     Send("{blind}{lalt down}")
+    return
   }
   onKeydown("esc")
 }
 
 onEscKeyup() {
   global appIsGameAlt
-  onKeyup("esc")
   if (appIsGameAlt) {
     appIsGameAlt := false
     ; Mask key prevents a lone alt release from activating the window menu.
     Send("{blind}{vkE8}{lalt up}")
+    return
   }
+  onKeyup("esc")
 }
 
 ;;  Mouse buttons and wheel are not routed via onKeydown(), but still
@@ -1322,7 +1343,7 @@ isMouseButtonHeld() {
   return false
 }
 
-onMouseInput() {
+markPressedNotAlone() {
   for _, keyInfo in appKeysPressed {
     keyInfo["alone"] := false
   }
@@ -1344,7 +1365,7 @@ onRepeatedClick() {
     }
   }
   else {
-    Send("{bling}{WheelDown}")
+    Send("{blind}{WheelDown}")
   }
 }
 
@@ -1475,14 +1496,14 @@ onRepeatedClick() {
 *$right::onKeydown("right")
 *$right up::onKeyup("right")
 
-~*lbutton::onMouseInput()
-~*rbutton::onMouseInput()
-~*mbutton::onMouseInput()
-~*xbutton1::onMouseInput()
-~*xbutton2::onMouseInput()
+~*lbutton::markPressedNotAlone()
+~*rbutton::markPressedNotAlone()
+~*mbutton::markPressedNotAlone()
+~*xbutton1::markPressedNotAlone()
+~*xbutton2::markPressedNotAlone()
 ;;  Exact-modifier wheel hotkeys below take precedence over these.
-~*WheelUp::onMouseInput()
-~*WheelDown::onMouseInput()
+~*WheelUp::markPressedNotAlone()
+~*WheelDown::markPressedNotAlone()
 
 ^$WheelDown::onRepeatedClick()
 +$WheelDown::onRepeatedClick()
@@ -1496,11 +1517,7 @@ onRepeatedClick() {
 addRemap("vked", [], ["meta", "m1"])
 
 addRemap("esc", ["always"], ["meta", "m2"])
-;;  Tab (lctrl) + esc (lalt) is a logical alt (see onEscKeydown), so it
-;;  takes precedence over esc remaps below.
-addRemap("esc", ["lctrl"], ["nothing"])
 ;;  Single esc (lalt) press => esc
-;;  TODO: hold "esc", press "4", release "esc" - triggers "esc"
 addRemap("esc", ["alone"], "esc")
 ;;  m2 + shift for holding esc
 addRemap("esc", ["shift"], "esc")
@@ -1549,6 +1566,7 @@ addRemap("p", ["m1"], "backspace")
 addRemap("p", ["m2"], ["send", "{+}31681345854"])
 
 ;;  'm1-semicolon' for left mouse button.
+addRemap(["vkba", "norepeat"], ["m1", "gamealt"], "lbutton", ["ctrl", "alt"])
 addRemap(["vkba", "norepeat"], ["m1", "m2", "ctrl"], "lbutton", ["ctrl", "alt"])
 addRemap(["vkba", "norepeat"], ["m1", "m2"], "lbutton", ["alt"])
 addRemap(["vkba", "norepeat"], ["m1", "ctrl"], "lbutton", ["ctrl"])

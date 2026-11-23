@@ -1815,6 +1815,7 @@ tsidp
 TSMC
 tsnet
 tsoa
+Tsoagoth
 ttl
 Tujen
 Tukohama
@@ -2073,6 +2074,7 @@ zx
 автосохранение
 автотестов
 агентная
+агентной
 айти
 айтишная
 айтишного

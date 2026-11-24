@@ -201,12 +201,17 @@ function gm:showNew()
 end
 
 
+-- Same as CREATE_BRANCH in iterm/Scripts/AutoLaunch/gm.py
+gm.DEFAULT_BRANCH = "new"
+gm.LAST_BRANCH_SETTING = "gmLastBranch"
+
+
 -- The branch is free text, so the only row mirrors the query for Enter to
 -- select
 function gm:_branchChoices(query)
   local branch = query:match("^%s*(.-)%s*$")
   if branch == "" then
-    return {}
+    branch = self.DEFAULT_BRANCH
   end
   return {{text = branch, subText = "Branch for " .. self._newProject}}
 end
@@ -216,6 +221,7 @@ function gm:_showBranch(project)
   if not self._branchChooser then
     self._branchChooser = hs.chooser.new(function(choice)
       if choice then
+        hs.settings.set(self.LAST_BRANCH_SETTING, choice.text)
         self:_invokeIterm(
           "gm_new_done(project: " .. self:_itermString(self._newProject) ..
           ", branch: " .. self:_itermString(choice.text) .. ")"
@@ -229,8 +235,11 @@ function gm:_showBranch(project)
   end
   self._newProject = project
   self._branchChooser:placeholderText("Branch for " .. project)
-  self._branchChooser:query("")
-  self._branchChooser:choices({})
+  -- show() selects the query text, so Enter reuses the last branch and
+  -- typing replaces it
+  local lastBranch = hs.settings.get(self.LAST_BRANCH_SETTING) or ""
+  self._branchChooser:query(lastBranch)
+  self._branchChooser:choices(self:_branchChoices(lastBranch))
   self._branchChooser:show()
 end
 

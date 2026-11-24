@@ -130,7 +130,9 @@ as text, prefixed with 🔐 for private projects, host as subtext colored per
 host, since the same path can exist on several hosts, filtered as described
 under **Filtering**; "No projects" shows for any query); selecting one opens
 the branch chooser, whose only row mirrors the query with surrounding
-whitespace trimmed (none for an empty query, so Enter does nothing). Selecting
+whitespace trimmed (`new` for an empty query). The query starts with the last
+selected branch, kept in `hs.settings` across reloads; `show()` selects it,
+so Enter reuses it and typing replaces it. Selecting
 that row calls `gm_new_done()`, which clones the project if needed and
 creates the worktree and its tab (see **Clone**, **Worktree** and **Tabs**
 below). Dismissing either chooser or a failure does nothing.
@@ -164,8 +166,8 @@ below). Dismissing either chooser or a failure does nothing.
   twice. GM uses the completion callback instead: it gets the row once on
   selection and `nil` on dismissal (twice on Esc), so `nil` is ignored.
   `queryChangedCallback` fires on typing, pasting and `show()`, but not on
-  `query()`, so the branch chooser resets its rows explicitly before
-  `show()`. With this callback set, the chooser doesn't filter at all and
+  `query()`, so the branch chooser sets its rows for the prefilled query
+  explicitly before `show()`. With this callback set, the chooser doesn't filter at all and
   ignores `searchSubText`; the new, go, rm, merge and archive choosers use it
   for **Filtering**, keeping their full rows in `gm._allChoices`.
 - **Filtering**: the query is trimmed and

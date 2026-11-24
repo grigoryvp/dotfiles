@@ -1233,6 +1233,7 @@ configure() {
   mise use -g node@24.16.0
   mise use -g ruby@4.0.5
   mise use -g lua@5.5.1
+  mise use -g go@1.27.4
   # No prebuilt binaries, fails to compile from source
   _brew_install php
   mise use -g swift@6.3

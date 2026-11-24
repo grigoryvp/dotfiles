@@ -105,7 +105,12 @@ end
 local function run(path, args, callback)
   local watchdog = nil
   local task = hs.task.new(path, function(code, out)
-    if watchdog then watchdog:stop() end
+    if watchdog then
+      watchdog:stop()
+      -- Both modules keep callbacks referenced after the task exits or the
+      -- timer stops, so this mutual capture would never be collected
+      watchdog = nil
+    end
     callback(code, out)
   end, args)
   if not task or not task:start() then

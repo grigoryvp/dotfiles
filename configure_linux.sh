@@ -193,13 +193,11 @@ _configure_kitty() {
   echo "kitty configured"
 }
 
-# Microsoft's repo instead of Flatpak: the sandbox hides host toolchains
-# from extensions and the integrated terminal
-_install_vscode() {
-  if command -v code >/dev/null; then
-    echo "VSCode already installed"
-    return 0
-  fi
+CLAUDE_CODE_KEY_FPR=31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE
+
+# Keys are imported up front: "dnf install -y" would otherwise accept any
+# key the repo serves
+_configure_dnf_repos() {
   key=https://packages.microsoft.com/keys/microsoft.asc
   sudo rpm --import "$key"
   printf '%s\n' \
@@ -212,11 +210,58 @@ _install_vscode() {
     'gpgcheck=1' \
     "gpgkey=$key" \
     | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
+
+  key=https://downloads.claude.ai/keys/claude-code.asc
+  file=$(mktemp)
+  if ! curl -fsSL "$key" -o "$file"; then
+    rm -f "$file"
+    echo "❌ Failed to download Claude Code key, aborting" >&2
+    exit 1
+  fi
+  # The fingerprint from the Claude Code setup docs
+  fpr=$(gpg --show-keys --with-colons "$file" | grep '^fpr:')
+  if [ "$fpr" != "fpr:::::::::$CLAUDE_CODE_KEY_FPR:" ]; then
+    rm -f "$file"
+    echo "❌ Unexpected Claude Code key, aborting" >&2
+    exit 1
+  fi
+  sudo rpm --import "$file"
+  rm -f "$file"
+  printf '%s\n' \
+    '[claude-code]' \
+    'name=Claude Code' \
+    'baseurl=https://downloads.claude.ai/claude-code/rpm/stable' \
+    'enabled=1' \
+    'gpgcheck=1' \
+    "gpgkey=$key" \
+    | sudo tee /etc/yum.repos.d/claude-code.repo >/dev/null
+  echo "dnf repos configured"
+}
+
+# Microsoft's repo instead of Flatpak: the sandbox hides host toolchains
+# from extensions and the integrated terminal
+_install_vscode() {
+  if command -v code >/dev/null; then
+    echo "VSCode already installed"
+    return 0
+  fi
   if ! sudo dnf install -y code; then
     echo "❌ Failed to install VSCode, aborting" >&2
     exit 1
   fi
   echo "VSCode installed"
+}
+
+_install_claude_code() {
+  if rpm -q claude-code >/dev/null; then
+    echo "Claude Code already installed"
+    return 0
+  fi
+  if ! sudo dnf install -y claude-code; then
+    echo "❌ Failed to install Claude Code, aborting" >&2
+    exit 1
+  fi
+  echo "Claude Code installed"
 }
 
 _configure_vscode() {
@@ -334,7 +379,8 @@ _configure_git() {
 }
 
 test() {
-  _clone_skills
+  _configure_dnf_repos
+  _install_claude_code
 }
 
 configure() {
@@ -348,10 +394,12 @@ configure() {
   _configure_keyd
   _install_kitty
   _configure_kitty
+  _configure_dnf_repos
   _install_vscode
   _configure_vscode
   _install_keepassxc
   _configure_keepassxc
+  _install_claude_code
   _configure_git
   _configure_shell
   _configure_ssh

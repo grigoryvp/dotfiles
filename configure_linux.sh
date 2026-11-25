@@ -189,9 +189,52 @@ EOF
   echo "VSCode configured"
 }
 
+# dnf instead of Flatpak: keepassxc-cli lands on PATH
+_install_keepassxc() {
+  if command -v keepassxc >/dev/null; then
+    echo "KeePassXC already installed"
+    return 0
+  fi
+  if ! sudo dnf install -y keepassxc; then
+    echo "❌ Failed to install KeePassXC, aborting" >&2
+    exit 1
+  fi
+  echo "KeePassXC installed"
+}
+
+# KeePassXC quits gracefully on SIGTERM
+_keepassxc_quit() {
+  if ! pkill -x keepassxc; then
+    return 0
+  fi
+  i=0
+  while pgrep -x keepassxc >/dev/null; do
+    if [ $i -ge 100 ]; then
+      echo "❌ KeePassXC did not quit, aborting" >&2
+      exit 1
+    fi
+    sleep 0.2
+    i=$((i+1))
+  done
+}
+
+# Copied, not symlinked: KeePassXC keeps its KeeShare private key in this
+# file, which must not end up in the repository. A running KeePassXC writes
+# its settings back on exit, overwriting the copy.
+_configure_keepassxc() {
+  _keepassxc_quit
+  dir=~/.config/keepassxc
+  mkdir -p "$dir"
+  if ! cp ~/dotfiles/keepassxc.ini "$dir/keepassxc.ini"; then
+    echo "❌ Failed to copy keepassxc.ini, aborting" >&2
+    exit 1
+  fi
+  echo "KeePassXC configured"
+}
+
 test() {
-  _install_vscode
-  _configure_vscode
+  _install_keepassxc
+  _configure_keepassxc
 }
 
 configure() {
@@ -207,6 +250,8 @@ configure() {
   _configure_kitty
   _install_vscode
   _configure_vscode
+  _install_keepassxc
+  _configure_keepassxc
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway

@@ -232,9 +232,41 @@ _configure_keepassxc() {
   echo "KeePassXC configured"
 }
 
+# Fedora's own ~/.bashrc is the only place that sources /etc/bashrc, so
+# the replacement keeps doing it
+_configure_shell() {
+  printf '%s\n' \
+    '#!/bin/sh' \
+    'if [ -f /etc/bashrc ]; then . /etc/bashrc; fi' \
+    '. ~/dotfiles/shell-cfg.sh' \
+    > ~/.bashrc
+  printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
+  printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
+  # shell-cfg.sh relies on zsh, as on macOS
+  sudo dnf install -y zsh
+  zsh=$(command -v zsh)
+  if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$zsh" ]; then
+    # usermod instead of chsh: chsh is not installed by default
+    sudo usermod -s "$zsh" "$USER"
+    echo "Log out and back in for zsh to become the login shell"
+  fi
+  echo "Shell configured"
+}
+
+_configure_git() {
+  # git-cfg.toml pipes git output through it
+  sudo dnf install -y diff-so-fancy
+  ln -fs ~/dotfiles/.gitattributes ~/.gitattributes
+  # Don't break existing git config, if any
+  if ! [ -e ~/.gitconfig ]; then
+    printf '[include]\npath = ~/dotfiles/git-cfg.toml\n' > ~/.gitconfig
+  fi
+  echo "git configured"
+}
+
 test() {
-  _install_keepassxc
-  _configure_keepassxc
+  _configure_shell
+  _configure_git
 }
 
 configure() {
@@ -252,6 +284,8 @@ configure() {
   _configure_vscode
   _install_keepassxc
   _configure_keepassxc
+  _configure_git
+  _configure_shell
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway

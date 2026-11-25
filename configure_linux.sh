@@ -196,6 +196,23 @@ EOF
   echo "keyd configured"
 }
 
+# An extension from ~/dotfiles/gnome, applied on the next login
+_enable_gnome_extension() {
+  ext=$1
+  dir=~/.local/share/gnome-shell/extensions
+  mkdir -p "$dir"
+  rm -rf "${dir:?}/$ext"
+  ln -s ~/dotfiles/gnome/$ext "$dir/$ext"
+  # GNOME Shell discovers new extensions only on login, until then
+  # "gnome-extensions enable" refuses an unknown one
+  cur=$(gsettings get org.gnome.shell enabled-extensions)
+  case "$cur" in
+    *"'$ext'"*) ;;
+    "@as []") gsettings set org.gnome.shell enabled-extensions "['$ext']" ;;
+    *) gsettings set org.gnome.shell enabled-extensions "${cur%]}, '$ext']" ;;
+  esac
+}
+
 # Same set as on macOS and Windows: English, Russian, Japanese, picked by
 # m1-shift-f/d/s via keyd, /usr/local/bin/lang-keys and the lang-keys
 # extension
@@ -218,19 +235,7 @@ EOF
   gsettings set org.gnome.desktop.input-sources sources \
     "[('xkb', 'us'), ('xkb', 'ru'), ('ibus', 'mozc-jp')]"
 
-  ext=lang-keys@grigoryvp
-  dir=~/.local/share/gnome-shell/extensions
-  mkdir -p "$dir"
-  rm -rf "${dir:?}/$ext"
-  ln -s ~/dotfiles/gnome/$ext "$dir/$ext"
-  # GNOME Shell discovers new extensions only on login, until then
-  # "gnome-extensions enable" refuses an unknown one
-  cur=$(gsettings get org.gnome.shell enabled-extensions)
-  case "$cur" in
-    *"'$ext'"*) ;;
-    "@as []") gsettings set org.gnome.shell enabled-extensions "['$ext']" ;;
-    *) gsettings set org.gnome.shell enabled-extensions "${cur%]}, '$ext']" ;;
-  esac
+  _enable_gnome_extension lang-keys@grigoryvp
   echo "Input sources configured, log out and back in to apply"
 }
 
@@ -852,6 +857,9 @@ configure() {
   fi
 
   _configure_favorite_apps
+  gsettings set org.gnome.desktop.interface clock-format '24h'
+  _enable_gnome_extension cpu-graph@grigoryvp
+  _enable_gnome_extension clock-right@grigoryvp
 
   echo "✅ configuration complete"
 }

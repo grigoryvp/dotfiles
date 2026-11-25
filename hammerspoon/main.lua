@@ -691,6 +691,13 @@ function App:_wndClose()
     return
   end
 
+  -- The whole tab with all its splits, "Close All Panes in Tab". A single
+  -- split is closed by m1-s (see karabiner.json).
+  if app:bundleID() == "com.googlecode.iterm2" then
+    hs.eventtap.keyStroke({"⌥", "⌘"}, "w", delay, app)
+    return
+  end
+
   -- Speed optimization to close tabs fast if they are exposed like in
   -- Safari or iTerm2 (searching for app menu items takes some time)
   if wnd:tabCount() > 0 then

@@ -384,6 +384,68 @@ _install_chrome() {
 }
 
 # Qt6 build: the GTK one is still GTK2
+_install_flameshot() {
+  if rpm -q flameshot >/dev/null; then
+    echo "Flameshot already installed"
+    return 0
+  fi
+  if ! sudo dnf install -y flameshot wl-clipboard; then
+    echo "❌ Failed to install Flameshot, aborting" >&2
+    exit 1
+  fi
+  echo "Flameshot installed"
+}
+
+# There is no cli option for the save path, so the key is edited into the ini
+# in place, keeping whatever was set through the tray menu. QSettings sorts
+# the keys inside a section, so a new one is appended to "[General]".
+_flameshot_ini_set() {
+  ini="$HOME/.config/flameshot/flameshot.ini"
+  awk -v key="$1" -v value="$2" '
+    $0 ~ "^" key "=" { print key "=" value; done = 1; next }
+    /^\[/ && general && !done { print key "=" value; done = 1 }
+    /^\[General\]/ { general = 1 }
+    { print }
+    END { if (!done) print key "=" value }
+  ' "$ini" > "$ini.new" && mv "$ini.new" "$ini"
+}
+
+# keyd turns m3-slash into this combination, picked to clash with nothing
+FLAMESHOT_KEYS='<Primary><Alt><Super>slash'
+
+_configure_flameshot() {
+  # Hiding the tray icon leaves the daemon running: capture is started by
+  # the "flameshot gui" command
+  flameshot config --autostart true --trayicon false >/dev/null 2>&1
+  # Flameshot rejects a save path that does not exist and falls back to its
+  # default, so the directory is created first
+  mkdir -p "$HOME/Screenshots"
+  _flameshot_ini_set savePath "$HOME/Screenshots"
+  # Done by flameshot-gui.sh instead, Flameshot's own copy is lost on Wayland
+  _flameshot_ini_set copyPathAfterSave false
+  if ! flameshot config --check 2>&1 | grep -q "No errors detected"; then
+    echo "❌ Flameshot rejected its configuration, aborting" >&2
+    exit 1
+  fi
+
+  # Launched by GNOME rather than by keyd: keyd runs commands as root,
+  # outside the session
+  keys=org.gnome.settings-daemon.plugins.media-keys
+  path=/org/gnome/settings-daemon/plugins/media-keys
+  path="$path/custom-keybindings/flameshot/"
+  schema="$keys.custom-keybinding:$path"
+  gsettings set "$schema" name Flameshot
+  gsettings set "$schema" command "$HOME/dotfiles/flameshot-gui.sh"
+  gsettings set "$schema" binding "$FLAMESHOT_KEYS"
+  cur=$(gsettings get $keys custom-keybindings)
+  case "$cur" in
+    *"'$path'"*) ;;
+    "@as []") gsettings set $keys custom-keybindings "['$path']" ;;
+    *) gsettings set $keys custom-keybindings "${cur%]}, '$path']" ;;
+  esac
+  echo "Flameshot configured"
+}
+
 _install_doublecmd() {
   if rpm -q doublecmd-qt6 >/dev/null; then
     echo "Double Commander already installed"
@@ -749,6 +811,8 @@ configure() {
   _configure_keepassxc
   _install_chrome
   _install_doublecmd
+  _install_flameshot
+  _configure_flameshot
   _install_claude_code
   _configure_claude
   _install_mise

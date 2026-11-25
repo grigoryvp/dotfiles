@@ -288,6 +288,8 @@ _configure_dnf_repos() {
     'gpgcheck=1' \
     "gpgkey=$key" \
     | sudo tee /etc/yum.repos.d/claude-code.repo >/dev/null
+  sudo dnf install -y 'dnf-command(copr)'
+  sudo dnf copr enable -y jdxcode/mise
   echo "dnf repos configured"
 }
 
@@ -315,6 +317,52 @@ _install_claude_code() {
     exit 1
   fi
   echo "Claude Code installed"
+}
+
+# The dnf part of the languages setup, kept apart from the slow mise part to
+# group sudo calls
+_install_mise() {
+  set --
+  while IFS= read -r pkg; do
+    set -- "$@" "$pkg"
+  done <<'EOF'
+mise
+uv
+php
+swift-lang
+gcc
+make
+patch
+bzip2
+tar
+perl-FindBin
+openssl-devel
+libyaml-devel
+libffi-devel
+readline-devel
+zlib-devel
+gdbm-devel
+ncurses-devel
+EOF
+  # Swift and PHP come from dnf, as PHP comes from brew on macOS: swift.org
+  # has no builds for current Fedora. The rest is for mise to build Ruby and
+  # Lua from source.
+  if ! sudo dnf install -y "$@"; then
+    echo "❌ Failed to install mise and its dependencies, aborting" >&2
+    exit 1
+  fi
+  echo "mise installed"
+}
+
+_install_languages() {
+  mise use -g python@3.14.5
+  mise use -g node@24.16.0
+  mise use -g ruby@4.0.5
+  mise use -g lua@5.5.1
+  mise use -g go@1.27.4
+  # For agents
+  uv tool install ruff
+  echo "Languages installed"
 }
 
 _configure_vscode() {
@@ -432,8 +480,9 @@ _configure_git() {
 }
 
 test() {
-  _configure_keyd
-  _configure_input_sources
+  _configure_dnf_repos
+  _install_mise
+  _install_languages
 }
 
 configure() {
@@ -454,12 +503,14 @@ configure() {
   _install_keepassxc
   _configure_keepassxc
   _install_claude_code
+  _install_mise
   _configure_git
   _configure_shell
   _configure_ssh
   _switch_dotfiles_to_ssh
   _clone_knowledge_base
   _clone_skills
+  _install_languages
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway

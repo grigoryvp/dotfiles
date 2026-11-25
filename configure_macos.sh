@@ -1244,7 +1244,9 @@ configure() {
   if [ -e ~/dotfiles ] && [ -e ~/.ssh/.uploaded_to_github ]; then
     echo "Dotfiles already cloned"
   else
-    git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
+    if ! [ -e ~/dotfiles ]; then
+      git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
+    fi
     while true; do
       keepassxc-cli show --show-protected \
         --attributes username \
@@ -1265,8 +1267,14 @@ configure() {
     cat ~/.ssh/id_rsa.pub
     echo "Add ssh to GitHub and press enter"
     read -s
-    rm -rf ~/dotfiles
-    git clone git@github.com:grigoryvp/dotfiles.git ~/dotfiles
+    # Remote is switched instead of recloning: a fresh clone would lose local
+    # changes in ~/dotfiles
+    git -C ~/dotfiles remote set-url origin \
+      git@github.com:grigoryvp/dotfiles.git
+    until git -C ~/dotfiles ls-remote origin >/dev/null; do
+      echo "GitHub rejected the SSH key, fix it and press enter"
+      read -s
+    done
     touch ~/.ssh/.uploaded_to_github
   fi
 

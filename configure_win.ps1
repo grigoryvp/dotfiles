@@ -525,28 +525,33 @@ class App {
 
   _getFilesFromGit() {
     if ($this._isTest) { return; }
+    $sshUri = "git@github.com:grigoryvp/dotfiles.git";
+    $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+    $sshUploaded = Test-Path -Path "$markerPath";
     $gitCfgFile = $this._path(@($this._cfgDir, ".git", "config"));
     if (Test-Path -Path "$gitCfgFile") {
       $gitCfg = Get-Content "$gitCfgFile" | Out-String;
-      # Already cloned with SSH?
       if ($gitCfg.Contains("git@github.com")) {
         Write-Host "dotfiles already cloned via ssh";
         return;
       }
-    }
-
-    # Have keys to clone with SSH?
-    $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
-    if (Test-Path -Path "$markerPath") {
-      $uri = "git@github.com:grigoryvp/dotfiles.git";
-    }
-    else {
-      # Already cloned without keys?
-      if (Test-Path -Path "$gitCfgFile") {
+      if (-not $sshUploaded) {
         Write-Host "dotfiles already cloned via https";
         return;
       }
-      # Clone with HTTPS
+      # Remote is switched instead of recloning: a fresh clone would lose
+      # local changes in the config dir
+      Write-Host "Switching dotfiles remote to ssh";
+      & git -C "$($this._cfgDir)" remote set-url origin "$sshUri";
+      if ($LASTEXITCODE -ne 0) { throw "Failed to switch dotfiles remote" }
+      return;
+    }
+
+    # Have keys to clone with SSH?
+    if ($sshUploaded) {
+      $uri = $sshUri;
+    }
+    else {
       $uri = "https://github.com/grigoryvp/dotfiles.git";
     }
 

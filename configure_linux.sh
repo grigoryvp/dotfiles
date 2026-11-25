@@ -59,6 +59,55 @@ _clone_dotfiles() {
   git clone https://github.com/grigoryvp/dotfiles.git ~/dotfiles
 }
 
+_configure_ssh() {
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  if ! [ -e ~/.ssh/id_rsa.pub ]; then
+    ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
+  fi
+  # Allows git clone without fingerprint confirmation
+  if ! ssh-keygen -F github.com >/dev/null; then
+    ssh-keyscan github.com 2>/dev/null >> ~/.ssh/known_hosts
+  fi
+  echo "SSH configured"
+}
+
+# Remote is switched instead of recloning: a fresh clone would lose local
+# changes in ~/dotfiles
+_switch_dotfiles_to_ssh() {
+  if [ -e ~/.ssh/.uploaded_to_github ]; then
+    echo "Dotfiles already switched to SSH"
+    return 0
+  fi
+  db=~/dotfiles/auth/passwords.kdbx
+  until keepassxc-cli show --show-protected \
+    --attributes username --attributes password "$db" github; do :; done
+  echo "Sign in to GitHub via browser and press enter for TOTP code"
+  read -r _
+  until keepassxc-cli show --totp "$db" github; do :; done
+  cat ~/.ssh/id_rsa.pub
+  echo "Add SSH key to GitHub and press enter"
+  read -r _
+  git -C ~/dotfiles remote set-url origin \
+    git@github.com:grigoryvp/dotfiles.git
+  until git -C ~/dotfiles ls-remote origin >/dev/null; do
+    echo "GitHub rejected the SSH key, fix it and press enter"
+    read -r _
+  done
+  touch ~/.ssh/.uploaded_to_github
+  echo "Dotfiles switched to SSH"
+}
+
+_clone_knowledge_base() {
+  if [ -e ~/.xi ]; then
+    echo "Knowledge base already cloned"
+  elif [ -e ~/.ssh/.uploaded_to_github ]; then
+    git clone git@github.com:grigoryvp/xi.git ~/.xi
+  else
+    echo "Not cloning knowledge base since ssh keys are not uploaded"
+  fi
+}
+
 # Built from source as upstream recommends, pinned to a release tag
 _install_keyd() {
   if command -v keyd >/dev/null; then
@@ -268,8 +317,9 @@ _configure_git() {
 }
 
 test() {
-  _configure_shell
-  _configure_git
+  _configure_ssh
+  _switch_dotfiles_to_ssh
+  _clone_knowledge_base
 }
 
 configure() {
@@ -289,6 +339,9 @@ configure() {
   _configure_keepassxc
   _configure_git
   _configure_shell
+  _configure_ssh
+  _switch_dotfiles_to_ssh
+  _clone_knowledge_base
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway

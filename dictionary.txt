@@ -63,6 +63,7 @@ Accor
 Achmiz
 ack
 acp
+acpi
 acqui-hired
 activerecord
 addsitedir
@@ -690,6 +691,7 @@ grigory
 grigoryvp
 groupdict
 Gruthkul
+gsettings
 GTK
 GTX
 GU604VZ
@@ -1595,6 +1597,7 @@ smol-toml
 smoothcsv
 Smoulderstrike
 SMPP
+SNC
 SNI
 sniffio
 SNMP
@@ -2023,6 +2026,7 @@ xbar
 XC
 xcodes
 Xesht
+xkb
 XOFF
 xon
 Xopec

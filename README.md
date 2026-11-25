@@ -42,6 +42,8 @@ pip install --upgrade pip
 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_linux.sh)"
+# Server without GUI
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_linux.sh)" sh --server
 ```
 
 ## OSX

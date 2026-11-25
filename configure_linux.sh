@@ -1,10 +1,16 @@
 # Fedora with GNOME. Run as a regular user from the GNOME session: gsettings
-# needs the session bus, system-wide changes are made via sudo.
+# needs the session bus, system-wide changes are made via sudo. With
+# --server, configures a Fedora without GUI: no GNOME session required.
+
+SERVER=
 
 _check_env() {
   if [ "$(id -u)" -eq 0 ]; then
     echo "❌ Run as a regular user, not root, aborting" >&2
     exit 1
+  fi
+  if [ -n "$SERVER" ]; then
+    return 0
   fi
   case ":$XDG_CURRENT_DESKTOP:" in
     *:GNOME:*) ;;
@@ -301,18 +307,20 @@ _import_key_with_fpr() {
 # Keys are imported up front: "dnf install -y" would otherwise accept any
 # key the repo serves
 _configure_dnf_repos() {
-  key=https://packages.microsoft.com/keys/microsoft.asc
-  sudo rpm --import "$key"
-  printf '%s\n' \
-    '[code]' \
-    'name=Visual Studio Code' \
-    'baseurl=https://packages.microsoft.com/yumrepos/vscode' \
-    'enabled=1' \
-    'autorefresh=1' \
-    'type=rpm-md' \
-    'gpgcheck=1' \
-    "gpgkey=$key" \
-    | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
+  if [ -z "$SERVER" ]; then
+    key=https://packages.microsoft.com/keys/microsoft.asc
+    sudo rpm --import "$key"
+    printf '%s\n' \
+      '[code]' \
+      'name=Visual Studio Code' \
+      'baseurl=https://packages.microsoft.com/yumrepos/vscode' \
+      'enabled=1' \
+      'autorefresh=1' \
+      'type=rpm-md' \
+      'gpgcheck=1' \
+      "gpgkey=$key" \
+      | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
+  fi
 
   key=https://downloads.claude.ai/keys/claude-code.asc
   _import_key_with_fpr "$key" "$CLAUDE_CODE_KEY_FPR" "Claude Code"
@@ -337,12 +345,15 @@ _configure_dnf_repos() {
     'gpgcheck=1' \
     "gpgkey=$key" \
     | sudo tee /etc/yum.repos.d/docker-ce.repo >/dev/null
-  # Fedora ships the Google Chrome repo disabled. Its /etc/default/google-chrome
-  # also stops Chrome from adding a duplicate repo on install.
-  sudo rpm --import https://dl.google.com/linux/linux_signing_key.pub
-  sudo dnf install -y fedora-workstation-repositories \
-    'dnf-command(config-manager)'
-  sudo dnf config-manager setopt google-chrome.enabled=1
+  if [ -z "$SERVER" ]; then
+    # Fedora ships the Google Chrome repo disabled. Its
+    # /etc/default/google-chrome also stops Chrome from adding a duplicate
+    # repo on install.
+    sudo rpm --import https://dl.google.com/linux/linux_signing_key.pub
+    sudo dnf install -y fedora-workstation-repositories \
+      'dnf-command(config-manager)'
+    sudo dnf config-manager setopt google-chrome.enabled=1
+  fi
 
   key=https://pkgs.tailscale.com/stable/fedora/repo.gpg
   sudo rpm --import "$key"
@@ -810,49 +821,7 @@ _configure_git() {
   echo "git configured"
 }
 
-test() {
-  _configure_dnf_repos
-  _install_mise
-  _install_languages
-}
-
-configure() {
-  _check_env
-
-  # Group settings that require sudo together
-
-  _configure_lid
-  _clone_dotfiles
-  _install_keyd
-  _configure_keyd
-  _configure_input_sources
-  _install_kitty
-  _configure_kitty
-  _configure_dnf_repos
-  _install_tailscale
-  _configure_firewall
-  _install_docker
-  _install_k3s
-  _install_vscode
-  _configure_vscode
-  _install_keepassxc
-  _configure_keepassxc
-  _install_chrome
-  _install_doublecmd
-  _install_flameshot
-  _configure_flameshot
-  _install_yq
-  _install_claude_code
-  _configure_claude
-  _install_mise
-  _configure_git
-  _configure_shell
-  _configure_ssh
-  _switch_dotfiles_to_ssh
-  _clone_knowledge_base
-  _clone_skills
-  _install_languages
-
+_configure_gnome() {
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway
   gsettings set org.gnome.settings-daemon.plugins.power \
@@ -869,12 +838,78 @@ configure() {
   gsettings set org.gnome.desktop.interface clock-format '24h'
   _enable_gnome_extension graphs@grigoryvp
   _enable_gnome_extension clock-right@grigoryvp
+  echo "GNOME configured"
+}
+
+test() {
+  _configure_dnf_repos
+  _install_mise
+  _install_languages
+}
+
+configure() {
+  _check_env
+
+  # Group settings that require sudo together
+
+  _configure_lid
+  _clone_dotfiles
+  if [ -z "$SERVER" ]; then
+    _install_keyd
+    _configure_keyd
+    _configure_input_sources
+    _install_kitty
+    _configure_kitty
+  fi
+  _configure_dnf_repos
+  _install_tailscale
+  _configure_firewall
+  _install_docker
+  _install_k3s
+  if [ -z "$SERVER" ]; then
+    _install_vscode
+    _configure_vscode
+    _install_keepassxc
+    _configure_keepassxc
+    _install_chrome
+    _install_doublecmd
+    _install_flameshot
+    _configure_flameshot
+  fi
+  _install_yq
+  _install_claude_code
+  _configure_claude
+  _install_mise
+  _configure_git
+  _configure_shell
+  _configure_ssh
+  # Needs KeePassXC and a browser for GitHub
+  if [ -z "$SERVER" ]; then
+    _switch_dotfiles_to_ssh
+  fi
+  _clone_knowledge_base
+  _clone_skills
+  _install_languages
+  if [ -z "$SERVER" ]; then
+    _configure_gnome
+  fi
 
   echo "✅ configuration complete"
 }
 
-if [ "$1" = "--test" ]; then
-  test
-else
-  configure
-fi
+case "$1" in
+  --test)
+    test
+    ;;
+  --server)
+    SERVER=1
+    configure
+    ;;
+  "")
+    configure
+    ;;
+  *)
+    echo "❌ Unknown option $1, aborting" >&2
+    exit 1
+    ;;
+esac

@@ -187,7 +187,7 @@
   ],
   "editor.glyphMargin": true,
   "editor.wordWrap": "off",
-  "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
+  "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono, JetBrains Mono",
   "editor.semanticHighlighting.enabled": true,
   "editor.fontSize": 16,
   "editor.fontLigatures": false,
@@ -206,7 +206,7 @@
   "diffEditor.wordWrap": "off",
   //! terminal options are not inherited, ex it's not possible to specify
   //  'terminal.integrated' option as a dict.
-  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono",
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrainsMono NF, JetBrainsMono, JetBrains Mono",
   "terminal.integrated.fontSize": 16,
   "terminal.integrated.commandsToSkipShell": [
     "workbench.action.toggleSidebarVisibility",

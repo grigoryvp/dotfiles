@@ -492,7 +492,7 @@ pptx-to-pdf() {
 }
 
 # For tools installed via "go get" to be on path
-if which go > /dev/null; then
+if which go >/dev/null 2>&1; then
   start_path_with $(go env GOPATH)/bin
 fi
 

@@ -38,6 +38,12 @@ pyenv global 3.12.2
 pip install --upgrade pip
 ```
 
+## Linux (Fedora, GNOME)
+
+```sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/grigoryvp/dotfiles/HEAD/configure_linux.sh)"
+```
+
 ## OSX
 
 ```sh

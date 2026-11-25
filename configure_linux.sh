@@ -147,13 +147,66 @@ _install_keyd() {
 
 _configure_keyd() {
   sudo mkdir -p /etc/keyd
-  sudo ln -fs ~/dotfiles/keyd.conf /etc/keyd/default.conf
+  # Copied, not symlinked: keyd runs command() actions from the config as
+  # root, so a user-writable config would hand root to any user process
+  sudo rm -f /etc/keyd/default.conf
+  sudo install -m 644 ~/dotfiles/keyd.conf /etc/keyd/default.conf
+  # keyd runs commands as root, while the session bus accepts only the user
+  # that owns it. Root-owned for the same reason as the config.
+  uid=$(id -u)
+  sudo tee /usr/local/bin/lang-keys >/dev/null <<EOF
+#!/bin/sh
+exec setpriv --reuid=$uid --regid=$(id -g) --clear-groups \\
+  env DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus \\
+  gdbus call --session --dest org.gnome.Shell \\
+  --object-path /org/gnome/Shell/Extensions/LangKeys \\
+  --method org.gnome.Shell.Extensions.LangKeys.Activate "\$1" >/dev/null
+EOF
+  sudo chmod 755 /usr/local/bin/lang-keys
   if systemctl is-active --quiet keyd; then
     sudo keyd reload
   else
     sudo systemctl enable --now keyd
   fi
   echo "keyd configured"
+}
+
+# Same set as on macOS and Windows: English, Russian, Japanese, picked by
+# m1-shift-f/d/s via keyd, /usr/local/bin/lang-keys and the lang-keys
+# extension
+_configure_input_sources() {
+  sudo dnf install -y ibus-mozc
+  # Mozc defaults with active_on_launch flipped: Japanese starts in hiragana
+  # instead of direct input, like Kotoeri on macOS
+  mkdir -p ~/.config/mozc
+  cat > ~/.config/mozc/ibus_config.textproto <<'EOF'
+engines {
+  name : "mozc-jp"
+  longname : "Mozc"
+  layout : "default"
+  layout_variant : ""
+  layout_option : ""
+  rank : 80
+}
+active_on_launch: True
+EOF
+  gsettings set org.gnome.desktop.input-sources sources \
+    "[('xkb', 'us'), ('xkb', 'ru'), ('ibus', 'mozc-jp')]"
+
+  ext=lang-keys@grigoryvp
+  dir=~/.local/share/gnome-shell/extensions
+  mkdir -p "$dir"
+  rm -rf "${dir:?}/$ext"
+  ln -s ~/dotfiles/gnome/$ext "$dir/$ext"
+  # GNOME Shell discovers new extensions only on login, until then
+  # "gnome-extensions enable" refuses an unknown one
+  cur=$(gsettings get org.gnome.shell enabled-extensions)
+  case "$cur" in
+    *"'$ext'"*) ;;
+    "@as []") gsettings set org.gnome.shell enabled-extensions "['$ext']" ;;
+    *) gsettings set org.gnome.shell enabled-extensions "${cur%]}, '$ext']" ;;
+  esac
+  echo "Input sources configured, log out and back in to apply"
 }
 
 KITTY_VERSION=0.51.1
@@ -379,8 +432,8 @@ _configure_git() {
 }
 
 test() {
-  _configure_dnf_repos
-  _install_claude_code
+  _configure_keyd
+  _configure_input_sources
 }
 
 configure() {
@@ -392,6 +445,7 @@ configure() {
   _clone_dotfiles
   _install_keyd
   _configure_keyd
+  _configure_input_sources
   _install_kitty
   _configure_kitty
   _configure_dnf_repos

@@ -1,0 +1,6 @@
+{
+  "uuid": "lang-keys@grigoryvp",
+  "name": "Lang Keys",
+  "description": "Switches to a specific input source by a shortcut",
+  "shell-version": ["47", "48", "49", "50", "51"]
+}

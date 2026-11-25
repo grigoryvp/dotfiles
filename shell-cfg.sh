@@ -224,6 +224,15 @@ else
   fi
 
   export RADAR_CMD='$(~/.git-radar/git-radar --bash --fetch)'
+
+  # completion via suggestions; ~/.bashrc also sources this file
+  if [ -n "$ZSH_VERSION" ]; then
+    for ZSH_PLUGIN in zsh-autosuggestions zsh-syntax-highlighting; do
+      if [ -e "/usr/share/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh" ]; then
+        . "/usr/share/$ZSH_PLUGIN/$ZSH_PLUGIN.zsh"
+      fi
+    done
+  fi
 fi
 
 if [ -e ~/.rvm/scripts/rvm ]; then

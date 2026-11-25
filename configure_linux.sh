@@ -312,7 +312,7 @@ _configure_shell() {
   printf '#!/bin/sh\n. ~/dotfiles/shell-cfg.sh\n' > ~/.zshrc
   printf '#!/bin/sh\n. ~/.bashrc\n' > ~/.bash_profile
   # shell-cfg.sh relies on zsh, as on macOS
-  sudo dnf install -y zsh
+  sudo dnf install -y zsh zsh-autosuggestions zsh-syntax-highlighting
   zsh=$(command -v zsh)
   if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$zsh" ]; then
     # usermod instead of chsh: chsh is not installed by default

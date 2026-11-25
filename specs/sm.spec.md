@@ -1,9 +1,9 @@
 # Skill Manager (SM)
 
 Makes skills from several git repositories available to coding agents and
-updates them with a `git pull`. Each repository is cloned by hand into
-`~/skills/<source>`, e.g. `~/skills/grigoryvp-public` and
-`~/skills/grigoryvp-private`; SM symlinks its skills into the agents' skill
+updates them with a `git pull`. Each repository is cloned into
+`~/skills/<source>`; the configure scripts clone `~/skills/public-skills`
+and `~/skills/private-skills`. SM symlinks its skills into the agents' skill
 directories, so a pull updates them in place.
 
 Why not a plugin marketplace: its skills are installed copies with versions

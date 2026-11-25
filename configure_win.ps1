@@ -223,6 +223,7 @@ class App {
     $this._installFonts();
 
     $this._getXiWindows();
+    $this._getSkills();
 
     # Symlink PowerShel config file into PowerShell config dir.
     if (-not $this._isTest) {
@@ -914,6 +915,35 @@ class App {
     Write-Host "cloning xi into $dstDir";
     & git clone $uri $dstDir;
     return;
+  }
+
+
+  # Skill Manager sources (specs/sm.spec.md)
+  _getSkills() {
+    if ($this._isTest) { return; }
+    $markerPath = $this._path(@("~", ".ssh", ".uploaded_to_github"));
+    if (-not (Test-Path -Path "$markerPath")) {
+      Write-Host "Not cloning skills since ssh keys are not uploaded";
+      return;
+    }
+    $skillsDir = $this._path(@("~", "skills"));
+    if (-not (Test-Path -Path "$skillsDir")) {
+      New-Dir -Path "$skillsDir";
+    }
+    $repos = [ordered]@{
+      "public-skills" = "skills";
+      "private-skills" = "private-skills";
+    };
+    foreach ($name in $repos.Keys) {
+      $dstDir = $this._path(@($skillsDir, $name));
+      if (Test-Path -Path "$dstDir") {
+        Write-Host "$name already cloned";
+        continue;
+      }
+      Write-Host "cloning $name into $dstDir";
+      & git clone "git@github.com:grigoryvp/$($repos[$name]).git" $dstDir;
+      if ($LASTEXITCODE -ne 0) { throw "Failed to clone $name" }
+    }
   }
 
 

@@ -1123,6 +1123,23 @@ EOF
   echo "Black desktop and lock screen background set"
 }
 
+# Skill Manager sources (specs/sm.spec.md)
+_clone_skills() {
+  if ! [ -e ~/.ssh/.uploaded_to_github ]; then
+    echo "Not cloning skills since ssh keys are not uploaded"
+    return 0
+  fi
+  mkdir -p ~/skills
+  for pair in public-skills:skills private-skills:private-skills; do
+    dir="$HOME/skills/${pair%%:*}"
+    if [ -e "$dir" ]; then
+      echo "$dir already cloned"
+    else
+      git clone "git@github.com:grigoryvp/${pair#*:}.git" "$dir"
+    fi
+  done
+}
+
 test() {
   _configure_wox
 }
@@ -1285,6 +1302,8 @@ configure() {
   else
     echo "Not cloning knowledge base since ssh keys are not uploaded"
   fi
+
+  _clone_skills
 
   if ! [ -e ~/.enc ]; then
     printf '# Machine-specific claude config\n' > ~/.env

@@ -108,6 +108,23 @@ _clone_knowledge_base() {
   fi
 }
 
+# Skill Manager sources (specs/sm.spec.md)
+_clone_skills() {
+  if ! [ -e ~/.ssh/.uploaded_to_github ]; then
+    echo "Not cloning skills since ssh keys are not uploaded"
+    return 0
+  fi
+  mkdir -p ~/skills
+  for pair in public-skills:skills private-skills:private-skills; do
+    dir="$HOME/skills/${pair%%:*}"
+    if [ -e "$dir" ]; then
+      echo "$dir already cloned"
+    else
+      git clone "git@github.com:grigoryvp/${pair#*:}.git" "$dir"
+    fi
+  done
+}
+
 # Built from source as upstream recommends, pinned to a release tag
 _install_keyd() {
   if command -v keyd >/dev/null; then
@@ -317,9 +334,7 @@ _configure_git() {
 }
 
 test() {
-  _configure_ssh
-  _switch_dotfiles_to_ssh
-  _clone_knowledge_base
+  _clone_skills
 }
 
 configure() {
@@ -342,6 +357,7 @@ configure() {
   _configure_ssh
   _switch_dotfiles_to_ssh
   _clone_knowledge_base
+  _clone_skills
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway

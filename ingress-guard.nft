@@ -1,0 +1,28 @@
+# New connections to containers and pods are accepted only from loopback,
+# the tailnet and the local bridges. firewalld accepts DNAT'd and forwarded
+# traffic before its zones are checked, while a drop here is final for all
+# tables.
+
+table inet ingress_guard
+delete table inet ingress_guard
+
+table inet ingress_guard {
+  chain trusted_iif {
+    iifname { "lo", "tailscale0", "docker0", "cni0", "flannel.1" } return
+    # Docker's user-defined networks
+    iifname "br-*" return
+    drop
+  }
+
+  # Routed to container and pod IPs, with or without DNAT
+  chain forward {
+    type filter hook forward priority filter - 10; policy accept;
+    ct state new jump trusted_iif
+  }
+
+  # Ports published to the host itself, e.g. hostNetwork pods
+  chain input {
+    type filter hook input priority filter - 10; policy accept;
+    ct state new ct status dnat jump trusted_iif
+  }
+}

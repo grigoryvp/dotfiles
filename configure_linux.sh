@@ -271,7 +271,27 @@ _configure_kitty() {
   echo "kitty configured"
 }
 
+# Fingerprints from the vendors' setup docs
 CLAUDE_CODE_KEY_FPR=31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE
+DOCKER_KEY_FPR=060A61C51B558A7F742B77AAC52FEB6B621E9F35
+
+_import_key_with_fpr() {
+  url=$1 fpr=$2 name=$3
+  file=$(mktemp)
+  if ! curl -fsSL "$url" -o "$file"; then
+    rm -f "$file"
+    echo "❌ Failed to download $name key, aborting" >&2
+    exit 1
+  fi
+  if [ "$(gpg --show-keys --with-colons "$file" | grep '^fpr:')" \
+    != "fpr:::::::::$fpr:" ]; then
+    rm -f "$file"
+    echo "❌ Unexpected $name key, aborting" >&2
+    exit 1
+  fi
+  sudo rpm --import "$file"
+  rm -f "$file"
+}
 
 # Keys are imported up front: "dnf install -y" would otherwise accept any
 # key the repo serves
@@ -290,21 +310,7 @@ _configure_dnf_repos() {
     | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
 
   key=https://downloads.claude.ai/keys/claude-code.asc
-  file=$(mktemp)
-  if ! curl -fsSL "$key" -o "$file"; then
-    rm -f "$file"
-    echo "❌ Failed to download Claude Code key, aborting" >&2
-    exit 1
-  fi
-  # The fingerprint from the Claude Code setup docs
-  fpr=$(gpg --show-keys --with-colons "$file" | grep '^fpr:')
-  if [ "$fpr" != "fpr:::::::::$CLAUDE_CODE_KEY_FPR:" ]; then
-    rm -f "$file"
-    echo "❌ Unexpected Claude Code key, aborting" >&2
-    exit 1
-  fi
-  sudo rpm --import "$file"
-  rm -f "$file"
+  _import_key_with_fpr "$key" "$CLAUDE_CODE_KEY_FPR" "Claude Code"
   printf '%s\n' \
     '[claude-code]' \
     'name=Claude Code' \
@@ -313,12 +319,39 @@ _configure_dnf_repos() {
     'gpgcheck=1' \
     "gpgkey=$key" \
     | sudo tee /etc/yum.repos.d/claude-code.repo >/dev/null
+
+  # Docker's own repo instead of Fedora's moby-engine: the buildx and
+  # compose plugins come from there
+  key=https://download.docker.com/linux/fedora/gpg
+  _import_key_with_fpr "$key" "$DOCKER_KEY_FPR" "Docker"
+  printf '%s\n' \
+    '[docker-ce-stable]' \
+    'name=Docker CE Stable' \
+    "baseurl=${key%/gpg}/\$releasever/\$basearch/stable" \
+    'enabled=1' \
+    'gpgcheck=1' \
+    "gpgkey=$key" \
+    | sudo tee /etc/yum.repos.d/docker-ce.repo >/dev/null
   # Fedora ships the Google Chrome repo disabled. Its /etc/default/google-chrome
   # also stops Chrome from adding a duplicate repo on install.
   sudo rpm --import https://dl.google.com/linux/linux_signing_key.pub
   sudo dnf install -y fedora-workstation-repositories \
     'dnf-command(config-manager)'
   sudo dnf config-manager setopt google-chrome.enabled=1
+
+  key=https://pkgs.tailscale.com/stable/fedora/repo.gpg
+  sudo rpm --import "$key"
+  printf '%s\n' \
+    '[tailscale-stable]' \
+    'name=Tailscale stable' \
+    'baseurl=https://pkgs.tailscale.com/stable/fedora/$basearch' \
+    'enabled=1' \
+    'type=rpm' \
+    'repo_gpgcheck=1' \
+    'gpgcheck=1' \
+    "gpgkey=$key" \
+    | sudo tee /etc/yum.repos.d/tailscale.repo >/dev/null
+
   sudo dnf install -y 'dnf-command(copr)'
   sudo dnf copr enable -y jdxcode/mise
   echo "dnf repos configured"
@@ -361,6 +394,138 @@ _install_doublecmd() {
     exit 1
   fi
   echo "Double Commander installed"
+}
+
+_install_tailscale() {
+  if ! rpm -q tailscale >/dev/null; then
+    if ! sudo dnf install -y tailscale; then
+      echo "❌ Failed to install Tailscale, aborting" >&2
+      exit 1
+    fi
+  fi
+  sudo systemctl enable --now tailscaled
+  if ! tailscale status >/dev/null 2>&1; then
+    # Prints a login URL and waits for the login
+    if ! sudo tailscale up --operator="$USER"; then
+      echo "❌ Failed to log in to Tailscale, aborting" >&2
+      exit 1
+    fi
+  fi
+  echo "Tailscale installed"
+}
+
+# Nothing is reachable from outside except via Tailscale. The default zone
+# is what NetworkManager gives every new network, e.g. a cafe Wi-Fi.
+_configure_firewall() {
+  # Docker and k3s ports bypass the zones: they are guarded per interface
+  # by our own nftables table, loaded before the network is up
+  sudo install -m 644 ~/dotfiles/ingress-guard.nft \
+    /etc/nftables/ingress-guard.nft
+  sudo tee /etc/systemd/system/ingress-guard.service >/dev/null <<'EOF'
+[Unit]
+Description=Guard containers and pods from external interfaces
+DefaultDependencies=no
+Before=network-pre.target
+Wants=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/nft -f /etc/nftables/ingress-guard.nft
+ExecStop=/usr/sbin/nft delete table inet ingress_guard
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  sudo systemctl daemon-reload
+  sudo systemctl enable ingress-guard
+  if ! sudo systemctl restart ingress-guard; then
+    echo "❌ Failed to load ingress-guard.nft, aborting" >&2
+    exit 1
+  fi
+
+  # Strict mode blocks DNAT'd traffic from the tailnet as well. Set by
+  # earlier versions of this script.
+  conf=/etc/firewalld/firewalld.conf
+  if sudo grep -q '^StrictForwardPorts=yes' "$conf"; then
+    sudo sed -i 's/^StrictForwardPorts=.*/StrictForwardPorts=no/' "$conf"
+    sudo systemctl restart firewalld
+  fi
+
+  # Connections pinned to another zone would skip the default one
+  nmcli -t -f UUID,TYPE con show | while IFS=: read -r uuid type; do
+    case "$type" in
+      802-11-wireless|802-3-ethernet)
+        sudo nmcli con modify "$uuid" connection.zone ""
+        ;;
+    esac
+  done
+
+  fc="sudo firewall-cmd --permanent"
+  sudo firewall-cmd --set-default-zone=drop
+  # DHCPv6 replies are not tracked as related to the request, unlike
+  # DHCPv4, whose client uses a raw socket that bypasses the firewall
+  $fc --zone=drop --add-service=dhcpv6-client
+  $fc --zone=trusted --add-interface=tailscale0
+  # k3s pods reach the host via these, not via the default zone. Interfaces,
+  # not the pod CIDRs: a source address is easy to spoof from the Wi-Fi.
+  $fc --zone=trusted --add-interface=cni0
+  $fc --zone=trusted --add-interface=flannel.1
+  # Superseded by ingress-guard.nft
+  if $fc --get-policies | grep -qw drop-forward; then
+    $fc --delete-policy=drop-forward
+  fi
+  sudo firewall-cmd --reload
+  echo "Firewall configured"
+}
+
+# The user is not added to the "docker" group: it is root without a
+# password, so docker is run via sudo
+_install_docker() {
+  if ! rpm -q docker-ce >/dev/null; then
+    if ! sudo dnf install -y docker-ce docker-ce-cli containerd.io \
+      docker-buildx-plugin docker-compose-plugin; then
+      echo "❌ Failed to install Docker, aborting" >&2
+      exit 1
+    fi
+  fi
+  sudo systemctl enable --now docker
+  echo "Docker installed"
+}
+
+K3S_VERSION=v1.37.2+k3s1
+
+# The node lives on the tailnet: the Wi-Fi address changes with every
+# network, and the API and NodePorts are reached via Tailscale anyway
+_install_k3s() {
+  if k3s --version 2>/dev/null | grep -qF "$K3S_VERSION"; then
+    echo "k3s already installed"
+    return 0
+  fi
+  ip=$(tailscale ip -4)
+  if [ -z "$ip" ]; then
+    echo "❌ No Tailscale IP for the k3s node, aborting" >&2
+    exit 1
+  fi
+  sudo mkdir -p /etc/rancher/k3s /etc/systemd/system/k3s.service.d
+  printf 'node-ip: %s\nflannel-iface: tailscale0\n' "$ip" \
+    | sudo tee /etc/rancher/k3s/config.yaml >/dev/null
+  printf '[Unit]\nAfter=tailscaled.service\nWants=tailscaled.service\n' \
+    | sudo tee /etc/systemd/system/k3s.service.d/tailscale.conf >/dev/null
+  # The installer adds the Rancher repo for the SELinux policy and installs
+  # from it with "dnf install -y", which would accept any key
+  sudo rpm --import https://rpm.rancher.io/public.key
+  # Pinned installer: it runs as root
+  url="https://raw.githubusercontent.com/k3s-io/k3s/$K3S_VERSION/install.sh"
+  file=$(mktemp)
+  if ! curl -fsSL "$url" -o "$file" \
+    || ! INSTALL_K3S_VERSION="$K3S_VERSION" sh "$file"; then
+    rm -f "$file"
+    echo "❌ Failed to install k3s, aborting" >&2
+    exit 1
+  fi
+  rm -f "$file"
+  echo "k3s installed"
 }
 
 _install_claude_code() {
@@ -574,6 +739,10 @@ configure() {
   _install_kitty
   _configure_kitty
   _configure_dnf_repos
+  _install_tailscale
+  _configure_firewall
+  _install_docker
+  _install_k3s
   _install_vscode
   _configure_vscode
   _install_keepassxc

@@ -28,3 +28,4 @@
 /stats-cache.json
 /telemetry/
 /daemon.*
+/.credentials.json

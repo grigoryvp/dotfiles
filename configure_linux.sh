@@ -125,6 +125,31 @@ _clone_skills() {
   done
 }
 
+# Use the dotfiles as source-of-truth. Unlike macOS, where the login lives in
+# Keychain, ~/.claude holds the login and memory: existing state is moved,
+# not deleted. The repo's settings.json wins.
+_configure_claude() {
+  if [ -L ~/.claude ]; then
+    echo "Claude already configured"
+    return 0
+  fi
+  if [ -d ~/.claude ]; then
+    for src in ~/.claude/* ~/.claude/.[!.]*; do
+      [ -e "$src" ] || continue
+      dst="$HOME/dotfiles/.claude/${src##*/}"
+      if [ -e "$dst" ]; then
+        echo "⚠️ Not moving $src: $dst exists" >&2
+      elif ! mv "$src" "$dst"; then
+        echo "❌ Failed to move $src, aborting" >&2
+        exit 1
+      fi
+    done
+    rm -rf ~/.claude
+  fi
+  ln -s ~/dotfiles/.claude ~/.claude
+  echo "Claude configured"
+}
+
 # Built from source as upstream recommends, pinned to a release tag
 _install_keyd() {
   if command -v keyd >/dev/null; then
@@ -288,6 +313,12 @@ _configure_dnf_repos() {
     'gpgcheck=1' \
     "gpgkey=$key" \
     | sudo tee /etc/yum.repos.d/claude-code.repo >/dev/null
+  # Fedora ships the Google Chrome repo disabled. Its /etc/default/google-chrome
+  # also stops Chrome from adding a duplicate repo on install.
+  sudo rpm --import https://dl.google.com/linux/linux_signing_key.pub
+  sudo dnf install -y fedora-workstation-repositories \
+    'dnf-command(config-manager)'
+  sudo dnf config-manager setopt google-chrome.enabled=1
   sudo dnf install -y 'dnf-command(copr)'
   sudo dnf copr enable -y jdxcode/mise
   echo "dnf repos configured"
@@ -305,6 +336,31 @@ _install_vscode() {
     exit 1
   fi
   echo "VSCode installed"
+}
+
+_install_chrome() {
+  if rpm -q google-chrome-stable >/dev/null; then
+    echo "Chrome already installed"
+    return 0
+  fi
+  if ! sudo dnf install -y google-chrome-stable; then
+    echo "❌ Failed to install Chrome, aborting" >&2
+    exit 1
+  fi
+  echo "Chrome installed"
+}
+
+# Qt6 build: the GTK one is still GTK2
+_install_doublecmd() {
+  if rpm -q doublecmd-qt6 >/dev/null; then
+    echo "Double Commander already installed"
+    return 0
+  fi
+  if ! sudo dnf install -y doublecmd-qt6; then
+    echo "❌ Failed to install Double Commander, aborting" >&2
+    exit 1
+  fi
+  echo "Double Commander installed"
 }
 
 _install_claude_code() {
@@ -447,6 +503,26 @@ _configure_keepassxc() {
   echo "KeePassXC configured"
 }
 
+# The dash in Activities, in the order shown. GNOME Shell shows a missing app
+# as nothing, so such apps are left out with a warning.
+_configure_favorite_apps() {
+  apps=
+  for app in kitty com.microsoft.VSCode google-chrome doublecmd-qt6 \
+    org.keepassxc.KeePassXC; do
+    found=
+    for dir in ~/.local/share/applications /usr/share/applications; do
+      [ -e "$dir/$app.desktop" ] && found=1
+    done
+    if [ -n "$found" ]; then
+      apps="$apps${apps:+, }'$app.desktop'"
+    else
+      echo "⚠️ Not pinning $app: it is not installed" >&2
+    fi
+  done
+  gsettings set org.gnome.shell favorite-apps "[$apps]"
+  echo "Favorite apps configured"
+}
+
 # Fedora's own ~/.bashrc is the only place that sources /etc/bashrc, so
 # the replacement keeps doing it
 _configure_shell() {
@@ -502,7 +578,10 @@ configure() {
   _configure_vscode
   _install_keepassxc
   _configure_keepassxc
+  _install_chrome
+  _install_doublecmd
   _install_claude_code
+  _configure_claude
   _install_mise
   _configure_git
   _configure_shell
@@ -523,6 +602,8 @@ configure() {
   if gsettings list-schemas | grep -qx org.gnome.Ptyxis; then
     gsettings set org.gnome.Ptyxis audible-bell false
   fi
+
+  _configure_favorite_apps
 
   echo "✅ configuration complete"
 }

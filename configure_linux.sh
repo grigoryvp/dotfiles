@@ -127,9 +127,71 @@ _configure_kitty() {
   echo "kitty configured"
 }
 
+# Microsoft's repo instead of Flatpak: the sandbox hides host toolchains
+# from extensions and the integrated terminal
+_install_vscode() {
+  if command -v code >/dev/null; then
+    echo "VSCode already installed"
+    return 0
+  fi
+  key=https://packages.microsoft.com/keys/microsoft.asc
+  sudo rpm --import "$key"
+  printf '%s\n' \
+    '[code]' \
+    'name=Visual Studio Code' \
+    'baseurl=https://packages.microsoft.com/yumrepos/vscode' \
+    'enabled=1' \
+    'autorefresh=1' \
+    'type=rpm-md' \
+    'gpgcheck=1' \
+    "gpgkey=$key" \
+    | sudo tee /etc/yum.repos.d/vscode.repo >/dev/null
+  if ! sudo dnf install -y code; then
+    echo "❌ Failed to install VSCode, aborting" >&2
+    exit 1
+  fi
+  echo "VSCode installed"
+}
+
+_configure_vscode() {
+  # VSCode bundles its own node that prints deprecation warnings to stderr
+  NODE_NO_WARNINGS=1
+  export NODE_NO_WARNINGS
+  while IFS= read -r ext; do
+    code --install-extension "$ext" </dev/null >/dev/null
+  done <<'EOF'
+grigoryvp.language-xi
+grigoryvp.memory-theme
+grigoryvp.goto-link-provider
+grigoryvp.markdown-inline-fence
+grigoryvp.markdown-python-repl-syntax
+grigoryvp.markdown-pandoc-rawattr
+vscodevim.vim
+EditorConfig.EditorConfig
+emmanuelbeziat.vscode-great-icons
+esbenp.prettier-vscode
+formulahendry.auto-close-tag
+dnut.rewrap-revived
+streetsidesoftware.code-spell-checker
+streetsidesoftware.code-spell-checker-russian
+mark-wiemer.vscode-autohotkey-plus-plus
+charliermarsh.ruff
+harrydowning.yaml-embedded-languages
+EOF
+  unset NODE_NO_WARNINGS
+  dir=~/.config/Code/User
+  mkdir -p "$dir"
+  ln -fs ~/dotfiles/vscode_keybindings.json "$dir/keybindings.json"
+  ln -fs ~/dotfiles/vscode_settings.json "$dir/settings.json"
+  ln -fs ~/dotfiles/vscode_tasks.json "$dir/tasks.json"
+  rm -rf "$dir/snippets"
+  ln -s ~/dotfiles/vscode_snippets "$dir/snippets"
+  echo "VSCode configured"
+}
+
 test() {
-  _install_kitty
-  _configure_kitty
+  _install_vscode
+  _configure_vscode
 }
 
 configure() {
@@ -143,6 +205,8 @@ configure() {
   _configure_keyd
   _install_kitty
   _configure_kitty
+  _install_vscode
+  _configure_vscode
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway

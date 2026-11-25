@@ -90,9 +90,46 @@ _configure_keyd() {
   echo "keyd configured"
 }
 
+KITTY_VERSION=0.51.1
+
+# The official build instead of dnf: vertical tabs need 0.48+, the repos may
+# lag behind
+_install_kitty() {
+  app="$HOME/.local/kitty.app"
+  if "$app/bin/kitty" --version 2>/dev/null | grep -q " $KITTY_VERSION "; then
+    echo "kitty already installed"
+    return 0
+  fi
+  url=https://sw.kovidgoyal.net/kitty/installer.sh
+  if ! curl -fsSL "$url" | sh /dev/stdin \
+    installer="version-$KITTY_VERSION" launch=n; then
+    echo "❌ Failed to install kitty, aborting" >&2
+    exit 1
+  fi
+  mkdir -p ~/.local/bin ~/.local/share/applications
+  ln -sf "$app/bin/kitty" "$app/bin/kitten" ~/.local/bin/
+  # The desktop file names the binary and icon relative to PATH and the
+  # icon theme, neither of which knows about kitty.app
+  desktop="$HOME/.local/share/applications/kitty.desktop"
+  icon="$app/share/icons/hicolor/256x256/apps/kitty.png"
+  sed -e "s|Icon=kitty|Icon=$icon|g" -e "s|Exec=kitty|Exec=$app/bin/kitty|g" \
+    "$app/share/applications/kitty.desktop" > "$desktop"
+  # Makes desktop environments that use xdg-terminal-exec open kitty
+  echo 'kitty.desktop' > ~/.config/xdg-terminals.list
+  echo "kitty installed"
+}
+
+_configure_kitty() {
+  sudo dnf install -y jetbrains-mono-fonts
+  # Entire config dir should be symlinked
+  rm -rf ~/.config/kitty
+  ln -s ~/dotfiles/kitty ~/.config/kitty
+  echo "kitty configured"
+}
+
 test() {
-  _install_keyd
-  _configure_keyd
+  _install_kitty
+  _configure_kitty
 }
 
 configure() {
@@ -104,11 +141,20 @@ configure() {
   _clone_dotfiles
   _install_keyd
   _configure_keyd
+  _install_kitty
+  _configure_kitty
 
   # No idle suspend on external power, otherwise a laptop with the lid
   # closed falls asleep anyway
   gsettings set org.gnome.settings-daemon.plugins.power \
     sleep-inactive-ac-type 'nothing'
+
+  # Mute the terminal bell: GNOME's own is played by mutter for any app,
+  # Ptyxis (the default terminal) plays its own
+  gsettings set org.gnome.desktop.wm.preferences audible-bell false
+  if gsettings list-schemas | grep -qx org.gnome.Ptyxis; then
+    gsettings set org.gnome.Ptyxis audible-bell false
+  fi
 
   echo "✅ configuration complete"
 }

@@ -492,6 +492,15 @@ _install_tailscale() {
       exit 1
     fi
   fi
+  # An exit node routes tailnet traffic to the internet
+  printf 'net.ipv4.ip_forward = 1\nnet.ipv6.conf.all.forwarding = 1\n' \
+    | sudo tee /etc/sysctl.d/99-tailscale.conf >/dev/null
+  sudo sysctl -p /etc/sysctl.d/99-tailscale.conf >/dev/null
+  # "up" on a logged-in node fails unless all non-default flags are repeated
+  if ! sudo tailscale set --ssh --advertise-exit-node; then
+    echo "❌ Failed to configure Tailscale, aborting" >&2
+    exit 1
+  fi
   echo "Tailscale installed"
 }
 

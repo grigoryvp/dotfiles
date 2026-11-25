@@ -384,6 +384,19 @@ _install_chrome() {
 }
 
 # Qt6 build: the GTK one is still GTK2
+# Fedora packages the Go yq by mikefarah, not the Python jq wrapper
+_install_yq() {
+  if rpm -q yq >/dev/null; then
+    echo "yq already installed"
+    return 0
+  fi
+  if ! sudo dnf install -y yq; then
+    echo "❌ Failed to install yq, aborting" >&2
+    exit 1
+  fi
+  echo "yq installed"
+}
+
 _install_flameshot() {
   if rpm -q flameshot >/dev/null; then
     echo "Flameshot already installed"
@@ -423,6 +436,7 @@ _configure_flameshot() {
   _flameshot_ini_set savePath "$HOME/Screenshots"
   # Done by flameshot-gui.sh instead, Flameshot's own copy is lost on Wayland
   _flameshot_ini_set copyPathAfterSave false
+  _flameshot_ini_set showDesktopNotification false
   if ! flameshot config --check 2>&1 | grep -q "No errors detected"; then
     echo "❌ Flameshot rejected its configuration, aborting" >&2
     exit 1
@@ -813,6 +827,7 @@ configure() {
   _install_doublecmd
   _install_flameshot
   _configure_flameshot
+  _install_yq
   _install_claude_code
   _configure_claude
   _install_mise

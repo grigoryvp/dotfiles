@@ -154,6 +154,9 @@ _install_vscode() {
 }
 
 _configure_vscode() {
+  # Bundled vsce-sign verifies extension signatures with libssl.so.3 only,
+  # which Fedora 45 moved out of the default install along with OpenSSL 3
+  sudo dnf install -y 'libssl.so.3()(64bit)'
   # VSCode bundles its own node that prints deprecation warnings to stderr
   NODE_NO_WARNINGS=1
   export NODE_NO_WARNINGS

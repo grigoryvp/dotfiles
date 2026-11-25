@@ -1,0 +1,6 @@
+{
+  "uuid": "graphs@grigoryvp",
+  "name": "Graphs",
+  "description": "Router ping, internet ping and CPU load graphs in the top panel",
+  "shell-version": ["47", "48", "49", "50", "51"]
+}

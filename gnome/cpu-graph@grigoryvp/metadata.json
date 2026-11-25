@@ -1,6 +1,0 @@
-{
-  "uuid": "cpu-graph@grigoryvp",
-  "name": "CPU Graph",
-  "description": "CPU load graph in the top panel",
-  "shell-version": ["47", "48", "49", "50", "51"]
-}

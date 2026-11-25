@@ -858,7 +858,7 @@ configure() {
 
   _configure_favorite_apps
   gsettings set org.gnome.desktop.interface clock-format '24h'
-  _enable_gnome_extension cpu-graph@grigoryvp
+  _enable_gnome_extension graphs@grigoryvp
   _enable_gnome_extension clock-right@grigoryvp
 
   echo "✅ configuration complete"

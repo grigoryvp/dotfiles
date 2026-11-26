@@ -938,6 +938,7 @@ Leld
 lessbright
 letsencrypt
 leveldb
+lexfrei
 Leyline
 LFE
 LFM

@@ -1111,6 +1111,7 @@ MPC
 MPMC
 mpv
 MQTT
+MRKT
 MRO
 msbuild
 msgpack
@@ -1781,6 +1782,7 @@ tomllib
 tonapps
 TONCOIN
 Tonkeeper
+Tonnel
 Tonnel_Network_bot
 tontech
 Toolbelt

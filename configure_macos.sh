@@ -154,6 +154,7 @@ gh
 glab
 yq
 glow
+lexfrei/tap/mcp-tg
 EOF
   _brew_install "$@"
 }

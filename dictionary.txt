@@ -1593,6 +1593,7 @@ skylighting
 Skysliver
 Slipstrike
 sln
+slowmode
 slu.u.
 smallstrut
 smm

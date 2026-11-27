@@ -691,6 +691,21 @@ function App:_wndClose()
     return
   end
 
+  -- Chrome tabs are not exposed via accessibility, and since Chrome 158 the
+  -- File menu has no "Close Tab" item, so the generic path below would close
+  -- the whole window. Requires Automation permission for Hammerspoon.
+  -- Addressed by pid: by name AppleScript may pick another Chrome instance,
+  -- e.g. one started by devtools automation.
+  if app:bundleID() == "com.google.Chrome" then
+    local ok, _, err = hs.osascript.javascript(
+      "Application(" .. app:pid() .. ").windows[0].activeTab.close()"
+    )
+    if not ok then
+      hs.alert.show("Can't close Chrome tab: " .. hs.inspect(err))
+    end
+    return
+  end
+
   -- The whole tab with all its splits, "Close All Panes in Tab". A single
   -- split is closed by m1-s (see karabiner.json).
   if app:bundleID() == "com.googlecode.iterm2" then
